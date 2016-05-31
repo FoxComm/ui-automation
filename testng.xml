@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="template-suite" verbose="1" >
+    <test name="template-test" >
+        <classes>
+            <class name="storefront.tests.login.SignupTest" />
+            <class name="storefront.tests.login.RegularAccLoginTest" />
+            <class name="storefront.tests.login.GoogleAuthTest" />
+            <class name="storefront.tests.cart.regularaccount.AddSingleItem_RA" />
+            <class name="storefront.tests.cart.regularaccount.AddMultipleItemsTest_RA" />
+            <class name="storefront.tests.cart.regularaccount.IndicatorAfterLogoutTest" />
+            <class name="storefront.tests.cart.regularaccount.IndicatorAfterRelogTest" />
+            <class name="storefront.tests.checkout.PlaceOrderTest_RA" />
+        </classes>
+    </test>
+</suite>
