@@ -1,0 +1,11 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="template-suite" verbose="1" >
+    <test name="A" >
+        <classes>
+            <class name="tests.logintests.LoginTest" />
+            <class name="tests.orderstests.SearchTest" />
+            <class name="tests.orderstests.ItemsTest" />
+            <class name="tests.orderstests.ShippingAddressTest" />
+        </classes>
+    </test>
+</suite>
