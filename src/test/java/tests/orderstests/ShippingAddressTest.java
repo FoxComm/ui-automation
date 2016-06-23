@@ -36,7 +36,7 @@ public class ShippingAddressTest extends DataProvider {
         provideTestData("cart with empty address book");
         p = open("http://admin.stage.foxcommerce.com/orders/" + orderId, OrderDetailsPage.class);
 
-        p.clickEditBtn_shippingAddress();
+        p.clickEditBtn_shipAddress();
         p.clearAddressBook();
         p.addNewAddress("John Doe", "2101 Green Valley #320", "Seattle", "Washington", "98101", "9879879876");
 
@@ -54,7 +54,7 @@ public class ShippingAddressTest extends DataProvider {
         provideTestData("cart with non-empty address book");
         p = open("http://admin.stage.foxcommerce.com/orders/" + orderId, OrderDetailsPage.class);
 
-        p.clickEditBtn_shippingAddress();
+        p.clickEditBtn_shipAddress();
         p.addNewAddress("John Doe", "2101 Green Valley #320", "Seattle", "Washington", "98101", "9879879876");
 
         String actualResult = p.getNameFromAddressBook(1);
@@ -69,21 +69,21 @@ public class ShippingAddressTest extends DataProvider {
         provideTestData("cart with non-empty address book");
         p = open("http://admin.stage.foxcommerce.com/orders/" + orderId, OrderDetailsPage.class);
 
-        p.clickEditBtn_shippingAddress();
-        p.chooseAddress(1);
-        p.clickBtn( p.doneBtn_shippingAddress() );
+        p.clickEditBtn_shipAddress();
+        p.chooseShipAddress(1);
+        p.clickBtn( p.doneBtn_shipAddress() );
 
     }
 
     @Test(priority = 3)
     public void editChosenShippingAddress() {
 
-        p.clickEditBtn_shippingAddress();
+        p.clickEditBtn_shipAddress();
         p.clickBtn( p.editBtn_chosenAddress() );
-        p.setFieldValue( p.nameFld(), "John Doe" );
+        p.setFieldVal( p.nameFld(), "John Doe" );
         p.applyChangesToAddress();
 
-        Assert.assertEquals(p.getCustomerName_chosenShippingAddress(), "John Doe",
+        Assert.assertEquals(p.getCustomerName_chosenShipAddress(), "John Doe",
                 "Chosen address has failed to get updated.");
 
     }
@@ -94,7 +94,7 @@ public class ShippingAddressTest extends DataProvider {
         provideTestData("cart with chosen shipping address");
         p = open("http://admin.stage.foxcommerce.com/orders/" + orderId, OrderDetailsPage.class);
 
-        p.clickBtn( p.editBtn_shippingAddress() );
+        p.clickBtn( p.editBtn_shipAddress() );
         p.clickBtn( p.deleteBtn_chosenAddress() );
         p.clickBtn( p.deleteConfirmBtn() );
 
@@ -108,7 +108,7 @@ public class ShippingAddressTest extends DataProvider {
         provideTestData("cart with 2 addresses in address book");
         p = open("http://admin.stage.foxcommerce.com/orders/" + orderId, OrderDetailsPage.class);
 
-        p.clickEditBtn_shippingAddress();
+        p.clickEditBtn_shipAddress();
         p.clickBtn( p.defaultShipAddressChkbox("1") );
         sleep(750);
         Assert.assertTrue( p.defaultShipAddressChkbox_input("1").isSelected(),
@@ -122,7 +122,7 @@ public class ShippingAddressTest extends DataProvider {
         provideTestData("cart with 2 addresses and defined default shipping address");
         p = open("http://admin.stage.foxcommerce.com/orders/" + orderId, OrderDetailsPage.class);
 
-        p.clickEditBtn_shippingAddress();
+        p.clickEditBtn_shipAddress();
         p.clickBtn( p.defaultShipAddressChkbox("1") );
         sleep(750);
         Assert.assertTrue( p.defaultShipAddressChkbox_input("1").isSelected(),

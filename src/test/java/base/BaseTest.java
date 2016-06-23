@@ -7,7 +7,7 @@ import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 
 public class BaseTest extends ConciseAPI {
 
-    public String getUrl() {
+    protected String getUrl() {
         return getWebDriver().getCurrentUrl();
     }
 

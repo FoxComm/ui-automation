@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="SBT: com.codeborne:selenide:3.6:jar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.ivy2/cache/com.codeborne/selenide/jars/selenide-3.6.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.ivy2/cache/com.codeborne/selenide/docs/selenide-3.6-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.ivy2/cache/com.codeborne/selenide/srcs/selenide-3.6-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

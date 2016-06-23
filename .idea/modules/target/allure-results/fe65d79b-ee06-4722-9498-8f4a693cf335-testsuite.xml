@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:test-suite start="1466381983178" stop="1466382039498" version="1.4.23" xmlns:ns2="urn:model.allure.qatools.yandex.ru">
+    <name>template-suite : A</name>
+    <title>template-suite : A</title>
+    <test-cases>
+        <test-case start="1466382011407" stop="1466382039492" status="broken">
+            <name>placeOrder_noCoupon_CC</name>
+            <failure>
+                <message>Test was interrupted</message>
+            </failure>
+            <labels>
+                <label name="host" value="orange"/>
+                <label name="thread" value="12191@orange.main(1)"/>
+            </labels>
+        </test-case>
+        <test-case start="1466381983178" stop="1466382039495" status="broken">
+            <name>template-suite : A</name>
+            <title>template-suite : A</title>
+            <failure>
+                <message>Test suite was interrupted, some test cases may be lost</message>
+            </failure>
+        </test-case>
+    </test-cases>
+    <labels>
+        <label name="framework" value="TestNG"/>
+        <label name="language" value="JAVA"/>
+    </labels>
+</ns2:test-suite>

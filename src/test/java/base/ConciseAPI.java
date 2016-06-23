@@ -2,9 +2,8 @@ package base;
 
 import com.codeborne.selenide.Configuration;
 
+import java.text.DecimalFormat;
 import java.util.Random;
-
-import static java.lang.Math.random;
 
 public class ConciseAPI extends Configuration {
 
@@ -55,5 +54,18 @@ public class ConciseAPI extends Configuration {
 
     }
 
+    protected double cutDecimal(double numb) {
+
+        DecimalFormat cutDecimals = new DecimalFormat(("#.##"));
+        return Double.valueOf(cutDecimals.format(numb));
+
+    }
+
+    // calculates the amount of funds to be applied to order with SC + GC
+    // useful when grand total value is odd
+    protected static int calcAmount(int firstAmount, double grandTotal) {
+        double firstAmount_double = (double) firstAmount / 100;
+        return (int) ((grandTotal - firstAmount_double) * 100);
+    }
 
 }

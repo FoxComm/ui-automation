@@ -4,7 +4,7 @@
 		module="ui-tests_2.11"
 		revision="1.0"
 		status="integration"
-		publication="20160616113119"
+		publication="20160619013457"
 	>
 		<description>
 		ui-tests
@@ -35,11 +35,11 @@
 		<dependency org="org.scala-lang" name="scala-compiler" rev="2.11.8" conf="scala-tool->default,optional(default)"/>
 		<dependency org="org.scala-lang" name="scala-library" rev="2.11.8" conf="scala-tool->default,optional(default);compile->default(compile)"/>
 		<dependency org="org.seleniumhq.selenium" name="selenium-java" rev="2.53.0" conf="compile->default(compile)"/>
-		<dependency org="org.testng" name="testng" rev="6.9.10" conf="compile->default(compile)"/>
 		<dependency org="com.codeborne" name="selenide" rev="3.6" conf="compile->default(compile)"/>
-		<dependency org="ru.yandex.qatools.allure" name="allure-testng-adaptor" rev="1.4.23" conf="compile->default(compile)"/>
-		<dependency org="org.aspectj" name="aspectjweaver" rev="1.8.9" conf="compile->default(compile)"/>
 		<dependency org="org.apache.httpcomponents" name="httpclient" rev="4.5.2" conf="compile->default(compile)"/>
 		<dependency org="com.squareup.okhttp" name="okhttp" rev="2.7.5" conf="compile->default(compile)"/>
+		<dependency org="org.testng" name="testng" rev="6.9.10" conf="compile->default(compile)"/>
+		<dependency org="org.aspectj" name="aspectjweaver" rev="1.8.6" conf="compile->default(compile)"/>
+		<dependency org="ru.yandex.qatools.allure" name="allure-testng-adaptor" rev="1.4.23" conf="compile->default(compile)"/>
 	</dependencies>
 </ivy-module>

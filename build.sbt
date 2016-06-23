@@ -6,10 +6,10 @@ scalaVersion := "2.11.8"
 
 libraryDependencies ++= Seq(
   "org.seleniumhq.selenium" % "selenium-java" % "2.53.0",
-  "org.testng" % "testng" % "6.9.10",
   "com.codeborne" % "selenide" % "3.6",
-  "ru.yandex.qatools.allure" % "allure-testng-adaptor" % "1.4.23",
-  "org.aspectj" % "aspectjweaver" % "1.8.9",
   "org.apache.httpcomponents" % "httpclient" % "4.5.2",
-  "com.squareup.okhttp" % "okhttp" % "2.7.5"
+  "com.squareup.okhttp" % "okhttp" % "2.7.5",
+  "org.testng" % "testng" % "6.9.10",
+  "org.aspectj" % "aspectjweaver" % "1.8.6",
+  "ru.yandex.qatools.allure" % "allure-testng-adaptor" % "1.4.23"
 )

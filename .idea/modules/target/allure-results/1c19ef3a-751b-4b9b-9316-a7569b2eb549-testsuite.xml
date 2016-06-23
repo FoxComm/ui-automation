@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:test-suite start="1466544631019" stop="1466544735365" version="1.4.23" xmlns:ns2="urn:model.allure.qatools.yandex.ru">
+    <name>template-suite : A</name>
+    <title>template-suite : A</title>
+    <test-cases>
+        <test-case start="1466544682687" stop="1466544714061" status="passed">
+            <name>addPaymentMethod_creditCard</name>
+            <steps/>
+            <attachments/>
+            <labels>
+                <label name="host" value="orange"/>
+                <label name="thread" value="22658@orange.main(1)"/>
+            </labels>
+        </test-case>
+        <test-case start="1466544714151" stop="1466544735352" status="passed">
+            <name>addPaymentMethod_storeCredit</name>
+            <steps/>
+            <attachments/>
+            <labels>
+                <label name="host" value="orange"/>
+                <label name="thread" value="22658@orange.main(1)"/>
+            </labels>
+        </test-case>
+    </test-cases>
+    <labels>
+        <label name="framework" value="TestNG"/>
+        <label name="language" value="JAVA"/>
+    </labels>
+</ns2:test-suite>

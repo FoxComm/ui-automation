@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:test-suite start="1466382469590" stop="1466382524530" version="1.4.23" xmlns:ns2="urn:model.allure.qatools.yandex.ru">
+    <name>template-suite : A</name>
+    <title>template-suite : A</title>
+    <test-cases>
+        <test-case start="1466382496746" stop="1466382524420" status="passed">
+            <name>placeOrder_noCoupon_CC</name>
+            <steps/>
+            <attachments/>
+            <labels>
+                <label name="host" value="orange"/>
+                <label name="thread" value="14126@orange.main(1)"/>
+            </labels>
+        </test-case>
+    </test-cases>
+    <labels>
+        <label name="framework" value="TestNG"/>
+        <label name="language" value="JAVA"/>
+    </labels>
+</ns2:test-suite>
