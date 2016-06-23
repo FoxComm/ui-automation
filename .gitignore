@@ -1,0 +1,11 @@
+# IntelliJ specific
+/.idea/**
+
+# SBT specific
+.cache
+.history
+/project/project
+/project/target
+/target
+.history
+
