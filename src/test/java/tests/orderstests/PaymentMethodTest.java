@@ -1,6 +1,5 @@
 package tests.orderstests;
 
-import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import pages.LoginPage;
@@ -13,6 +12,7 @@ import java.util.Objects;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.Selenide.sleep;
+import static org.testng.Assert.assertTrue;
 
 public class PaymentMethodTest extends DataProvider {
 
@@ -35,8 +35,8 @@ public class PaymentMethodTest extends DataProvider {
         provideTestData("cart with 1 item and chosen shipping address");
         p = open("http://admin.stage.foxcommerce.com/orders/" + orderId, OrderDetailsPage.class);
 
-        p.clickBtn( p.editBtn_payment() );
-        p.clickBtn( p.newPaymentBtn() );
+        click( p.editBtn_payment() );
+        click( p.newPaymentBtn() );
         p.selectPaymentType("Credit Card");
         p.addNewCreditCard("John Doe", "5555555555554444", "777", "2", "2020");
 
@@ -53,20 +53,20 @@ public class PaymentMethodTest extends DataProvider {
         open("http://admin.stage.foxcommerce.com/gift-cards/" + gcNumber);
         p = open("http://admin.stage.foxcommerce.com/orders/" + orderId, OrderDetailsPage.class);
 
-        p.clickBtn( p.editBtn_payment() );
-        p.clickBtn( p.newPaymentBtn() );
+        click( p.editBtn_payment() );
+        click( p.newPaymentBtn() );
         p.selectPaymentType("Gift Card");
-        p.setFieldVal( p.gcNumberFld(), "D26BB43F228AA2CD" );
-        p.setFieldVal( p.amountToUseFld(), String.valueOf(p.grandTotal()) );
+        setFieldVal( p.gcNumberFld(), "D26BB43F228AA2CD" );
+        setFieldVal( p.amountToUseFld(), String.valueOf(p.grandTotal()) );
         System.out.println(p.gcAvailableBalance());
 
         double expectedVal = cutDecimal( p.gcAvailableBalance() - p.grandTotal() );
         System.out.println(expectedVal);
         sleep(1000);
-        Assert.assertTrue( p.gcNewAvailableBalance() == expectedVal,
+        assertTrue( p.gcNewAvailableBalance() == expectedVal,
                 "New available balance calculations are incorrect." );
 
-        p.clickBtn( p.addPaymentBtn() );
+        click( p.addPaymentBtn() );
         p.assertNoFundsWarn();
 
     }
@@ -77,18 +77,18 @@ public class PaymentMethodTest extends DataProvider {
         provideTestData("cart with 1 item && customer with SC");
         p = open("http://admin.stage.foxcommerce.com/orders/" + orderId, OrderDetailsPage.class);
 
-        p.clickBtn( p.editBtn_payment() );
-        p.clickBtn( p.newPaymentBtn() );
+        click( p.editBtn_payment() );
+        click( p.newPaymentBtn() );
         p.selectPaymentType("Store Credit");
-        p.setFieldVal( p.amountToUseFld(), String.valueOf(p.grandTotal()) );
+        setFieldVal( p.amountToUseFld(), String.valueOf(p.grandTotal()) );
 
         double expectedVal = cutDecimal( p.gcAvailableBalance() - p.grandTotal() );
         System.out.println(expectedVal);
         sleep(1000);
-        Assert.assertTrue( p.gcNewAvailableBalance() == expectedVal,
+        assertTrue( p.gcNewAvailableBalance() == expectedVal,
                 "New available balance calculations are incorrect." );
 
-        p.clickBtn( p.addPaymentBtn() );
+        click( p.addPaymentBtn() );
         p.assertNoFundsWarn();
 
     }
@@ -103,7 +103,7 @@ public class PaymentMethodTest extends DataProvider {
         double amountToUse = p.grandTotal() + 10.00;
         p.addPaymentMethod_SC( String.valueOf(amountToUse) );
 
-        Assert.assertTrue(p.appliedAmount() == p.grandTotal(),
+        assertTrue(p.appliedAmount() == p.grandTotal(),
                 "Amount of funds to be applied as a payment isn't auto-adjusted.");
 
     }
@@ -118,7 +118,7 @@ public class PaymentMethodTest extends DataProvider {
         double amountToUse = p.grandTotal() + 10.00;
         p.addPaymentMethod_GC(gcNumber, String.valueOf(amountToUse));
 
-        Assert.assertTrue(p.appliedAmount() == p.grandTotal(),
+        assertTrue(p.appliedAmount() == p.grandTotal(),
                 "Amount of funds to be applied as a payment isn't auto-adjusted.");
 
     }

@@ -7,7 +7,7 @@ import java.io.IOException;
 
 public class DataProvider extends BaseTest {
 
-    private static int customerId;
+    protected static int customerId;
     protected static String orderId;
     private static String jwt;
 
@@ -74,9 +74,11 @@ public class DataProvider extends BaseTest {
 
         Response response = client.newCall(request).execute();
         String responseBody = response.body().string();
+        System.out.println(responseBody);
         customerId = Integer.valueOf(responseBody.substring(6, 10));
 
         System.out.println(response);
+        System.out.println(responseBody);
         System.out.println("Customer ID: " + customerId);
         System.out.println("---- ---- ---- ----");
 
@@ -485,9 +487,11 @@ public class DataProvider extends BaseTest {
 
         OkHttpClient client = new OkHttpClient();
 
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "");
         Request request = new Request.Builder()
-                .url("http://admin.stage.foxcommerce.com/api/v1/orders/BR12442/checkout")
-                .post(null)
+                .url("http://admin.stage.foxcommerce.com/api/v1/orders/" + orderId + "/checkout")
+                .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
                 .addHeader("cache-control", "no-cache")
@@ -495,8 +499,10 @@ public class DataProvider extends BaseTest {
                 .build();
 
         Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
 
         System.out.println(response);
+        System.out.println(responseBody);
         System.out.println("---- ---- ---- ----");
 
     }
@@ -512,7 +518,7 @@ public class DataProvider extends BaseTest {
 
             //------------------------------------- SEARCH FILTERS ------------------------------------//
 
-            case "customerName_filter":
+            case "a customer":
                 break;
 
             //----------------------------------------- ITEMS -----------------------------------------//
@@ -651,6 +657,26 @@ public class DataProvider extends BaseTest {
                 listCustomerAddresses(customerId);
                 issueGiftCard(50000, 1);
                 issueStoreCredit(customerId, 50000);
+                break;
+
+            //------------------------------------- ORDER STATE -------------------------------------//
+
+            case "order in remorse hold":
+                createCart(customerId);
+                updSKULineItems(orderId, "SKU-YAX", 1);
+                setShipAddress(orderId, "John Doe", 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
+                listShipMethods(orderId);
+                setShipMethod(orderId, shipMethodId);
+                listCustomerAddresses(customerId);
+                createCreditCard(customerName, "5555555555554444", "777", 3, 2020, addressId1);
+                setPayment_creditCard(orderId, creditCardId);
+                checkoutOrder(orderId);
+                break;
+
+            //--------------------------------- CUSTOMER ADDRESS BOOK ---------------------------------//
+
+            case "customer with a shipping address":
+                createAddress(customerId, "John Doe", 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 break;
 
         }

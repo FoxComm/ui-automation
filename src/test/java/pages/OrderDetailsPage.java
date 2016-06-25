@@ -10,12 +10,26 @@ import java.util.Objects;
 
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
+import static org.testng.Assert.assertTrue;
 
 public class OrderDetailsPage extends OrdersPage {
 
     //------------------- G E N E R A L    C O N T R O L S -------------------//
     //------------------------------------------------------------------------//
     //------------------------------ ELEMENTS --------------------------------//
+
+    private SelenideElement orderStateDd() {
+        return $(By.xpath("//div[text()='Order State']/following-sibling::*/div/div[2]/button"));
+    }
+
+    public SelenideElement addTimeBtn() {
+        return $(By.xpath("//button[@class='fc-btn fc-remorse-timer-extend']"));
+    }
+
+    public String timerValue() {
+        SelenideElement timer = $(By.xpath("//div[@class='fc-countdown']"));
+        return timer.getText();
+    }
 
     public SelenideElement placeOrderBtn() {
         return $(By.xpath("//div[contains(@class, 'order-checkout')]/button"));
@@ -80,6 +94,27 @@ public class OrderDetailsPage extends OrdersPage {
 
     //------------------------------- HELPERS --------------------------------//
 
+    @Step("Check if remorse hold time has been increased.")
+    public void assertTimerValue(int expectedHoursVal, int expectedMinutesVal) {
+
+        int actualMinutesVal = Integer.valueOf(timerValue().substring(3, 5));
+        int actualHoursVal = Integer.valueOf(timerValue().substring(0, 2));
+
+        System.out.println("actualMinutesVal: " + actualMinutesVal);
+        System.out.println("actualHoursVal: " + actualHoursVal);
+
+        assertTrue( (expectedHoursVal == actualHoursVal) && (expectedMinutesVal - actualMinutesVal <= 1),
+                "Actual 'Remorse Hold' timer value differs from expected one." );
+
+    }
+
+    @Step("Set order state to {0}.")
+    public void setOrderState(String state) {
+        click( orderStateDd() );
+        click( $(By.xpath("//li[text()='" + state + "']")) );
+        click( $(By.xpath("//span[text()='Yes, Change']/..")) );
+    }
+
     @Step("Assert that order doesn't have any warnings.")
     public void assertNoWarnings() {
 
@@ -92,22 +127,22 @@ public class OrderDetailsPage extends OrdersPage {
 
         @Step("Assert that 'Cart is empty' warning isn't displayed")
         public void assertNoCartWarn() {
-            Assert.assertTrue( !cartWarn().is(visible), "'Cart is empty' warning is displayed." );
+            assertTrue( !cartWarn().is(visible), "'Cart is empty' warning is displayed." );
         }
 
         @Step("Assert that 'No shipping address' warning isn't displayed")
         public void assertNoShipAddressWarn() {
-            Assert.assertTrue( !shipAddressWarn().is(visible), "'No shipping address' warning is displayed." );
+            assertTrue( !shipAddressWarn().is(visible), "'No shipping address' warning is displayed." );
         }
 
         @Step("Assert that 'No shipping method' warning isn't displayed")
         public void assertNoShipMethod() {
-            Assert.assertTrue( !shipMethodWarn().is(visible), "'No shipping method' warning is displayed." );
+            assertTrue( !shipMethodWarn().is(visible), "'No shipping method' warning is displayed." );
         }
 
         @Step("Assert that 'Insufficient funds' warning isn't displayed")
         public void assertNoFundsWarn() {
-            Assert.assertTrue( !fundsWarn().is(visible), "'Insufficient funds' warning is displayed." );
+            assertTrue( !fundsWarn().is(visible), "'Insufficient funds' warning is displayed." );
         }
 
     @Step("Assert that order's state is '{0}'.")
@@ -119,13 +154,13 @@ public class OrderDetailsPage extends OrdersPage {
             Objects.equals( expectedState, "Manual Hold" ) ||
             Objects.equals( expectedState, "Fraud Hold" )) {
 
-            Assert.assertTrue($(By.xpath("//div[text()='" + expectedState + "']")).is(visible),
+            assertTrue($(By.xpath("//div[text()='" + expectedState + "']")).is(visible),
                     "Order is not on " + expectedState + ".");
 
         } else if (Objects.equals( expectedState, "Fulfillment Started" ) ||
                     Objects.equals( expectedState, "Canceled" )) {
 
-            Assert.assertTrue($(By.xpath("//div[@class=' fc-panel-list']/div[1]/div/span[text()='" + expectedState + "']")).is(visible),
+            assertTrue($(By.xpath("//div[@class=' fc-panel-list']/div[1]/div/span[text()='" + expectedState + "']")).is(visible),
                     "Order is not in '" + expectedState + "' state");
 
         }
@@ -166,7 +201,7 @@ public class OrderDetailsPage extends OrdersPage {
         return $(By.xpath("//table[@class='fc-table']/tbody/tr[" + itemIndex + "]/td[7]/button"));
     }
 
-    public SelenideElement deleteConfirmBtn() {
+    public SelenideElement confirmDeletionBtn() {
         return $(By.xpath("//span[text()='Yes, Delete']/.."));
     }
 
@@ -199,14 +234,14 @@ public class OrderDetailsPage extends OrdersPage {
 
     public void clickEditBtn_items() {
 
-        clickBtn( editBtn_items() );
+        click( editBtn_items() );
         elementIsVisible( doneBtn_items() );
 
     }
 
     @Step("Apply changes to 'Items' block")
     public void applyChangesToItems() {
-        clickBtn( doneBtn_items() );
+        click( doneBtn_items() );
         doneBtn_items().shouldNot(visible);
     }
 
@@ -233,8 +268,8 @@ public class OrderDetailsPage extends OrdersPage {
 
     @Step("Confirm item deletion")
     public void confirmDeletion() {
-        deleteConfirmBtn().click();
-        deleteConfirmBtn().shouldNot(visible);
+        confirmDeletionBtn().click();
+        confirmDeletionBtn().shouldNot(visible);
         sleep(2000);
     }
 
@@ -254,7 +289,7 @@ public class OrderDetailsPage extends OrdersPage {
             clickEditBtn_items();
         }
 
-        clickBtn(deleteBtn_item(itemIndex));
+        click(deleteBtn_item(itemIndex));
         confirmDeletion();
 
         int actualItemsAmount = cart().size();
@@ -334,7 +369,7 @@ public class OrderDetailsPage extends OrdersPage {
         int decreaseBy =  Integer.valueOf(getItemQty("1"));
 
         decreaseItemQty(itemIndex, decreaseBy);
-        deleteConfirmBtn().shouldBe(visible);
+        confirmDeletionBtn().shouldBe(visible);
 
     }
 
@@ -408,7 +443,6 @@ public class OrderDetailsPage extends OrdersPage {
     }
 
     // ----------- >> NEW ADDRESS FORM
-
     public SelenideElement editAddressBtn() {
         return $(By.xpath("//div[@class='fc-content-box fc-editable-content-box fc-shipping-methods']/header/div[2]/button"));
     }
@@ -429,11 +463,11 @@ public class OrderDetailsPage extends OrdersPage {
         return $(By.xpath(".//input[@name='city']"));
     }
 
-    private SelenideElement stateDropdown() {
+    private SelenideElement stateDd() {
         return $(By.xpath("//ul[@class='fc-address-form-fields']/li[7]/div/div/div[2]/button"));
     }
 
-    private SelenideElement stateDropdownValue(String stateName) {
+    private SelenideElement stateDdValue(String stateName) {
         return $(By.xpath("//li[text()='" + stateName +"']"));
     }
 
@@ -468,7 +502,7 @@ public class OrderDetailsPage extends OrdersPage {
 
     @Step
     public void applyChangesToAddress() {
-        clickBtn( saveBtn_addressForm() );
+        click( saveBtn_addressForm() );
         elementNotVisible( nameFld() );
     }
 
@@ -476,7 +510,7 @@ public class OrderDetailsPage extends OrdersPage {
     public void chooseShipAddress(int addressIndex) {
 
         String expectedResult = getNameFromAddressBook(addressIndex);
-        clickBtn( chooseAddressBtns(), 1 );
+        click( chooseAddressBtns(), 1 );
         elementIsVisible( chosenAddressHeader() );
 
         String actualResult = getCustomerName_chosenShipAddress();
@@ -487,7 +521,7 @@ public class OrderDetailsPage extends OrdersPage {
     @Step
     public void addNewAddress(String name, String streetAddress, String city, String state, String zipCode, String phoneNumber) {
 
-        clickBtn( addNewAddressBtn() );
+        click( addNewAddressBtn() );
         setFieldVal( nameFld(), name );
         setFieldVal( address1Fld(), streetAddress );
         setFieldVal( cityFld(), city );
@@ -496,29 +530,29 @@ public class OrderDetailsPage extends OrdersPage {
         setFieldVal( phoneNumberFld(), phoneNumber );
         // assertion for a known bug
         assertStateIsntReset();
-        clickBtn( saveBtn_addressForm() );
+        click( saveBtn_addressForm() );
         // wait till changes in address book will be displayed - customer name on any address should be visible
         elementIsVisible( $(By.xpath("//li[@class='name']")).shouldBe(visible) );
 
     }
 
     private void assertStateIsntReset() {
-        Assert.assertTrue( !Objects.equals(stateDropdown().getText(), "- Select -"),
+        assertTrue( !Objects.equals(stateDd().getText(), "- Select -"),
                 "'State' is reset to default value");
     }
 
         // Will deprecate once we'll switch from custom to normal dropdowns.
         @Step
         private void setState(String state) {
-            clickBtn( stateDropdown() );
-            clickBtn( stateDropdownValue(state) );
+            click( stateDd() );
+            click( stateDdValue(state) );
         }
 
     @Step
     public void clickEditBtn_shipAddress() {
 
         if ( !(addNewAddressBtn().is(visible)) ) {
-            clickBtn( editBtn_shipAddress() );
+            click( editBtn_shipAddress() );
         }
         elementIsVisible( doneBtn_shipAddress() );
 
@@ -533,16 +567,16 @@ public class OrderDetailsPage extends OrdersPage {
 
         while ( !(editBtn_items().is(visible)) ) {
 
-            if ( deleteConfirmBtn().is(visible) ) {
-                clickBtn( cancelDeletionBtn() );
+            if ( confirmDeletionBtn().is(visible) ) {
+                click( cancelDeletionBtn() );
             }
 
             if ( saveBtn_addressForm().is(visible) ) {
-                clickBtn( cancelBtn_addressForm() );
+                click( cancelBtn_addressForm() );
             }
 
             if ( doneBtn_shipAddress().is(visible) ) {
-                clickBtn( doneBtn_shipAddress() );
+                click( doneBtn_shipAddress() );
             }
 
         }
@@ -557,8 +591,8 @@ public class OrderDetailsPage extends OrdersPage {
         System.out.println("Addresses in AB: " + addressesAmount);
 
         for (int i = 0; i < addressesAmount; i++) {
-            clickBtn( deleteBtn_inAddressBook("1") );
-            clickBtn( deleteConfirmBtn() );
+            click( deleteBtn_inAddressBook("1") );
+            click( confirmDeletionBtn() );
             sleep(750);
         }
 
@@ -567,9 +601,9 @@ public class OrderDetailsPage extends OrdersPage {
     @Step("Set an address from address book as a shipping address.")
     public void setShipAddress() {
 
-        clickBtn( editBtn_shipAddress() );
+        click( editBtn_shipAddress() );
         chooseShipAddress(1);
-        clickBtn( doneBtn_shipAddress() );
+        click( doneBtn_shipAddress() );
 
     }
 
@@ -606,10 +640,10 @@ public class OrderDetailsPage extends OrdersPage {
 
     @Step("Set shipping method")
     public void setShippingMethod() {
-        clickBtn( editBtn_shipMethod() );
+        click( editBtn_shipMethod() );
         jsClick( shipMethodRdbtn() );
-        clickBtn( doneBtn_shipMethod() );
-        Assert.assertTrue( isShipMethodDefined(), "Shipping Method isn't defined" );
+        click( doneBtn_shipMethod() );
+        assertTrue( isShipMethodDefined(), "Shipping Method isn't defined" );
     }
 
 
@@ -630,7 +664,7 @@ public class OrderDetailsPage extends OrdersPage {
         return $(By.xpath("//div[contains(@class, 'order-payment')]/header/div[2]/button"));
     }
 
-    private SelenideElement paymentTypeDropdown() {
+    private SelenideElement paymentTypeDd() {
         return $(By.xpath("//label[contains(@class, 'payment-type')]/following-sibling::*/div[2]/div"));
     }
 
@@ -642,7 +676,6 @@ public class OrderDetailsPage extends OrdersPage {
         String amount = $(By.xpath("//tr[contains(@class, 'payment-row')]/td[2]/span")).getText();
         return Double.valueOf(amount.substring(1, amount.length()));
     }
-
 
     // ----------- >> NEW CREDIT CARD FORM
     private SelenideElement newCreditCardBtn() {
@@ -661,7 +694,7 @@ public class OrderDetailsPage extends OrdersPage {
             return $(By.xpath("//input[@name='cvv']"));
         }
 
-        private SelenideElement monthDropdown() {
+        private SelenideElement monthDd() {
             return $(By.xpath("//label[text()='Expiration Date']/following-sibling::*/div/div/div[2]/div"));
         }
 
@@ -669,7 +702,7 @@ public class OrderDetailsPage extends OrdersPage {
                 return $(By.xpath("//div[@class='fc-grid']/div[1]/div/div[3]/ul/li[" + monthNumber + "]"));
             }
 
-        private SelenideElement yearDropdown() {
+        private SelenideElement yearDd() {
             return $(By.xpath("//label[text()='Expiration Date']/following-sibling::*/div[2]/div/div[2]/div"));
         }
 
@@ -718,42 +751,42 @@ public class OrderDetailsPage extends OrdersPage {
     @Step("Add new credit card")
     public void addNewCreditCard(String holderName, String cardNumber, String cvv, String month, String year) {
 
-        clickBtn( newCreditCardBtn() );
+        click( newCreditCardBtn() );
         setFieldVal( holderNameFld(), holderName );
         setFieldVal( cardNumberFld(), cardNumber );
         setFieldVal( cvvFld(), cvv );
         setExpirationDate(month, year);
-        clickBtn( chooseBtn() );
-        clickBtn( addPaymentBtn() );
+        click( chooseBtn() );
+        click( addPaymentBtn() );
 
     }
 
         @Step("Select payment type: {0}")
         public void selectPaymentType(String paymentType) {
-            clickBtn( paymentTypeDropdown() );
-            clickBtn( paymentTypeVal(paymentType) );
+            click( paymentTypeDd() );
+            click( paymentTypeVal(paymentType) );
         }
 
         @Step("Set expiration date: {0}/{1}")
         private void setExpirationDate(String month, String year) {
-            clickBtn( monthDropdown() );
-            clickBtn( monthVal(month) );
-            clickBtn( yearDropdown() );
-            clickBtn( yearVal(year) );
+            click( monthDd() );
+            click( monthVal(month) );
+            click( yearDd() );
+            click( yearVal(year) );
         }
 
     @Step("Assert that credit card is added")
     public void assertCardAdded() {
         editBtn_payment().shouldBe(visible);
-        Assert.assertTrue($(By.xpath("//strong[contains(text(), 'xxxx xxxx xxxx')]")).is(visible),
+        assertTrue($(By.xpath("//strong[contains(text(), 'xxxx xxxx xxxx')]")).is(visible),
                 "Failed to add credit card to order as a payment method.");
     }
 
     @Step("Add credit card as a payment method.")
     public void addPaymentMethod_CC(String holderName, String cardNumber, String cvv, String month, String year) {
 
-        clickBtn( editBtn_payment() );
-        clickBtn( newPaymentBtn() );
+        click( editBtn_payment() );
+        click( newPaymentBtn() );
         selectPaymentType("Credit Card");
         addNewCreditCard(holderName, cardNumber, cvv, month, year);
 
@@ -764,23 +797,23 @@ public class OrderDetailsPage extends OrdersPage {
     @Step("Add gift card as a payment method.")
     public void addPaymentMethod_GC(String gcNumber, String amountToUse) {
 
-        clickBtn( editBtn_payment() );
-        clickBtn( newPaymentBtn() );
+        click( editBtn_payment() );
+        click( newPaymentBtn() );
         selectPaymentType("Gift Card");
         setFieldVal( gcNumberFld(), gcNumber );
         setFieldVal( amountToUseFld(), amountToUse );
-        clickBtn( addPaymentBtn() );
+        click( addPaymentBtn() );
 
     }
 
     @Step("Add store credit as a payment method.")
     public void addPaymentMethod_SC(String amountToUse) {
 
-        clickBtn( editBtn_payment() );
-        clickBtn( newPaymentBtn() );
+        click( editBtn_payment() );
+        click( newPaymentBtn() );
         selectPaymentType("Store Credit");
         setFieldVal( amountToUseFld(), amountToUse );
-        clickBtn( addPaymentBtn() );
+        click( addPaymentBtn() );
 
     }
 

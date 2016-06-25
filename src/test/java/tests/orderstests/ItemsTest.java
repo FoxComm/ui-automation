@@ -1,6 +1,5 @@
 package tests.orderstests;
 
-import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import pages.LoginPage;
@@ -12,6 +11,7 @@ import java.util.Objects;
 
 import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.Selenide.sleep;
+import static org.testng.Assert.assertEquals;
 
 public class ItemsTest extends DataProvider {
 
@@ -49,7 +49,7 @@ public class ItemsTest extends DataProvider {
         String expectedResult = addToString(p.getItemQty("1"), 2);
 
         p.increaseItemQty("1", 2);
-        Assert.assertEquals(p.getItemQty("1"), expectedResult);
+        assertEquals(p.getItemQty("1"), expectedResult);
 
     }
 
@@ -63,7 +63,7 @@ public class ItemsTest extends DataProvider {
         String expectedResult = subtractFromString(p.getItemQty("1"), 1);
 
         p.decreaseItemQty("1", 1);
-        Assert.assertEquals(p.getItemQty("1"), expectedResult);
+        assertEquals(p.getItemQty("1"), expectedResult);
 
     }
 
@@ -81,7 +81,7 @@ public class ItemsTest extends DataProvider {
         p.applyChangesToItems();
 
         int actualResult = p.itemsInCartAmount();
-        Assert.assertEquals(actualResult, expectedResult);
+        assertEquals(actualResult, expectedResult);
 
     }
 
@@ -93,12 +93,12 @@ public class ItemsTest extends DataProvider {
 
         // increase value
         p.editItemQty("1", "3");
-        Assert.assertEquals(p.getItemQty("1"), "3");
+        assertEquals(p.getItemQty("1"), "3");
         sleep(750);
 
         // decrease value
         p.editItemQty("1", "1");
-        Assert.assertEquals(p.getItemQty("1"), "1"); // <-- fails here
+        assertEquals(p.getItemQty("1"), "1"); // <-- fails here
 
     }
 
@@ -112,11 +112,11 @@ public class ItemsTest extends DataProvider {
         int expectedResult = p.itemsInCartAmount();
 
         p.clickEditBtn_items();
-        p.clickBtn( p.deleteBtn_item("1") );
+        click( p.deleteBtn_item("1") );
         p.cancelDeletion();
 
         int actualResult = p.itemsInCartAmount();
-        Assert.assertEquals(actualResult, expectedResult);
+        assertEquals(actualResult, expectedResult);
 
     }
 
@@ -134,7 +134,7 @@ public class ItemsTest extends DataProvider {
         p.applyChangesToItems();
 
         int actualResult = p.itemsInCartAmount();
-        Assert.assertEquals(actualResult, expectedResult);
+        assertEquals(actualResult, expectedResult);
 
     }
 
@@ -148,11 +148,11 @@ public class ItemsTest extends DataProvider {
         int expectedItemsAmount = p.cart().size() - 1;
 
         p.clickEditBtn_items();
-        p.clickBtn( p.deleteBtn_item("1") );
+        click( p.deleteBtn_item("1") );
         p.confirmDeletion();
 
         int actualProductName = p.cart().size();
-        Assert.assertEquals(actualProductName, expectedItemsAmount);
+        assertEquals(actualProductName, expectedItemsAmount);
 
     }
 

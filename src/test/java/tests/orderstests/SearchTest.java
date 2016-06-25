@@ -46,7 +46,7 @@ public class SearchTest extends DataProvider {
     @Test (priority = 3)
     public void customerName_filter() throws IOException {
 
-        provideTestData("customerName_filter");
+        provideTestData("a customer");
 
         p.addFilter("Customer", "Name", customerName);
         p.assertOrderParameter(1, "Customer Name", customerName);

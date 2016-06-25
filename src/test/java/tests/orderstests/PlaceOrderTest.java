@@ -28,86 +28,86 @@ public class PlaceOrderTest extends DataProvider {
 
     }
 
-//    @Test(priority = 1)
-//    public void placeOrder_CC() throws IOException {
-//
-//        provideTestData("cart with 1 item, shipping method, and credit card payment");
-//        p = open("http://admin.stage.foxcommerce.com/orders/" + orderId, OrderDetailsPage.class);
-//
-//        p.assertNoWarnings();
-//        p.clickBtn( p.placeOrderBtn() );
-//        p.assertOrderState("Remorse Hold");
-//
-//    }
-//
-//    @Test(priority = 2)
-//    public void placeOrder_SC() throws IOException {
-//
-//        provideTestData("cart with 1 item, shipping method and issued SC");
-//        p = open("http://admin.stage.foxcommerce.com/orders/" + orderId, OrderDetailsPage.class);
-//
-//        p.cartSummary().waitUntil(visible, 10000);
-//        int amountToUse = (int) (p.grandTotal() * 100);
-//
-//        setPayment_storeCredit(orderId, amountToUse);
-//        refresh();
-//        p.assertNoWarnings();
-//        p.clickBtn( p.placeOrderBtn() );
-//        p.assertOrderState("Remorse Hold");
-//
-//    }
-//
-//    @Test(priority = 3)
-//    public void placeOrder_GC() throws IOException {
-//
-//        provideTestData("cart with 1 item, shipping method and issued GC");
-//        p = open("http://admin.stage.foxcommerce.com/orders/" + orderId, OrderDetailsPage.class);
-//
-//        p.cartSummary().waitUntil(visible, 10000);
-//        int amountToUse = (int) (p.grandTotal() * 100);
-//
-//
-//        setPayment_giftCard(orderId, gcNumber, amountToUse);
-//        refresh();
-//        p.assertNoWarnings();
-//        p.clickBtn( p.placeOrderBtn() );
-//        p.assertOrderState("Remorse Hold");
-//
-//    }
-//
-//    @Test(priority = 4)
-//    public void placeOrder_CC_SC() throws IOException {
-//
-//        provideTestData("cart with 1 item, shipping method, credit card payment and issued SC");
-//        p = open("http://admin.stage.foxcommerce.com/orders/" + orderId, OrderDetailsPage.class);
-//
-//        p.cartSummary().waitUntil(visible, 10000);
-//        int amountToUse = (int) (p.grandTotal() / 2 * 100);
-//
-//        setPayment_storeCredit(orderId, amountToUse);
-//        refresh();
-//        p.assertNoWarnings();
-//        p.clickBtn( p.placeOrderBtn() );
-//        p.assertOrderState("Remorse Hold");
-//
-//    }
-//
-//    @Test(priority = 5)
-//    public void placeOrder_CC_GC() throws IOException {
-//
-//        provideTestData("cart with 1 item, shipping method, credit card payment and issued GC");
-//        p = open("http://admin.stage.foxcommerce.com/orders/" + orderId, OrderDetailsPage.class);
-//
-//        p.cartSummary().waitUntil(visible, 10000);
-//        int amountToUse = (int) (p.grandTotal() / 2 * 100);
-//
-//        setPayment_giftCard(orderId, gcNumber, amountToUse);
-//        refresh();
-//        p.assertNoWarnings();
-//        p.clickBtn( p.placeOrderBtn() );
-//        p.assertOrderState("Remorse Hold");
-//
-//    }
+    @Test(priority = 1)
+    public void placeOrder_CC() throws IOException {
+
+        provideTestData("cart with 1 item, shipping method, and credit card payment");
+        p = open("http://admin.stage.foxcommerce.com/orders/" + orderId, OrderDetailsPage.class);
+
+        p.assertNoWarnings();
+        click( p.placeOrderBtn() );
+        p.assertOrderState("Remorse Hold");
+
+    }
+
+    @Test(priority = 2)
+    public void placeOrder_SC() throws IOException {
+
+        provideTestData("cart with 1 item, shipping method and issued SC");
+        p = open("http://admin.stage.foxcommerce.com/orders/" + orderId, OrderDetailsPage.class);
+
+        p.cartSummary().waitUntil(visible, 10000);
+        int amountToUse = (int) (p.grandTotal() * 100);
+
+        setPayment_storeCredit(orderId, amountToUse);
+        refresh();
+        p.assertNoWarnings();
+        click( p.placeOrderBtn() );
+        p.assertOrderState("Remorse Hold");
+
+    }
+
+    @Test(priority = 3)
+    public void placeOrder_GC() throws IOException {
+
+        provideTestData("cart with 1 item, shipping method and issued GC");
+        p = open("http://admin.stage.foxcommerce.com/orders/" + orderId, OrderDetailsPage.class);
+
+        p.cartSummary().waitUntil(visible, 10000);
+        int amountToUse = (int) (p.grandTotal() * 100);
+
+
+        setPayment_giftCard(orderId, gcNumber, amountToUse);
+        refresh();
+        p.assertNoWarnings();
+        click( p.placeOrderBtn() );
+        p.assertOrderState("Remorse Hold");
+
+    }
+
+    @Test(priority = 4)
+    public void placeOrder_CC_SC() throws IOException {
+
+        provideTestData("cart with 1 item, shipping method, credit card payment and issued SC");
+        p = open("http://admin.stage.foxcommerce.com/orders/" + orderId, OrderDetailsPage.class);
+
+        p.cartSummary().waitUntil(visible, 10000);
+        int amountToUse = (int) (p.grandTotal() / 2 * 100);
+
+        setPayment_storeCredit(orderId, amountToUse);
+        refresh();
+        p.assertNoWarnings();
+        click( p.placeOrderBtn() );
+        p.assertOrderState("Remorse Hold");
+
+    }
+
+    @Test(priority = 5)
+    public void placeOrder_CC_GC() throws IOException {
+
+        provideTestData("cart with 1 item, shipping method, credit card payment and issued GC");
+        p = open("http://admin.stage.foxcommerce.com/orders/" + orderId, OrderDetailsPage.class);
+
+        p.cartSummary().waitUntil(visible, 10000);
+        int amountToUse = (int) (p.grandTotal() / 2 * 100);
+
+        setPayment_giftCard(orderId, gcNumber, amountToUse);
+        refresh();
+        p.assertNoWarnings();
+        click( p.placeOrderBtn() );
+        p.assertOrderState("Remorse Hold");
+
+    }
 
     @Test(priority = 6)
     public void placeOrder_SC_GC() throws IOException {
@@ -123,11 +123,9 @@ public class PlaceOrderTest extends DataProvider {
         setPayment_storeCredit(orderId, amountToUse_SC);
         refresh();
         p.assertNoWarnings();
-        p.clickBtn( p.placeOrderBtn() );
+        click( p.placeOrderBtn() );
         p.assertOrderState("Remorse Hold");
 
     }
-
-
 
 }

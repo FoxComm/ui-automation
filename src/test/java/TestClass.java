@@ -61,7 +61,7 @@ public class TestClass extends BaseTest {
                 "\n    \"kind\": \"admin\"\n}");
 
         Request request = new Request.Builder()
-                .url("http://10.240.0.7:9090/v1/public/login")
+                .url("http://admin.stage.foxcommerce.com/api/v1/public/login")
                 .post(body)
                 .addHeader("accept", "application/json")
                 .addHeader("content-type", "application/json")
@@ -72,7 +72,7 @@ public class TestClass extends BaseTest {
         jwt = response.header("JWT");
 
         System.out.println(response);
-        System.out.println("----------");
+        System.out.println("--------");
 
     }
 
@@ -92,7 +92,7 @@ public class TestClass extends BaseTest {
                 "\n    \"email\": \"" + customerEmail + "@mail.com\"\n}");
 
         Request request = new Request.Builder()
-                .url("http://10.240.0.7:9090/v1/customers")
+                .url("http://admin.stage.foxcommerce.com/api/v1/tests.customers")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -107,7 +107,7 @@ public class TestClass extends BaseTest {
 
         System.out.println(response);
         System.out.println("Customer ID: " + customerId);
-        System.out.println("----------");
+        System.out.println("--------");
 
     }
 
@@ -120,7 +120,7 @@ public class TestClass extends BaseTest {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{\n    \"customerId\": " + customerId + "\n}");
         Request request = new Request.Builder()
-                .url("http://10.240.0.7:9090/v1/orders")
+                .url("http://admin.stage.foxcommerce.com/api/v1/orders")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -134,11 +134,11 @@ public class TestClass extends BaseTest {
 
         System.out.println(response);
         System.out.println("Order ID: <" + orderId + ">");
-        System.out.println("----------");
+        System.out.println("--------");
 
     }
 
-    private static void updateSKULineItems(String orderRefNum, String SKU, int quantity) throws IOException {
+    private static void updSKULineItems(String orderRefNum, String SKU, int quantity) throws IOException {
 
         System.out.println("Updating SKUs: setting '" + SKU + "' quantity to '" + quantity + "'...");
 
@@ -148,7 +148,7 @@ public class TestClass extends BaseTest {
         RequestBody body = RequestBody.create(mediaType, "[{\n    \"sku\": \"" + SKU + "\"," +
                 "\n    \"quantity\": " + quantity + "\n}]");
         Request request = new Request.Builder()
-                .url("http://10.240.0.7:9090/v1/orders/" + orderRefNum + "/line-items")
+                .url("http://admin.stage.foxcommerce.com/api/v1/orders/" + orderRefNum + "/line-items")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -169,7 +169,7 @@ public class TestClass extends BaseTest {
         OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
-                .url("http://10.240.0.7:9090/v1/customers/" + customerId)
+                .url("http://admin.stage.foxcommerce.com/api/v1/tests.customers/" + customerId)
                 .get()
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -187,7 +187,7 @@ public class TestClass extends BaseTest {
         System.out.println(responseBody);
         System.out.println("Customer name: <" + customerName + ">");
         System.out.println("Customer email: <" + customerEmail + ">");
-        System.out.println("----------");
+        System.out.println("--------");
 
     }
 
@@ -211,7 +211,7 @@ public class TestClass extends BaseTest {
                 "\n    \"phoneNumber\": \"" + phoneNumber + "\"," +
                 "\n    \"isDefault\": " + isDefault + "\n}");
         Request request = new Request.Builder()
-                .url("http://10.240.0.7:9090/v1/customers/" + customerId + "/addresses")
+                .url("http://admin.stage.foxcommerce.com/api/v1/tests.customers/" + customerId + "/addresses")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -223,7 +223,7 @@ public class TestClass extends BaseTest {
         String responseBody = response.body().string();
         System.out.println(response);
         System.out.println(responseBody);
-        System.out.println("----------");
+        System.out.println("--------");
 
     }
 
@@ -243,7 +243,7 @@ public class TestClass extends BaseTest {
                 "\n  \"isDefault\": " + isDefault + "," +
                 "\n  \"phoneNumber\": \"" + phoneNumber + "\"\n}");
         Request request = new Request.Builder()
-                .url("http://10.240.0.7:9090/v1/orders/" + orderId + "/shipping-address")
+                .url("http://admin.stage.foxcommerce.com/api/v1/orders/" + orderId + "/shipping-address")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -253,7 +253,7 @@ public class TestClass extends BaseTest {
 
         Response response = client.newCall(request).execute();
         System.out.println(response);
-        System.out.println("----------");
+        System.out.println("--------");
 
     }
 
@@ -263,7 +263,7 @@ public class TestClass extends BaseTest {
         OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
-                .url("http://10.240.0.7:9090/v1/customers/" + customerId + "/addresses")
+                .url("http://admin.stage.foxcommerce.com/api/v1/tests.customers/" + customerId + "/addresses")
                 .get()
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -282,7 +282,61 @@ public class TestClass extends BaseTest {
         System.out.println("Address 1: <" + addressId1 + ">");
         System.out.println("Address 2: <" + addressId2 + ">");
 //        System.out.println("Addres 3: <" + addressId3 + ">");
-        System.out.println("----------");
+        System.out.println("--------");
+
+    }
+
+    private static void listShipMethods(String orderId) throws IOException {
+
+        System.out.println("Getting possible shipping methods for order <" + orderId + ">...");
+
+        OkHttpClient client = new OkHttpClient();
+
+        Request request = new Request.Builder()
+                .url("http://admin.stage.foxcommerce.com/api/v1/shipping-methods/" + orderId)
+                .get()
+                .addHeader("content-type", "application/json")
+                .addHeader("accept", "application/json")
+                .addHeader("cache-control", "no-cache")
+                .addHeader("JWT", jwt)
+                .build();
+
+        Response response = client.newCall(request).execute();
+
+        String responseBody = response.body().string();
+        String strShipMethodId = responseBody.substring(7, 8);
+        shipMethodId = Integer.valueOf(strShipMethodId);
+
+        System.out.println(response);
+        System.out.println("shipMethodId: <" + shipMethodId + ">");
+        System.out.println("--------");
+
+    }
+
+    private static void setShipMethod(String orderId, int shipMethodId) throws IOException {
+
+        System.out.println("Setting shipping method for order <" + orderId + ">...");
+
+        OkHttpClient client = new OkHttpClient();
+
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{" +
+                "\n  \"shippingMethodId\": " + shipMethodId + "\n}");
+        Request request = new Request.Builder()
+                .url("http://admin.stage.foxcommerce.com/api/v1/orders/" + orderId + "/shipping-method")
+                .patch(body)
+                .addHeader("content-type", "application/json")
+                .addHeader("accept", "application/json")
+                .addHeader("cache-control", "no-cache")
+                .addHeader("JWT", jwt)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+        System.out.println(responseBody);
+
+        System.out.println(response);
+        System.out.println("--------");
 
     }
 
@@ -302,7 +356,7 @@ public class TestClass extends BaseTest {
                 "\n  \"addressId\": " + addressId + "," +
                 "\n  \"isDefault\": false\n}");
         Request request = new Request.Builder()
-                .url("http://10.240.0.7:9090/v1/customers/" + customerId + "/payment-methods/credit-cards")
+                .url("http://admin.stage.foxcommerce.com/api/v1/tests.customers/" + customerId + "/payment-methods/credit-cards")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -314,52 +368,24 @@ public class TestClass extends BaseTest {
         String responseBody = response.body().string();
 
         System.out.println(response);
-        System.out.println(responseBody);
+//        System.out.println(responseBody);
         creditCardId = Integer.valueOf(responseBody.substring(6, 10));
         System.out.println("Credit Card ID: <" + responseBody.substring(6, 10) + ">");
-        System.out.println("------------");
+        System.out.println("--------");
 
     }
 
-    private static void listShipMethods(String orderId) throws IOException {
+    private static void setPayment_creditCard(String orderId, int creditCardId) throws IOException {
 
-        System.out.println("Getting possible shipping methods for order <" + orderId + ">...");
-
-        OkHttpClient client = new OkHttpClient();
-
-        Request request = new Request.Builder()
-                .url("http://10.240.0.7:9090/v1/shipping-methods/" + orderId)
-                .get()
-                .addHeader("content-type", "application/json")
-                .addHeader("accept", "application/json")
-                .addHeader("cache-control", "no-cache")
-                .addHeader("JWT", jwt)
-                .build();
-
-        Response response = client.newCall(request).execute();
-
-        String responseBody = response.body().string();
-        String strShipMethodId = responseBody.substring(7, 8);
-        shipMethodId = Integer.valueOf(strShipMethodId);
-
-        System.out.println(response);
-        System.out.println("shipMethodId: <" + shipMethodId + ">");
-        System.out.println("------------");
-
-    }
-
-    private static void setShipMethod(String orderId, int shipMethodId) throws IOException {
-
-        System.out.println("Setting shipping method for order <" + orderId + ">...");
+        System.out.println("Setting credit card with id <" + creditCardId + "> as a payment method for order <" + orderId + ">...");
 
         OkHttpClient client = new OkHttpClient();
 
         MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, "{" +
-                "\n  \"shippingMethodId\": " + shipMethodId + "\n}");
+        RequestBody body = RequestBody.create(mediaType, "{\n  \"creditCardId\": " + creditCardId + "\n}");
         Request request = new Request.Builder()
-                .url("http://10.240.0.7:9090/v1/orders/" + orderId + "/shipping-method")
-                .patch(body)
+                .url("http://admin.stage.foxcommerce.com/api/v1/orders/" + orderId + "/payment-methods/credit-cards")
+                .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
                 .addHeader("cache-control", "no-cache")
@@ -367,11 +393,9 @@ public class TestClass extends BaseTest {
                 .build();
 
         Response response = client.newCall(request).execute();
-        String responseBody = response.body().string();
-        System.out.println(responseBody);
 
         System.out.println(response);
-        System.out.println("------------");
+        System.out.println("--------");
 
     }
 
@@ -388,7 +412,7 @@ public class TestClass extends BaseTest {
                 "\n  \"subReasonId\": 1," +
                 "\n  \"currency\": \"USD\"\n}");
         Request request = new Request.Builder()
-                .url("http://10.240.0.7:9090/v1/customers/" + customerId + "/payment-methods/store-credit")
+                .url("http://admin.stage.foxcommerce.com/api/v1/tests.customers/" + customerId + "/payment-methods/store-credit")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -399,37 +423,11 @@ public class TestClass extends BaseTest {
         Response response = client.newCall(request).execute();
 
         System.out.println(response);
-        System.out.println("----------");
+        System.out.println("--------");
 
     }
 
-    private static void setPayment_creditCard(String orderId, int creditCardId) throws IOException {
-
-        System.out.println("Setting credit card with id <" + creditCardId + "> as a payment method for order <" + orderId + ">...");
-
-        OkHttpClient client = new OkHttpClient();
-
-        MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, "{\n  \"creditCardId\": " + creditCardId + "\n}");
-        Request request = new Request.Builder()
-                .url("http://10.240.0.7:9090/v1/orders/" + orderId + "/payment-methods/credit-cards")
-                .post(body)
-                .addHeader("content-type", "application/json")
-                .addHeader("accept", "application/json")
-                .addHeader("cache-control", "no-cache")
-                .addHeader("JWT", jwt)
-                .build();
-
-        Response response = client.newCall(request).execute();
-        String responseBody = response.body().string();
-        System.out.println(responseBody);
-
-        System.out.println(response);
-        System.out.println("----------");
-
-    }
-
-    private static void setPayment_storeCredit(String orderId, int amount) throws IOException {
+    protected static void setPayment_storeCredit(String orderId, int amount) throws IOException {
 
         System.out.println("Setting store credit in amount of <" + amount + "> as a payment for order <" + orderId + ">...");
 
@@ -438,7 +436,7 @@ public class TestClass extends BaseTest {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{\n  \"amount\": " + amount + "\n}");
         Request request = new Request.Builder()
-                .url("http://10.240.0.7:9090/v1/orders/" + orderId + "/payment-methods/store-credit")
+                .url("http://admin.stage.foxcommerce.com/api/v1/orders/" + orderId + "/payment-methods/store-credit")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -448,10 +446,8 @@ public class TestClass extends BaseTest {
 
         Response response = client.newCall(request).execute();
 
-        String responseBody = response.body().string();
-        System.out.println(responseBody);
         System.out.println(response);
-        System.out.println("----------");
+        System.out.println("--------");
 
     }
 
@@ -467,7 +463,7 @@ public class TestClass extends BaseTest {
                 "\n  \"quantity\": " + quantity + "," +
                 "\n  \"reasonId\": 1\n}");
         Request request = new Request.Builder()
-                .url("http://10.240.0.7:9090/v1/gift-cards")
+                .url("http://admin.stage.foxcommerce.com/api/v1/gift-cards")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -481,13 +477,12 @@ public class TestClass extends BaseTest {
         gcNumber = responseBody.substring(86, 102);
 
         System.out.println(response);
-        System.out.println(responseBody);
         System.out.println("GC code: <" + gcNumber + ">");
-        System.out.println("----------");
+        System.out.println("--------");
 
     }
 
-    private static void setPayment_giftCard(String orderId, String gcNumber, int amount) throws IOException {
+    protected static void setPayment_giftCard(String orderId, String gcNumber, int amount) throws IOException {
 
         System.out.println("Setting gict card <"+ gcNumber + "> in amount of <" + amount + "> as a payment for order <" + orderId + ">...");
 
@@ -498,7 +493,7 @@ public class TestClass extends BaseTest {
                 "\n  \"code\": \"" + gcNumber + "\"," +
                 "\n  \"amount\": " + amount + "}");
         Request request = new Request.Builder()
-                .url("http://10.240.0.7:9090/v1/orders/" + orderId + "/payment-methods/gift-cards")
+                .url("http://admin.stage.foxcommerce.com/api/v1/orders/" + orderId + "/payment-methods/gift-cards")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -508,12 +503,34 @@ public class TestClass extends BaseTest {
 
         Response response = client.newCall(request).execute();
 
-        System.out.println(body);
-
-        String responseBody = response.body().string();
-        System.out.println(responseBody);
         System.out.println(response);
-        System.out.println("----------");
+        System.out.println("--------");
+
+    }
+
+    private static void checkoutOrder(String orderId) throws IOException {
+
+        System.out.println("Checking out order <" + orderId + ">...");
+
+        OkHttpClient client = new OkHttpClient();
+
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "");
+        Request request = new Request.Builder()
+                .url("http://admin.stage.foxcommerce.com/api/v1/orders/" + orderId + "/checkout")
+                .post(body)
+                .addHeader("content-type", "application/json")
+                .addHeader("accept", "application/json")
+                .addHeader("cache-control", "no-cache")
+                .addHeader("JWT", jwt)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+
+        System.out.println(response);
+        System.out.println(responseBody);
+        System.out.println("--------");
 
     }
 
@@ -530,7 +547,8 @@ public class TestClass extends BaseTest {
 
     public static void main(String[] args) throws IOException {
 
-//        loginAsAdmin();
+        loginAsAdmin();
+        createNewCustomer();
 //        createNewCustomer();
 //        createCart(customerId);
 //
@@ -548,6 +566,8 @@ public class TestClass extends BaseTest {
 //
 ////        issueGiftCard(500, 1);
 ////        setPayment_giftCard(orderId, gcNumber, 10000);
+
+
 
     }
 

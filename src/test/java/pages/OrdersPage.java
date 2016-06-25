@@ -362,7 +362,7 @@ public class OrdersPage extends BasePage {
     // indexing starts with 1
     @Step("Sort list of orders by {0} column index")
     public void sortListBy(int columnIndex) {
-        clickBtn( columnLabel(columnIndex) );
+        click( columnLabel(columnIndex) );
         waitForDataToLoad();
     }
 

@@ -1,6 +1,5 @@
 package tests.orderstests;
 
-import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -14,6 +13,8 @@ import java.util.Objects;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.Selenide.sleep;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 public class ShippingAddressTest extends DataProvider {
 
@@ -40,9 +41,9 @@ public class ShippingAddressTest extends DataProvider {
         p.clearAddressBook();
         p.addNewAddress("John Doe", "2101 Green Valley #320", "Seattle", "Washington", "98101", "9879879876");
 
-        Assert.assertTrue(p.addressBookHeader().is(visible),
+        assertTrue(p.addressBookHeader().is(visible),
                 "A just added address isn't displayed in address book.");
-        Assert.assertTrue(p.chosenAddressHeader().is(visible),
+        assertTrue(p.chosenAddressHeader().is(visible),
                 "A just added address isn't set as a chosen shipping address.");
 
     }
@@ -58,7 +59,7 @@ public class ShippingAddressTest extends DataProvider {
         p.addNewAddress("John Doe", "2101 Green Valley #320", "Seattle", "Washington", "98101", "9879879876");
 
         String actualResult = p.getNameFromAddressBook(1);
-        Assert.assertEquals(actualResult, "John Doe",
+        assertEquals(actualResult, "John Doe",
                 "New shipping address isn't displayed in address book.");
 
     }
@@ -71,7 +72,7 @@ public class ShippingAddressTest extends DataProvider {
 
         p.clickEditBtn_shipAddress();
         p.chooseShipAddress(1);
-        p.clickBtn( p.doneBtn_shipAddress() );
+        click( p.doneBtn_shipAddress() );
 
     }
 
@@ -79,11 +80,11 @@ public class ShippingAddressTest extends DataProvider {
     public void editChosenShippingAddress() {
 
         p.clickEditBtn_shipAddress();
-        p.clickBtn( p.editBtn_chosenAddress() );
-        p.setFieldVal( p.nameFld(), "John Doe" );
+        click( p.editBtn_chosenAddress() );
+        setFieldVal( p.nameFld(), "John Doe" );
         p.applyChangesToAddress();
 
-        Assert.assertEquals(p.getCustomerName_chosenShipAddress(), "John Doe",
+        assertEquals(p.getCustomerName_chosenShipAddress(), "John Doe",
                 "Chosen address has failed to get updated.");
 
     }
@@ -94,11 +95,11 @@ public class ShippingAddressTest extends DataProvider {
         provideTestData("cart with chosen shipping address");
         p = open("http://admin.stage.foxcommerce.com/orders/" + orderId, OrderDetailsPage.class);
 
-        p.clickBtn( p.editBtn_shipAddress() );
-        p.clickBtn( p.deleteBtn_chosenAddress() );
-        p.clickBtn( p.deleteConfirmBtn() );
+        click( p.editBtn_shipAddress() );
+        click( p.deleteBtn_chosenAddress() );
+        click( p.confirmDeletionBtn() );
 
-        p.elementNotVisible( p.chosenAddressHeader() );
+        elementNotVisible( p.chosenAddressHeader() );
 
     }
 
@@ -109,9 +110,9 @@ public class ShippingAddressTest extends DataProvider {
         p = open("http://admin.stage.foxcommerce.com/orders/" + orderId, OrderDetailsPage.class);
 
         p.clickEditBtn_shipAddress();
-        p.clickBtn( p.defaultShipAddressChkbox("1") );
+        click( p.defaultShipAddressChkbox("1") );
         sleep(750);
-        Assert.assertTrue( p.defaultShipAddressChkbox_input("1").isSelected(),
+        assertTrue( p.defaultShipAddressChkbox_input("1").isSelected(),
                 "Failed to set address in address book as default shipping address." );
 
     }
@@ -123,9 +124,9 @@ public class ShippingAddressTest extends DataProvider {
         p = open("http://admin.stage.foxcommerce.com/orders/" + orderId, OrderDetailsPage.class);
 
         p.clickEditBtn_shipAddress();
-        p.clickBtn( p.defaultShipAddressChkbox("1") );
+        click( p.defaultShipAddressChkbox("1") );
         sleep(750);
-        Assert.assertTrue( p.defaultShipAddressChkbox_input("1").isSelected(),
+        assertTrue( p.defaultShipAddressChkbox_input("1").isSelected(),
                 "Failed to set different address as default shipping address." );
 
     }
