@@ -1,20 +1,21 @@
 package pages;
 
 import base.BasePage;
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import ru.yandex.qatools.allure.annotations.Step;
 
 import java.util.List;
 import java.util.Objects;
 
 import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.$$;
-import static com.codeborne.selenide.Selenide.sleep;
+import static com.codeborne.selenide.Selenide.*;
+import static org.openqa.selenium.Keys.ENTER;
 import static org.testng.Assert.assertTrue;
 
-public class CustomerDetailsPage extends BasePage {
+public class CustomerPage extends BasePage {
 
     //-------------------- G E N E R A L    E L E M E N T S ------------------//
 
@@ -22,11 +23,33 @@ public class CustomerDetailsPage extends BasePage {
         return $(By.xpath("//span[text()='Save']/.."));
     }
 
-    // navigation across the tabs goes here
+    public SelenideElement cartTab() {
+        return $(By.xpath("//a[text()='Cart']"));
+    }
+
+    public SelenideElement ordersTab() {
+        return $(By.xpath("//a[text()='Orders']"));
+    }
+
+    public SelenideElement itemsTab() {
+        return $(By.xpath("//a[text()='Items']"));
+    }
+
+    public SelenideElement storeCreditTab() {
+        return $(By.xpath("//a[text()='Store Credit']"));
+    }
+
+    public SelenideElement notesTab() {
+        return $(By.xpath("//a[text()='Notes']"));
+    }
+
+    public SelenideElement activityTrailTab() {
+        return $(By.xpath("//a[text()='Activity Trail']"));
+    }
 
 
-    //----------------------------- D E T A I L S ----------------------------//
-    //------------------------ A D D R E S S    B O O K ----------------------//
+    //--------------------------- D E T A I L S ------------------------------//
+    //---------------------------- ADDRESS BOOK ------------------------------//
     //------------------------------ ELEMENTS --------------------------------//
 
     private SelenideElement addNewAddressBtn() {
@@ -41,13 +64,13 @@ public class CustomerDetailsPage extends BasePage {
         return $(By.xpath("//ul[contains(@class, 'addresses-list')]/li[" + addressIndex + "]/div[2]/div/button[1]"));
     }
 
-        private SelenideElement confirmDeletionBtn() {
-            return $(By.xpath("//span[text()='Yes, Delete']/.."));
-        }
+    private SelenideElement confirmDeletionBtn() {
+        return $(By.xpath("//span[text()='Yes, Delete']/.."));
+    }
 
-        private SelenideElement cancelDeletionBtn() {
-            return $(By.xpath("//div[@class='fc-modal-footer']/a"));
-        }
+    private SelenideElement cancelDeletionBtn() {
+        return $(By.xpath("//div[@class='fc-modal-footer']/a"));
+    }
 
     public SelenideElement defaultShipAddressChbx(String addressIndex) {
         //xpath may be wrong
@@ -60,7 +83,7 @@ public class CustomerDetailsPage extends BasePage {
     }
 
     public String nameFldVal(String addressIndex) {
-        SelenideElement name =  $(By.xpath("//ul[contains(@class, 'addresses-list')]/li[" + addressIndex + "]/div[3]/div/ul/li[1]"));
+        SelenideElement name = $(By.xpath("//ul[contains(@class, 'addresses-list')]/li[" + addressIndex + "]/div[3]/div/ul/li[1]"));
         return name.getText();
     }
 
@@ -80,12 +103,12 @@ public class CustomerDetailsPage extends BasePage {
         return cityFldVal.substring(0, cityFldVal.indexOf(","));
     }
 
-    public String stateDdVal (String addressIndex) {
+    public String stateDdVal(String addressIndex) {
         SelenideElement stateVal = $(By.xpath("//ul[contains(@class, 'addresses-list')]/li[" + addressIndex + "]/div[3]/div/ul/li[4]/span[1]"));
         return stateVal.getText();
     }
 
-    public String zipFldVal (String addressIndex) {
+    public String zipFldVal(String addressIndex) {
         SelenideElement zipVal = $(By.xpath("//ul[contains(@class, 'addresses-list')]/li[" + addressIndex + "]/div[3]/div/ul/li[4]/span[2]"));
         return zipVal.getText();
     }
@@ -121,7 +144,7 @@ public class CustomerDetailsPage extends BasePage {
     }
 
     private SelenideElement stateDdValue(String stateName) {
-        return $(By.xpath("//li[text()='" + stateName +"']"));
+        return $(By.xpath("//li[text()='" + stateName + "']"));
     }
 
     public SelenideElement zipFld() {
@@ -143,7 +166,7 @@ public class CustomerDetailsPage extends BasePage {
 
     //------------------------------ HELPERS --------------------------------//
 
-    @Step
+    @Step("Add new address to customer's address book.")
     public void addNewAddress(String name, String streetAddress1, String streetAddress2, String city, String state, String zipCode, String phoneNumber) {
 
         click(addNewAddressBtn());
@@ -159,14 +182,15 @@ public class CustomerDetailsPage extends BasePage {
 
     }
 
-    @Step
+    @Step("Set <{0}> as a 'State'.")
     public void setState(String state) {
-        click( stateDd() );
-        click( stateDdValue(state) );
+        click(stateDd());
+        click(stateDdValue(state));
     }
 
+    @Step("Assert that 'State' dropdown value isn't reset to default.")
     public void assertStateIsntReset() {
-        assertTrue( !Objects.equals(stateDd().getText(), "- Select -"),
+        assertTrue(!Objects.equals(stateDd().getText(), "- Select -"),
                 "'State' is reset to default value");
     }
 
@@ -185,8 +209,7 @@ public class CustomerDetailsPage extends BasePage {
     }
 
 
-
-    //------------------------ C R E D I T    C A R D S ----------------------//
+    //---------------------------- CREDIT CARDS ------------------------------//
     //------------------------------ ELEMENTS --------------------------------//
 
     private SelenideElement newBillAddressBtn() {
@@ -275,25 +298,25 @@ public class CustomerDetailsPage extends BasePage {
     @Step("Add new credit card")
     public void addNewCreditCard(String holderName, String cardNumber, String cvv, String month, String year) {
 
-        setFieldVal( holderNameFld(), holderName );
-        setFieldVal( cardNumberFld(), cardNumber );
-        setFieldVal( cvvFld(), cvv );
+        setFieldVal(holderNameFld(), holderName);
+        setFieldVal(cardNumberFld(), cardNumber);
+        setFieldVal(cvvFld(), cvv);
         setExpirationDate(month, year);
 
     }
 
     @Step("Set expiration date: {0}/{1}")
     public void setExpirationDate(String month, String year) {
-        click( monthDd() );
-        click( monthVal(month) );
-        click( yearDd() );
-        click( yearVal(year) );
+        click(monthDd());
+        click(monthVal(month));
+        click(yearDd());
+        click(yearVal(year));
     }
 
     @Step("Add new billing address")
     public void addNewBillAddress(String name, String streetAddress1, String streetAddress2, String city, String state, String zipCode, String phoneNumber) {
 
-        click( newBillAddressBtn() );
+        click(newBillAddressBtn());
         setFieldVal(nameFld(), name);
         setFieldVal(address1Fld(), streetAddress1);
         setFieldVal(address2Fld(), streetAddress2);
@@ -302,14 +325,14 @@ public class CustomerDetailsPage extends BasePage {
         setFieldVal(zipFld(), zipCode);
         setFieldVal(phoneNumberFld(), phoneNumber);
         assertStateIsntReset();
-        click( saveBtn() );
+        click(saveBtn());
         sleep(1500);
 
-        assertTrue( !phoneNumbErrorMsg().is(visible),
+        assertTrue(!phoneNumbErrorMsg().is(visible),
                 "Phone number wasn't fully input; expected: <(987) 987-9876>, actual: <" + phoneNumberFld().getAttribute("value") + ">.");
-        assertTrue( changeBillAddressBtn().is(visible),
+        assertTrue(changeBillAddressBtn().is(visible),
                 "Added address wasn't set as a billing address.");
-        assertTrue( billName().equals(name),
+        assertTrue(billName().equals(name),
                 "Incorrect address seems to be set as a billing address; expected name: <" + name + ">, actual: <" + billName() + ">.");
 
     }
@@ -317,13 +340,12 @@ public class CustomerDetailsPage extends BasePage {
     @Step
     public void assertCardAdded(String customerName) {
         sleep(1000);
-        assertTrue( $(By.xpath("//dd[text()='" + customerName + "']")).is(visible),
+        assertTrue($(By.xpath("//dd[text()='" + customerName + "']")).is(visible),
                 "Failed to create a new credit card.");
     }
 
 
-
-    //----------------------------- C O N T A C T S --------------------------//
+    //--------------------------------- CONTACTS -----------------------------//
     //--------------------------------- ELEMENTS -----------------------------//
 
     public SelenideElement editBtn_contactInfo() {
@@ -357,13 +379,8 @@ public class CustomerDetailsPage extends BasePage {
         return phoneNumberFld_contactInfo.getText();
     }
 
-    //--------------------------------- HELPERS -----------------------------//
 
-    //
-
-
-
-    //----------------------------- O V E R V I E W --------------------------//
+    //--------------------------------- OVERVIEW -----------------------------//
     //--------------------------------- ELEMENTS -----------------------------//
 
     public String nameVal_overview() {
@@ -381,9 +398,153 @@ public class CustomerDetailsPage extends BasePage {
         return phoneNumber_overview.getText();
     }
 
+    public double totalSalesVal() {
+        SelenideElement totalSales = $(By.xpath("//div[contains(@class, 'customer-details')]/ul[2]/li[2]/span[1]"));
+        String strVal = totalSales.getText();
+        return Double.valueOf(strVal.substring(1, strVal.length()));
+    }
 
 
+    //---------------------------- O R D E R S -------------------------------//
+    //------------------------------ ELEMENTS --------------------------------//
 
+    public SelenideElement searchFld() {
+        return $(By.xpath("//input[@placeholder='filter or keyword search']"));
+    }
 
+    private SelenideElement ordersOnList() {
+        return $(By.xpath("//td[@class='fc-table-td']"));
+    }
+
+    public int amountOfOrders() {
+        List<SelenideElement> orders = $$(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a"));
+        return orders.size();
+    }
+
+    //------------------------------ HELPERS --------------------------------//
+
+    @Step("Wait for data on the list to be loaded.")
+    public void waitForDataToLoad() {
+        ordersOnList().shouldBe(Condition.visible);
+    }
+
+    @Step("Get {1} parameter value of {0}-th order on the list.")
+    public String getOrderParamValue(int orderIndex, String paramName) {
+
+        String orderParamVal = "";
+        waitForDataToLoad();
+
+        switch (paramName) {
+            case "Order":
+                orderParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + orderIndex + "]/td[2]")).getText();
+                break;
+            case "Date/Time Placed":
+                orderParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + orderIndex + "]/td[3]/time")).getText();
+                break;
+            case "Modality":
+                orderParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + orderIndex + "]/td[4]")).getText();
+                break;
+            case "Order State":
+                orderParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + orderIndex + "]/td[5]")).getText();
+                break;
+            case "Payment State":
+                orderParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + orderIndex + "]/td[6]")).getText();
+                break;
+            case "Assignee":
+                orderParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + orderIndex + "]/td[7]")).getText();
+                break;
+            case "Total":
+                orderParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + orderIndex + "]/td[8]/span")).getText();
+                break;
+        }
+
+        return orderParamVal;
+
+    }
+
+    @Step("Order list of orders by {0}")
+    public void orderListBy(String param) {
+        click($(By.xpath("//th[text()='" + param + "']")));
+        waitForDataToLoad();
+    }
+
+    public void hitEnter() {
+        searchFld().sendKeys(ENTER);
+        waitForDataToLoad();
+    }
+
+    private void selectLine(int index) {
+        for (int i = 0; i < index; i++) {
+            searchFld().sendKeys(Keys.ARROW_DOWN);
+        }
+        hitEnter();
+    }
+
+    @Step("Create a search filter {0} : {1} : {2}")
+    public void addFilter(String firstStatement, String secondStatement, String thirdStatement) {
+
+        searchFld().click();
+
+        switch (firstStatement) {
+
+            case "Order":
+                selectLine(1);
+                switch (secondStatement)
+                {
+                    case "Reference Number":
+                        selectLine(1);
+                        searchFld().sendKeys(thirdStatement);
+                        hitEnter();
+                        break;
+                    case "State":
+                        selectLine(2);
+                        switch(thirdStatement)
+                        {
+                            case "Cart":
+                                selectLine(1);
+                                break;
+                            case "Remorse Hold":
+                                selectLine(2);
+                                break;
+                            case "Manual Hold":
+                                selectLine(3);
+                                break;
+                            case "Fraud Hold":
+                                selectLine(4);
+                                break;
+                            case "Fulfillment Started":
+                                selectLine(5);
+                                break;
+                            case "Canceled":
+                                selectLine(8);
+                                break;
+                        }
+                        break;
+                }
+                break;
+
+            case "Items":
+                selectLine(3);
+                switch(secondStatement)
+                {
+                    case "Product Name":
+                        selectLine(2);
+                        searchFld().sendKeys(thirdStatement);
+                        hitEnter();
+                        break;
+                    case "Product SKU":
+                        selectLine(3);
+                        searchFld().sendKeys(thirdStatement);
+                        hitEnter();
+                        break;
+                }
+                break;
+
+        }
+
+        $(By.xpath("//h1[text()='Orders']")).click();
+        sleep(500);
+
+    }
 
 }

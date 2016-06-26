@@ -534,6 +534,32 @@ public class TestClass extends BaseTest {
 
     }
 
+    private static void changeOrderState(String orderId, String newState) throws IOException {
+
+        System.out.println("Change state of order <" + orderId + "> to <" + newState + ">...");
+
+        OkHttpClient client = new OkHttpClient();
+
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{\n  \"state\":\"" + newState + "\"\n}");
+        Request request = new Request.Builder()
+                .url("http://admin.stage.foxcommerce.com/api/v1/orders/" + orderId)
+                .patch(body)
+                .addHeader("content-type", "application/json")
+                .addHeader("accept", "application/json")
+                .addHeader("cache-control", "no-cache")
+                .addHeader("JWT", jwt)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+
+        System.out.println(response);
+        System.out.println(responseBody);
+        System.out.println("--------");
+
+    }
+
     @Test
     public void test() {
         open("https://www.google.com.ua");
@@ -547,25 +573,53 @@ public class TestClass extends BaseTest {
 
     public static void main(String[] args) throws IOException {
 
-        loginAsAdmin();
-        createNewCustomer();
+//        loginAsAdmin();
+//        createNewCustomer();
 //        createCart(customerId);
+//
+//        updSKULineItems(orderId, "SKU-YAX", 1);
 //
 //        setShipAddress(orderId, customerName, 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
 //
 //        listShipMethods(orderId);
 //        setShipMethod(orderId, shipMethodId);
 //
-        createAddress(customerId, customerName,4161, 234, "Washington", "2101 Green Valley", "Suite 300", "Seattle", "98101", "9879879876", true);
+//        createAddress(customerId, customerName,4161, 234, "Washington", "2101 Green Valley", "Suite 300", "Seattle", "98101", "9879879876", true);
+//        listCustomerAddresses(customerId);
+//        createCreditCard("John Doe", "5555555555554444", "999", 4, 2020, addressId1);
+//        setPayment_creditCard(orderId, creditCardId);
+////
+//////        issueStoreCredit(customerId, 10000);
+//////        setPayment_storeCredit(orderId, 10000);
+////
+//////        issueGiftCard(500, 1);
+//////        setPayment_giftCard(orderId, gcNumber, 10000);
+//
+//        checkoutOrder(orderId);
+
+        //---------------
+
+        loginAsAdmin();
+        createNewCustomer();
+        createCart(customerId);
+        updSKULineItems(orderId, "SKU-YAX", 1);
+        setShipAddress(orderId, customerName, 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
+        listShipMethods(orderId);
+        setShipMethod(orderId, shipMethodId);
         listCustomerAddresses(customerId);
         createCreditCard("John Doe", "5555555555554444", "999", 4, 2020, addressId1);
-//        setPayment_creditCard(orderId, creditCardId);
-//
-////        issueStoreCredit(customerId, 10000);
-////        setPayment_storeCredit(orderId, 10000);
-//
-////        issueGiftCard(500, 1);
-////        setPayment_giftCard(orderId, gcNumber, 10000);
+        setPayment_creditCard(orderId, creditCardId);
+        checkoutOrder(orderId);
+
+        createCart(customerId);
+        updSKULineItems(orderId, "SKU-BRO", 2);
+        setShipAddress(orderId, customerName, 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
+        listShipMethods(orderId);
+        setShipMethod(orderId, shipMethodId);
+        setPayment_creditCard(orderId, creditCardId);
+        checkoutOrder(orderId);
+
+        changeOrderState(orderId, "fulfillmentStarted");
 
     }
 

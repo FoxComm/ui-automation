@@ -26,7 +26,7 @@ public class OrdersPage extends BasePage {
     }
 
     private SelenideElement ordersOnList() {
-        return $(By.xpath(".//td[@class='fc-table-td']"));
+        return $(By.xpath("//td[@class='fc-table-td']"));
     }
 
     private List<SelenideElement> allSearchFilters() {
@@ -37,7 +37,7 @@ public class OrdersPage extends BasePage {
         return $(By.xpath("//button[@class='fc-btn fc-btn-primary']"));
     }
 
-    private SelenideElement searchField() {
+    private SelenideElement searchFld() {
         return $(By.xpath("//input[@class='fc-pilled-input__input-field _no-fc-behavior']"));
     }
 
@@ -49,7 +49,7 @@ public class OrdersPage extends BasePage {
         return $(By.xpath("//table[@class='fc-table fc-multi-select-table']/thead/tr/th[" + (labelIndex + 1) + "]"));
     }
 
-    public SelenideElement noSearchResults() {
+    private SelenideElement noSearchResults() {
         return $(By.xpath("//div[@class='fc-content-box__empty-row']"));
     }
 
@@ -150,20 +150,20 @@ public class OrdersPage extends BasePage {
 
     private void selectLine(int index) {
         for (int i = 0; i < index; i++) {
-            searchField().sendKeys(Keys.ARROW_DOWN);
+            searchFld().sendKeys(Keys.ARROW_DOWN);
         }
         hitEnter();
     }
 
     private void hitEnter() {
-        searchField().sendKeys(Keys.ENTER);
+        searchFld().sendKeys(Keys.ENTER);
         sleep(200);
     }
 
     @Step("Create a search filter {0} : {1} : {2}")
     public void addFilter(String firstStatement, String secondStatement, String thirdStatement) {
 
-        searchField().click();
+        searchFld().click();
 
         switch(firstStatement)
         {
@@ -173,7 +173,7 @@ public class OrdersPage extends BasePage {
                 {
                     case "Reference Number":
                         selectLine(1);
-                        searchField().sendKeys(thirdStatement);
+                        searchFld().sendKeys(thirdStatement);
                         hitEnter();
                         waitForDataToLoad();
                         break;
@@ -202,13 +202,13 @@ public class OrdersPage extends BasePage {
                 switch(secondStatement) {
                     case "Name":
                         selectLine(1);
-                        searchField().sendKeys(thirdStatement);
+                        searchFld().sendKeys(thirdStatement);
                         hitEnter();
                         waitForDataToLoad();
                         break;
                     case "Email":
                         selectLine(2);
-                        searchField().sendKeys(thirdStatement);
+                        searchFld().sendKeys(thirdStatement);
                         hitEnter();
                         waitForDataToLoad();
                         break;
@@ -235,28 +235,28 @@ public class OrdersPage extends BasePage {
                 {
                     case "City":
                         selectLine(1);
-                        searchField().sendKeys(thirdStatement);
+                        searchFld().sendKeys(thirdStatement);
                         hitEnter();
                         waitForDataToLoad();
                         break;
 
                     case "State":
                         selectLine(2);
-                        searchField().sendKeys(thirdStatement);
+                        searchFld().sendKeys(thirdStatement);
                         hitEnter();
                         waitForDataToLoad();
                         break;
 
                     case "Zip":
                         selectLine(3);
-                        searchField().sendKeys(thirdStatement);
+                        searchFld().sendKeys(thirdStatement);
                         hitEnter();
                         waitForDataToLoad();
                         break;
                 }
 
         }
-        // resets searchField focus (works as a hack)
+        // resets searchFld focus (works as a hack)
         takeFocusAway();
 
     }
@@ -264,7 +264,7 @@ public class OrdersPage extends BasePage {
     @Step("Create a search filter {0} : {1} : {2} : {3}")
     public void addFilter(String firstStatement, String secondStatement, String thirdStatement, String fourthStatement) {
 
-        searchField().click();
+        searchFld().click();
 
         switch(firstStatement)
         {
@@ -302,7 +302,7 @@ public class OrdersPage extends BasePage {
                 }
 
         }
-        // resets searchField focus (works as a hack)
+        // resets searchFld focus (works as a hack)
         takeFocusAway();
 
     }
@@ -337,7 +337,7 @@ public class OrdersPage extends BasePage {
         private void setStatementVal(int index_arrowDown, String fourthStatement) {
         selectLine(index_arrowDown);
         sleep(500);
-        searchField().sendKeys(fourthStatement);
+        searchFld().sendKeys(fourthStatement);
         hitEnter();
     }
 

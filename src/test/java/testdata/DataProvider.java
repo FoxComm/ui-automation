@@ -507,6 +507,30 @@ public class DataProvider extends BaseTest {
 
     }
 
+    private static void changeOrderState(String orderId, String newState) throws IOException {
+
+        System.out.println("Change state of order <" + orderId + "> to <" + newState + ">...");
+
+        OkHttpClient client = new OkHttpClient();
+
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{\n  \"state\":\"" + newState + "\"\n}");
+        Request request = new Request.Builder()
+                .url("http://admin.stage.foxcommerce.com/api/v1/orders/" + orderId)
+                .patch(body)
+                .addHeader("content-type", "application/json")
+                .addHeader("accept", "application/json")
+                .addHeader("cache-control", "no-cache")
+                .addHeader("JWT", jwt)
+                .build();
+
+        Response response = client.newCall(request).execute();
+
+        System.out.println(response);
+        System.out.println("---- ---- ---- ----");
+
+    }
+
 
 
     protected void provideTestData(String testMethodName) throws IOException {
@@ -692,6 +716,56 @@ public class DataProvider extends BaseTest {
                 createAddress(customerId, customerName, 4161, 234, "Washington", "2101 Green Valley", "Suite 300", "Seattle", "98101", "9879879876", false);
                 listCustomerAddresses(customerId);
                 createCreditCard("John Doe", "5555555555554444", "999", 4, 2020, addressId1);
+                break;
+
+            //----------------------------------- CUSTOMER'S ORDERS -----------------------------------//
+
+            case "customer with 2 orders in remorse hold":
+
+                createCart(customerId);
+                updSKULineItems(orderId, "SKU-YAX", 1);
+                setShipAddress(orderId, "John Doe", 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
+                listShipMethods(orderId);
+                setShipMethod(orderId, shipMethodId);
+                listCustomerAddresses(customerId);
+                createCreditCard(customerName, "5555555555554444", "777", 3, 2020, addressId1);
+                setPayment_creditCard(orderId, creditCardId);
+                checkoutOrder(orderId);
+
+                createCart(customerId);
+                updSKULineItems(orderId, "SKU-BRO", 2);
+                setShipAddress(orderId, "John Doe", 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
+                listShipMethods(orderId);
+                setShipMethod(orderId, shipMethodId);
+                listCustomerAddresses(customerId);
+                setPayment_creditCard(orderId, creditCardId);
+                checkoutOrder(orderId);
+
+                break;
+
+            case "customer with 2 orders in remorse hold and fulfillment started":
+
+                createCart(customerId);
+                updSKULineItems(orderId, "SKU-YAX", 1);
+                setShipAddress(orderId, "John Doe", 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
+                listShipMethods(orderId);
+                setShipMethod(orderId, shipMethodId);
+                listCustomerAddresses(customerId);
+                createCreditCard(customerName, "5555555555554444", "777", 3, 2020, addressId1);
+                setPayment_creditCard(orderId, creditCardId);
+                checkoutOrder(orderId);
+
+                createCart(customerId);
+                updSKULineItems(orderId, "SKU-BRO", 2);
+                setShipAddress(orderId, "John Doe", 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
+                listShipMethods(orderId);
+                setShipMethod(orderId, shipMethodId);
+                listCustomerAddresses(customerId);
+                setPayment_creditCard(orderId, creditCardId);
+                checkoutOrder(orderId);
+
+                changeOrderState(orderId, "fulfillmentStarted");
+
                 break;
 
         }

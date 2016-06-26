@@ -12,7 +12,8 @@
             <!--<class name="tests.orderstests.OrderStateTest" />-->
             <!--<class name="tests.customers.AddressBookTest" />-->
             <!--<class name="tests.customers.CreditCardsTest" />-->
-            <class name="tests.customers.ContactInformationTest" />
+            <!--<class name="tests.customers.details.ContactInformationTest" />-->
+            <class name="tests.customers.orders.OrdersListTest" />
         </classes>
     </test>
 </suite>
