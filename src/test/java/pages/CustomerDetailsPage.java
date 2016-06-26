@@ -16,6 +16,15 @@ import static org.testng.Assert.assertTrue;
 
 public class CustomerDetailsPage extends BasePage {
 
+    //-------------------- G E N E R A L    E L E M E N T S ------------------//
+
+    public SelenideElement saveBtn() {
+        return $(By.xpath("//span[text()='Save']/.."));
+    }
+
+    // navigation across the tabs goes here
+
+
     //----------------------------- D E T A I L S ----------------------------//
     //------------------------ A D D R E S S    B O O K ----------------------//
     //------------------------------ ELEMENTS --------------------------------//
@@ -40,14 +49,14 @@ public class CustomerDetailsPage extends BasePage {
             return $(By.xpath("//div[@class='fc-modal-footer']/a"));
         }
 
+    public SelenideElement defaultShipAddressChbx(String addressIndex) {
+        //xpath may be wrong
+        return $(By.xpath("//ul[contains(@class, 'addresses-list')]/li[" + addressIndex + "]div/label/div/input"));
+    }
+
     public int addressBookSize() {
         List<SelenideElement> addresses = $$(By.xpath("//ul[@class='fc-address-details']"));
         return addresses.size();
-
-    }
-
-    public SelenideElement saveBtn() {
-        return $(By.xpath("//span[text()='Save']/.."));
     }
 
     public String nameFldVal(String addressIndex) {
@@ -90,8 +99,6 @@ public class CustomerDetailsPage extends BasePage {
         return $(By.xpath("//div[contains(text(), 'Phone Number must not')]"));
     }
 
-
-
     // ----------- >> NEW ADDRESS FORM
     public SelenideElement nameFld() {
         return $(By.xpath("//input[@name='name']"));
@@ -133,7 +140,6 @@ public class CustomerDetailsPage extends BasePage {
         return $(By.xpath("//a[text()='Cancel']"));
     }
     // -----------
-
 
     //------------------------------ HELPERS --------------------------------//
 
@@ -209,7 +215,6 @@ public class CustomerDetailsPage extends BasePage {
     }
 
     // ----------- >> NEW CREDIT CARD FORM
-
     public SelenideElement holderNameFld() {
         return $(By.xpath("//input[@name='holderName']"));
     }
@@ -265,10 +270,6 @@ public class CustomerDetailsPage extends BasePage {
     }
 
 
-
-
-
-
     //------------------------------ HELPERS --------------------------------//
 
     @Step("Add new credit card")
@@ -319,6 +320,70 @@ public class CustomerDetailsPage extends BasePage {
         assertTrue( $(By.xpath("//dd[text()='" + customerName + "']")).is(visible),
                 "Failed to create a new credit card.");
     }
+
+
+
+    //----------------------------- C O N T A C T S --------------------------//
+    //--------------------------------- ELEMENTS -----------------------------//
+
+    public SelenideElement editBtn_contactInfo() {
+        return $(By.xpath("//div[text()='Contact Information']/following-sibling::*/button"));
+    }
+
+    public SelenideElement nameFld_contactInfo() {
+        return $(By.xpath("//input[@id='nameField']"));
+    }
+
+    public String nameVal_contactInfo() {
+        SelenideElement nameFld_contactInfo = $(By.xpath("//form[contains(@class, 'customer-contacts')]/dl[1]/dd"));
+        return nameFld_contactInfo.getText();
+    }
+
+    public SelenideElement emailFld_contactInfo() {
+        return $(By.xpath("//input[@id='emailField']"));
+    }
+
+    public String emailVal_contactInfo() {
+        SelenideElement emailFld_contactInfo = $(By.xpath("//form[contains(@class, 'customer-contacts')]/dl[2]/dd"));
+        return emailFld_contactInfo.getText();
+    }
+
+    public SelenideElement phoneNumberFld_contactInfo() {
+        return $(By.xpath("//input[@id='phoneField']"));
+    }
+
+    public String phoneNumberVal_contactInfo() {
+        SelenideElement phoneNumberFld_contactInfo = $(By.xpath("//form[contains(@class, 'customer-contacts')]/dl[3]/dd"));
+        return phoneNumberFld_contactInfo.getText();
+    }
+
+    //--------------------------------- HELPERS -----------------------------//
+
+    //
+
+
+
+    //----------------------------- O V E R V I E W --------------------------//
+    //--------------------------------- ELEMENTS -----------------------------//
+
+    public String nameVal_overview() {
+        SelenideElement name_overview = $(By.xpath("//div[@class='_customers_title_block__name']"));
+        return name_overview.getText();
+    }
+
+    public String emailVal_overview() {
+        SelenideElement email_overview = $(By.xpath("//div[@class='_customers_title_block__email']"));
+        return email_overview.getText();
+    }
+
+    public String phoneNumberVal_overview() {
+        SelenideElement phoneNumber_overview = $(By.xpath("//i[@class='icon-phone']/following-sibling::*"));
+        return phoneNumber_overview.getText();
+    }
+
+
+
+
 
 
 }

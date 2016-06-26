@@ -2,16 +2,17 @@
 <suite name="template-suite" verbose="1" >
     <test name="Z" >
         <classes>
-            <class name="tests.logintests.LoginTest" />
-            <class name="tests.orderstests.SearchTest" />
-            <class name="tests.orderstests.ItemsTest" />
-            <class name="tests.orderstests.ShippingAddressTest" />
-            <class name="tests.orderstests.ShippingMethodTest" />
-            <class name="tests.orderstests.PaymentMethodTest" />
-            <class name="tests.orderstests.PlaceOrderTest" />
-            <class name="tests.orderstests.OrderStateTest" />
-            <class name="tests.customers.AddressBookTest" />
-            <class name="tests.customers.CreditCardsTest" />
+            <!--<class name="tests.logintests.LoginTest" />-->
+            <!--<class name="tests.orderstests.SearchTest" />-->
+            <!--<class name="tests.orderstests.ItemsTest" />-->
+            <!--<class name="tests.orderstests.ShippingAddressTest" />-->
+            <!--<class name="tests.orderstests.ShippingMethodTest" />-->
+            <!--<class name="tests.orderstests.PaymentMethodTest" />-->
+            <!--<class name="tests.orderstests.PlaceOrderTest" />-->
+            <!--<class name="tests.orderstests.OrderStateTest" />-->
+            <!--<class name="tests.customers.AddressBookTest" />-->
+            <!--<class name="tests.customers.CreditCardsTest" />-->
+            <class name="tests.customers.ContactInformationTest" />
         </classes>
     </test>
 </suite>

@@ -547,9 +547,8 @@ public class TestClass extends BaseTest {
 
     public static void main(String[] args) throws IOException {
 
-//        loginAsAdmin();
-//        createNewCustomer();
-//        createNewCustomer();
+        loginAsAdmin();
+        createNewCustomer();
 //        createCart(customerId);
 //
 //        setShipAddress(orderId, customerName, 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
@@ -557,9 +556,9 @@ public class TestClass extends BaseTest {
 //        listShipMethods(orderId);
 //        setShipMethod(orderId, shipMethodId);
 //
-//        createAddress(customerId, customerName,4161, 234, "Washington", "2101 Green Valley", "Suite 300", "Seattle", "98101", "9879879876", false);
-//        listCustomerAddresses(customerId);
-//        createCreditCard("John Doe", "5555555555554444", "999", 4, 2020, addressId1);
+        createAddress(customerId, customerName,4161, 234, "Washington", "2101 Green Valley", "Suite 300", "Seattle", "98101", "9879879876", true);
+        listCustomerAddresses(customerId);
+        createCreditCard("John Doe", "5555555555554444", "999", 4, 2020, addressId1);
 //        setPayment_creditCard(orderId, creditCardId);
 //
 ////        issueStoreCredit(customerId, 10000);
@@ -567,8 +566,6 @@ public class TestClass extends BaseTest {
 //
 ////        issueGiftCard(500, 1);
 ////        setPayment_giftCard(orderId, gcNumber, 10000);
-
-
 
     }
 

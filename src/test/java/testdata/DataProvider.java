@@ -53,14 +53,14 @@ public class DataProvider extends BaseTest {
 
         String randomID = generateRandomID();
         customerName = "Test Buddy-" + randomID;
-        customerEmail = "testbuddy" + randomID;
+        customerEmail = "testbuddy" + randomID + "@mail.com";
 
         OkHttpClient client = new OkHttpClient();
 
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{" +
                 "\n    \"name\": \"" + customerName + "\"," +
-                "\n    \"email\": \"" + customerEmail + "@mail.com\"\n}");
+                "\n    \"email\": \"" + customerEmail + "\"\n}");
 
         Request request = new Request.Builder()
                 .url("http://admin.stage.foxcommerce.com/api/v1/customers")
@@ -153,8 +153,8 @@ public class DataProvider extends BaseTest {
         Response response = client.newCall(request).execute();
         String responseBody = response.body().string();
 
-        customerName = responseBody.substring(57, 76);
-        customerEmail = responseBody.substring(20, 47);
+        customerName = responseBody.substring(55, 73);
+        customerEmail = responseBody.substring(20, 45);
 
         System.out.println(response);
         System.out.println(responseBody);
