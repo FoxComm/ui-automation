@@ -92,7 +92,7 @@ public class TestClass extends BaseTest {
                 "\n    \"email\": \"" + customerEmail + "@mail.com\"\n}");
 
         Request request = new Request.Builder()
-                .url("http://admin.stage.foxcommerce.com/api/v1/tests.customers")
+                .url("http://admin.stage.foxcommerce.com/api/v1/customers")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -169,7 +169,7 @@ public class TestClass extends BaseTest {
         OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
-                .url("http://admin.stage.foxcommerce.com/api/v1/tests.customers/" + customerId)
+                .url("http://admin.stage.foxcommerce.com/api/v1/customers/" + customerId)
                 .get()
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -211,7 +211,7 @@ public class TestClass extends BaseTest {
                 "\n    \"phoneNumber\": \"" + phoneNumber + "\"," +
                 "\n    \"isDefault\": " + isDefault + "\n}");
         Request request = new Request.Builder()
-                .url("http://admin.stage.foxcommerce.com/api/v1/tests.customers/" + customerId + "/addresses")
+                .url("http://admin.stage.foxcommerce.com/api/v1/customers/" + customerId + "/addresses")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -263,7 +263,7 @@ public class TestClass extends BaseTest {
         OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
-                .url("http://admin.stage.foxcommerce.com/api/v1/tests.customers/" + customerId + "/addresses")
+                .url("http://admin.stage.foxcommerce.com/api/v1/customers/" + customerId + "/addresses")
                 .get()
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -356,7 +356,7 @@ public class TestClass extends BaseTest {
                 "\n  \"addressId\": " + addressId + "," +
                 "\n  \"isDefault\": false\n}");
         Request request = new Request.Builder()
-                .url("http://admin.stage.foxcommerce.com/api/v1/tests.customers/" + customerId + "/payment-methods/credit-cards")
+                .url("http://admin.stage.foxcommerce.com/api/v1/customers/" + customerId + "/payment-methods/credit-cards")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -412,7 +412,7 @@ public class TestClass extends BaseTest {
                 "\n  \"subReasonId\": 1," +
                 "\n  \"currency\": \"USD\"\n}");
         Request request = new Request.Builder()
-                .url("http://admin.stage.foxcommerce.com/api/v1/tests.customers/" + customerId + "/payment-methods/store-credit")
+                .url("http://admin.stage.foxcommerce.com/api/v1/customers/" + customerId + "/payment-methods/store-credit")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -547,8 +547,8 @@ public class TestClass extends BaseTest {
 
     public static void main(String[] args) throws IOException {
 
-        loginAsAdmin();
-        createNewCustomer();
+//        loginAsAdmin();
+//        createNewCustomer();
 //        createNewCustomer();
 //        createCart(customerId);
 //
@@ -557,6 +557,7 @@ public class TestClass extends BaseTest {
 //        listShipMethods(orderId);
 //        setShipMethod(orderId, shipMethodId);
 //
+//        createAddress(customerId, customerName,4161, 234, "Washington", "2101 Green Valley", "Suite 300", "Seattle", "98101", "9879879876", false);
 //        listCustomerAddresses(customerId);
 //        createCreditCard("John Doe", "5555555555554444", "999", 4, 2020, addressId1);
 //        setPayment_creditCard(orderId, creditCardId);

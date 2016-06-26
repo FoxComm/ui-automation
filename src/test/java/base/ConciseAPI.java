@@ -88,7 +88,7 @@ public class ConciseAPI extends Configuration {
         Random rand = new Random();
         String randomId = "";
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 7; i++) {
             // generates random int between 0 and 9
             int randomNum = rand.nextInt(9 + 1);
 

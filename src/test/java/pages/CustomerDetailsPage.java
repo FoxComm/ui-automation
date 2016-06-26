@@ -65,10 +65,11 @@ public class CustomerDetailsPage extends BasePage {
         return address2.getText();
     }
 
-//    public String cityFldVal(String addressIndex) {
-//        SelenideElement address2 = $(By.xpath("//ul[contains(@class, 'addresses-list')]/li[" + addressIndex + "]/div[3]/div/ul/li[3]"));
-//        return address2.getText();
-//    }
+    public String cityFldVal(String addressIndex) {
+        SelenideElement cityFld = $(By.xpath("//ul[contains(@class, 'addresses-list')]/li[" + addressIndex + "]/div[3]/div/ul/li[4]"));
+        String cityFldVal = cityFld.getText();
+        return cityFldVal.substring(0, cityFldVal.indexOf(","));
+    }
 
     public String stateDdVal (String addressIndex) {
         SelenideElement stateVal = $(By.xpath("//ul[contains(@class, 'addresses-list')]/li[" + addressIndex + "]/div[3]/div/ul/li[4]/span[1]"));
@@ -83,6 +84,10 @@ public class CustomerDetailsPage extends BasePage {
     public String phoneNumberFldVal(String addressIndex) {
         SelenideElement phoneNumberVal = $(By.xpath("//ul[contains(@class, 'addresses-list')]/li[" + addressIndex + "]/div[3]/div/ul/li[6]/span"));
         return phoneNumberVal.getText();
+    }
+
+    public SelenideElement phoneNumbErrorMsg() {
+        return $(By.xpath("//div[contains(text(), 'Phone Number must not')]"));
     }
 
 
@@ -101,7 +106,7 @@ public class CustomerDetailsPage extends BasePage {
     }
 
     public SelenideElement cityFld() {
-        return $(By.xpath(".//input[@name='city']"));
+        return $(By.xpath("//input[@name='city']"));
     }
 
     private SelenideElement stateDd() {
@@ -178,8 +183,141 @@ public class CustomerDetailsPage extends BasePage {
     //------------------------ C R E D I T    C A R D S ----------------------//
     //------------------------------ ELEMENTS --------------------------------//
 
+    private SelenideElement newBillAddressBtn() {
+        return $(By.xpath("//div[@class='fc-left' and text()='Address Book']/following-sibling::*/button"));
+    }
+
     public SelenideElement addNewCreditCardBtn() {
         return $(By.xpath("//div[text()='Credit Cards']/following-sibling::*/button"));
+    }
+
+    private String billName() {
+        SelenideElement name = $(By.xpath("//label[contains(@class, 'credit-card')]/following-sibling::*/li[1]"));
+        return name.getText();
+    }
+
+    public SelenideElement editCreditCardBtn(String ccIndex) {
+        return $(By.xpath("//div[contains(@class, 'credit-cards')]/div/ul/li[" + ccIndex + "]/div[2]/div/button[2]"));
+    }
+
+    public SelenideElement deleteCreditCardBtn(String ccIndex) {
+        return $(By.xpath("//div[contains(@class, 'credit-cards')]/div/ul/li[" + ccIndex + "]/div[2]/div/button[1]"));
+    }
+
+    public SelenideElement changeBillAddressBtn() {
+        return $(By.xpath("//a[text()='Change']"));
+    }
+
+    // ----------- >> NEW CREDIT CARD FORM
+
+    public SelenideElement holderNameFld() {
+        return $(By.xpath("//input[@name='holderName']"));
+    }
+
+    private SelenideElement cardNumberFld() {
+        return $(By.xpath("//input[@name='cardNumber']"));
+    }
+
+    private SelenideElement cvvFld() {
+        return $(By.xpath("//input[@name='cvv']"));
+    }
+
+    private SelenideElement monthDd() {
+        return $(By.xpath("//label[text()='Expiration Date']/following-sibling::*/div/div/div[2]/div"));
+    }
+
+    private SelenideElement monthVal(String monthNumber) {
+        return $(By.xpath("//div[@class='fc-grid']/div[1]/div/div[3]/ul/li[" + monthNumber + "]"));
+    }
+
+    private SelenideElement yearDd() {
+        return $(By.xpath("//label[text()='Expiration Date']/following-sibling::*/div[2]/div/div[2]/div"));
+    }
+
+    private SelenideElement yearVal(String year) {
+        return $(By.xpath("//div[@class='fc-grid']/div[2]/div/div[3]/ul/li[text()='" + year + "']"));
+    }
+
+    public SelenideElement chooseBtn(String addressIndex) {
+        return $(By.xpath("//div[@class='fc-address-select-list']/div[" + addressIndex + "]/div[2]/button"));
+    }
+    // -------- -------- -------- --------
+
+    public String holderNameFldVal(String ccIndex) {
+        SelenideElement holderName = $(By.xpath("//div[contains(@class, 'credit-cards')]/div/ul/li[" + ccIndex + "]/div[3]/div/dl[1]/dd"));
+        return holderName.getText();
+    }
+
+    public String expirationDateVal(String ccIndex) {
+        SelenideElement expirationDate = $(By.xpath("//div[contains(@class, 'credit-cards')]/div/ul/li[" + ccIndex + "]/div[3]/div/div/div/div/div"));
+        return expirationDate.getText();
+    }
+
+    public String billCityVal(String ccIndex) {
+        SelenideElement billCity = $(By.xpath("//div[contains(@class, 'credit-cards')]/div/ul/li[" + ccIndex + "]/div[3]/div/dl[2]/dd/ul/li[4]"));
+        String billCityVal = billCity.getText();
+        return billCityVal.substring(0, billCityVal.indexOf(","));
+    }
+
+    public String nameFldVal_billAddress(String ccIndex) {
+        SelenideElement nameFld_billAddress = $(By.xpath("//div[contains(@class, 'credit-cards')]/div/ul/li[" + ccIndex + "]/div[3]/div/dl[2]/dd/ul/li[1]"));
+        return nameFld_billAddress.getText();
+    }
+
+
+
+
+
+
+    //------------------------------ HELPERS --------------------------------//
+
+    @Step("Add new credit card")
+    public void addNewCreditCard(String holderName, String cardNumber, String cvv, String month, String year) {
+
+        setFieldVal( holderNameFld(), holderName );
+        setFieldVal( cardNumberFld(), cardNumber );
+        setFieldVal( cvvFld(), cvv );
+        setExpirationDate(month, year);
+
+    }
+
+    @Step("Set expiration date: {0}/{1}")
+    public void setExpirationDate(String month, String year) {
+        click( monthDd() );
+        click( monthVal(month) );
+        click( yearDd() );
+        click( yearVal(year) );
+    }
+
+    @Step("Add new billing address")
+    public void addNewBillAddress(String name, String streetAddress1, String streetAddress2, String city, String state, String zipCode, String phoneNumber) {
+
+        click( newBillAddressBtn() );
+        setFieldVal(nameFld(), name);
+        setFieldVal(address1Fld(), streetAddress1);
+        setFieldVal(address2Fld(), streetAddress2);
+        setFieldVal(cityFld(), city);
+        setState(state);
+        setFieldVal(zipFld(), zipCode);
+        setFieldVal(phoneNumberFld(), phoneNumber);
+        assertStateIsntReset();
+        click( saveBtn() );
+        sleep(1500);
+
+        assertTrue( !phoneNumbErrorMsg().is(visible),
+                "Phone number wasn't fully input; expected: <(987) 987-9876>, actual: <" + phoneNumberFld().getAttribute("value") + ">.");
+        assertTrue( changeBillAddressBtn().is(visible),
+                "Added address wasn't set as a billing address.");
+        assertTrue( billName().equals(name),
+                "Incorrect address seems to be set as a billing address; expected name: <" + name + ">, actual: <" + billName() + ">.");
+
+    }
+
+    @Step
+    public void assertCardAdded(String customerName) {
+        sleep(1000);
+        assertTrue( $(By.xpath("//dd[text()='" + customerName + "']")).is(visible),
+                "Failed to create a new credit card.");
     }
 
 

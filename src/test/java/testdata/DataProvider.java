@@ -52,8 +52,8 @@ public class DataProvider extends BaseTest {
         System.out.println("Creating a new customer...");
 
         String randomID = generateRandomID();
-        customerName = "Test Customer-" + randomID;
-        customerEmail = "testcustomer" + randomID;
+        customerName = "Test Buddy-" + randomID;
+        customerEmail = "testbuddy" + randomID;
 
         OkHttpClient client = new OkHttpClient();
 
@@ -677,6 +677,21 @@ public class DataProvider extends BaseTest {
 
             case "customer with a shipping address":
                 createAddress(customerId, "John Doe", 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
+                break;
+
+            //--------------------------------- CUSTOMER CREDIT CARDS ---------------------------------//
+
+            case "customer with a credit card":
+                createAddress(customerId, customerName, 4161, 234, "Washington", "2101 Green Valley", "Suite 300", "Seattle", "98101", "9879879876", false);
+                listCustomerAddresses(customerId);
+                createCreditCard("John Doe", "5555555555554444", "999", 4, 2020, addressId1);
+                break;
+
+            case "customer with a credit card and 2 addresses":
+                createAddress(customerId, customerName, 4161, 234, "New York", "545 Narrow Ave", "Suite 15", "New Jersey", "10201", "5551118888", false);
+                createAddress(customerId, customerName, 4161, 234, "Washington", "2101 Green Valley", "Suite 300", "Seattle", "98101", "9879879876", false);
+                listCustomerAddresses(customerId);
+                createCreditCard("John Doe", "5555555555554444", "999", 4, 2020, addressId1);
                 break;
 
         }

@@ -51,7 +51,7 @@ public class AddressBookTest extends DataProvider {
         p.assertStateIsntReset();
         click( p.saveBtn() );
         assertTrue( p.nameFldVal("1").equals("John Doe"),
-                "Failed to edit name field; expected: <John Doe>, actual: <" + p.nameFldVal("1") + ".");
+                "Failed to edit name field; expected: <John Doe>, actual: <" + p.nameFldVal("1") + ">.");
 
     }
 
@@ -85,19 +85,20 @@ public class AddressBookTest extends DataProvider {
 
     }
 
-//    @Test(priority = 5)
-//    public void editCityFld() throws IOException {
-//
-//        provideTestData("customer with a shipping address");
-//        p = open("http://admin.stage.foxcommerce.com/customers/" + customerId, CustomerDetailsPage.class);
-//
-//        setFieldVal( p.cityFld(), "New York" );
-//        p.assertStateIsntReset();
-//        click( p.saveBtn() );
-//        Assert.assertTrue( p.cityFldVal("1").equals("New York"),
-//                "Failed to edit city field");
-//
-//    }
+    @Test(priority = 5)
+    public void editCityFld() throws IOException {
+
+        provideTestData("customer with a shipping address");
+        p = open("http://admin.stage.foxcommerce.com/customers/" + customerId, CustomerDetailsPage.class);
+
+        click( p.editAddressBtn("1") );
+        setFieldVal( p.cityFld(), "New York" );
+        p.assertStateIsntReset();
+        click( p.saveBtn() );
+        assertTrue( p.cityFldVal("1").equals("New York"),
+                "Failed to edit city field; expected: <New York>, actual: <" + p.cityFldVal("1") + ">.");
+
+    }
 
     @Test(priority = 6)
     public void editStateDd() throws IOException {

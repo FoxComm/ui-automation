@@ -70,34 +70,34 @@ public class OrdersPage extends BasePage {
 
     private String getOrderParamValue(int orderIndex, String paramName) {
 
-        String orderParamValue = "";
+        String orderParamVal = "";
         waitForDataToLoad();
 
         switch(paramName) {
             case "Order":
-                orderParamValue = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/tr[" + orderIndex + "]/td[2]")).getText();
+                orderParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + orderIndex + "]/td[2]")).getText();
                 break;
             case "Date/Time Placed":
-                orderParamValue = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/tr[" + orderIndex + "]/td[3]/time")).getText();
+                orderParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + orderIndex + "]/td[3]/time")).getText();
                 break;
             case "Customer Name":
-                orderParamValue = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/tr[" + orderIndex + "]/td[4]")).getText();
+                orderParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + orderIndex + "]/td[4]")).getText();
                 break;
             case "Customer Email":
-                orderParamValue = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/tr[" + orderIndex + "]/td[5]")).getText();
+                orderParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + orderIndex + "]/td[5]")).getText();
                 break;
             case "Order State":
-                orderParamValue = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/tr[" + orderIndex + "]/td[6]/span")).getText();
+                orderParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + orderIndex + "]/td[6]/span")).getText();
                 break;
             case "Shipment State":
-                orderParamValue = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/tr[" + orderIndex + "]/td[7]")).getText();
+                orderParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + orderIndex + "]/td[7]")).getText();
                 break;
             case "Total":
-                orderParamValue = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/tr[" + orderIndex + "]/td[8]/span")).getText();
+                orderParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + orderIndex + "]/td[8]/span")).getText();
                 break;
         }
 
-        return orderParamValue;
+        return orderParamVal;
 
     }
 
