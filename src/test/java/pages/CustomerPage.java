@@ -538,7 +538,6 @@ public class CustomerPage extends BasePage {
                         hitEnter();
                         break;
                 }
-                break;
 
         }
 

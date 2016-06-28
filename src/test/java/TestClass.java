@@ -2,13 +2,16 @@ import base.BaseTest;
 import com.squareup.okhttp.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
+import java.util.*;
 
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
+import static org.testng.Assert.assertEquals;
 
 public class TestClass extends BaseTest {
 
@@ -31,22 +34,10 @@ public class TestClass extends BaseTest {
     private static int shipMethodId;        // stored from listShipMethods()
     private static int creditCardId;        // stored from create createCreditCard()
 
-//    private static String generateRandomID() {
-//
-//        Random rand = new Random();
-//        String randomId = "";
-//
-//        for (int i = 0; i < 5; i++) {
-//            // generates random int between 0 and 9
-//            int randomNum = rand.nextInt(9 + 1);
-//
-//            String strRandomNum = String.valueOf(randomNum);
-//            randomId = randomId.concat(strRandomNum);
-//        }
-//
-//        return randomId;
-//
-//    }
+    protected static int promotionId;
+    protected static int couponId;
+    protected static String singleCouponCode;
+    public static List<String> bulkCodes = new ArrayList<>();
 
     private static void loginAsAdmin() throws IOException {
 
@@ -560,15 +551,154 @@ public class TestClass extends BaseTest {
 
     }
 
-    @Test
-    public void test() {
-        open("https://www.google.com.ua");
+    private static void createPromotion_coupon() throws IOException {
 
-        try {
-            $(By.xpath("//div[@class='randomrandom']")).waitUntil(visible, 10000);
-        } catch (NoSuchElementException e) {
-            System.out.println();
+        System.out.println("Creating a new promotion...");
+
+        OkHttpClient client = new OkHttpClient();
+
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{\n  \"applyType\": \"coupon\",\n  \"form\": {\n    \"id\": 243,\n    \"attributes\": {\n      \"eaa8440703\": \"new promo\",\n      \"25e24d5d0f\": \"<p>new promo</p>\"\n    },\n    \"discounts\": [\n      {\n        \"id\": 244,\n        \"attributes\": {\n          \"bb0b82afad\": {\n            \"orderAny\": {}\n          },\n          \"3db8e5c670\": {\n            \"orderPercentOff\": {\n              \"discount\": 10\n            }\n          }\n        },\n        \"createdAt\": \"2016-06-27T21:17:32.671Z\"\n      }\n    ],\n    \"createdAt\": \"2016-06-27T21:17:32.660Z\"\n  },\n  \"shadow\": {\n    \"id\": 298,\n    \"formId\": 243,\n    \"attributes\": {\n      \"name\": {\n        \"type\": \"string\",\n        \"ref\": \"eaa8440703\"\n      },\n      \"storefrontName\": {\n        \"type\": \"richText\",\n        \"ref\": \"25e24d5d0f\"\n      },\n      \"description\": {\n        \"type\": \"richText\",\n        \"ref\": \"eaa8440703\"\n      },\n      \"details\": {\n        \"type\": \"richText\",\n        \"ref\": \"25e24d5d0f\"\n      }\n    },\n    \"discounts\": [\n      {\n        \"id\": 244,\n        \"attributes\": {\n          \"qualifier\": {\n            \"type\": \"qualifier\",\n            \"ref\": \"bb0b82afad\"\n          },\n          \"offer\": {\n            \"type\": \"offer\",\n            \"ref\": \"3db8e5c670\"\n          }\n        },\n        \"createdAt\": \"2016-06-27T21:17:32.671Z\"\n      }\n    ],\n    \"createdAt\": \"2016-06-27T21:17:32.660Z\"\n  }\n}");
+        Request request = new Request.Builder()
+                .url("http://admin.stage.foxcommerce.com/api/v1/promotions/default")
+                .post(body)
+                .addHeader("content-type", "application/json")
+                .addHeader("accept", "application/json")
+                .addHeader("cache-control", "no-cache")
+                .addHeader("JWT", jwt)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+        promotionId = Integer.valueOf(responseBody.substring(35, 38));
+
+        System.out.println(response);
+        System.out.println(responseBody);
+        System.out.println("--------");
+
+    }
+
+    private static void createCoupon(int promotionId) throws IOException {
+
+        System.out.println("Creating a new coupon...");
+
+        OkHttpClient client = new OkHttpClient();
+
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{\"id\":247,\"form\":{\"id\":247,\"attributes\":{\"cafec63e4b\":{\"isExclusive\":false,\"usesPerCode\":1,\"usesPerCustomer\":1,\"isUnlimitedPerCode\":false,\"isUnlimitedPerCustomer\":false},\"267d79dd58\":\"coupon one\",\"2be88ca424\":null,\"8cee41dd60\":\"<p>coupon one</p>\",\"c23781011c\":\"2016-06-26T21:42:23.804+00:00\"},\"createdAt\":\"2016-06-27T21:29:30.861Z\"},\"shadow\":{\"id\":302,\"formId\":247,\"attributes\":{\"name\":{\"type\":\"coupon one\",\"ref\":\"267d79dd58\"},\"details\":{\"type\":\"<p>coupon one</p>\",\"ref\":\"8cee41dd60\"},\"activeTo\":{\"type\":null,\"ref\":\"2be88ca424\"},\"activeFrom\":{\"type\":\"2016-06-26T21:42:23.804+00:00\",\"ref\":\"c23781011c\"},\"usageRules\":{\"type\":\"usageRules\",\"ref\":\"cafec63e4b\"},\"description\":{\"type\":\"coupon one\",\"ref\":\"267d79dd58\"},\"storefrontName\":{\"type\":\"<p>coupon one</p>\",\"ref\":\"8cee41dd60\"}},\"createdAt\":\"2016-06-27T21:29:30.861Z\"},\"promotion\":" + promotionId + "}");
+        Request request = new Request.Builder()
+                .url("http://admin.stage.foxcommerce.com/api/v1/coupons/default")
+                .post(body)
+                .addHeader("content-type", "application/json")
+                .addHeader("cache-control", "no-cache")
+                .addHeader("JWT", jwt)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+        couponId = Integer.valueOf(responseBody.substring(6, 9));
+
+        System.out.println(response);
+        System.out.println(responseBody);
+        System.out.println(couponId);
+        System.out.println("--------");
+
+    }
+
+    private static void generateSingleCode(int couponId) throws IOException {
+
+        System.out.println("Generating a single code for coupon <" + couponId + ">...");
+
+        OkHttpClient client = new OkHttpClient();
+
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{}");
+        Request request = new Request.Builder()
+                .url("http://admin.stage.foxcommerce.com/api/v1/coupons/codes/generate/" + couponId + "/newcpn-" + generateRandomID())
+                .post(body)
+                .addHeader("content-type", "application/json")
+                .addHeader("accept", "application/json")
+                .addHeader("cache-control", "no-cache")
+                .addHeader("JWT", jwt)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+        singleCouponCode = responseBody.substring(1, responseBody.length() - 1);
+
+        System.out.println(response);
+        System.out.println(responseBody);
+        System.out.println("Single coupon code: " + singleCouponCode);
+        System.out.println("--------");
+
+    }
+
+    private static void bulkGenerateCodes(int couponId, String prefix, int codeLength, int quantity) throws IOException {
+
+        int length = prefix.length() + codeLength;
+
+        System.out.println("Bulk generating coupon codes for coupon <" + couponId + ">...");
+
+        OkHttpClient client = new OkHttpClient();
+
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{" +
+                "\n    \"prefix\":\"" + prefix + "\"," +
+                "\n    \"length\":" + length + "," +
+                "\n    \"quantity\":" + quantity + "\n}");
+        Request request = new Request.Builder()
+                .url("http://admin.stage.foxcommerce.com/api/v1/coupons/codes/generate/" + couponId)
+                .post(body)
+                .addHeader("content-type", "application/json")
+                .addHeader("accept", "application/json")
+                .addHeader("cache-control", "no-cache")
+                .addHeader("JWT", jwt)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+
+        int startIndex = 2;
+        for (int i = 0; i < quantity; i++) {
+            String code = responseBody.substring(startIndex, startIndex + length);
+            bulkCodes.add(code);
+            startIndex += (length + 3);
         }
+        System.out.println("Number of codes generated: <" + bulkCodes.size() + ">");
+        assertEquals(bulkCodes.size(), quantity,
+                "Amount of generated codes is lower than requested amount.");
+        printList(bulkCodes);
+
+        System.out.println(response);
+        System.out.println(responseBody);
+        System.out.println("--------");
+
+    }
+
+    private static void applyCouponCode(String orderId, String couponCode) throws IOException {
+
+        System.out.println("Applying coupon code <" + couponCode + "> to order <" + orderId + ">...");
+
+        OkHttpClient client = new OkHttpClient();
+
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{}");
+        Request request = new Request.Builder()
+                .url("http://admin.stage.foxcommerce.com/api/v1/orders/" + orderId + "/coupon/" + couponCode)
+                .post(body)
+                .addHeader("content-type", "application/json")
+                .addHeader("accept", "application/json")
+                .addHeader("cache-control", "no-cache")
+                .addHeader("JWT", jwt)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+
+        System.out.println(response);
+        System.out.println(responseBody);
+        System.out.println("--------");
+
     }
 
     public static void main(String[] args) throws IOException {
@@ -603,23 +733,29 @@ public class TestClass extends BaseTest {
         createNewCustomer();
         createCart(customerId);
         updSKULineItems(orderId, "SKU-YAX", 1);
-        setShipAddress(orderId, customerName, 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
-        listShipMethods(orderId);
-        setShipMethod(orderId, shipMethodId);
-        listCustomerAddresses(customerId);
-        createCreditCard("John Doe", "5555555555554444", "999", 4, 2020, addressId1);
-        setPayment_creditCard(orderId, creditCardId);
-        checkoutOrder(orderId);
+//        setShipAddress(orderId, customerName, 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
+//        listShipMethods(orderId);
+//        setShipMethod(orderId, shipMethodId);
+//        listCustomerAddresses(customerId);
+//        createCreditCard("John Doe", "5555555555554444", "999", 4, 2020, addressId1);
+//        setPayment_creditCard(orderId, creditCardId);
+//        checkoutOrder(orderId);
+//
+//        createCart(customerId);
+//        updSKULineItems(orderId, "SKU-BRO", 2);
+//        setShipAddress(orderId, customerName, 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
+//        listShipMethods(orderId);
+//        setShipMethod(orderId, shipMethodId);
+//        setPayment_creditCard(orderId, creditCardId);
+//        checkoutOrder(orderId);
+//
+//        changeOrderState(orderId, "fulfillmentStarted");
 
-        createCart(customerId);
-        updSKULineItems(orderId, "SKU-BRO", 2);
-        setShipAddress(orderId, customerName, 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
-        listShipMethods(orderId);
-        setShipMethod(orderId, shipMethodId);
-        setPayment_creditCard(orderId, creditCardId);
-        checkoutOrder(orderId);
-
-        changeOrderState(orderId, "fulfillmentStarted");
+//        createPromotion_coupon();
+//        createCoupon(promotionId);
+//        generateSingleCode(couponId);
+        bulkGenerateCodes(263, "bulkcpn", 4, 4);
+        applyCouponCode(orderId, bulkCodes.get(2));
 
     }
 

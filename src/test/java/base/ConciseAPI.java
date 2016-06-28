@@ -115,4 +115,10 @@ public class ConciseAPI extends Configuration {
         return (int) ((grandTotal - firstAmount_double) * 100);
     }
 
+    protected static void printList(List<String> list) {
+        for(String code : list) {
+            System.out.println("Code: <" + code + ">");
+        }
+    }
+
 }
