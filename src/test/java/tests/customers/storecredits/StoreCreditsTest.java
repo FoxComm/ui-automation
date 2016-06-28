@@ -4,7 +4,6 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import pages.CustomerPage;
 import pages.LoginPage;
-import pages.OrderDetailsPage;
 import testdata.DataProvider;
 
 import java.io.IOException;
@@ -17,7 +16,6 @@ import static org.testng.Assert.assertEquals;
 public class StoreCreditsTest extends DataProvider {
 
     private CustomerPage p;
-    private OrderDetailsPage orderPage;
 
     @BeforeClass(alwaysRun = true)
     public void setUp() {
@@ -31,25 +29,44 @@ public class StoreCreditsTest extends DataProvider {
     }
 
     @Test(priority = 1)
-    public void issueSC() throws IOException {
+    public void issueSC_csrAppeasement() throws IOException {
 
         provideTestData("a customer");
         p = open("http://admin.stage.foxcommerce.com/customers/" + customerId, CustomerPage.class);
 
         click( p.storeCreditTab() );
-        double expectedResult = p.availableBalanceVal() + 50.00;
         click( p.newSCBtn() );
         p.selectType("Csr Appeasement");
         setFieldVal( p.valueFld(), "50" );
-        click( p.issueSCBtn() );
+        click( p.submitBtn() );
         sleep(1000);
 
-        assertEquals( p.availableBalanceVal(), expectedResult,
+        assertEquals( p.availableBalanceVal(), 50.00,
                 "Current available balance value is incorrect.");
 
     }
 
     @Test(priority = 2)
+    public void issueSC_gcTransfer() throws IOException {
+
+        provideTestData("a customer && GC");
+        p = open("http://admin.stage.foxcommerce.com/customers/" + customerId, CustomerPage.class);
+
+        click( p.storeCreditTab() );
+        click( p.newSCBtn() );
+        p.selectType("Gift Card Transfer");
+        setFieldVal( p.gcNumberFld(), gcNumber );
+        sleep(500);
+        assertEquals( p.gcAvailableBalanceVal(), 125.00,
+                "GC available balance isn't displayed.");
+
+        click( p.submitBtn() );
+        assertEquals( p.availableBalanceVal(), 125.00,
+                "Current available balance value is incorrect.");
+
+    }
+
+    @Test(priority = 3)
     public void issuedSC_displayedOnList() throws IOException {
 
         provideTestData("a customer");
@@ -59,7 +76,7 @@ public class StoreCreditsTest extends DataProvider {
         click( p.newSCBtn() );
         p.selectType("Csr Appeasement");
         setFieldVal( p.valueFld(), "50" );
-        click( p.issueSCBtn() );
+        click( p.submitBtn() );
         p.waitForDataToLoad();
 
         assertEquals( p.amountOfSCs(), 1,
@@ -69,7 +86,7 @@ public class StoreCreditsTest extends DataProvider {
 
     }
 
-    @Test(priority = 3)
+    @Test(priority = 4)
     public void issueSC_presetValues() throws IOException {
 
         provideTestData("a customer");
@@ -79,7 +96,7 @@ public class StoreCreditsTest extends DataProvider {
         click( p.newSCBtn() );
         p.selectType("Csr Appeasement");
         click( p.presetValues("100") );
-        click( p.issueSCBtn() );
+        click( p.submitBtn() );
         p.waitForDataToLoad();
 
         assertEquals( p.amountOfSCs(), 1,
@@ -89,7 +106,7 @@ public class StoreCreditsTest extends DataProvider {
 
     }
 
-    @Test(priority = 4)
+    @Test(priority = 5)
     public void setState_onHold() throws IOException {
 
         provideTestData("a customer with issued SC");
@@ -103,7 +120,7 @@ public class StoreCreditsTest extends DataProvider {
 
     }
 
-    @Test(priority = 5)
+    @Test(priority = 6)
     public void setState_canceled() throws IOException {
 
         provideTestData("a customer with issued SC");
@@ -116,5 +133,9 @@ public class StoreCreditsTest extends DataProvider {
                 "Failed to change SC state.");
 
     }
+
+
+
+
 
 }

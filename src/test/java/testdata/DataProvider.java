@@ -1007,6 +1007,10 @@ public class DataProvider extends BaseTest {
                 issueStoreCredit(customerId, 50000);
                 break;
 
+            case "a customer && GC":
+                issueGiftCard(12500, 1);
+                break;
+
         }
 
     }

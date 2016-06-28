@@ -566,8 +566,17 @@ public class CustomerPage extends BasePage {
         return $(By.xpath("//input[@id='scAmountTextField']"));
     }
 
-    public SelenideElement issueSCBtn() {
-        return $(By.xpath("//span[text()='Issue Store Credit']/.."));
+    public SelenideElement gcNumberFld() {
+        return $(By.xpath("//input[@id='gcNumberField'"));
+    }
+
+    public double gcAvailableBalanceVal() {
+        String gcAvailBalance = $(By.xpath("//div[contains(@class, 'gc-value')]/span")).getText();
+        return Double.valueOf(gcAvailBalance.substring(1, gcAvailBalance.length()));
+    }
+
+    public SelenideElement submitBtn() {
+        return $(By.xpath("//button[@type='submit']"));
     }
 
     public double availableBalanceVal() {
