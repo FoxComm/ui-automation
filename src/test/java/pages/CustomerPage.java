@@ -546,4 +546,108 @@ public class CustomerPage extends BasePage {
 
     }
 
+
+    //---------------------- S T O R E    C R E D I T S ----------------------//
+    //------------------------------ ELEMENTS --------------------------------//
+
+    public SelenideElement newSCBtn() {
+        return $(By.xpath("//span[text()='Store Credit']/.."));
+    }
+
+    private SelenideElement scTypeDd() {
+        return $(By.xpath("//li[contains(@class, 'store-credit-form')]/div[2]/div/div[2]/button"));
+    }
+
+    private SelenideElement scTypeListItem(String typeName) {
+        return $(By.xpath("//li[text()='" + typeName + "']"));
+    }
+
+    public SelenideElement valueFld() {
+        return $(By.xpath("//input[@id='scAmountTextField']"));
+    }
+
+    public SelenideElement issueSCBtn() {
+        return $(By.xpath("//span[text()='Issue Store Credit']/.."));
+    }
+
+    public double availableBalanceVal() {
+        SelenideElement availableBalance = $(By.xpath("//div[text()='Total Available Balance']/following-sibling::*/div/span"));
+        String availBalanceVal = availableBalance.getText();
+        return Double.valueOf( availBalanceVal.substring(1, availBalanceVal.length()) );
+    }
+
+    public int amountOfSCs() {
+        List <SelenideElement> issuedSCs = $$(By.xpath("//tbody/tr[@class='fc-table-tr']"));
+        return issuedSCs.size();
+    }
+
+    private SelenideElement scStateDd(String scIndex) {
+        return $(By.xpath("//tbody/tr[" + scIndex + "]/td[9]/div/div[2]/button"));
+    }
+
+    private SelenideElement scStateListVal(String stateVal) {
+        return $(By.xpath("//tbody/tr[1]/td[9]/div/div[3]/ul/li[text()='" + stateVal + "']"));
+    }
+
+    public SelenideElement presetValues(String scVal) {
+        return $(By.xpath("//li[contains(@class, 'balances')]/div[text()='" + scVal + "']"));
+    }
+
+    private SelenideElement yesBtn() {
+        return $(By.xpath("//span[text()='Yes, Change State']/.."));
+    }
+
+
+    //------------------------------ HELPERS --------------------------------//
+
+    @Step("Set SC type to {0}")
+    public void selectType(String typeName) {
+        click( scTypeDd() );
+        click( scTypeListItem(typeName) );
+    }
+
+    @Step("Get {1} parameter value of {0}-th store credit on the list.")
+    public String getSCParamValue(String scIndex, String paramName) {
+
+        String orderParamVal = "";
+        waitForDataToLoad();
+
+        switch (paramName) {
+            case "Date/Time Issued":
+                orderParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/tr[" + scIndex + "]/td[2]/time")).getText();
+                break;
+            case "Store Credit Id":
+                orderParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/tr[" + scIndex + "]/td[3]")).getText();
+                break;
+            case "Type":
+                orderParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/tr[" + scIndex + "]/td[4]/div/div")).getText();
+                break;
+            case "Issued By":
+                orderParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/tr[" + scIndex + "]/td[5]/div")).getText();
+                break;
+            case "Original Balance":
+                orderParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/tr[" + scIndex + "]/td[6]/span")).getText();
+                break;
+            case "Current Balance":
+                orderParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/tr[" + scIndex + "]/td[7]/span")).getText();
+                break;
+            case "Available Balance":
+                orderParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/tr[" + scIndex + "]/td[8]/span")).getText();
+                break;
+            case "State":
+                orderParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/tr[" + scIndex + "]/td[9]//span[@class='fc-model-state']")).getText();
+                break;
+        }
+
+        return orderParamVal;
+
+    }
+
+    @Step("Change 'State' of {0}th SC on the list to '{1}'")
+    public void setState(String scIndex, String state) {
+        click( scStateDd(scIndex) );
+        click( scStateListVal(state) );
+        click( yesBtn() );
+    }
+
 }

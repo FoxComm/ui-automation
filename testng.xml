@@ -13,7 +13,8 @@
             <!--<class name="tests.customers.AddressBookTest" />-->
             <!--<class name="tests.customers.CreditCardsTest" />-->
             <!--<class name="tests.customers.details.ContactInformationTest" />-->
-            <class name="tests.customers.orders.OrdersListTest" />
+            <!--<class name="tests.customers.orders.OrdersListTest" />-->
+            <class name="tests.customers.storecredits.StoreCreditsTest" />
         </classes>
     </test>
 </suite>

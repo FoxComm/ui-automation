@@ -12,7 +12,6 @@ import java.util.Objects;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.Selenide.refresh;
-import static org.testng.Assert.assertTrue;
 
 public class PlaceOrderTest extends DataProvider {
 
@@ -129,18 +128,18 @@ public class PlaceOrderTest extends DataProvider {
 
     }
 
-    @Test(priority = 6)
-    public void placeOrder_coupon() throws IOException {
-
-        provideTestData("cart with 1 item, shipping method, CC and coupon");
-        p = open("http://admin.stage.foxcommerce.com/orders/" + orderId, OrderDetailsPage.class);
-
-        assertTrue(p.couponName().is(visible),
-                "Failed to apply coupon to an order.");
-        p.assertNoWarnings();
-        click( p.placeOrderBtn() );
-        p.assertOrderState("Remorse Hold");
-
-    }
+//    @Test(priority = 6)
+//    public void placeOrder_coupon() throws IOException {
+//
+//        provideTestData("cart with 1 item, shipping method, CC and coupon");
+//        p = open("http://admin.stage.foxcommerce.com/orders/" + orderId, OrderDetailsPage.class);
+//
+//        assertTrue(p.couponName().is(visible),
+//                "Failed to apply coupon to an order.");
+//        p.assertNoWarnings();
+//        click( p.placeOrderBtn() );
+//        p.assertOrderState("Remorse Hold");
+//
+//    }
 
 }

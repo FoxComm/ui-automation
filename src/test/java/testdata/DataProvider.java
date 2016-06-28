@@ -15,13 +15,14 @@ public class DataProvider extends BaseTest {
     protected static String orderId;
     private static String jwt;
 
-    protected static String customerName;     // stored from viewCustomer()
-    protected static String customerEmail;    // stored from viewCustomer()
-    private static int addressId1;          // stored from listCustomerAddresses()
-    private static int addressId2;          // stored from listCustomerAddresses()
+    protected static String customerName;       // stored from viewCustomer()
+    protected static String customerEmail;      // stored from viewCustomer()
+    private static int addressId1;              // stored from listCustomerAddresses()
+    private static int addressId2;              // stored from listCustomerAddresses()
     protected static String gcNumber;           // stored from issueGiftCard()
-    private static int shipMethodId;        // stored from listShipMethods()
-    private static int creditCardId;        // stored from create createCreditCard()
+    private static int scId;                    // stored from issueStoreCredit()
+    private static int shipMethodId;            // stored from listShipMethods()
+    private static int creditCardId;            // stored from create createCreditCard()
 
     protected static int promotionId;
     protected static int couponId;
@@ -403,9 +404,12 @@ public class DataProvider extends BaseTest {
                 .build();
 
         Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+        scId = Integer.valueOf(responseBody.substring(6, 10));
 
         System.out.println(response);
-        System.out.println("---- ---- ---- ----");
+        System.out.println("Store Credit ID: <" + scId + ">...");
+        System.out.println("--------");
 
     }
 
@@ -691,6 +695,35 @@ public class DataProvider extends BaseTest {
 
     }
 
+    private static void updateSCState(int scId, String state) throws IOException {
+
+        System.out.println("Updating state of store credit with Id <" + scId + ">...");
+
+        OkHttpClient client = new OkHttpClient();
+
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{" +
+                "\n  \"state\": \"" + state + "\"," +
+                "\n  \"reasonId\": 1\n}");
+        Request request = new Request.Builder()
+                .url("http://admin.stage.foxcommerce.com/api/v1/store-credits/" + scId)
+                .patch(body)
+                .addHeader("content-type", "application/json")
+                .addHeader("accept", "application/json")
+                .addHeader("cache-control", "no-cache")
+                .addHeader("JWT", jwt)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+
+        System.out.println(response);
+        System.out.println(responseBody);
+        System.out.println("Update state: <" + state + ">...");
+        System.out.println("--------");
+
+    }
+
 
 //    applyCouponCode(bulkCodes.get(0));
 
@@ -870,6 +903,20 @@ public class DataProvider extends BaseTest {
                 issueStoreCredit(customerId, 50000);
                 break;
 
+            case "cart with 1 item && SC onHold":
+                createCart(customerId);
+                updSKULineItems(orderId, "SKU-YAX", 1);
+                issueStoreCredit(customerId, 50000);
+                updateSCState(scId, "onHold");
+                break;
+
+            case "cart with 1 item && SC canceled":
+                createCart(customerId);
+                updSKULineItems(orderId, "SKU-YAX", 1);
+                issueStoreCredit(customerId, 50000);
+                updateSCState(scId, "canceled");
+                break;
+
             //------------------------------------- ORDER STATE -------------------------------------//
 
             case "order in remorse hold":
@@ -954,6 +1001,11 @@ public class DataProvider extends BaseTest {
                 changeOrderState(orderId, "fulfillmentStarted");
                 break;
 
+            //----------------------------------- STORE CREDITS -----------------------------------//
+
+            case "a customer with issued SC":
+                issueStoreCredit(customerId, 50000);
+                break;
 
         }
 

@@ -12,6 +12,7 @@ import java.util.Objects;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.Selenide.sleep;
+import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 public class PaymentMethodTest extends DataProvider {
@@ -120,6 +121,38 @@ public class PaymentMethodTest extends DataProvider {
 
         assertTrue(p.appliedAmount() == p.grandTotal(),
                 "Amount of funds to be applied as a payment isn't auto-adjusted.");
+
+    }
+
+    @Test(priority = 6)
+    public void addSC_onHoldState() throws IOException {
+
+        provideTestData("cart with 1 item && SC onHold");
+        p = open("http://admin.stage.foxcommerce.com/orders/" + orderId, OrderDetailsPage.class);
+
+        click( p.editBtn_payment() );
+        click( p.newPaymentBtn() );
+        p.selectPaymentType("Store Credit");
+        setFieldVal( p.amountToUseFld(), String.valueOf(p.grandTotal()) );
+
+        assertEquals( p.gcAvailableBalance(), 0.00,
+                "A store credit with 'onHold' state can be used as a payment method.");
+
+    }
+
+    @Test(priority = 7)
+    public void addSC_canceledState() throws IOException {
+
+        provideTestData("cart with 1 item && SC canceled");
+        p = open("http://admin.stage.foxcommerce.com/orders/" + orderId, OrderDetailsPage.class);
+
+        click( p.editBtn_payment() );
+        click( p.newPaymentBtn() );
+        p.selectPaymentType("Store Credit");
+        setFieldVal( p.amountToUseFld(), String.valueOf(p.grandTotal()) );
+
+        assertEquals( p.gcAvailableBalance(), 0.00,
+                "A store credit with 'canceled' state can be used as a payment method.");
 
     }
 

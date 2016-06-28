@@ -30,14 +30,15 @@ public class TestClass extends BaseTest {
     private static String customerEmail;    // stored from viewCustomer()
     private static int addressId1;          // stored from listCustomerAddresses()
     private static int addressId2;          // stored from listCustomerAddresses()
-    private static String gcNumber;           // stored from issueGiftCard()
+    private static String gcNumber;         // stored from issueGiftCard()
+    private static int scId;                // stored from issueStoreCredit()
     private static int shipMethodId;        // stored from listShipMethods()
     private static int creditCardId;        // stored from create createCreditCard()
 
-    protected static int promotionId;
-    protected static int couponId;
-    protected static String singleCouponCode;
-    public static List<String> bulkCodes = new ArrayList<>();
+    private static int promotionId;
+    private static int couponId;
+    private static String singleCouponCode;
+    private static List<String> bulkCodes = new ArrayList<>();
 
     private static void loginAsAdmin() throws IOException {
 
@@ -412,8 +413,11 @@ public class TestClass extends BaseTest {
                 .build();
 
         Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+        scId = Integer.valueOf(responseBody.substring(6, 10));
 
         System.out.println(response);
+        System.out.println("Store Credit ID: <" + scId + ">...");
         System.out.println("--------");
 
     }
@@ -701,6 +705,38 @@ public class TestClass extends BaseTest {
 
     }
 
+    private static void updateSCState(int scId, String state) throws IOException {
+
+        System.out.println("Updating state of store credit with Id <" + scId + ">...");
+
+        OkHttpClient client = new OkHttpClient();
+
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{" +
+                "\n  \"state\": \"" + state + "\"," +
+                "\n  \"reasonId\": 1\n}");
+        Request request = new Request.Builder()
+                .url("http://admin.stage.foxcommerce.com/api/v1/store-credits/" + scId)
+                .patch(body)
+                .addHeader("content-type", "application/json")
+                .addHeader("accept", "application/json")
+                .addHeader("cache-control", "no-cache")
+                .addHeader("JWT", jwt)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+
+        System.out.println(response);
+        System.out.println(responseBody);
+        System.out.println("Update state: <" + state + ">...");
+        System.out.println("--------");
+
+    }
+
+
+
+
     public static void main(String[] args) throws IOException {
 
 //        loginAsAdmin();
@@ -731,8 +767,8 @@ public class TestClass extends BaseTest {
 
         loginAsAdmin();
         createNewCustomer();
-        createCart(customerId);
-        updSKULineItems(orderId, "SKU-YAX", 1);
+//        createCart(customerId);
+//        updSKULineItems(orderId, "SKU-YAX", 1);
 //        setShipAddress(orderId, customerName, 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
 //        listShipMethods(orderId);
 //        setShipMethod(orderId, shipMethodId);
@@ -754,8 +790,10 @@ public class TestClass extends BaseTest {
 //        createPromotion_coupon();
 //        createCoupon(promotionId);
 //        generateSingleCode(couponId);
-        bulkGenerateCodes(263, "bulkcpn", 4, 4);
-        applyCouponCode(orderId, bulkCodes.get(2));
+//        bulkGenerateCodes(263, "bulkcpn", 4, 4);
+//        applyCouponCode(orderId, bulkCodes.get(2));
+        issueStoreCredit(customerId, 50000);
+        updateSCState(scId, "canceled");
 
     }
 
