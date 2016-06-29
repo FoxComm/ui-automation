@@ -81,7 +81,7 @@ public class StoreCreditsTest extends DataProvider {
 
         assertEquals( p.amountOfSCs(), 1,
                 "A just issued SC isn't displayed on the list.");
-        assertEquals( p.getSCParamValue("1", "State"), "Active",
+        assertEquals( p.getSCParamVal("1", "State"), "Active",
                 "A just issued SC isn't in 'Active' state.");
 
     }
@@ -101,7 +101,7 @@ public class StoreCreditsTest extends DataProvider {
 
         assertEquals( p.amountOfSCs(), 1,
                 "A just issued SC isn't displayed on the list.");
-        assertEquals( p.getSCParamValue("1", "Original Balance"), "$100",
+        assertEquals( p.getSCParamVal("1", "Original Balance"), "$100",
                 "A just issued SC's Original Balance value is incorrect.");
 
     }
@@ -115,7 +115,7 @@ public class StoreCreditsTest extends DataProvider {
         click( p.storeCreditTab() );
         p.setState("1", "On Hold");
 
-        assertEquals( p.getSCParamValue("1", "State"), "On Hold",
+        assertEquals( p.getSCParamVal("1", "State"), "On Hold",
                 "Failed to change SC state.");
 
     }
@@ -129,13 +129,39 @@ public class StoreCreditsTest extends DataProvider {
         click( p.storeCreditTab() );
         p.setState("1", "Cancel Store Credit");
 
-        assertEquals( p.getSCParamValue("1", "State"), "Canceled",
+        assertEquals( p.getSCParamVal("1", "State"), "Canceled",
                 "Failed to change SC state.");
 
     }
 
+    @Test(priority = 7)
+    public void checkTransaction_csrAppeasement() throws IOException {
 
+        provideTestData("order in Remorse Hold, payed with SC (CSR Appeasement)");
+        p = open("http://admin.stage.foxcommerce.com/customers/" + customerId, CustomerPage.class);
 
+        click( p.storeCreditTab() );
+        click( p.transactionTab() );
+        assertEquals( p.getTransactionParamVal("1", "Amount"), "-$37.27",
+                "Incorrect amount of funds was applied to order as a payment.");
+        assertEquals( p.getTransactionParamVal("1", "Transaction"), "CSR Appeasement",
+                "Incorrect transaction type.");
 
+    }
+
+    @Test(priority = 8)
+    public void checkTransaction_gcTransfer() throws IOException {
+
+        provideTestData("order in Remorse Hold, payed with SC (GC Transfer)");
+        p = open("http://admin.stage.foxcommerce.com/customers/" + customerId, CustomerPage.class);
+
+        click( p.storeCreditTab() );
+        click( p.transactionTab() );
+        assertEquals( p.getTransactionParamVal("1", "Amount"), "-$37.27",
+                "Incorrect amount of funds was applied to order as a payment.");
+        assertEquals( p.getTransactionParamVal("1", "Transaction"), "Gift Card Transfer",
+                "Incorrect transaction type.");
+
+    }
 
 }

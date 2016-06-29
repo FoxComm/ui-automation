@@ -1,5 +1,6 @@
 import base.BaseTest;
 import com.squareup.okhttp.*;
+import org.json.JSONObject;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.testng.Assert;
@@ -24,6 +25,7 @@ public class TestClass extends BaseTest {
 
     private static int customerId;
     private static String orderId;
+    private static int orderTotal;
     private static String jwt;
 
     private static String customerName;     // stored from viewCustomer()
@@ -127,6 +129,35 @@ public class TestClass extends BaseTest {
         System.out.println(response);
         System.out.println("Order ID: <" + orderId + ">");
         System.out.println("--------");
+
+    }
+
+    private static void viewOrder(String orderId) throws IOException {
+
+        System.out.println("Viewing order <" + orderId + ">...");
+
+        OkHttpClient client = new OkHttpClient();
+
+        Request request = new Request.Builder()
+                .url("http://admin.stage.foxcommerce.com/api/v1/orders/" + orderId)
+                .get()
+                .addHeader("content-type", "application/json")
+                .addHeader("accept", "application/json")
+                .addHeader("cache-control", "no-cache")
+                .addHeader("JWT", jwt)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+        System.out.println(responseBody);
+//        JSONObject reponseBodyObj = new JSONObject( response.body().string() );
+//        String totals = reponseBodyObj.getString("totals");
+//        JSONObject totalsObj = new JSONObject(totals);
+//        orderTotal = totalsObj.getInt("total");
+
+        System.out.println(response);
+        System.out.println("Order Grand Total: <" + orderTotal + ">");
+        System.out.println("---- ---- ---- ----");
 
     }
 
@@ -792,8 +823,13 @@ public class TestClass extends BaseTest {
 //        generateSingleCode(couponId);
 //        bulkGenerateCodes(263, "bulkcpn", 4, 4);
 //        applyCouponCode(orderId, bulkCodes.get(2));
-        issueStoreCredit(customerId, 50000);
-        updateSCState(scId, "canceled");
+//        issueStoreCredit(customerId, 50000);
+//        updateSCState(scId, "canceled");
+//        viewOrder(orderId);
+//        setPayment_storeCredit(orderId, orderTotal);
+//        checkoutOrder(orderId);
+
+
 
     }
 

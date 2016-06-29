@@ -5,6 +5,7 @@ version := "1.0"
 scalaVersion := "2.11.8"
 
 libraryDependencies ++= Seq(
+  "org.json" % "json" % "20160212",
   "org.seleniumhq.selenium" % "selenium-java" % "2.53.0",
   "com.codeborne" % "selenide" % "3.6",
   "org.apache.httpcomponents" % "httpclient" % "4.5.2",

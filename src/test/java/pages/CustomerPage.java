@@ -429,7 +429,7 @@ public class CustomerPage extends BasePage {
     }
 
     @Step("Get {1} parameter value of {0}-th order on the list.")
-    public String getOrderParamValue(int orderIndex, String paramName) {
+    public String getOrderParamVal(int orderIndex, String paramName) {
 
         String orderParamVal = "";
         waitForDataToLoad();
@@ -567,7 +567,7 @@ public class CustomerPage extends BasePage {
     }
 
     public SelenideElement gcNumberFld() {
-        return $(By.xpath("//input[@id='gcNumberField'"));
+        return $(By.xpath("//input[@id='gcNumberField']"));
     }
 
     public double gcAvailableBalanceVal() {
@@ -606,6 +606,12 @@ public class CustomerPage extends BasePage {
         return $(By.xpath("//span[text()='Yes, Change State']/.."));
     }
 
+    public SelenideElement transactionTab() {
+        return $(By.xpath("//a[text()='Transaction']"));
+    }
+
+
+
 
     //------------------------------ HELPERS --------------------------------//
 
@@ -616,39 +622,39 @@ public class CustomerPage extends BasePage {
     }
 
     @Step("Get {1} parameter value of {0}-th store credit on the list.")
-    public String getSCParamValue(String scIndex, String paramName) {
+    public String getSCParamVal(String scIndex, String paramName) {
 
-        String orderParamVal = "";
+        String scParamVal = "";
         waitForDataToLoad();
 
         switch (paramName) {
             case "Date/Time Issued":
-                orderParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/tr[" + scIndex + "]/td[2]/time")).getText();
+                scParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/tr[" + scIndex + "]/td[2]/time")).getText();
                 break;
             case "Store Credit Id":
-                orderParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/tr[" + scIndex + "]/td[3]")).getText();
+                scParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/tr[" + scIndex + "]/td[3]")).getText();
                 break;
             case "Type":
-                orderParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/tr[" + scIndex + "]/td[4]/div/div")).getText();
+                scParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/tr[" + scIndex + "]/td[4]/div/div")).getText();
                 break;
             case "Issued By":
-                orderParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/tr[" + scIndex + "]/td[5]/div")).getText();
+                scParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/tr[" + scIndex + "]/td[5]/div")).getText();
                 break;
             case "Original Balance":
-                orderParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/tr[" + scIndex + "]/td[6]/span")).getText();
+                scParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/tr[" + scIndex + "]/td[6]/span")).getText();
                 break;
             case "Current Balance":
-                orderParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/tr[" + scIndex + "]/td[7]/span")).getText();
+                scParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/tr[" + scIndex + "]/td[7]/span")).getText();
                 break;
             case "Available Balance":
-                orderParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/tr[" + scIndex + "]/td[8]/span")).getText();
+                scParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/tr[" + scIndex + "]/td[8]/span")).getText();
                 break;
             case "State":
-                orderParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/tr[" + scIndex + "]/td[9]//span[@class='fc-model-state']")).getText();
+                scParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/tr[" + scIndex + "]/td[9]//span[@class='fc-model-state']")).getText();
                 break;
         }
 
-        return orderParamVal;
+        return scParamVal;
 
     }
 
@@ -658,5 +664,35 @@ public class CustomerPage extends BasePage {
         click( scStateListVal(state) );
         click( yesBtn() );
     }
+
+    @Step("Get {1} parameter value of {0}-th SC transaction on the list.")
+    public String getTransactionParamVal(String transactionIndex, String paramName) {
+
+        String transactionParamVal = "";
+        waitForDataToLoad();
+
+        switch (paramName) {
+            case "Date/Time":
+                transactionParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/tr[" + transactionIndex + "]/td[2]/time")).getText();
+                break;
+            case "Transaction":
+                transactionParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/tr[" + transactionIndex + "]/td[3]/div/div")).getText();
+                break;
+            case "Amount":
+                transactionParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/tr[" + transactionIndex + "]/td[4]/span")).getText();
+                break;
+            case "Payment State":
+                transactionParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/tr[" + transactionIndex + "]/td[5]/span")).getText();
+                break;
+            case "Total Available Balance":
+                transactionParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/tr[" + transactionIndex + "]/td[6]/span")).getText();
+                break;
+        }
+
+        return transactionParamVal;
+
+    }
+
+
 
 }

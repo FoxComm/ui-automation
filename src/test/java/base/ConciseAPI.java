@@ -20,7 +20,6 @@ public class ConciseAPI extends Configuration {
         elementIsVisible(element);
         sleep(250);
         element.click();
-        sleep(1000);
     }
 
     @Step ("Click {1}th button from {0} List of elements.")

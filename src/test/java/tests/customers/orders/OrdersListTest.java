@@ -47,9 +47,9 @@ public class OrdersListTest extends DataProvider {
 
         p.orderListBy("Order");
 
-        String strTotal1 =  p.getOrderParamValue(1, "Total");
+        String strTotal1 =  p.getOrderParamVal(1, "Total");
         double total1 = Double.valueOf( strTotal1.substring(1, strTotal1.length()) );
-        String strTotal2 = p.getOrderParamValue(2, "Total");
+        String strTotal2 = p.getOrderParamVal(2, "Total");
         double total2 = Double.valueOf( strTotal2.substring(1, strTotal2.length()) );
         double expectedResult = total1 + total2;
 
@@ -65,7 +65,7 @@ public class OrdersListTest extends DataProvider {
         p = open("http://admin.stage.foxcommerce.com/customers/" + customerId + "/transactions", CustomerPage.class);
 
         p.addFilter("Order", "Reference Number", orderId);
-        assertEquals( p.getOrderParamValue(1, "Order State"), "Fulfillment Started",
+        assertEquals( p.getOrderParamVal(1, "Order State"), "Fulfillment Started",
                 "Found order is not in 'Fulfillment Started' state.");
 
     }

@@ -2,6 +2,7 @@ package testdata;
 
 import base.BaseTest;
 import com.squareup.okhttp.*;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ public class DataProvider extends BaseTest {
 
     protected static int customerId;
     protected static String orderId;
+    protected static int orderTotal;
     private static String jwt;
 
     protected static String customerName;       // stored from viewCustomer()
@@ -120,6 +122,31 @@ public class DataProvider extends BaseTest {
         System.out.println("---- ---- ---- ----");
 
     }
+
+//    private static void viewOrder(int orderId) throws IOException {
+//
+//        System.out.println("Viewing order <" + orderId + ">...");
+//
+//        OkHttpClient client = new OkHttpClient();
+//
+//        Request request = new Request.Builder()
+//                .url("http://admin.stage.foxcommerce.com/api/v1/orders/BR10116")
+//                .get()
+//                .addHeader("content-type", "application/json")
+//                .addHeader("accept", "application/json")
+//                .addHeader("cache-control", "no-cache")
+//                .addHeader("JWT", jwt)
+//                .build();
+//
+//        Response response = client.newCall(request).execute();
+//        JSONObject jsonObject = new JSONObject( response.body().string() );
+//        orderTotal = jsonObject.getInt("total");
+//
+//        System.out.println(response);
+//        System.out.println("Order Grand Total: <" + orderTotal + ">");
+//        System.out.println("---- ---- ---- ----");
+//
+//    }
 
     private static void updSKULineItems(String orderRefNum, String SKU, int quantity) throws IOException {
 
@@ -410,6 +437,37 @@ public class DataProvider extends BaseTest {
         System.out.println(response);
         System.out.println("Store Credit ID: <" + scId + ">...");
         System.out.println("--------");
+
+    }
+
+    private static void issueStoreCredit_gcTransfer(int customerId, String gcNumber) throws IOException {
+
+        System.out.println("Transferring GC <" + gcNumber + "to SC for customer <" + customerId + ">...");
+
+        OkHttpClient client = new OkHttpClient();
+
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{" +
+                "\n  \"reasonId\":3," +
+                "\n  \"code\":\"CF13858F49E16CE7\"," +
+                "\n  \"subReasonId\":null\n}");
+        Request request = new Request.Builder()
+                .url("http://admin.stage.foxcommerce.com/api/v1/gift-cards/" + gcNumber + "/convert/" + customerId)
+                .post(body)
+                .addHeader("content-type", "application/json")
+                .addHeader("accept", "application/json")
+                .addHeader("cache-control", "no-cache")
+                .addHeader("JWT", jwt)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+        scId = Integer.valueOf(responseBody.substring(6, 10));
+
+        System.out.println(response);
+        System.out.println("Store Credit ID: <" + scId + ">...");
+        System.out.println("--------");
+
 
     }
 
@@ -1009,6 +1067,31 @@ public class DataProvider extends BaseTest {
 
             case "a customer && GC":
                 issueGiftCard(12500, 1);
+                break;
+
+            case "order in Remorse Hold, payed with SC (CSR Appeasement)":
+                createCart(customerId);
+                updSKULineItems(orderId, "SKU-YAX", 1);
+                setShipAddress(orderId, "John Doe", 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
+                listShipMethods(orderId);
+                setShipMethod(orderId, shipMethodId);
+                listCustomerAddresses(customerId);
+                issueStoreCredit(customerId, 50000);
+                setPayment_storeCredit(orderId, 3727);
+                checkoutOrder(orderId);
+                break;
+
+            case "order in Remorse Hold, payed with SC (GC Transfer)":
+                createCart(customerId);
+                updSKULineItems(orderId, "SKU-YAX", 1);
+                setShipAddress(orderId, "John Doe", 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
+                listShipMethods(orderId);
+                setShipMethod(orderId, shipMethodId);
+                listCustomerAddresses(customerId);
+                issueGiftCard(50000, 1);
+                issueStoreCredit_gcTransfer(customerId, gcNumber);
+                setPayment_storeCredit(orderId, 3727);
+                checkoutOrder(orderId);
                 break;
 
         }
