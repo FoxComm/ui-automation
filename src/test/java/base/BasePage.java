@@ -15,7 +15,9 @@ public class BasePage extends ConciseAPI {
         return $(By.xpath("//ul[@class='_header_usermenu__usermenu']/li"));
     }
 
-
+    public SelenideElement couponsNavMenu() {
+        return $(By.xpath("//span[text()='Coupons']"));
+    }
 
 
 

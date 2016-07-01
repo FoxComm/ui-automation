@@ -797,7 +797,7 @@ public class TestClass extends BaseTest {
         //---------------
 
         loginAsAdmin();
-        createNewCustomer();
+//        createNewCustomer();
 //        createCart(customerId);
 //        updSKULineItems(orderId, "SKU-YAX", 1);
 //        setShipAddress(orderId, customerName, 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
@@ -828,6 +828,8 @@ public class TestClass extends BaseTest {
 //        viewOrder(orderId);
 //        setPayment_storeCredit(orderId, orderTotal);
 //        checkoutOrder(orderId);
+        createPromotion_coupon();
+        createCoupon(promotionId);
 
 
 

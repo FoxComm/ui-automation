@@ -2,7 +2,6 @@ package testdata;
 
 import base.BaseTest;
 import com.squareup.okhttp.*;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -28,6 +27,7 @@ public class DataProvider extends BaseTest {
 
     protected static int promotionId;
     protected static int couponId;
+    protected static String couponName;
     protected static String singleCouponCode;
     public static List<String> bulkCodes = new ArrayList<>();
 
@@ -167,7 +167,9 @@ public class DataProvider extends BaseTest {
                 .build();
 
         Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
         System.out.println(response);
+        System.out.println(responseBody);
         System.out.println("---- ---- ---- ----");
 
     }
@@ -239,7 +241,7 @@ public class DataProvider extends BaseTest {
 
     private static void setShipAddress(String orderId, String name, int regionId, int countryId, String region_name, String address1, String address2, String city, String zip, String phoneNumber, boolean isDefault) throws IOException {
 
-        System.out.println("Adding new shipping address and setting it as a chosen for " + orderId + " order...");
+        System.out.println("Adding new shipping address and setting it as a chosen for <" + orderId + "> order...");
         OkHttpClient client = new OkHttpClient();
 
         MediaType mediaType = MediaType.parse("application/json");
@@ -262,7 +264,9 @@ public class DataProvider extends BaseTest {
                 .build();
 
         Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
         System.out.println(response);
+        System.out.println(responseBody);
         System.out.println("---- ---- ---- ----");
 
     }
@@ -609,7 +613,7 @@ public class DataProvider extends BaseTest {
         OkHttpClient client = new OkHttpClient();
 
         MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, "{\"applyType\":\"coupon\",\"form\":{\"id\":248,\"attributes\":{\"eaa8440703\":\"new promo\",\"25e24d5d0f\":\"<p>new promo</p>\"},\"discounts\":[{\"id\":249,\"attributes\":{\"bb0b82afad\":{\"orderAny\":{}},\"3db8e5c670\":{\"orderPercentOff\":{\"discount\":10}}},\"createdAt\":\"2016-06-27T22:27:43.938Z\"}],\"createdAt\":\"2016-06-27T22:27:43.915Z\"},\"shadow\":{\"id\":303,\"formId\":248,\"attributes\":{\"name\":{\"type\":\"string\",\"ref\":\"eaa8440703\"},\"storefrontName\":{\"type\":\"richText\",\"ref\":\"25e24d5d0f\"},\"description\":{\"type\":\"richText\",\"ref\":\"eaa8440703\"},\"details\":{\"type\":\"richText\",\"ref\":\"25e24d5d0f\"}},\"discounts\":[{\"id\":249,\"attributes\":{\"qualifier\":{\"type\":\"qualifier\",\"ref\":\"bb0b82afad\"},\"offer\":{\"type\":\"offer\",\"ref\":\"3db8e5c670\"}},\"createdAt\":\"2016-06-27T22:27:43.938Z\"}],\"createdAt\":\"2016-06-27T22:27:43.915Z\"}}");
+        RequestBody body = RequestBody.create(mediaType, "{\"applyType\":\"coupon\",\"form\":{\"id\":248,\"attributes\":{\"eaa8440703\":\"new promo " + generateRandomID() + "\",\"25e24d5d0f\":\"<p>new promo</p>\"},\"discounts\":[{\"id\":249,\"attributes\":{\"bb0b82afad\":{\"orderAny\":{}},\"3db8e5c670\":{\"orderPercentOff\":{\"discount\":10}}},\"createdAt\":\"2016-06-27T22:27:43.938Z\"}],\"createdAt\":\"2016-06-27T22:27:43.915Z\"},\"shadow\":{\"id\":303,\"formId\":248,\"attributes\":{\"name\":{\"type\":\"string\",\"ref\":\"eaa8440703\"},\"storefrontName\":{\"type\":\"richText\",\"ref\":\"25e24d5d0f\"},\"description\":{\"type\":\"richText\",\"ref\":\"eaa8440703\"},\"details\":{\"type\":\"richText\",\"ref\":\"25e24d5d0f\"}},\"discounts\":[{\"id\":249,\"attributes\":{\"qualifier\":{\"type\":\"qualifier\",\"ref\":\"bb0b82afad\"},\"offer\":{\"type\":\"offer\",\"ref\":\"3db8e5c670\"}},\"createdAt\":\"2016-06-27T22:27:43.938Z\"}],\"createdAt\":\"2016-06-27T22:27:43.915Z\"}}");
         Request request = new Request.Builder()
                 .url("http://admin.stage.foxcommerce.com/api/v1/promotions/default")
                 .post(body)
@@ -633,11 +637,12 @@ public class DataProvider extends BaseTest {
     private static void createCoupon(int promotionId) throws IOException {
 
         System.out.println("Creating a new coupon with promotion <" + promotionId + ">...");
+        String randomId = generateRandomID();
 
         OkHttpClient client = new OkHttpClient();
 
         MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, "{\"id\":247,\"form\":{\"id\":247,\"attributes\":{\"cafec63e4b\":{\"isExclusive\":false,\"usesPerCode\":1,\"usesPerCustomer\":1,\"isUnlimitedPerCode\":false,\"isUnlimitedPerCustomer\":false},\"267d79dd58\":\"coupon one\",\"2be88ca424\":null,\"8cee41dd60\":\"<p>coupon one</p>\",\"c23781011c\":\"2016-06-26T21:42:23.804+00:00\"},\"createdAt\":\"2016-06-27T21:29:30.861Z\"},\"shadow\":{\"id\":302,\"formId\":247,\"attributes\":{\"name\":{\"type\":\"coupon one\",\"ref\":\"267d79dd58\"},\"details\":{\"type\":\"<p>coupon one</p>\",\"ref\":\"8cee41dd60\"},\"activeTo\":{\"type\":null,\"ref\":\"2be88ca424\"},\"activeFrom\":{\"type\":\"2016-06-26T21:42:23.804+00:00\",\"ref\":\"c23781011c\"},\"usageRules\":{\"type\":\"usageRules\",\"ref\":\"cafec63e4b\"},\"description\":{\"type\":\"coupon one\",\"ref\":\"267d79dd58\"},\"storefrontName\":{\"type\":\"<p>coupon one</p>\",\"ref\":\"8cee41dd60\"}},\"createdAt\":\"2016-06-27T21:29:30.861Z\"},\"promotion\":" + promotionId + "}");
+        RequestBody body = RequestBody.create(mediaType, "{\"form\":{\"id\":null,\"createdAt\":null,\"attributes\":{\"usageRules\":{\"isExclusive\":false,\"isUnlimitedPerCode\":false,\"usesPerCode\":1,\"isUnlimitedPerCustomer\":false,\"usesPerCustomer\":1},\"name\":\"test coupon " + randomId + "\",\"storefrontName\":\"storefront name " + randomId + "\",\"description\":\"test description\",\"details\":\"test details\",\"activeFrom\":\"2016-07-01T21:31:56.701+00:00\",\"activeTo\":null}},\"shadow\":{\"id\":null,\"createdAt\":null,\"attributes\":{\"usageRules\":{\"type\":\"usageRules\",\"ref\":\"usageRules\"},\"name\":{\"type\":\"string\",\"ref\":\"name\"},\"storefrontName\":{\"type\":\"richText\",\"ref\":\"storefrontName\"},\"description\":{\"type\":\"richText\",\"ref\":\"description\"},\"details\":{\"type\":\"richText\",\"ref\":\"details\"},\"activeFrom\":{\"type\":\"2016-07-01T21:31:56.701+00:00\",\"ref\":\"activeFrom\"},\"activeTo\":{\"type\":null,\"ref\":\"activeTo\"}}},\"promotion\":" + promotionId + "}");
         Request request = new Request.Builder()
                 .url("http://admin.stage.foxcommerce.com/api/v1/coupons/default")
                 .post(body)
@@ -649,6 +654,7 @@ public class DataProvider extends BaseTest {
         Response response = client.newCall(request).execute();
         String responseBody = response.body().string();
         couponId = Integer.valueOf(responseBody.substring(6, 9));
+        couponName = "test coupon " + randomId;
 
         System.out.println(response);
 //        System.out.println(responseBody);
@@ -666,7 +672,7 @@ public class DataProvider extends BaseTest {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{}");
         Request request = new Request.Builder()
-                .url("http://admin.stage.foxcommerce.com/api/v1/coupons/codes/generate/" + couponId + "/newcpn-" + generateRandomID())
+                .url("http://admin.stage.foxcommerce.com/api/v1/coupons/codes/generate/" + couponId + "/NWCPN-" + generateRandomID())
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -790,27 +796,30 @@ public class DataProvider extends BaseTest {
     protected void provideTestData(String testMethodName) throws IOException {
 
         loginAsAdmin();
-        createNewCustomer();
 
         switch(testMethodName) {
 
             //------------------------------------- SEARCH FILTERS ------------------------------------//
 
             case "a customer":
+                createNewCustomer();
                 break;
 
             //----------------------------------------- ITEMS -----------------------------------------//
 
             case "empty cart":
+                createNewCustomer();
                 createCart(customerId);
                 break;
 
             case "cart with 1 item":
+                createNewCustomer();
                 createCart(customerId);
                 updSKULineItems(orderId, "SKU-TRL", 1);
                 break;
 
             case "cart with 3 items":
+                createNewCustomer();
                 createCart(customerId);
                 updSKULineItems(orderId, "SKU-TRL", 3);
                 updSKULineItems(orderId, "SKU-BRO", 2);
@@ -818,6 +827,7 @@ public class DataProvider extends BaseTest {
                 break;
 
             case "cart with 1 item, qty: 3":
+                createNewCustomer();
                 createCart(customerId);
                 updSKULineItems(orderId, "SKU-TRL", 3);
                 break;
@@ -825,49 +835,54 @@ public class DataProvider extends BaseTest {
             //------------------------------------- SHIPPING ADDRESS -------------------------------------//
 
             case "cart with empty address book":
+                createNewCustomer();
                 createCart(customerId);
                 break;
 
             case "cart with non-empty address book":
+                createNewCustomer();
                 createCart(customerId);
                 createAddress(customerId, "John Doe", 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 break;
 
             case "cart with chosen shipping address":
+                createNewCustomer();
                 createCart(customerId);
                 setShipAddress(orderId, "John Doe", 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 break;
 
             case "cart with 2 addresses in address book":
+                createNewCustomer();
                 createCart(customerId);
                 createAddress(customerId, "John Doe", 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 createAddress(customerId, "Paul Puga", 4161, 234, "Washington", "2101 Green Valley", "200 Suite", "Seattle", "98101", "5551237575", false);
                 break;
 
             case "cart with 2 addresses and defined default shipping address":
+                createNewCustomer();
                 createCart(customerId);
                 createAddress(customerId, "John Doe", 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 createAddress(customerId, "Paul Puga", 4161, 234, "Washington", "2101 Green Valley", "200 Suite", "Seattle", "98101", "5551237575", false);
                 break;
 
-            //---------------------------------------- COUPONS -----------------------------------------//
+            //----------------------------------- ORDERS WITH COUPONS ------------------------------------//
 
-//            case "a cart and a single code coupon":
+//            case "a cart && a single code coupon":
 //                createCart(customerId);
 //                createPromotion_coupon();
 //                createCoupon(promotionId);
 //                generateSingleCode(couponId);
 //                break;
+
+            case "a cart with a single code coupon applied":
+                createCart(customerId);
+                createPromotion_coupon();
+                createCoupon(promotionId);
+                generateSingleCode(couponId);
+                applyCouponCode(orderId, singleCouponCode);
+                break;
 //
-//            case "a cart with a single code coupon applied":
-//                createCart(customerId);
-//                createPromotion_coupon();
-//                createCoupon(promotionId);
-//                generateSingleCode(couponId);
-//                applyCouponCode(singleCouponCode);
-//                break;
-//
-//            case "a cart and bulk generated codes":
+//            case "a cart && coupon with bulk generated codes":
 //                createCart(customerId);
 //                createPromotion_coupon();
 //                createCoupon(promotionId);
@@ -875,29 +890,39 @@ public class DataProvider extends BaseTest {
 //                applyCouponCode(bulkCodes.get(0));
 //                break;
 
-
+            case "a cart with a bulk generated code applied":
+                createCart(customerId);
+                createPromotion_coupon();
+                createCoupon(promotionId);
+                bulkGenerateCodes(couponId, "BLK_NWCPN-", 5, 3);
+                applyCouponCode(orderId, bulkCodes.get(0));
+                break;
 
             //------------------------------------- PAYMENT METHOD -------------------------------------//
 
             case "cart with 1 item and chosen shipping address":
+                createNewCustomer();
                 createCart(customerId);
                 updSKULineItems(orderId, "SKU-BRO", 1);
                 setShipAddress(orderId, "John Doe", 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 break;
 
             case "cart with 1 item && customer with GC":
+                createNewCustomer();
                 createCart(customerId);
                 updSKULineItems(orderId, "SKU-BRO", 1);
                 issueGiftCard(50000, 1);
                 break;
 
             case "cart with 1 item && customer with SC":
+                createNewCustomer();
                 createCart(customerId);
                 updSKULineItems(orderId, "SKU-BRO", 1);
                 issueStoreCredit(customerId, 50000);
                 break;
 
             case "cart with 1 item, shipping method, and credit card payment":
+                createNewCustomer();
                 createCart(customerId);
                 updSKULineItems(orderId, "SKU-YAX", 1);
                 setShipAddress(orderId, "John Doe", 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
@@ -909,6 +934,7 @@ public class DataProvider extends BaseTest {
                 break;
 
             case "cart with 1 item, shipping method and issued SC":
+                createNewCustomer();
                 createCart(customerId);
                 updSKULineItems(orderId, "SKU-YAX", 1);
                 setShipAddress(orderId, "John Doe", 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
@@ -918,6 +944,7 @@ public class DataProvider extends BaseTest {
                 break;
 
             case "cart with 1 item, shipping method and issued GC":
+                createNewCustomer();
                 createCart(customerId);
                 updSKULineItems(orderId, "SKU-YAX", 1);
                 setShipAddress(orderId, "John Doe", 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
@@ -927,6 +954,7 @@ public class DataProvider extends BaseTest {
                 break;
 
             case "cart with 1 item, shipping method, credit card payment and issued SC":
+                createNewCustomer();
                 createCart(customerId);
                 updSKULineItems(orderId, "SKU-YAX", 1);
                 setShipAddress(orderId, "John Doe", 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
@@ -939,6 +967,7 @@ public class DataProvider extends BaseTest {
                 break;
 
             case "cart with 1 item, shipping method, credit card payment and issued GC":
+                createNewCustomer();
                 createCart(customerId);
                 updSKULineItems(orderId, "SKU-YAX", 1);
                 setShipAddress(orderId, "John Doe", 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
@@ -962,6 +991,7 @@ public class DataProvider extends BaseTest {
                 break;
 
             case "cart with 1 item && SC onHold":
+                createNewCustomer();
                 createCart(customerId);
                 updSKULineItems(orderId, "SKU-YAX", 1);
                 issueStoreCredit(customerId, 50000);
@@ -969,6 +999,7 @@ public class DataProvider extends BaseTest {
                 break;
 
             case "cart with 1 item && SC canceled":
+                createNewCustomer();
                 createCart(customerId);
                 updSKULineItems(orderId, "SKU-YAX", 1);
                 issueStoreCredit(customerId, 50000);
@@ -978,6 +1009,7 @@ public class DataProvider extends BaseTest {
             //------------------------------------- ORDER STATE -------------------------------------//
 
             case "order in remorse hold":
+                createNewCustomer();
                 createCart(customerId);
                 updSKULineItems(orderId, "SKU-YAX", 1);
                 setShipAddress(orderId, "John Doe", 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
@@ -992,18 +1024,21 @@ public class DataProvider extends BaseTest {
             //--------------------------------- CUSTOMER ADDRESS BOOK ---------------------------------//
 
             case "customer with a shipping address":
+                createNewCustomer();
                 createAddress(customerId, "John Doe", 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 break;
 
             //--------------------------------- CUSTOMER CREDIT CARDS ---------------------------------//
 
             case "customer with a credit card":
+                createNewCustomer();
                 createAddress(customerId, customerName, 4161, 234, "Washington", "2101 Green Valley", "Suite 300", "Seattle", "98101", "9879879876", false);
                 listCustomerAddresses(customerId);
                 createCreditCard("John Doe", "5555555555554444", "999", 4, 2020, addressId1);
                 break;
 
             case "customer with a credit card and 2 addresses":
+                createNewCustomer();
                 createAddress(customerId, customerName, 4161, 234, "New York", "545 Narrow Ave", "Suite 15", "New Jersey", "10201", "5551118888", false);
                 createAddress(customerId, customerName, 4161, 234, "Washington", "2101 Green Valley", "Suite 300", "Seattle", "98101", "9879879876", false);
                 listCustomerAddresses(customerId);
@@ -1014,6 +1049,7 @@ public class DataProvider extends BaseTest {
 
             case "customer with 2 orders in remorse hold":
 
+                createNewCustomer();
                 createCart(customerId);
                 updSKULineItems(orderId, "SKU-YAX", 1);
                 setShipAddress(orderId, "John Doe", 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
@@ -1037,6 +1073,7 @@ public class DataProvider extends BaseTest {
 
             case "customer with 2 orders in remorse hold and fulfillment started":
 
+                createNewCustomer();
                 createCart(customerId);
                 updSKULineItems(orderId, "SKU-YAX", 1);
                 setShipAddress(orderId, "John Doe", 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
@@ -1062,14 +1099,17 @@ public class DataProvider extends BaseTest {
             //----------------------------------- STORE CREDITS -----------------------------------//
 
             case "a customer with issued SC":
+                createNewCustomer();
                 issueStoreCredit(customerId, 50000);
                 break;
 
             case "a customer && GC":
+                createNewCustomer();
                 issueGiftCard(12500, 1);
                 break;
 
             case "order in Remorse Hold, payed with SC (CSR Appeasement)":
+                createNewCustomer();
                 createCart(customerId);
                 updSKULineItems(orderId, "SKU-YAX", 1);
                 setShipAddress(orderId, "John Doe", 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
@@ -1082,6 +1122,7 @@ public class DataProvider extends BaseTest {
                 break;
 
             case "order in Remorse Hold, payed with SC (GC Transfer)":
+                createNewCustomer();
                 createCart(customerId);
                 updSKULineItems(orderId, "SKU-YAX", 1);
                 setShipAddress(orderId, "John Doe", 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
@@ -1091,6 +1132,43 @@ public class DataProvider extends BaseTest {
                 issueGiftCard(50000, 1);
                 issueStoreCredit_gcTransfer(customerId, gcNumber);
                 setPayment_storeCredit(orderId, 3727);
+                checkoutOrder(orderId);
+                break;
+
+            //----------------------------------- COUPONS -----------------------------------//
+
+            case "a promotion":
+                createPromotion_coupon();
+                break;
+
+            case "coupon with single code":
+                createPromotion_coupon();
+                createCoupon(promotionId);
+                generateSingleCode(couponId);
+                break;
+
+            case "coupon with bulk generated codes":
+                createPromotion_coupon();
+                createCoupon(promotionId);
+                bulkGenerateCodes(couponId, "BLKNWCPN" + couponId + "-", 4, 5);
+                break;
+
+
+            case "order in remorse hold with applied coupon":
+                createPromotion_coupon();
+                createCoupon(promotionId);
+                generateSingleCode(couponId);
+
+                createNewCustomer();
+                createCart(customerId);
+                updSKULineItems(orderId, "SKU-YAX", 1);
+                setShipAddress(orderId, "John Doe", 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
+                listShipMethods(orderId);
+                setShipMethod(orderId, shipMethodId);
+                listCustomerAddresses(customerId);
+                createCreditCard(customerName, "5555555555554444", "777", 3, 2020, addressId1);
+                setPayment_creditCard(orderId, creditCardId);
+                applyCouponCode(orderId, singleCouponCode);
                 checkoutOrder(orderId);
                 break;
 

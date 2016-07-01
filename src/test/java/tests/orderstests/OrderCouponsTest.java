@@ -11,7 +11,7 @@ import java.util.Objects;
 
 import static com.codeborne.selenide.Selenide.open;
 
-public class CouponsTest extends DataProvider {
+public class OrderCouponsTest extends DataProvider {
 
     private OrderDetailsPage p;
 

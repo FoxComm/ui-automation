@@ -3,6 +3,7 @@ package base;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import ru.yandex.qatools.allure.annotations.Step;
 
 import java.text.DecimalFormat;
@@ -22,7 +23,7 @@ public class ConciseAPI extends Configuration {
         element.click();
     }
 
-    @Step ("Click {1}th button from {0} List of elements.")
+    @Step("Click {1}th button from {0} List of elements.")
     protected void click(List<SelenideElement> listOfElements, int index) {
         SelenideElement element = listOfElements.get(index - 1);
         elementIsVisible(element);
@@ -30,12 +31,12 @@ public class ConciseAPI extends Configuration {
         element.click();
     }
 
-    @Step ("Check if {0} element is visible.")
+    @Step("Check if {0} element is visible.")
     protected void elementIsVisible(SelenideElement element) {
         element.shouldBe(visible);
     }
 
-    @Step ("Check if {0} element is not visible.")
+    @Step("Check if {0} element is not visible.")
     protected void elementNotVisible(SelenideElement element) {
         element.shouldNot(visible);
     }
@@ -47,10 +48,15 @@ public class ConciseAPI extends Configuration {
         element.setValue(value);
     }
 
-    @Step ("Click {0}.")
-    public void jsClick(SelenideElement element) {
+    @Step("Click {0}.")
+    protected void jsClick(SelenideElement element) {
         JavascriptExecutor executor = (JavascriptExecutor)getWebDriver();
         executor.executeScript("arguments[0].click();", element);
+    }
+
+    public void clearField(SelenideElement element) {
+        element.sendKeys(Keys.chord(Keys.CONTROL, "a"));
+        element.sendKeys(Keys.BACK_SPACE);
     }
 
     protected String addToString(String string1, String string2) {

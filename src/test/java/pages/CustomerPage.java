@@ -412,7 +412,7 @@ public class CustomerPage extends BasePage {
         return $(By.xpath("//input[@placeholder='filter or keyword search']"));
     }
 
-    private SelenideElement ordersOnList() {
+    private SelenideElement itemsOnList() {
         return $(By.xpath("//td[@class='fc-table-td']"));
     }
 
@@ -425,7 +425,7 @@ public class CustomerPage extends BasePage {
 
     @Step("Wait for data on the list to be loaded.")
     public void waitForDataToLoad() {
-        ordersOnList().shouldBe(Condition.visible);
+        itemsOnList().shouldBe(Condition.visible);
     }
 
     @Step("Get {1} parameter value of {0}-th order on the list.")
