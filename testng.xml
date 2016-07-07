@@ -15,7 +15,9 @@
             <!--<class name="tests.customers.details.ContactInformationTest" />-->
             <!--<class name="tests.customers.orders.OrdersListTest" />-->
             <!--<class name="tests.customers.storecredits.StoreCreditsTest" />-->
-            <class name="tests.coupons.CouponsTest" />
+            <!--<class name="tests.coupons.CouponsTest" />-->
+            <!--<class name="tests.products.CreateProductsTest" />-->
+            <class name="tests.products.EditProductTest" />
         </classes>
     </test>
 </suite>

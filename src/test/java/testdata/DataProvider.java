@@ -28,8 +28,12 @@ public class DataProvider extends BaseTest {
     protected static int promotionId;
     protected static int couponId;
     protected static String couponName;
-    protected static String singleCouponCode;
-    public static List<String> bulkCodes = new ArrayList<>();
+    private static String singleCouponCode;
+    private static List<String> bulkCodes = new ArrayList<>();
+
+    protected static String sku;                 // stored from createSKU_active();
+    protected static String productName;         // stored from createProduct_<..>() methods
+    protected static int productId;              // stored from createProduct_<..>() methods
 
     private static void loginAsAdmin() throws IOException {
 
@@ -725,7 +729,7 @@ public class DataProvider extends BaseTest {
         System.out.println("Number of codes generated: <" + bulkCodes.size() + ">");
         assertEquals(bulkCodes.size(), quantity,
                 "Amount of generated codes is lower than requested amount.");
-        printList(bulkCodes);
+        printStringList(bulkCodes);
 
         System.out.println(response);
         System.out.println(responseBody);
@@ -788,8 +792,312 @@ public class DataProvider extends BaseTest {
 
     }
 
+    private static void createSKU_active() throws IOException {
 
-//    applyCouponCode(bulkCodes.get(0));
+        System.out.println("Creating a new SKU, options: ACTIVE state...");
+        String randomId = generateRandomID();
+        String skuCode = "SKU-" + randomId;
+
+        OkHttpClient client = new OkHttpClient();
+
+        MediaType mediaType = MediaType.parse("application/json");
+//        RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"" + skuCode + "\"},\"title\":{\"t\":\"string\",\"v\":\"Test Product " + randomId + "\"},\"upc\":{\"t\":\"string\",\"v\":\"Test UPC\"},\"description\":{\"t\":\"richText\",\"v\":\"<p>Just another test SKU.</p>\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"2000\"}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"2000\"}},\"unitCost\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"2000\"}},\"activeFrom\":{\"v\":\"2016-07-04T17:43:44.295+00:00\",\"t\":\"datetime\"},\"activeTo\":{\"v\":null,\"t\":\"datetime\"}}}");
+        RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"" + skuCode + "\"},\"title\":{\"t\":\"string\",\"v\":\"THATS A TITLE OVER HERE\"},\"upc\":{\"t\":\"string\",\"v\":\"Test UPC\"},\"description\":{\"t\":\"richText\",\"v\":\"<p>Test description</p>\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"5000\"}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"5000\"}},\"unitCost\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"5000\"}},\"activeFrom\":{\"v\":\"2016-07-05T22:19:54.918+00:00\",\"t\":\"datetime\"},\"activeTo\":{\"v\":null,\"t\":\"datetime\"}}}");
+        Request request = new Request.Builder()
+                .url("http://admin.stage.foxcommerce.com/api/v1/skus/default")
+                .post(body)
+                .addHeader("content-type", "application/json")
+                .addHeader("accept", "application/json")
+                .addHeader("cache-control", "no-cache")
+                .addHeader("JWT", jwt)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+
+        sku = skuCode;
+        System.out.println(response);
+        System.out.println(responseBody);
+        System.out.println("SKU code: <" + skuCode + ">.");
+        System.out.println("---- ---- ---- ----");
+
+    }
+
+    private static void createSKU_inactive() throws IOException {
+
+        System.out.println("Creating a new SKU, options: INACTIVE state...");
+        String randomId = generateRandomID();
+        String skuCode = "SKU-" + randomId;
+
+        OkHttpClient client = new OkHttpClient();
+
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"" + skuCode + "\"},\"title\":{\"t\":\"string\",\"v\":\"Test Product #" + randomId + "\"},\"upc\":{\"t\":\"string\",\"v\":\"Test UPC\"},\"description\":{\"t\":\"richText\",\"v\":\"<p>Just another test SKU.</p>\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"5000\"}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"5000\"}},\"unitCost\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"5000\"}}}}");
+        Request request = new Request.Builder()
+                .url("http://admin.stage.foxcommerce.com/api/v1/skus/default")
+                .post(body)
+                .addHeader("content-type", "application/json")
+                .addHeader("accept", "application/json")
+                .addHeader("cache-control", "no-cache")
+                .addHeader("JWT", jwt)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+
+        sku = skuCode;
+        System.out.println(response);
+        System.out.println(responseBody);
+        System.out.println("SKU code: <" + skuCode + ">.");
+        System.out.println("---- ---- ---- ----");
+
+    }
+
+    private static void createSKU_noTitle() throws IOException {
+
+        System.out.println("Creating a new SKU, options: no title...");
+        String randomId = generateRandomID();
+        String skuCode = "SKU-" + randomId;
+
+        OkHttpClient client = new OkHttpClient();
+
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"" + skuCode + "\"},\"title\":{\"t\":\"string\",\"v\":\"\"},\"upc\":{\"t\":\"string\",\"v\":\"Test UPC\"},\"description\":{\"t\":\"richText\",\"v\":\"<p>Just another test SKU.</p>\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"1215\"}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"1215\"}},\"unitCost\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"0\"}},\"activeFrom\":{\"v\":\"2016-07-04T18:25:59.745+00:00\",\"t\":\"datetime\"},\"activeTo\":{\"v\":null,\"t\":\"datetime\"}}}");
+        Request request = new Request.Builder()
+                .url("http://admin.stage.foxcommerce.com/api/v1/skus/default")
+                .post(body)
+                .addHeader("content-type", "application/json")
+                .addHeader("accept", "application/json")
+                .addHeader("cache-control", "no-cache")
+                .addHeader("JWT", jwt)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+
+        sku = skuCode;
+        System.out.println(response);
+        System.out.println(responseBody);
+        System.out.println("SKU code: <" + skuCode + ">.");
+        System.out.println("---- ---- ---- ----");
+
+    }
+
+    private static void createSKU_noDescription() throws IOException {
+
+        System.out.println("Creating a new SKU, options: no description...");
+        String randomId = generateRandomID();
+        String skuCode = "SKU-" + randomId;
+
+        OkHttpClient client = new OkHttpClient();
+
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"" + skuCode + "\"},\"title\":{\"t\":\"string\",\"v\":\"Test Product #" + randomId + "\"},\"upc\":{\"t\":\"string\",\"v\":\"Test UPC\"},\"description\":{\"t\":\"richText\",\"v\":\"\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"1215\"}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"1215\"}},\"unitCost\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"0\"}},\"activeFrom\":{\"v\":\"2016-07-04T18:25:59.745+00:00\",\"t\":\"datetime\"},\"activeTo\":{\"v\":null,\"t\":\"datetime\"}}}");
+        Request request = new Request.Builder()
+                .url("http://admin.stage.foxcommerce.com/api/v1/skus/default")
+                .post(body)
+                .addHeader("content-type", "application/json")
+                .addHeader("accept", "application/json")
+                .addHeader("cache-control", "no-cache")
+                .addHeader("JWT", jwt)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+
+        sku = skuCode;
+        System.out.println(response);
+        System.out.println(responseBody);
+        System.out.println("SKU code: <" + skuCode + ">.");
+        System.out.println("---- ---- ---- ----");
+
+    }
+
+    private static void createSKU_noPrices() throws IOException {
+
+        System.out.println("Creating a new SKU, options: all prices equals <0>...");
+        String randomId = generateRandomID();
+        String skuCode = "SKU-#" + randomId;
+
+        OkHttpClient client = new OkHttpClient();
+
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"" + skuCode + "\"},\"title\":{\"t\":\"string\",\"v\":\"Test Product #" + randomId + "\"},\"upc\":{\"t\":\"string\",\"v\":\"Test UPC\"},\"description\":{\"t\":\"richText\",\"v\":\"<p>Just another test SKU.</p>\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"0\"}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"0\"}},\"unitCost\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"0\"}},\"activeFrom\":{\"v\":\"2016-07-04T18:25:59.745+00:00\",\"t\":\"datetime\"},\"activeTo\":{\"v\":null,\"t\":\"datetime\"}}}");
+        Request request = new Request.Builder()
+                .url("http://admin.stage.foxcommerce.com/api/v1/skus/default")
+                .post(body)
+                .addHeader("content-type", "application/json")
+                .addHeader("accept", "application/json")
+                .addHeader("cache-control", "no-cache")
+                .addHeader("JWT", jwt)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+
+        sku = skuCode;
+        System.out.println(response);
+        System.out.println(responseBody);
+        System.out.println("SKU code: <" + skuCode + ">.");
+        System.out.println("---- ---- ---- ----");
+
+    }
+
+    private static void createProduct_noSKU_active() throws IOException {
+
+        System.out.println("Creating a new product... No SKU code is provided, so a new one will be created.");
+        String productName_local = "Test Product " + generateRandomID();
+
+        OkHttpClient client = new OkHttpClient();
+
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"metaDescription\":{\"t\":\"string\",\"v\":null},\"metaTitle\":{\"t\":\"string\",\"v\":null},\"url\":{\"t\":\"string\",\"v\":null},\"description\":{\"t\":\"richText\",\"v\":\"The best thing to buy in 2016!\"},\"title\":{\"t\":\"string\",\"v\":\"" + productName_local + "\"},\"activeFrom\":{\"v\":\"2016-07-04T17:22:44.388+00:00\",\"t\":\"datetime\"},\"activeTo\":{\"v\":null,\"t\":\"datetime\"}},\"skus\":[{\"feCode\":\"F0QGTGBBINBQF5V53TYB9\",\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"SKU-TST\"},\"title\":{\"t\":\"string\",\"v\":\"\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"2718\"}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"2718\"}}}}]}");
+        Request request = new Request.Builder()
+                .url("http://admin.stage.foxcommerce.com/api/v1/products/default")
+                .post(body)
+                .addHeader("content-type", "application/json")
+                .addHeader("accept", "application/json")
+                .addHeader("cache-control", "no-cache")
+                .addHeader("JWT", jwt)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+        productName = productName_local;
+        productId = Integer.valueOf(responseBody.substring(6, 9));
+
+        System.out.println(response);
+        System.out.println(responseBody);
+        System.out.println("Product ID: <" + productId + ">.");
+        System.out.println("Product name: <" + productName + ">.");
+        System.out.println("---- ---- ---- ----");
+
+    }
+
+    private static void createProduct_active(String sku, String tag) throws IOException {
+
+        System.out.println("Creating a new product with SKU <" + sku + ">...");
+        String productName_local = "Test Product " + generateRandomID();
+
+        OkHttpClient client = new OkHttpClient();
+
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"metaDescription\":{\"t\":\"string\",\"v\":null},\"metaTitle\":{\"t\":\"string\",\"v\":null},\"url\":{\"t\":\"string\",\"v\":null},\"description\":{\"t\":\"richText\",\"v\":\"The best thing to buy in 2016!\"},\"title\":{\"t\":\"string\",\"v\":\"" + productName_local + "\"},\"tags\":{\"t\":\"tags\",\"v\":[\"" + tag + "\"]},\"activeFrom\":{\"v\":\"2016-07-06T17:39:45.277+00:00\",\"t\":\"datetime\"},\"activeTo\":{\"v\":null,\"t\":\"datetime\"}},\"skus\":[{\"feCode\":\"1PZ1Z6FEB42BFOCYJH5MI\",\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"" + sku + "\"},\"title\":{\"t\":\"string\",\"v\":\"\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"2718\"}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"2718\"}}}}]}");
+        Request request = new Request.Builder()
+                .url("http://admin.stage.foxcommerce.com/api/v1/products/default")
+                .post(body)
+                .addHeader("content-type", "application/json")
+                .addHeader("accept", "application/json")
+                .addHeader("cache-control", "no-cache")
+                .addHeader("JWT", jwt)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+        productId = Integer.valueOf(responseBody.substring(6, 9));
+        productName = productName_local;
+
+        System.out.println(response);
+        System.out.println(responseBody);
+        System.out.println("Product ID: <" + productId + ">.");
+        System.out.println("Product name: <" + productName + ">.");
+        System.out.println("---- ---- ---- ----");
+
+    }
+
+    private static void createProduct_active_noTag(String sku) throws IOException {
+
+        System.out.println("Creating a new product with SKU <" + sku + ">...");
+        String productName_local = "Test Product " + generateRandomID();
+
+        OkHttpClient client = new OkHttpClient();
+
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"metaDescription\":{\"t\":\"string\",\"v\":null},\"metaTitle\":{\"t\":\"string\",\"v\":null},\"url\":{\"t\":\"string\",\"v\":null},\"description\":{\"t\":\"richText\",\"v\":\"The best thing to buy in 2016!\"},\"title\":{\"t\":\"string\",\"v\":\"" + productName_local + "\"},\"activeFrom\":{\"v\":\"2016-07-04T17:22:44.388+00:00\",\"t\":\"datetime\"},\"activeTo\":{\"v\":null,\"t\":\"datetime\"}},\"skus\":[{\"feCode\":\"F0QGTGBBINBQF5V53TYB9\",\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"" + sku + "\"},\"title\":{\"t\":\"string\",\"v\":\"\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"2718\"}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"2718\"}}}}]}");
+        Request request = new Request.Builder()
+                .url("http://admin.stage.foxcommerce.com/api/v1/products/default")
+                .post(body)
+                .addHeader("content-type", "application/json")
+                .addHeader("accept", "application/json")
+                .addHeader("cache-control", "no-cache")
+                .addHeader("JWT", jwt)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+        productName = productName_local;
+        productId = Integer.valueOf(responseBody.substring(6, 9));
+
+        System.out.println(response);
+        System.out.println(responseBody);
+        System.out.println("Product ID: <" + productId + ">.");
+        System.out.println("Product name: <" + productName + ">.");
+        System.out.println("---- ---- ---- ----");
+
+    }
+
+    private static void createProduct_inactive(String sku, String tag) throws IOException {
+
+        System.out.println("Creating a new product with SKU <" + sku + ">...");
+        String productName_local = "Test Product " + generateRandomID();
+
+        OkHttpClient client = new OkHttpClient();
+
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"metaDescription\":{\"t\":\"string\",\"v\":null},\"metaTitle\":{\"t\":\"string\",\"v\":null},\"url\":{\"t\":\"string\",\"v\":null},\"description\":{\"t\":\"richText\",\"v\":\"The best thing to buy in 2016!\"},\"title\":{\"t\":\"string\",\"v\":\"" + productName_local + "\"},\"tags\":{\"t\":\"tags\",\"v\":[\"" + tag + "\"]}},\"skus\":[{\"feCode\":\"JBV96IF5QRNZM9KQ33DI\",\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"" + sku + "\"},\"title\":{\"t\":\"string\",\"v\":\"\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"2718\"}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"2718\"}}}}]}");
+        Request request = new Request.Builder()
+                .url("http://admin.stage.foxcommerce.com/api/v1/products/default")
+                .post(body)
+                .addHeader("content-type", "application/json")
+                .addHeader("accept", "application/json")
+                .addHeader("cache-control", "no-cache")
+                .addHeader("JWT", jwt)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+        productName = productName_local;
+        productId = Integer.valueOf(responseBody.substring(6, 9));
+
+        System.out.println(response);
+        System.out.println(responseBody);
+        System.out.println("Product ID: <" + productId + ">.");
+        System.out.println("Product name: <" + productName + ">.");
+        System.out.println("---- ---- ---- ----");
+
+    }
+
+    private static void createProduct_inactive_noTag(String sku) throws IOException {
+
+        System.out.println("Creating a new product with SKU <" + sku + ">...");
+        String productName_local = "Test Product " + generateRandomID();
+
+        OkHttpClient client = new OkHttpClient();
+
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"metaDescription\":{\"t\":\"string\",\"v\":null},\"metaTitle\":{\"t\":\"string\",\"v\":null},\"url\":{\"t\":\"string\",\"v\":null},\"description\":{\"t\":\"richText\",\"v\":\"The best thing to buy in 2016!\"},\"title\":{\"t\":\"string\",\"v\":\"" + productName_local + "\"}},\"skus\":[{\"feCode\":\"KB0SOK5PSSBEPP5H4CXR\",\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"" + sku + "\"},\"title\":{\"t\":\"string\",\"v\":\"\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"2718\"}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"2718\"}}}}]}");
+        Request request = new Request.Builder()
+                .url("http://admin.stage.foxcommerce.com/api/v1/products/default")
+                .post(body)
+                .addHeader("content-type", "application/json")
+                .addHeader("accept", "application/json")
+                .addHeader("cache-control", "no-cache")
+                .addHeader("JWT", jwt)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+        productName = productName_local;
+        productId = Integer.valueOf(responseBody.substring(6, 9));
+
+        System.out.println(response);
+        System.out.println(responseBody);
+        System.out.println("Product ID: <" + productId + ">.");
+        System.out.println("Product name: <" + productName + ">.");
+        System.out.println("---- ---- ---- ----");
+
+    }
+
 
 
 
@@ -1170,6 +1478,78 @@ public class DataProvider extends BaseTest {
                 setPayment_creditCard(orderId, creditCardId);
                 applyCouponCode(orderId, singleCouponCode);
                 checkoutOrder(orderId);
+                break;
+
+            //----------------------------------- PRODUCTS -----------------------------------//
+
+            case "product in active state":
+                createSKU_active();
+                createProduct_active(sku, "sunglasses");
+                break;
+
+            case "active SKU":
+                createSKU_active();
+                break;
+
+            case "inactive SKU":
+                createSKU_inactive();
+                break;
+
+            case "SKU with no title":
+                createSKU_noTitle();
+                break;
+
+            case "SKU with no description":
+                createSKU_noDescription();
+                break;
+
+            case "SKU with no prices set":
+                createSKU_noPrices();
+                break;
+
+            case "product in active state, active SKU and tag":
+                createSKU_active();
+                createProduct_active(sku, "sunglasses");
+                break;
+
+            //----------------
+            case "active product, has tag, active SKU":
+                createSKU_active();
+                createProduct_active(sku, "sunglasses");
+                break;
+
+            case "active product, no tag, active SKU":
+                createSKU_active();
+                createProduct_active_noTag(sku);
+                break;
+            case "inactive product, has tag, active SKU":
+                createSKU_active();
+                createProduct_inactive(sku, "sunglasses");
+                break;
+
+            case "inactive product, no tag, active SKU":
+                createSKU_active();
+                createProduct_inactive_noTag(sku);
+                break;
+
+            case "active product, has tag, inactive SKU":
+                createSKU_inactive();
+                createProduct_active(sku, "sunglasses");
+                break;
+
+            case "active product, no tag, inactive SKU":
+                createSKU_inactive();
+                createProduct_active_noTag(sku);
+                break;
+
+            case "inactive product, has tag, inactive SKU":
+                createSKU_inactive();
+                createProduct_inactive(sku, "sunglasses");
+                break;
+
+            case "inactive product, no tag, inactive SKU":
+                createSKU_inactive();
+                createProduct_inactive_noTag(sku);
                 break;
 
         }

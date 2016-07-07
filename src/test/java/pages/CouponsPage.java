@@ -241,14 +241,10 @@ public class CouponsPage extends BasePage {
         List<SelenideElement> couponsList = $$(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a/td[2]"));
         SelenideElement couponToClick = null;
 
-        int i = 0;
-        boolean run = true;
-        while(run) {
+        for(SelenideElement coupon : couponsList) {
 
-            SelenideElement coupon = couponsList.get(i);
             String listCouponName = coupon.getText();
             if (listCouponName.equals(couponName)) {
-                run = false;
                 couponToClick = coupon;
             }
 
@@ -257,7 +253,5 @@ public class CouponsPage extends BasePage {
         return couponToClick;
 
     }
-
-
 
 }

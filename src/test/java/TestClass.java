@@ -1,15 +1,9 @@
 import base.BaseTest;
 import com.squareup.okhttp.*;
-import org.json.JSONObject;
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-import org.testng.Assert;
-import org.testng.annotations.Test;
 
 import java.io.IOException;
 import java.util.*;
 
-import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 import static org.testng.Assert.assertEquals;
@@ -35,12 +29,15 @@ public class TestClass extends BaseTest {
     private static String gcNumber;         // stored from issueGiftCard()
     private static int scId;                // stored from issueStoreCredit()
     private static int shipMethodId;        // stored from listShipMethods()
-    private static int creditCardId;        // stored from create createCreditCard()
+    private static int creditCardId;        // stored from createCreditCard()
 
     private static int promotionId;
     private static int couponId;
     private static String singleCouponCode;
     private static List<String> bulkCodes = new ArrayList<>();
+
+    private static String sku;              // stored from createSKU();
+    public static int productId;            // stored form createProduct() methods
 
     private static void loginAsAdmin() throws IOException {
 
@@ -702,7 +699,7 @@ public class TestClass extends BaseTest {
         System.out.println("Number of codes generated: <" + bulkCodes.size() + ">");
         assertEquals(bulkCodes.size(), quantity,
                 "Amount of generated codes is lower than requested amount.");
-        printList(bulkCodes);
+        printStringList(bulkCodes);
 
         System.out.println(response);
         System.out.println(responseBody);
@@ -764,6 +761,127 @@ public class TestClass extends BaseTest {
         System.out.println("--------");
 
     }
+
+    private static void createSKU() throws IOException {
+
+        System.out.println("Creating a new SKU...");
+        String skuCode = "SKU-#" + generateRandomID();
+
+        OkHttpClient client = new OkHttpClient();
+
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"" + skuCode + "\"},\"title\":{\"t\":\"string\",\"v\":\"Test Product\"},\"upc\":{\"t\":\"string\",\"v\":\"Test UPC\"},\"description\":{\"t\":\"richText\",\"v\":\"<p>Just another test SKU.</p>\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"2000\"}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"2000\"}},\"unitCost\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"2000\"}},\"activeFrom\":{\"v\":\"2016-07-04T17:43:44.295+00:00\",\"t\":\"datetime\"},\"activeTo\":{\"v\":null,\"t\":\"datetime\"}}}");
+        Request request = new Request.Builder()
+                .url("http://admin.stage.foxcommerce.com/api/v1/skus/default")
+                .post(body)
+                .addHeader("content-type", "application/json")
+                .addHeader("accept", "application/json")
+                .addHeader("cache-control", "no-cache")
+                .addHeader("JWT", jwt)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+
+        sku = skuCode;
+        System.out.println(response);
+        System.out.println(responseBody);
+        System.out.println("SKU code: <" + skuCode + ">.");
+        System.out.println("--------");
+
+    }
+
+    private static void createProduct_noSKU() throws IOException {
+
+        System.out.println("Creating a new product... No SKU code is provided, so a new one will be created.");
+        String productName = "Test Product #" + generateRandomID();
+
+        OkHttpClient client = new OkHttpClient();
+
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"metaDescription\":{\"t\":\"string\",\"v\":null},\"metaTitle\":{\"t\":\"string\",\"v\":null},\"url\":{\"t\":\"string\",\"v\":null},\"description\":{\"t\":\"richText\",\"v\":\"The best thing to buy in 2016!\"},\"title\":{\"t\":\"string\",\"v\":\"" + productName + "\"},\"activeFrom\":{\"v\":\"2016-07-04T17:22:44.388+00:00\",\"t\":\"datetime\"},\"activeTo\":{\"v\":null,\"t\":\"datetime\"}},\"skus\":[{\"feCode\":\"F0QGTGBBINBQF5V53TYB9\",\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"SKU-TST\"},\"title\":{\"t\":\"string\",\"v\":\"\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"27.18\"}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"27.18\"}}}}]}");
+        Request request = new Request.Builder()
+                .url("http://admin.stage.foxcommerce.com/api/v1/products/default")
+                .post(body)
+                .addHeader("content-type", "application/json")
+                .addHeader("accept", "application/json")
+                .addHeader("cache-control", "no-cache")
+                .addHeader("JWT", jwt)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+        productId = Integer.valueOf(responseBody.substring(6, 9));
+
+        System.out.println(response);
+        System.out.println(responseBody);
+        System.out.println("Product name: <" + productName + ">.");
+        System.out.println("Product ID: <" + productId + ">.");
+        System.out.println("--------");
+
+    }
+
+    private static void createProduct(String sku) throws IOException {
+
+        System.out.println("Creating a new product with SKU <" + sku + ">...");
+        String productName = "Test Product #" + generateRandomID();
+
+        OkHttpClient client = new OkHttpClient();
+
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"metaDescription\":{\"t\":\"string\",\"v\":null},\"metaTitle\":{\"t\":\"string\",\"v\":null},\"url\":{\"t\":\"string\",\"v\":null},\"description\":{\"t\":\"richText\",\"v\":\"The best thing to buy in 2016!\"},\"title\":{\"t\":\"string\",\"v\":\"" + productName + "\"},\"activeFrom\":{\"v\":\"2016-07-04T17:22:44.388+00:00\",\"t\":\"datetime\"},\"activeTo\":{\"v\":null,\"t\":\"datetime\"}},\"skus\":[{\"feCode\":\"F0QGTGBBINBQF5V53TYB9\",\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"" + sku + "\"},\"title\":{\"t\":\"string\",\"v\":\"\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"27.18\"}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"27.18\"}}}}]}");
+        Request request = new Request.Builder()
+                .url("http://admin.stage.foxcommerce.com/api/v1/products/default")
+                .post(body)
+                .addHeader("content-type", "application/json")
+                .addHeader("accept", "application/json")
+                .addHeader("cache-control", "no-cache")
+                .addHeader("JWT", jwt)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+
+        System.out.println(response);
+        System.out.println(responseBody);
+        System.out.println("Product name: <" + productName + ">.");
+        System.out.println("--------");
+
+
+    }
+
+    private static void createSKU_active() throws IOException {
+
+        System.out.println("Creating a new SKU, options: ACTIVE state...");
+        String randomId = generateRandomID();
+        String skuCode = "SKU-" + randomId;
+
+        OkHttpClient client = new OkHttpClient();
+
+        MediaType mediaType = MediaType.parse("application/json");
+//        RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"" + skuCode + "\"},\"title\":{\"t\":\"string\",\"v\":\"Test Product " + randomId + "\"},\"upc\":{\"t\":\"string\",\"v\":\"Test UPC\"},\"description\":{\"t\":\"richText\",\"v\":\"<p>Just another test SKU.</p>\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"2000\"}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"2000\"}},\"unitCost\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"2000\"}},\"activeFrom\":{\"v\":\"2016-07-04T17:43:44.295+00:00\",\"t\":\"datetime\"},\"activeTo\":{\"v\":null,\"t\":\"datetime\"}}}");
+        RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"" + skuCode + "\"},\"title\":{\"t\":\"string\",\"v\":\"A TITLE\"},\"upc\":{\"t\":\"string\",\"v\":\"Test UPC\"},\"description\":{\"t\":\"richText\",\"v\":\"<p>Test description</p>\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"5000\"}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"5000\"}},\"unitCost\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"5000\"}},\"activeFrom\":{\"v\":\"2016-07-05T22:19:54.918+00:00\",\"t\":\"datetime\"},\"activeTo\":{\"v\":null,\"t\":\"datetime\"}}}");
+        Request request = new Request.Builder()
+                .url("http://admin.stage.foxcommerce.com/api/v1/skus/default")
+                .post(body)
+                .addHeader("content-type", "application/json")
+                .addHeader("accept", "application/json")
+                .addHeader("cache-control", "no-cache")
+                .addHeader("JWT", jwt)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+
+        sku = skuCode;
+        System.out.println(response);
+        System.out.println(responseBody);
+        System.out.println("SKU code: <" + skuCode + ">.");
+        System.out.println("---- ---- ---- ----");
+
+    }
+
+
 
 
 
@@ -828,11 +946,13 @@ public class TestClass extends BaseTest {
 //        viewOrder(orderId);
 //        setPayment_storeCredit(orderId, orderTotal);
 //        checkoutOrder(orderId);
-        createPromotion_coupon();
-        createCoupon(promotionId);
+//        createPromotion_coupon();
+//        createCoupon(promotionId);
 
-
-
+        createProduct_noSKU();
+//        createSKU();
+//        createProduct(sku);
+//        createSKU_active();
     }
 
 }

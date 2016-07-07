@@ -120,10 +120,25 @@ public class ConciseAPI extends Configuration {
         return (int) ((grandTotal - firstAmount_double) * 100);
     }
 
-    protected static void printList(List<String> list) {
+
+    //----------------------------------------- DEBUG -----------------------------------------//
+
+    protected static void printStringList(List<String> list) {
+        System.out.println("**** **** **** ");
+        System.out.println("Total amount of elements in list: <" + list.size() + ">.");
         for(String code : list) {
             System.out.println("Code: <" + code + ">");
         }
+        System.out.println("**** **** **** ");
+    }
+
+    protected static void printSEList(List<SelenideElement> list) {
+        System.out.println("**** **** **** ");
+        System.out.println("Total amount of elements in list: <" + list.size() + ">.");
+        for (SelenideElement element : list) {
+            System.out.println("Item name: <" + element.getText() + ">.");
+        }
+        System.out.println("**** **** **** ");
     }
 
 }
