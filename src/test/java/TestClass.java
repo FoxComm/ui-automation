@@ -121,9 +121,10 @@ public class TestClass extends BaseTest {
 
         Response response = client.newCall(request).execute();
         String responseBody = response.body().string();
-        orderId = responseBody.substring(30, 37);
+        orderId = responseBody.substring(20, 27);
 
         System.out.println(response);
+        System.out.println(responseBody);
         System.out.println("Order ID: <" + orderId + ">");
         System.out.println("--------");
 
@@ -915,8 +916,8 @@ public class TestClass extends BaseTest {
         //---------------
 
         loginAsAdmin();
-//        createNewCustomer();
-//        createCart(customerId);
+        createNewCustomer();
+        createCart(customerId);
 //        updSKULineItems(orderId, "SKU-YAX", 1);
 //        setShipAddress(orderId, customerName, 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
 //        listShipMethods(orderId);
@@ -949,7 +950,7 @@ public class TestClass extends BaseTest {
 //        createPromotion_coupon();
 //        createCoupon(promotionId);
 
-        createProduct_noSKU();
+//        createProduct_noSKU();
 //        createSKU();
 //        createProduct(sku);
 //        createSKU_active();

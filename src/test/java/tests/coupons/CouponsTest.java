@@ -147,7 +147,7 @@ public class CouponsTest extends DataProvider {
         click( p.saveBtn() );
         click( p.couponsNavMenu() );
         p.waitForDataToLoad();
-        click( p.openCoupon(couponName) );
+        p.openCoupon(couponName);
 
         assertEquals( p.descriptionFld().getText(), "edited description",
                 "Failed to edit 'Description'.");
@@ -165,7 +165,7 @@ public class CouponsTest extends DataProvider {
         click( p.saveBtn() );
         click( p.couponsNavMenu() );
         p.waitForDataToLoad();
-        click( p.openCoupon(couponName) );
+        p.openCoupon(couponName);
 
         assertEquals( p.detailsFld().getText(), "edited details",
                 "Failed to edit 'Details'.");

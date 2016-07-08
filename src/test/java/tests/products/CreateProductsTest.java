@@ -10,9 +10,9 @@ import testdata.DataProvider;
 import java.io.IOException;
 import java.util.Objects;
 
-import static com.codeborne.selenide.Condition.enabled;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.open;
+import static com.codeborne.selenide.Selenide.sleep;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
@@ -54,8 +54,8 @@ public class CreateProductsTest extends DataProvider {
 
         provideTestData("active product, has tag, active SKU");
         p = open("http://admin.stage.foxcommerce.com/products/default/" + productId, ProductsPage.class);
-        p.saveDraftBtn().shouldBe(enabled);
-        assertTrue( !p.noSKUsMsg().is(visible),
+        sleep(1500);
+        assertEquals( p.noSKUsMsg().shouldNot(visible), null,
                 "'No SKUs.' msg is displayed - SKU wasn't applied, product won't be displayed on storefront.");
 
     }
@@ -70,8 +70,8 @@ public class CreateProductsTest extends DataProvider {
 
         provideTestData("active product, has tag, active SKU");
         p = open("http://admin.stage.foxcommerce.com/products/default/" + productId, ProductsPage.class);
-        p.saveDraftBtn().shouldBe(enabled);
-        assertTrue( !p.noSKUsMsg().is(visible),
+        sleep(1500);
+        assertEquals( p.noSKUsMsg().shouldBe(visible), null,
                 "'No SKUs.' msg is displayed - SKU wasn't applied, product won't be displayed on storefront.");
 
         sf = open("http://stage.foxcommerce.com/sunglasses?type=men", StorefrontCategoryPage.class);
@@ -92,7 +92,7 @@ public class CreateProductsTest extends DataProvider {
 
         provideTestData("active product, no tag, active SKU");
         p = open("http://admin.stage.foxcommerce.com/products/default/" + productId, ProductsPage.class);
-        p.saveDraftBtn().shouldBe(enabled);
+        sleep(1500);
         assertTrue( !p.noSKUsMsg().is(visible),
                 "'No SKUs.' msg is displayed - SKU wasn't applied, product won't be displayed on storefront.");
 
@@ -108,7 +108,7 @@ public class CreateProductsTest extends DataProvider {
 
         provideTestData("active product, no tag, active SKU");
         p = open("http://admin.stage.foxcommerce.com/products/default/" + productId, ProductsPage.class);
-        p.saveDraftBtn().shouldBe(enabled);
+        sleep(1500);
         assertTrue( !p.noSKUsMsg().is(visible),
                 "'No SKUs.' msg is displayed - SKU wasn't applied, product won't be displayed on storefront.");
 
@@ -125,7 +125,7 @@ public class CreateProductsTest extends DataProvider {
 
         provideTestData("inactive product, has tag, active SKU");
         p = open("http://admin.stage.foxcommerce.com/products/default/" + productId, ProductsPage.class);
-        p.saveDraftBtn().shouldBe(enabled);
+        sleep(1500);
         assertTrue( !p.noSKUsMsg().is(visible),
                 "'No SKUs.' msg is displayed - SKU wasn't applied, product won't be displayed on storefront.");
 
@@ -141,7 +141,7 @@ public class CreateProductsTest extends DataProvider {
 
         provideTestData("inactive product, has tag, active SKU");
         p = open("http://admin.stage.foxcommerce.com/products/default/" + productId, ProductsPage.class);
-        p.saveDraftBtn().shouldBe(enabled);
+        sleep(1500);
         assertTrue( !p.noSKUsMsg().is(visible),
                 "'No SKUs.' msg is displayed - SKU wasn't applied, product won't be displayed on storefront.");
 
@@ -158,7 +158,7 @@ public class CreateProductsTest extends DataProvider {
 
         provideTestData("inactive product, no tag, active SKU");
         p = open("http://admin.stage.foxcommerce.com/products/default/" + productId, ProductsPage.class);
-        p.saveDraftBtn().shouldBe(enabled);
+        sleep(1500);
         assertTrue( !p.noSKUsMsg().is(visible),
                 "'No SKUs.' msg is displayed - SKU wasn't applied, product won't be displayed on storefront.");
 
@@ -174,7 +174,7 @@ public class CreateProductsTest extends DataProvider {
 
         provideTestData("inactive product, no tag, active SKU");
         p = open("http://admin.stage.foxcommerce.com/products/default/" + productId, ProductsPage.class);
-        p.saveDraftBtn().shouldBe(enabled);
+        sleep(1500);
         assertTrue( !p.noSKUsMsg().is(visible),
                 "'No SKUs.' msg is displayed - SKU wasn't applied, product won't be displayed on storefront.");
 
@@ -191,7 +191,7 @@ public class CreateProductsTest extends DataProvider {
 
         provideTestData("inactive product, no tag, active SKU");
         p = open("http://admin.stage.foxcommerce.com/products/default/" + productId, ProductsPage.class);
-        p.saveDraftBtn().shouldBe(enabled);
+        sleep(1500);
         assertTrue( !p.noSKUsMsg().is(visible),
                 "'No SKUs.' msg is displayed - SKU wasn't applied, product won't be displayed on storefront.");
 
@@ -207,7 +207,7 @@ public class CreateProductsTest extends DataProvider {
 
         provideTestData("inactive product, no tag, active SKU");
         p = open("http://admin.stage.foxcommerce.com/products/default/" + productId, ProductsPage.class);
-        p.saveDraftBtn().shouldBe(enabled);
+        sleep(1500);
         assertTrue( !p.noSKUsMsg().is(visible),
                 "'No SKUs.' msg is displayed - SKU wasn't applied, product won't be displayed on storefront.");
 
@@ -224,7 +224,7 @@ public class CreateProductsTest extends DataProvider {
 
         provideTestData("inactive product, no tag, active SKU");
         p = open("http://admin.stage.foxcommerce.com/products/default/" + productId, ProductsPage.class);
-        p.saveDraftBtn().shouldBe(enabled);
+        sleep(1500);
         assertTrue( !p.noSKUsMsg().is(visible),
                 "'No SKUs.' msg is displayed - SKU wasn't applied, product won't be displayed on storefront.");
 
@@ -240,7 +240,7 @@ public class CreateProductsTest extends DataProvider {
 
         provideTestData("inactive product, no tag, active SKU");
         p = open("http://admin.stage.foxcommerce.com/products/default/" + productId, ProductsPage.class);
-        p.saveDraftBtn().shouldBe(enabled);
+        sleep(1500);
         assertTrue( !p.noSKUsMsg().is(visible),
                 "'No SKUs.' msg is displayed - SKU wasn't applied, product won't be displayed on storefront.");
 
@@ -271,7 +271,7 @@ public class CreateProductsTest extends DataProvider {
         assertEquals(p.getProductParamVal("1", "Name"), "Test Product " + randomId,
                 "Queried product is not found - either search doesn't work or product wasn't created.");
         p.openProduct( productTitle );
-        p.saveDraftBtn().shouldBe(enabled);
+        sleep(1500);
         assertTrue( !p.noSKUsMsg().is(visible),
                 "'No SKUs.' msg is displayed - SKU wasn't applied, product won't be displayed on storefront.");
 
@@ -294,7 +294,7 @@ public class CreateProductsTest extends DataProvider {
         assertEquals(p.getProductParamVal("1", "Name"), "Test Product " + randomId,
                 "Queried product is not found - either search doesn't work or product wasn't created.");
         p.openProduct( productTitle );
-        p.saveDraftBtn().shouldBe(enabled);
+        sleep(1500);
         assertTrue( !p.noSKUsMsg().is(visible),
                 "'No SKUs.' msg is displayed - SKU wasn't applied, product won't be displayed on storefront.");
 
@@ -314,7 +314,7 @@ public class CreateProductsTest extends DataProvider {
         p.waitForDataToLoad();
         p.addFilter("Product", "Name", randomId);
         p.openProduct( productTitle );
-        p.saveDraftBtn().shouldBe(enabled);
+        sleep(1500);
         assertTrue( !p.noSKUsMsg().is(visible),
                 "'No SKUs.' msg is displayed - SKU wasn't applied, product won't be displayed on storefront." );
 
@@ -337,7 +337,7 @@ public class CreateProductsTest extends DataProvider {
         assertEquals(p.getProductParamVal("1", "Name"), "Test Product " + randomId,
                 "Queried product is not found - either search doesn't work or product wasn't created.");
         p.openProduct( productTitle );
-        p.saveDraftBtn().shouldBe(enabled);
+        sleep(1500);
         assertTrue( !p.noSKUsMsg().is(visible),
                 "'No SKUs.' msg is displayed - SKU wasn't applied, product won't be displayed on storefront.");
 

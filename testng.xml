@@ -10,13 +10,13 @@
             <!--<class name="tests.orderstests.PaymentMethodTest" />-->
             <!--<class name="tests.orderstests.PlaceOrderTest" />-->
             <!--<class name="tests.orderstests.OrderStateTest" />-->
-            <!--<class name="tests.customers.AddressBookTest" />-->
-            <!--<class name="tests.customers.CreditCardsTest" />-->
+            <!--<class name="tests.customers.details.AddressBookTest" />-->
+            <!--<class name="tests.customers.details.CreditCardsTest" />-->
             <!--<class name="tests.customers.details.ContactInformationTest" />-->
             <!--<class name="tests.customers.orders.OrdersListTest" />-->
             <!--<class name="tests.customers.storecredits.StoreCreditsTest" />-->
             <!--<class name="tests.coupons.CouponsTest" />-->
-            <!--<class name="tests.products.CreateProductsTest" />-->
+            <class name="tests.products.CreateProductsTest" />
             <class name="tests.products.EditProductTest" />
         </classes>
     </test>

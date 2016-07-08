@@ -463,11 +463,11 @@ public class OrderDetailsPage extends OrdersPage {
         return $(By.xpath(".//input[@name='city']"));
     }
 
-    private SelenideElement stateDd() {
-        return $(By.xpath("//ul[@class='fc-address-form-fields']/li[7]/div/div/div[2]/button"));
+    private SelenideElement regionDd() {
+        return $(By.xpath("//label[text()='Region']/following-sibling::*[1]/div[2]/button"));
     }
 
-    private SelenideElement stateDdValue(String stateName) {
+    private SelenideElement regionDdValue(String stateName) {
         return $(By.xpath("//li[text()='" + stateName +"']"));
     }
 
@@ -537,15 +537,15 @@ public class OrderDetailsPage extends OrdersPage {
     }
 
     private void assertStateIsntReset() {
-        assertTrue( !Objects.equals(stateDd().getText(), "- Select -"),
+        assertTrue( !Objects.equals(regionDd().getText(), "- Select -"),
                 "'State' is reset to default value");
     }
 
         // Will deprecate once we'll switch from custom to normal dropdowns.
         @Step
         private void setState(String state) {
-            click( stateDd() );
-            click( stateDdValue(state) );
+            click( regionDd() );
+            click( regionDdValue(state) );
         }
 
     @Step

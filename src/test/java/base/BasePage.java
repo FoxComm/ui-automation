@@ -7,12 +7,16 @@ import static com.codeborne.selenide.Selenide.$;
 
 public class BasePage extends ConciseAPI {
 
-    public SelenideElement userMenu() {
+    public SelenideElement userMenuBtn() {
         return $(By.xpath("//div[@class='_header_header__name']"));
     }
 
-    public SelenideElement logoutButton() {
-        return $(By.xpath("//ul[@class='_header_usermenu__usermenu']/li"));
+    public SelenideElement logoutBtn() {
+        return $(By.xpath("//a[text()='Log out']"));
+    }
+
+    public SelenideElement settingsBtn() {
+        return $(By.xpath("//a[text()='Settings']"));
     }
 
     public SelenideElement couponsNavMenu() {

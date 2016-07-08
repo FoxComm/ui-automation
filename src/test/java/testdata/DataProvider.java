@@ -119,9 +119,10 @@ public class DataProvider extends BaseTest {
 
         Response response = client.newCall(request).execute();
         String responseBody = response.body().string();
-        orderId = responseBody.substring(30, 37);
+        orderId = responseBody.substring(20, 27);
 
         System.out.println(response);
+        System.out.println(responseBody);
         System.out.println("Order ID: <" + orderId + ">");
         System.out.println("---- ---- ---- ----");
 
@@ -292,7 +293,7 @@ public class DataProvider extends BaseTest {
         Response response = client.newCall(request).execute();
 
         String responseBody = response.body().string();
-        addressId1 = Integer.valueOf(responseBody.substring(17, 21));
+        addressId1 = Integer.valueOf(responseBody.substring(7, 11));
 //        addressId2 = Integer.valueOf(addresses.substring(216, 220));
 //        addressId3 = Integer.valueOf(addresses.substring(415, 419));
 
@@ -917,7 +918,7 @@ public class DataProvider extends BaseTest {
 
         System.out.println("Creating a new SKU, options: all prices equals <0>...");
         String randomId = generateRandomID();
-        String skuCode = "SKU-#" + randomId;
+        String skuCode = "SKU-" + randomId;
 
         OkHttpClient client = new OkHttpClient();
 

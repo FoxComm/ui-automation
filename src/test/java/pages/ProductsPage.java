@@ -98,7 +98,7 @@ public class ProductsPage extends BasePage {
     }
 
     public SelenideElement noSKUsMsg() {
-        return $(By.xpath("//div[text()='No SKUs']"));
+        return $(By.xpath("//div[text()='No SKUs.']"));
     }
 
     public SelenideElement productId() {
@@ -154,7 +154,7 @@ public class ProductsPage extends BasePage {
 
         for(SelenideElement product : productsList) {
 
-            String listProductName = product.getText();
+            String listProductName = product.text();
             if (listProductName.equals(productName)) {
                 productToClick = product;
             }

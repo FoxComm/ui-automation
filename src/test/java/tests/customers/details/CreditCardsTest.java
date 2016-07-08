@@ -12,7 +12,6 @@ import java.util.Objects;
 import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.Selenide.sleep;
 import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
 
 public class CreditCardsTest extends DataProvider {
 
@@ -32,7 +31,7 @@ public class CreditCardsTest extends DataProvider {
     @Test(priority = 1)
     public void addNewCC_newBillAddress() throws IOException {
 
-        provideTestData("customer");
+        provideTestData("a customer");
         p = open("http://admin.stage.foxcommerce.com/customers/" + customerId, CustomerPage.class);
 
         click( p.addNewCreditCardBtn() );
@@ -68,7 +67,7 @@ public class CreditCardsTest extends DataProvider {
         setFieldVal( p.holderNameFld(), "John Doe" );
         click( p.saveBtn() );
         sleep(1500);
-        assertTrue( p.holderNameFldVal("1").equals("John Doe"),
+        assertEquals( p.holderNameFldVal("1"), "John Doe",
                 "Failed to edit holderName field; expected: <John Doe>, actual: <" + p.holderNameFldVal("1") + ">.");
 
     }
@@ -82,7 +81,7 @@ public class CreditCardsTest extends DataProvider {
         click( p.editCreditCardBtn("1") );
         p.setExpirationDate("12", "2030");
         click( p.saveBtn() );
-        sleep(1500);
+        sleep(2500);
         assertEquals( p.expirationDateVal("1"), "12/2030",
                 "Failed to edit expiration date; expected: <12/2030>, actual: <" + p.expirationDateVal("1") + ">.");
 
@@ -98,8 +97,8 @@ public class CreditCardsTest extends DataProvider {
         click( p.changeBillAddressBtn() );
         click( p.chooseBtn("2") );
         click( p.saveBtn() );
-        sleep(1500);
-        assertTrue( p.billCityVal("1").equals("New Jersey"),
+        sleep(2500);
+        assertEquals( p.billCityVal("1"), "New Jersey",
                 "Failed to choose different billing address; expected city: <New Jersey>, actual: <" + p.billCityVal("1") + ">.");
 
     }
@@ -113,8 +112,8 @@ public class CreditCardsTest extends DataProvider {
         click (p.editAddressBtn("1"));
         setFieldVal( p.nameFld(), "John Doe" );
         click( p.saveBtn() );
-        sleep(1500);
-        assertTrue( p.nameFldVal_billAddress("1").equals("John Doe"),
+        sleep(2500);
+        assertEquals( p.nameFldVal_billAddress("1"), "John Doe",
                 "Billing address failed to get updated after editing a corresponding address in address book." +
                         "\n expected: <John Doe>, actual <" + p.nameFldVal_billAddress("1") + ">.");
 

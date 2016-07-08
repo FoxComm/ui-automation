@@ -235,21 +235,27 @@ public class CouponsPage extends BasePage {
 
     }
 
+    @Step("Open coupon with name <{0}>.")
+    public void openCoupon(String couponName) {
+        click( findCouponOnList(couponName) );
+    }
+
     @Step("Find coupon with name <{0}> on the list of coupons.")
-    public SelenideElement openCoupon(String couponName) {
+    private SelenideElement findCouponOnList(String couponName) {
 
         List<SelenideElement> couponsList = $$(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a/td[2]"));
         SelenideElement couponToClick = null;
 
         for(SelenideElement coupon : couponsList) {
 
-            String listCouponName = coupon.getText();
+            String listCouponName = coupon.text();
             if (listCouponName.equals(couponName)) {
                 couponToClick = coupon;
             }
 
         }
 
+        assertTrue( couponToClick!= null, "Requested coupon isn't displayed on the list.");
         return couponToClick;
 
     }

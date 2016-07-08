@@ -288,8 +288,8 @@ public class CustomerPage extends BasePage {
     }
 
     public String nameFldVal_billAddress(String ccIndex) {
-        SelenideElement nameFld_billAddress = $(By.xpath("//div[contains(@class, 'credit-cards')]/div/ul/li[" + ccIndex + "]/div[3]/div/dl[2]/dd/ul/li[1]"));
-        return nameFld_billAddress.getText();
+        SelenideElement nameFld_billAddress = $(By.xpath("//div[contains(@class, 'credit-cards')]/div/ul/li[" + ccIndex + "]/div[3]/div/dl[2]/dd"));
+        return nameFld_billAddress.text();
     }
 
 
@@ -603,7 +603,7 @@ public class CustomerPage extends BasePage {
     }
 
     private SelenideElement yesBtn() {
-        return $(By.xpath("//span[text()='Yes, Change State']/.."));
+        return $(By.xpath("//span[text()='Yes, Cancel']/.."));
     }
 
     public SelenideElement transactionTab() {
@@ -617,6 +617,7 @@ public class CustomerPage extends BasePage {
 
     @Step("Set SC type to {0}")
     public void selectType(String typeName) {
+        sleep(1000);
         click( scTypeDd() );
         click( scTypeListItem(typeName) );
     }
@@ -650,7 +651,7 @@ public class CustomerPage extends BasePage {
                 scParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/tr[" + scIndex + "]/td[8]/span")).getText();
                 break;
             case "State":
-                scParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/tr[" + scIndex + "]/td[9]//span[@class='fc-model-state']")).getText();
+                scParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/tr[" + scIndex + "]/td[9]/div/div[2]/div")).getText();
                 break;
         }
 

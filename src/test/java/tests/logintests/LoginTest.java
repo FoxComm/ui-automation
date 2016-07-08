@@ -28,8 +28,8 @@ public class LoginTest extends BaseTest {
     @Test(priority = 2)
     public void login_logout_test() {
         p.login("admin@admin.com", "password");
-        p.click( p.userMenu() );
-        p.click( p.logoutButton() );
+        p.click( p.userMenuBtn() );
+        p.click( p.logoutBtn() );
         p.logoutSuccessMsg().shouldBe(Condition.visible);
     }
 
