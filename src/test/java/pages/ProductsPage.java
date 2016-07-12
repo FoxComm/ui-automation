@@ -4,6 +4,7 @@ import base.BasePage;
 import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoSuchElementException;
 import ru.yandex.qatools.allure.annotations.Step;
 
 import java.util.List;
@@ -19,10 +20,6 @@ public class ProductsPage extends BasePage {
 
     //------------------------------------------------------------------------//
     //------------------------------ ELEMENTS --------------------------------//
-
-    private SelenideElement itemsOnList() {
-        return $(By.xpath("//td[@class='fc-table-td']"));
-    }
 
     public SelenideElement addNewProduct() {
         return $(By.xpath("//span[text()='Product']/.."));
@@ -105,6 +102,12 @@ public class ProductsPage extends BasePage {
         return $(By.xpath("//header/div/ul/li[5]"));
     }
 
+    private SelenideElement skuName() {
+        return $(By.xpath("//tr[@class='fc-table-tr']/td[2]/div"));
+    }
+
+
+
     //------------------------------- HELPERS --------------------------------//
 
     @Step("Remove all filters from the search field")
@@ -114,11 +117,6 @@ public class ProductsPage extends BasePage {
         for(SelenideElement filterCloseBtn : searchFiltersList) {
             click( filterCloseBtn );
         }
-    }
-
-    @Step("Wait for data on the list to be loaded.")
-    public void waitForDataToLoad() {
-        itemsOnList().shouldBe(visible);
     }
 
     @Step("Set product state to '{0}'")
@@ -271,6 +269,18 @@ public class ProductsPage extends BasePage {
         click( saveDraftBtn() );
         saveDraftBtn().shouldBe(enabled);
         productId().shouldNotHave(text("new"));
+
+    }
+
+    @Step("Assert that SKU is applied to the product")
+    public void assertSKUApplied() {
+
+        try{
+            skuName().shouldBe(visible);
+        } catch(NoSuchElementException nsee) {
+            assertTrue( noSKUsMsg().is(visible),
+                    "'No SKUs.' msg is displayed - SKU wasn't applied, product won't be displayed on storefront." );
+        }
 
     }
 

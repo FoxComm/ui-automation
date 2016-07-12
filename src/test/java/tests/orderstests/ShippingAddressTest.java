@@ -23,9 +23,9 @@ public class ShippingAddressTest extends DataProvider {
     @BeforeClass(alwaysRun = true)
     public void setUp() {
 
-        open("http://admin.stage.foxcommerce.com/");
-        if ( (Objects.equals(getUrl(), "http://admin.stage.foxcommerce.com/login")) ) {
-            LoginPage loginPage = open("http://admin.stage.foxcommerce.com/login", LoginPage.class);
+        open(adminUrl);
+        if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
+            LoginPage loginPage = open(adminUrl + "/login", LoginPage.class);
             loginPage.login("admin@admin.com", "password");
         }
 
@@ -35,7 +35,7 @@ public class ShippingAddressTest extends DataProvider {
     public void addNewAddress_emptyAddressBook() throws IOException {
 
         provideTestData("cart with empty address book");
-        p = open("http://admin.stage.foxcommerce.com/orders/" + orderId, OrderDetailsPage.class);
+        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
 
         p.clickEditBtn_shipAddress();
         p.clearAddressBook();
@@ -53,7 +53,7 @@ public class ShippingAddressTest extends DataProvider {
     public void addNewAddress_nonEmptyAddressBook() throws IOException {
 
         provideTestData("cart with non-empty address book");
-        p = open("http://admin.stage.foxcommerce.com/orders/" + orderId, OrderDetailsPage.class);
+        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
 
         p.clickEditBtn_shipAddress();
         p.addNewAddress("John Doe", "2101 Green Valley #320", "Seattle", "Washington", "98101", "9879879876");
@@ -68,7 +68,7 @@ public class ShippingAddressTest extends DataProvider {
     public void chooseShippingAddress() throws IOException {
 
         provideTestData("cart with non-empty address book");
-        p = open("http://admin.stage.foxcommerce.com/orders/" + orderId, OrderDetailsPage.class);
+        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
 
         p.clickEditBtn_shipAddress();
         p.chooseShipAddress(1);
@@ -93,7 +93,7 @@ public class ShippingAddressTest extends DataProvider {
     public void deleteChosenShippingAddress() throws IOException {
 
         provideTestData("cart with chosen shipping address");
-        p = open("http://admin.stage.foxcommerce.com/orders/" + orderId, OrderDetailsPage.class);
+        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
 
         click( p.editBtn_shipAddress() );
         click( p.deleteBtn_chosenAddress() );
@@ -107,7 +107,7 @@ public class ShippingAddressTest extends DataProvider {
     public void setDefaultShippingAddress() throws IOException {
 
         provideTestData("cart with 2 addresses in address book");
-        p = open("http://admin.stage.foxcommerce.com/orders/" + orderId, OrderDetailsPage.class);
+        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
 
         p.clickEditBtn_shipAddress();
         click( p.defaultShipAddressChkbox("1") );
@@ -121,7 +121,7 @@ public class ShippingAddressTest extends DataProvider {
     public void changeDefaultShippingAddress() throws IOException {
 
         provideTestData("cart with 2 addresses and defined default shipping address");
-        p = open("http://admin.stage.foxcommerce.com/orders/" + orderId, OrderDetailsPage.class);
+        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
 
         p.clickEditBtn_shipAddress();
         click( p.defaultShipAddressChkbox("1") );

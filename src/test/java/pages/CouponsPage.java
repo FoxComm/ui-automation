@@ -1,7 +1,6 @@
 package pages;
 
 import base.BasePage;
-import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.By;
 import ru.yandex.qatools.allure.annotations.Step;
@@ -68,11 +67,6 @@ public class CouponsPage extends BasePage {
         return couponId.getText();
     }
 
-    // check locator
-    private SelenideElement itemsOnList() {
-        return $(By.xpath("//td[@class='fc-table-td']"));
-    }
-
     private SelenideElement qtyDecrBtn() {
         return $(By.xpath("//input[@id='codesQuantity']/preceding-sibling::*/button"));
     }
@@ -124,11 +118,6 @@ public class CouponsPage extends BasePage {
 
 
     //--------------------------------- HELPERS -----------------------------//
-
-    @Step("Wait for data on the list to be loaded.")
-    public void waitForDataToLoad() {
-        itemsOnList().shouldBe(Condition.visible);
-    }
 
     @Step("Select promotion with id <{0}>")
     public void setPromotion(int promotionId) {

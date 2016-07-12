@@ -91,7 +91,7 @@ public class DataProvider extends BaseTest {
         Response response = client.newCall(request).execute();
         String responseBody = response.body().string();
         System.out.println(responseBody);
-        customerId = Integer.valueOf(responseBody.substring(6, 10));
+        customerId = Integer.valueOf(responseBody.substring(6, responseBody.indexOf(",")));
 
         System.out.println(response);
         System.out.println(responseBody);

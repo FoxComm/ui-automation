@@ -1,10 +1,10 @@
 package pages;
 
 import base.BasePage;
-import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoSuchElementException;
 import org.testng.Assert;
 import ru.yandex.qatools.allure.annotations.Step;
 
@@ -12,6 +12,8 @@ import java.util.List;
 
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 public class OrdersPage extends BasePage {
 
@@ -23,10 +25,6 @@ public class OrdersPage extends BasePage {
 
     private SelenideElement orderOnList(String index) {
         return $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/tr[" + index + "]"));
-    }
-
-    private SelenideElement ordersOnList() {
-        return $(By.xpath("//td[@class='fc-table-td']"));
     }
 
     private List<SelenideElement> allSearchFilters() {
@@ -64,10 +62,6 @@ public class OrdersPage extends BasePage {
 
     //-------------------- ORDERS LIST --------------------//
 
-    private void waitForDataToLoad() {
-        ordersOnList().shouldBe(Condition.visible);
-    }
-
     private String getOrderParamValue(int orderIndex, String paramName) {
 
         String orderParamVal = "";
@@ -104,9 +98,14 @@ public class OrdersPage extends BasePage {
     @Step("{1} parameter value of {0}-th order on the list should be {2}")
     public void assertOrderParameter(int index, String paramName, String expectedParamValue) {
 
-        String actualParamValue = getOrderParamValue(index, paramName);
+        String actualParamValue = null;
+        try {
+            actualParamValue = getOrderParamValue(index, paramName);
+        } catch (NoSuchElementException e) {
+            assertTrue(!emptyList().is(visible), "A specified search filter gave no results.");
+        }
         System.out.println(actualParamValue);
-        Assert.assertEquals(actualParamValue, expectedParamValue,
+        assertEquals(actualParamValue, expectedParamValue,
                 "Search results aren't relevant to a given search criteria");
 
     }
@@ -121,7 +120,7 @@ public class OrdersPage extends BasePage {
 
         switch (operatorName) {
             case "=":
-                Assert.assertEquals(actualParamValue, expectedParamValue,
+                assertEquals(actualParamValue, expectedParamValue,
                         "Search results aren't relevant to a given search criteria");
                 break;
             case ">":

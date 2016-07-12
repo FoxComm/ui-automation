@@ -19,9 +19,9 @@ public class ShippingMethodTest extends DataProvider {
     @BeforeClass(alwaysRun = true)
     public void setUp() {
 
-        open("http://admin.stage.foxcommerce.com/");
-        if ( (Objects.equals(getUrl(), "http://admin.stage.foxcommerce.com/login")) ) {
-            LoginPage loginPage = open("http://admin.stage.foxcommerce.com/login", LoginPage.class);
+        open(adminUrl);
+        if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
+            LoginPage loginPage = open(adminUrl + "/login", LoginPage.class);
             loginPage.login("admin@admin.com", "password");
         }
 
@@ -31,7 +31,7 @@ public class ShippingMethodTest extends DataProvider {
     public void setShipMethod() throws IOException {
 
         provideTestData("cart with chosen shipping address");
-        p = open("http://admin.stage.foxcommerce.com/orders/" + orderId, OrderDetailsPage.class);
+        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
 
         click( p.editBtn_shipMethod() );
         jsClick( p.shipMethodRdbtn() );

@@ -16,7 +16,7 @@ public class LoginTest extends BaseTest {
 
     @BeforeClass(alwaysRun = true)
     public void setUp() {
-        p = open("http://admin.stage.foxcommerce.com/login", LoginPage.class);
+        p = open(adminUrl + "/login", LoginPage.class);
     }
 
     @Test(priority = 1)

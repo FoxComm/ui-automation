@@ -94,7 +94,7 @@ public class TestClass extends BaseTest {
 
         Response response = client.newCall(request).execute();
         String responseBody = response.body().string();
-        customerId = Integer.valueOf(responseBody.substring(6, 10));
+        customerId = Integer.valueOf(responseBody.substring(6, responseBody.indexOf(",")));
 
         System.out.println(response);
         System.out.println("Customer ID: " + customerId);
@@ -917,7 +917,7 @@ public class TestClass extends BaseTest {
 
         loginAsAdmin();
         createNewCustomer();
-        createCart(customerId);
+//        createCart(customerId);
 //        updSKULineItems(orderId, "SKU-YAX", 1);
 //        setShipAddress(orderId, customerName, 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
 //        listShipMethods(orderId);

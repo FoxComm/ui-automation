@@ -19,19 +19,18 @@ public class AddressBookTest extends DataProvider {
     @BeforeClass(alwaysRun = true)
     public void setUp() {
 
-        open("http://admin.stage.foxcommerce.com/");
-        if ( (Objects.equals(getUrl(), "http://admin.stage.foxcommerce.com/login")) ) {
-            LoginPage loginPage = open("http://admin.stage.foxcommerce.com/login", LoginPage.class);
+        open(adminUrl);
+        if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
+            LoginPage loginPage = open(adminUrl + "/login", LoginPage.class);
             loginPage.login("admin@admin.com", "password");
         }
-
-    }
+}
 
     @Test(priority = 1)
     public void addNewAddress() throws IOException {
 
         provideTestData("customer");
-        p = open("http://admin.stage.foxcommerce.com/customers/" + customerId, CustomerPage.class);
+        p = open(adminUrl + "/customers/" + customerId, CustomerPage.class);
 
         p.addNewAddress(customerName, "2101 Green Valley", "Suite 300", "Seattle", "Washington", "98101", "9879876");
 
@@ -44,7 +43,7 @@ public class AddressBookTest extends DataProvider {
     public void editNameFld() throws IOException {
 
         provideTestData("customer with a shipping address");
-        p = open("http://admin.stage.foxcommerce.com/customers/" + customerId, CustomerPage.class);
+        p = open(adminUrl + "/customers/" + customerId, CustomerPage.class);
 
         click( p.editAddressBtn("1") );
         setFieldVal( p.nameFld(), "John Doe" );
@@ -59,7 +58,7 @@ public class AddressBookTest extends DataProvider {
     public void editAddress1Fld() throws IOException {
 
         provideTestData("customer with a shipping address");
-        p = open("http://admin.stage.foxcommerce.com/customers/" + customerId, CustomerPage.class);
+        p = open(adminUrl + "/customers/" + customerId, CustomerPage.class);
 
         click( p.editAddressBtn("1") );
         setFieldVal( p.address1Fld(), "2525 Narrow Ave" );
@@ -74,7 +73,7 @@ public class AddressBookTest extends DataProvider {
     public void editAddress2Fld() throws IOException {
 
         provideTestData("customer with a shipping address");
-        p = open("http://admin.stage.foxcommerce.com/customers/" + customerId, CustomerPage.class);
+        p = open(adminUrl + "/customers/" + customerId, CustomerPage.class);
 
         click( p.editAddressBtn("1") );
         setFieldVal( p.address2Fld(), "Suite 300" );
@@ -89,7 +88,7 @@ public class AddressBookTest extends DataProvider {
     public void editCityFld() throws IOException {
 
         provideTestData("customer with a shipping address");
-        p = open("http://admin.stage.foxcommerce.com/customers/" + customerId, CustomerPage.class);
+        p = open(adminUrl + "/customers/" + customerId, CustomerPage.class);
 
         click( p.editAddressBtn("1") );
         setFieldVal( p.cityFld(), "New York" );
@@ -104,7 +103,7 @@ public class AddressBookTest extends DataProvider {
     public void editStateDd() throws IOException {
 
         provideTestData("customer with a shipping address");
-        p = open("http://admin.stage.foxcommerce.com/customers/" + customerId, CustomerPage.class);
+        p = open(adminUrl + "/customers/" + customerId, CustomerPage.class);
 
         click( p.editAddressBtn("1") );
         p.setState("New York");
@@ -119,7 +118,7 @@ public class AddressBookTest extends DataProvider {
     public void editZipFld() throws IOException {
 
         provideTestData("customer with a shipping address");
-        p = open("http://admin.stage.foxcommerce.com/customers/" + customerId, CustomerPage.class);
+        p = open(adminUrl + "/customers/" + customerId, CustomerPage.class);
 
         click( p.editAddressBtn("1") );
         setFieldVal( p.zipFld(), "10001" );
@@ -134,7 +133,7 @@ public class AddressBookTest extends DataProvider {
     public void editPhoneNumberFld() throws IOException {
 
         provideTestData("customer with a shipping address");
-        p = open("http://admin.stage.foxcommerce.com/customers/" + customerId, CustomerPage.class);
+        p = open(adminUrl + "/customers/" + customerId, CustomerPage.class);
 
         click( p.editAddressBtn("1") );
         setFieldVal( p.phoneNumberFld(), "5551237575" );
@@ -149,7 +148,7 @@ public class AddressBookTest extends DataProvider {
     public void deleteAddress() throws IOException {
 
         provideTestData("customer with a shipping address");
-        p = open("http://admin.stage.foxcommerce.com/customers/" + customerId, CustomerPage.class);
+        p = open(adminUrl + "/customers/" + customerId, CustomerPage.class);
 
         elementIsVisible( p.deleteAddressBtn("1") );
         int expectedResult = p.addressBookSize() - 1;

@@ -1,7 +1,6 @@
 package pages;
 
 import base.BasePage;
-import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -412,21 +411,12 @@ public class CustomerPage extends BasePage {
         return $(By.xpath("//input[@placeholder='filter or keyword search']"));
     }
 
-    private SelenideElement itemsOnList() {
-        return $(By.xpath("//td[@class='fc-table-td']"));
-    }
-
     public int amountOfOrders() {
         List<SelenideElement> orders = $$(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a"));
         return orders.size();
     }
 
     //------------------------------ HELPERS --------------------------------//
-
-    @Step("Wait for data on the list to be loaded.")
-    public void waitForDataToLoad() {
-        itemsOnList().shouldBe(Condition.visible);
-    }
 
     @Step("Get {1} parameter value of {0}-th order on the list.")
     public String getOrderParamVal(int orderIndex, String paramName) {

@@ -23,9 +23,9 @@ public class ContactInformationTest extends DataProvider {
     @BeforeClass(alwaysRun = true)
     public void setUp() {
 
-        open("http://admin.stage.foxcommerce.com/");
-        if ( (Objects.equals(getUrl(), "http://admin.stage.foxcommerce.com/login")) ) {
-            LoginPage loginPage = open("http://admin.stage.foxcommerce.com/login", LoginPage.class);
+        open(adminUrl);
+        if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
+            LoginPage loginPage = open(adminUrl + "/login", LoginPage.class);
             loginPage.login("admin@admin.com", "password");
         }
 
@@ -35,7 +35,7 @@ public class ContactInformationTest extends DataProvider {
     public void assertDefaultValues() throws IOException {
 
         provideTestData("customer");
-        p = open("http://admin.stage.foxcommerce.com/customers/" + customerId, CustomerPage.class);
+        p = open(adminUrl + "/customers/" + customerId, CustomerPage.class);
 
         assertEquals( p.nameVal_contactInfo(), customerName,
                 "Incorrect name is displayed in 'Contact Information'.");
@@ -48,7 +48,7 @@ public class ContactInformationTest extends DataProvider {
     public void addPhoneNumber() throws IOException {
 
         provideTestData("customer");
-        p = open("http://admin.stage.foxcommerce.com/customers/" + customerId, CustomerPage.class);
+        p = open(adminUrl + "/customers/" + customerId, CustomerPage.class);
 
         click( p.editBtn_contactInfo() );
         setFieldVal( p.phoneNumberFld_contactInfo(), "7779994242" );
@@ -63,7 +63,7 @@ public class ContactInformationTest extends DataProvider {
     public void editName() throws IOException {
 
         provideTestData("customer");
-        p = open("http://admin.stage.foxcommerce.com/customers/" + customerId, CustomerPage.class);
+        p = open(adminUrl + "/customers/" + customerId, CustomerPage.class);
 
         click( p.editBtn_contactInfo() );
         setFieldVal( p.phoneNumberFld_contactInfo(), "7779994242" );
@@ -81,7 +81,7 @@ public class ContactInformationTest extends DataProvider {
     public void editEmail() throws IOException {
 
         provideTestData("customer");
-        p = open("http://admin.stage.foxcommerce.com/customers/" + customerId, CustomerPage.class);
+        p = open(adminUrl + "/customers/" + customerId, CustomerPage.class);
 
         click( p.editBtn_contactInfo() );
         setFieldVal( p.phoneNumberFld_contactInfo(), "7779994242" );

@@ -3,6 +3,7 @@ package pages;
 import base.BasePage;
 import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import ru.yandex.qatools.allure.annotations.Step;
 
 import java.util.List;
@@ -14,12 +15,12 @@ import static org.testng.Assert.assertTrue;
 
 public class StorefrontCategoryPage extends BasePage {
 
-    private SelenideElement itemsOnList() {
+    private SelenideElement itemsOnList_s() {
         return $(By.xpath("//div[@class='_products_item_list_item__list-item']"));
     }
 
     private SelenideElement searchResults() {
-        return $(By.xpath("//section[@class='_products_list_products_list__catalog']/div[1]"));
+        return $(By.xpath("//section/div[1]/div"));
     }
 
     public SelenideElement searchBtn() {
@@ -46,18 +47,32 @@ public class StorefrontCategoryPage extends BasePage {
         return description.text();
     }
 
+    private SelenideElement noContentMsg() {
+        return $(By.xpath("//div[text()='No products found.']"));
+    }
+
     @Step("Wait for search output ot load.")
     public void waitForSearchResultsToLoad() {
-        searchResults().shouldBe(visible);
+        try {
+            searchResults().shouldBe(visible);
+        } catch (NoSuchElementException nsee) {
+            assertTrue( !noContentMsg().is(visible),
+                    "Search gave no results." );
+        }
     }
 
     @Step("Wait for data on the list to be loaded.")
-    public void waitForDataToLoad() {
-        itemsOnList().shouldBe(visible);
+    public void waitForDataToLoad_s() {
+        try {
+            itemsOnList_s().shouldBe(visible);
+        } catch (NoSuchElementException nsee) {
+            assertTrue( !noContentMsg().is(visible),
+                    "'No products found.' message is displayed." );
+        }
     }
 
-    @Step("Assert that product <{0}> is displayed in the category")
-    public boolean productDisplayed(String productName) {
+    @Step("Find product <{0}> on the list.")
+    private boolean lookForProduct(String productName) {
         boolean result = false;
 
         List<SelenideElement> itemsList = $$(By.xpath("//div[@class='_products_item_list_item__name']"));
@@ -74,6 +89,18 @@ public class StorefrontCategoryPage extends BasePage {
         return result;
     }
 
+    @Step("Assert that product <{0}> is displayed in the category")
+    public boolean productDisplayed(String productName) {
+        waitForDataToLoad_s();
+        return lookForProduct(productName);
+    }
+
+    @Step("Assert that product <{0}> is found by search")
+    public boolean productIsFound(String productName) {
+        waitForSearchResultsToLoad();
+        return lookForProduct(productName);
+    }
+
     public void search(String productName) {
         click( searchBtn() );
         setFieldVal( searchFld(), productName );
@@ -88,7 +115,7 @@ public class StorefrontCategoryPage extends BasePage {
     @Step("Find on the list a product with name <{0}>")
     private SelenideElement findProductOnList(String productName) {
 
-        waitForDataToLoad();
+        waitForDataToLoad_s();
         List<SelenideElement> productsList = $$(By.xpath("//div[@class='_products_item_list_item__name']"));
         SelenideElement productToClick = null;
         printSEList(productsList);

@@ -20,9 +20,9 @@ public class CreditCardsTest extends DataProvider {
     @BeforeClass(alwaysRun = true)
     public void setUp() {
 
-        open("http://admin.stage.foxcommerce.com/");
-        if ( (Objects.equals(getUrl(), "http://admin.stage.foxcommerce.com/login")) ) {
-            LoginPage loginPage = open("http://admin.stage.foxcommerce.com/login", LoginPage.class);
+        open(adminUrl);
+        if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
+            LoginPage loginPage = open(adminUrl + "/login", LoginPage.class);
             loginPage.login("admin@admin.com", "password");
         }
 
@@ -32,7 +32,7 @@ public class CreditCardsTest extends DataProvider {
     public void addNewCC_newBillAddress() throws IOException {
 
         provideTestData("a customer");
-        p = open("http://admin.stage.foxcommerce.com/customers/" + customerId, CustomerPage.class);
+        p = open(adminUrl + "/customers/" + customerId, CustomerPage.class);
 
         click( p.addNewCreditCardBtn() );
         p.addNewBillAddress(customerName, "2101 Green Valley", "Suite 300", "Seattle", "Washington", "98101", "9879876");
@@ -46,7 +46,7 @@ public class CreditCardsTest extends DataProvider {
     public void addNewCC_existingBillAddress() throws IOException {
 
         provideTestData("customer with a shipping address");
-        p = open("http://admin.stage.foxcommerce.com/customers/" + customerId, CustomerPage.class);
+        p = open(adminUrl + "/customers/" + customerId, CustomerPage.class);
 
         click( p.addNewCreditCardBtn() );
         p.addNewCreditCard(customerName, "5555555555554444", "777", "2", "2020");
@@ -61,7 +61,7 @@ public class CreditCardsTest extends DataProvider {
     public void editCC_holderName() throws IOException {
 
         provideTestData("customer with a credit card");
-        p = open("http://admin.stage.foxcommerce.com/customers/" + customerId, CustomerPage.class);
+        p = open(adminUrl + "/customers/" + customerId, CustomerPage.class);
 
         click( p.editCreditCardBtn("1") );
         setFieldVal( p.holderNameFld(), "John Doe" );
@@ -76,7 +76,7 @@ public class CreditCardsTest extends DataProvider {
     public void editCC_expirationDate() throws IOException {
 
         provideTestData("customer with a credit card");
-        p = open("http://admin.stage.foxcommerce.com/customers/" + customerId, CustomerPage.class);
+        p = open(adminUrl + "/customers/" + customerId, CustomerPage.class);
 
         click( p.editCreditCardBtn("1") );
         p.setExpirationDate("12", "2030");
@@ -91,7 +91,7 @@ public class CreditCardsTest extends DataProvider {
     public void editCC_billAddress() throws IOException {
 
         provideTestData("customer with a credit card and 2 addresses");
-        p = open("http://admin.stage.foxcommerce.com/customers/" + customerId, CustomerPage.class);
+        p = open(adminUrl + "/customers/" + customerId, CustomerPage.class);
 
         click( p.editCreditCardBtn("1") );
         click( p.changeBillAddressBtn() );
@@ -107,7 +107,7 @@ public class CreditCardsTest extends DataProvider {
     public void editBillAddressInAddressBook() throws IOException {
 
         provideTestData("customer with a credit card");
-        p = open("http://admin.stage.foxcommerce.com/customers/" + customerId, CustomerPage.class);
+        p = open(adminUrl + "/customers/" + customerId, CustomerPage.class);
 
         click (p.editAddressBtn("1"));
         setFieldVal( p.nameFld(), "John Doe" );

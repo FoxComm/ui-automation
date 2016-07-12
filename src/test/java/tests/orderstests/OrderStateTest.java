@@ -18,9 +18,9 @@ public class OrderStateTest extends DataProvider {
     @BeforeTest(alwaysRun = true)
     public void setUp() {
 
-        open("http://admin.stage.foxcommerce.com/");
-        if ( (Objects.equals(getUrl(), "http://admin.stage.foxcommerce.com/login")) ) {
-            LoginPage loginPage = open("http://admin.stage.foxcommerce.com/login", LoginPage.class);
+        open(adminUrl);
+        if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
+            LoginPage loginPage = open(adminUrl + "/login", LoginPage.class);
             loginPage.login("admin@admin.com", "password");
         }
 
@@ -30,7 +30,7 @@ public class OrderStateTest extends DataProvider {
     public void changeOrderState_Cancel() throws IOException {
 
         provideTestData("order in remorse hold");
-        p = open("http://admin.stage.foxcommerce.com/orders/" + orderId, OrderDetailsPage.class);
+        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
 
         p.setOrderState("Canceled");
         p.assertOrderState("Canceled");
@@ -41,7 +41,7 @@ public class OrderStateTest extends DataProvider {
     public void changeOrderState_ManualHold() throws IOException {
 
         provideTestData("order in remorse hold");
-        p = open("http://admin.stage.foxcommerce.com/orders/" + orderId, OrderDetailsPage.class);
+        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
 
         p.setOrderState("Manual Hold");
         p.assertOrderState("Manual Hold");
@@ -52,7 +52,7 @@ public class OrderStateTest extends DataProvider {
     public void changeOrderState_FraudHold() throws IOException {
 
         provideTestData("order in remorse hold");
-        p = open("http://admin.stage.foxcommerce.com/orders/" + orderId, OrderDetailsPage.class);
+        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
 
         p.setOrderState("Fraud Hold");
         p.assertOrderState("Fraud Hold");
@@ -63,7 +63,7 @@ public class OrderStateTest extends DataProvider {
     public void changeOrderState_FulfillmentStarted() throws IOException {
 
         provideTestData("order in remorse hold");
-        p = open("http://admin.stage.foxcommerce.com/orders/" + orderId, OrderDetailsPage.class);
+        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
 
         p.setOrderState("Fulfillment Started");
         p.assertOrderState("Fulfillment Started");
@@ -74,7 +74,7 @@ public class OrderStateTest extends DataProvider {
     public void addRemorseHoldTime() throws IOException {
 
         provideTestData("order in remorse hold");
-        p = open("http://admin.stage.foxcommerce.com/orders/" + orderId, OrderDetailsPage.class);
+        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
 
         p.click( p.addTimeBtn() );
         p.assertTimerValue(0, 45);
@@ -85,7 +85,7 @@ public class OrderStateTest extends DataProvider {
     public void changeOrderState_backToRemorseHold() throws IOException {
 
         provideTestData("order in remorse hold");
-        p = open("http://admin.stage.foxcommerce.com/orders/" + orderId, OrderDetailsPage.class);
+        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
 
         click( p.addTimeBtn() );
         p.setOrderState("Manual Hold");

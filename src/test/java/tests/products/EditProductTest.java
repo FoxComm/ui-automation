@@ -24,9 +24,9 @@ public class EditProductTest extends DataProvider {
     @BeforeClass(alwaysRun = true)
     public void setUp() {
 
-        open("http://admin.stage.foxcommerce.com/");
-        if ( (Objects.equals(getUrl(), "http://admin.stage.foxcommerce.com/login")) ) {
-            LoginPage loginPage = open("http://admin.stage.foxcommerce.com/login", LoginPage.class);
+        open(adminUrl);
+        if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
+            LoginPage loginPage = open(adminUrl + "/login", LoginPage.class);
             loginPage.login("admin@admin.com", "password");
         }
 
@@ -36,7 +36,7 @@ public class EditProductTest extends DataProvider {
     public void editProduct_title() throws IOException {
 
         provideTestData("product in active state");
-        p = open("http://admin.stage.foxcommerce.com/products/default/" + productId, ProductsPage.class);
+        p = open(adminUrl + "/products/default/" + productId, ProductsPage.class);
         String uid = productName.substring(13, 20);
 
         clearField( p.titleFld() );
@@ -57,7 +57,7 @@ public class EditProductTest extends DataProvider {
     public void editProduct_description() throws IOException {
 
         provideTestData("product in active state");
-        p = open("http://admin.stage.foxcommerce.com/products/default/" + productId, ProductsPage.class);
+        p = open(adminUrl + "/products/default/" + productId, ProductsPage.class);
         String uid = productName.substring(13, 20);
 
         clearField( p.descriptionFld() );
@@ -79,7 +79,7 @@ public class EditProductTest extends DataProvider {
     public void editProduct_state() throws IOException {
 
         provideTestData("product in active state");
-        p = open("http://admin.stage.foxcommerce.com/products/default/" + productId, ProductsPage.class);
+        p = open(adminUrl + "/products/default/" + productId, ProductsPage.class);
         String uid = productName.substring(13, 20);
 
         p.setState( "Inactive" );
@@ -96,7 +96,7 @@ public class EditProductTest extends DataProvider {
     public void editProduct_retailPrice() throws IOException {
 
         provideTestData("product in active state");
-        p = open("http://admin.stage.foxcommerce.com/products/default/" + productId, ProductsPage.class);
+        p = open(adminUrl + "/products/default/" + productId, ProductsPage.class);
         String uid = productName.substring(13, 20);
 
         setFieldVal( p.retailPriceFld(), "35.18" );
@@ -116,7 +116,7 @@ public class EditProductTest extends DataProvider {
     public void editProduct_salePrice() throws IOException {
 
         provideTestData("product in active state");
-        p = open("http://admin.stage.foxcommerce.com/products/default/" + productId, ProductsPage.class);
+        p = open(adminUrl + "/products/default/" + productId, ProductsPage.class);
         String uid = productName.substring(13, 20);
 
         setFieldVal( p.salePriceFld(), "35.18" );
@@ -136,7 +136,7 @@ public class EditProductTest extends DataProvider {
     public void editProduct_tag() throws IOException {
 
         provideTestData("product in active state");
-        p = open("http://admin.stage.foxcommerce.com/products/default/" + productId, ProductsPage.class);
+        p = open(adminUrl + "/products/default/" + productId, ProductsPage.class);
 
         click( p.removeTagBtn("1") );
         p.addTag("eyeglasses");

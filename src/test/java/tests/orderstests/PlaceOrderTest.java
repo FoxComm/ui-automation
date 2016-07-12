@@ -20,9 +20,9 @@ public class PlaceOrderTest extends DataProvider {
     @BeforeClass(alwaysRun = true)
     public void setUp() {
 
-        open("http://admin.stage.foxcommerce.com/");
-        if ( (Objects.equals(getUrl(), "http://admin.stage.foxcommerce.com/login")) ) {
-            LoginPage loginPage = open("http://admin.stage.foxcommerce.com/login", LoginPage.class);
+        open(adminUrl);
+        if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
+            LoginPage loginPage = open(adminUrl + "/login", LoginPage.class);
             loginPage.login("admin@admin.com", "password");
         }
 
@@ -32,7 +32,7 @@ public class PlaceOrderTest extends DataProvider {
     public void placeOrder_CC() throws IOException {
 
         provideTestData("cart with 1 item, shipping method, and credit card payment");
-        p = open("http://admin.stage.foxcommerce.com/orders/" + orderId, OrderDetailsPage.class);
+        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
 
         p.assertNoWarnings();
         click( p.placeOrderBtn() );
@@ -44,7 +44,7 @@ public class PlaceOrderTest extends DataProvider {
     public void placeOrder_SC() throws IOException {
 
         provideTestData("cart with 1 item, shipping method and issued SC");
-        p = open("http://admin.stage.foxcommerce.com/orders/" + orderId, OrderDetailsPage.class);
+        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
 
         p.cartSummary().waitUntil(visible, 10000);
         int amountToUse = (int) (p.grandTotal() * 100);
@@ -61,7 +61,7 @@ public class PlaceOrderTest extends DataProvider {
     public void placeOrder_GC() throws IOException {
 
         provideTestData("cart with 1 item, shipping method and issued GC");
-        p = open("http://admin.stage.foxcommerce.com/orders/" + orderId, OrderDetailsPage.class);
+        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
 
         p.cartSummary().waitUntil(visible, 10000);
         int amountToUse = (int) (p.grandTotal() * 100);
@@ -79,7 +79,7 @@ public class PlaceOrderTest extends DataProvider {
     public void placeOrder_CC_SC() throws IOException {
 
         provideTestData("cart with 1 item, shipping method, credit card payment and issued SC");
-        p = open("http://admin.stage.foxcommerce.com/orders/" + orderId, OrderDetailsPage.class);
+        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
 
         p.cartSummary().waitUntil(visible, 10000);
         int amountToUse = (int) (p.grandTotal() / 2 * 100);
@@ -96,7 +96,7 @@ public class PlaceOrderTest extends DataProvider {
     public void placeOrder_CC_GC() throws IOException {
 
         provideTestData("cart with 1 item, shipping method, credit card payment and issued GC");
-        p = open("http://admin.stage.foxcommerce.com/orders/" + orderId, OrderDetailsPage.class);
+        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
 
         p.cartSummary().waitUntil(visible, 10000);
         int amountToUse = (int) (p.grandTotal() / 2 * 100);
@@ -113,7 +113,7 @@ public class PlaceOrderTest extends DataProvider {
     public void placeOrder_SC_GC() throws IOException {
 
         provideTestData("cart with 1 item, shipping method, issued SC and GC");
-        p = open("http://admin.stage.foxcommerce.com/orders/" + orderId, OrderDetailsPage.class);
+        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
 
         p.cartSummary().waitUntil(visible, 10000);
         int amountToUse_GC = (int) (p.grandTotal() / 2 * 100);

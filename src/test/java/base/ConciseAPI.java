@@ -2,8 +2,9 @@ package base;
 
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.SelenideElement;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
+import org.openqa.selenium.*;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import ru.yandex.qatools.allure.annotations.Step;
 
 import java.text.DecimalFormat;
@@ -11,10 +12,17 @@ import java.util.List;
 import java.util.Random;
 
 import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.sleep;
 import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
+import static org.testng.Assert.assertTrue;
 
 public class ConciseAPI extends Configuration {
+
+    public String stageAdmin = "http://admin.stage.foxcommerce.com/";
+    public String stageStorefront = "http://stage.foxcommerce.com/";
+    public String tgtAdmin = "http://admin.tgt.foxcommerce.com/";
+    public String tgtStorefront = "http://tgt.foxcommerce.com/";
 
     @Step("Click {0}.")
     public void click(SelenideElement element) {
@@ -118,6 +126,26 @@ public class ConciseAPI extends Configuration {
     protected static int calcAmount(int firstAmount, double grandTotal) {
         double firstAmount_double = (double) firstAmount / 100;
         return (int) ((grandTotal - firstAmount_double) * 100);
+    }
+
+    private WebElement itemsOnList() {
+        return getWebDriver().findElement(By.xpath("//td[@class='fc-table-td']"));
+    }
+
+    public SelenideElement emptyList() {
+        return $(By.xpath("//div[@class='fc-content-box__empty-row']"));
+    }
+
+    @Step("Wait for data on the list to be loaded.")
+    public void waitForDataToLoad() {
+        try {
+            new WebDriverWait(getWebDriver(), 8).until(
+                    ExpectedConditions.presenceOfElementLocated((By) itemsOnList()));
+//            itemsOnList().should(exist);
+        } catch(NoSuchElementException nsee) {
+            assertTrue( emptyList().is(visible),
+                    "There's no content on the list.");
+        }
     }
 
 

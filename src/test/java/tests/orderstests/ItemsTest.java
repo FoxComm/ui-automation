@@ -20,9 +20,9 @@ public class ItemsTest extends DataProvider {
     @BeforeClass(alwaysRun = true)
     public void setUp() {
 
-        open("http://admin.stage.foxcommerce.com/");
-        if ( (Objects.equals(getUrl(), "http://admin.stage.foxcommerce.com/login")) ) {
-            LoginPage loginPage = open("http://admin.stage.foxcommerce.com/login", LoginPage.class);
+        open(adminUrl);
+        if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
+            LoginPage loginPage = open(adminUrl + "/login", LoginPage.class);
             loginPage.login("admin@admin.com", "password");
         }
 
@@ -32,7 +32,7 @@ public class ItemsTest extends DataProvider {
     public void addItemToCart() throws IOException {
 
         provideTestData("empty cart");
-        p = open("http://admin.stage.foxcommerce.com/orders/" + orderId, OrderDetailsPage.class);
+        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
 
         p.addItemToCart("Shark");
         p.addItemToCart("Fox");
@@ -43,7 +43,7 @@ public class ItemsTest extends DataProvider {
     public void increaseItemQuantity_arrowBtn() throws IOException {
 
         provideTestData("cart with 1 item");
-        p = open("http://admin.stage.foxcommerce.com/orders/" + orderId, OrderDetailsPage.class);
+        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
         sleep(750);
 
         String expectedResult = addToString(p.getItemQty("1"), 2);
@@ -57,7 +57,7 @@ public class ItemsTest extends DataProvider {
     public void decreaseItemQuantity_arrowBtn() throws IOException {
 
         provideTestData("cart with 1 item, qty: 3");
-        p = open("http://admin.stage.foxcommerce.com/orders/" + orderId, OrderDetailsPage.class);
+        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
         sleep(750);
 
         String expectedResult = subtractFromString(p.getItemQty("1"), 1);
@@ -71,7 +71,7 @@ public class ItemsTest extends DataProvider {
     public void decreaseItemQuantityBelowZero() throws IOException {
 
         provideTestData("cart with 3 items");
-        p = open("http://admin.stage.foxcommerce.com/orders/" + orderId, OrderDetailsPage.class);
+        p = open(adminUrl + "/orders" + orderId, OrderDetailsPage.class);
         sleep(750);
 
         int expectedResult = p.itemsInCartAmount() - 1;
@@ -89,7 +89,7 @@ public class ItemsTest extends DataProvider {
     public void editItemQuantity_directInput() throws IOException {
 
         provideTestData("cart with 1 item");
-        p = open("http://admin.stage.foxcommerce.com/orders/" + orderId, OrderDetailsPage.class);
+        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
 
         // increase value
         p.editItemQty("1", "3");
@@ -106,7 +106,7 @@ public class ItemsTest extends DataProvider {
     public void deletionCancel_deleteBtn() throws IOException {
 
         provideTestData("cart with 1 item, qty: 3");
-        p = open("http://admin.stage.foxcommerce.com/orders/" + orderId, OrderDetailsPage.class);
+        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
         sleep(750);
 
         int expectedResult = p.itemsInCartAmount();
@@ -124,7 +124,7 @@ public class ItemsTest extends DataProvider {
     public void deletionCancel_qtyBelowZero() throws IOException {
 
         provideTestData("cart with 3 items");
-        p = open("http://admin.stage.foxcommerce.com/orders/" + orderId, OrderDetailsPage.class);
+        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
         sleep(750);
 
         int expectedResult = p.itemsInCartAmount();
@@ -142,7 +142,7 @@ public class ItemsTest extends DataProvider {
     public void deleteItem_deleteBtn() throws IOException {
 
         provideTestData("cart with 3 items");
-        p = open("http://admin.stage.foxcommerce.com/orders/" + orderId, OrderDetailsPage.class);
+        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
         sleep(750);
 
         int expectedItemsAmount = p.cart().size() - 1;

@@ -19,9 +19,9 @@ public class OrdersListTest extends DataProvider {
     @BeforeClass(alwaysRun = true)
     public void setUp() {
 
-        open("http://admin.stage.foxcommerce.com/");
-        if ( (Objects.equals(getUrl(), "http://admin.stage.foxcommerce.com/login")) ) {
-            LoginPage loginPage = open("http://admin.stage.foxcommerce.com/login", LoginPage.class);
+        open(adminUrl);
+        if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
+            LoginPage loginPage = open(adminUrl + "/login", LoginPage.class);
             loginPage.login("admin@admin.com", "password");
         }
 
@@ -31,7 +31,7 @@ public class OrdersListTest extends DataProvider {
     public void checkOrderOnList() throws IOException {
 
         provideTestData("customer with 2 orders in remorse hold");
-        p = open("http://admin.stage.foxcommerce.com/customers/" + customerId + "/transactions", CustomerPage.class);
+        p = open(adminUrl + "/customers/" + customerId + "/transactions", CustomerPage.class);
 
         p.waitForDataToLoad();
         assertEquals( p.amountOfOrders(), 3,
@@ -39,30 +39,30 @@ public class OrdersListTest extends DataProvider {
 
     }
 
-//    @Test(priority = 2)
-//    public void totalSalesTest() throws IOException {
-//
-//        provideTestData("customer with 2 orders in remorse hold and fulfillment started");
-//        p = open("http://admin.stage.foxcommerce.com/customers/" + customerId + "/transactions", CustomerPage.class);
-//
-//        p.orderListBy("Order");
-//
-//        String strTotal1 =  p.getOrderParamVal(1, "Total");
-//        double total1 = Double.valueOf( strTotal1.substring(1, strTotal1.length()) );
-//        String strTotal2 = p.getOrderParamVal(2, "Total");
-//        double total2 = Double.valueOf( strTotal2.substring(1, strTotal2.length()) );
-//        double expectedResult = total1 + total2;
-//
-//        assertEquals( p.totalSalesVal(), expectedResult,
-//                "Total Sales sum is incorrect.");
-//
-//    }
+    @Test(priority = 2)
+    public void totalSalesTest() throws IOException {
+
+        provideTestData("customer with 2 orders in remorse hold and fulfillment started");
+        p = open("http://admin.stage.foxcommerce.com/customers/" + customerId + "/transactions", CustomerPage.class);
+
+        p.orderListBy("Order");
+
+        String strTotal1 =  p.getOrderParamVal(1, "Total");
+        double total1 = Double.valueOf( strTotal1.substring(1, strTotal1.length()) );
+        String strTotal2 = p.getOrderParamVal(2, "Total");
+        double total2 = Double.valueOf( strTotal2.substring(1, strTotal2.length()) );
+        double expectedResult = total1 + total2;
+
+        assertEquals( p.totalSalesVal(), expectedResult,
+                "Total Sales sum is incorrect.");
+
+    }
 
     @Test(priority = 3)
     public void searchFld_orderRefNum() throws IOException {
 
         provideTestData("customer with 2 orders in remorse hold and fulfillment started");
-        p = open("http://admin.stage.foxcommerce.com/customers/" + customerId + "/transactions", CustomerPage.class);
+        p = open(adminUrl + "/customers/" + customerId + "/transactions", CustomerPage.class);
 
         p.addFilter("Order", "Reference Number", orderId);
         assertEquals( p.getOrderParamVal(1, "Order State"), "Fulfillment Started",
@@ -74,7 +74,7 @@ public class OrdersListTest extends DataProvider {
     public void searchFld_productName() throws IOException {
 
         provideTestData("customer with 2 orders in remorse hold and fulfillment started");
-        p = open("http://admin.stage.foxcommerce.com/customers/" + customerId + "/transactions", CustomerPage.class);
+        p = open(adminUrl + "/customers/" + customerId + "/transactions", CustomerPage.class);
 
         p.addFilter("Items", "Product Name", "Shark");
         assertEquals( p.amountOfOrders(), 1,
@@ -86,7 +86,7 @@ public class OrdersListTest extends DataProvider {
     public void searchFld_productSKU() throws IOException {
 
         provideTestData("customer with 2 orders in remorse hold and fulfillment started");
-        p = open("http://admin.stage.foxcommerce.com/customers/" + customerId + "/transactions", CustomerPage.class);
+        p = open(adminUrl + "/customers/" + customerId + "/transactions", CustomerPage.class);
 
         p.addFilter("Items", "Product SKU", "SKU-BRO");
         assertEquals( p.amountOfOrders(), 1,

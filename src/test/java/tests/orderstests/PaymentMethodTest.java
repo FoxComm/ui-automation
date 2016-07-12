@@ -22,9 +22,9 @@ public class PaymentMethodTest extends DataProvider {
     @BeforeClass(alwaysRun = true)
     public void setUp() {
 
-        open("http://admin.stage.foxcommerce.com/");
-        if ( (Objects.equals(getUrl(), "http://admin.stage.foxcommerce.com/login")) ) {
-            LoginPage loginPage = open("http://admin.stage.foxcommerce.com/login", LoginPage.class);
+        open(adminUrl);
+        if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
+            LoginPage loginPage = open(adminUrl + "/login", LoginPage.class);
             loginPage.login("admin@admin.com", "password");
         }
 
@@ -34,7 +34,7 @@ public class PaymentMethodTest extends DataProvider {
     public void addPaymentMethod_creditCard() throws IOException {
 
         provideTestData("cart with 1 item and chosen shipping address");
-        p = open("http://admin.stage.foxcommerce.com/orders/" + orderId, OrderDetailsPage.class);
+        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
 
         click( p.editBtn_payment() );
         click( p.newPaymentBtn() );
@@ -51,8 +51,8 @@ public class PaymentMethodTest extends DataProvider {
     public void addPaymentMethod_giftCard() throws IOException {
 
         provideTestData("cart with 1 item && customer with GC");
-        open("http://admin.stage.foxcommerce.com/gift-cards/" + gcNumber);
-        p = open("http://admin.stage.foxcommerce.com/orders/" + orderId, OrderDetailsPage.class);
+        open(adminUrl + "/gift-cards/" + gcNumber);
+        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
 
         click( p.editBtn_payment() );
         click( p.newPaymentBtn() );
@@ -76,7 +76,7 @@ public class PaymentMethodTest extends DataProvider {
     public void addPaymentMethod_storeCredit() throws IOException {
 
         provideTestData("cart with 1 item && customer with SC");
-        p = open("http://admin.stage.foxcommerce.com/orders/" + orderId, OrderDetailsPage.class);
+        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
 
         click( p.editBtn_payment() );
         click( p.newPaymentBtn() );
@@ -98,7 +98,7 @@ public class PaymentMethodTest extends DataProvider {
     public void addStoreCredit_exceedsTotal() throws IOException {
 
         provideTestData("cart with 1 item && customer with SC");
-        p = open("http://admin.stage.foxcommerce.com/orders/" + orderId, OrderDetailsPage.class);
+        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
 
         p.cartSummary().waitUntil(visible, 10000);
         double amountToUse = p.grandTotal() + 10.00;
@@ -113,7 +113,7 @@ public class PaymentMethodTest extends DataProvider {
     public void addGiftCard_exceedsTotal() throws IOException {
 
         provideTestData("cart with 1 item && customer with GC");
-        p = open("http://admin.stage.foxcommerce.com/orders/" + orderId, OrderDetailsPage.class);
+        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
 
         p.cartSummary().waitUntil(visible, 10000);
         double amountToUse = p.grandTotal() + 10.00;
@@ -128,7 +128,7 @@ public class PaymentMethodTest extends DataProvider {
     public void addSC_onHoldState() throws IOException {
 
         provideTestData("cart with 1 item && SC onHold");
-        p = open("http://admin.stage.foxcommerce.com/orders/" + orderId, OrderDetailsPage.class);
+        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
 
         click( p.editBtn_payment() );
         click( p.newPaymentBtn() );
@@ -144,7 +144,7 @@ public class PaymentMethodTest extends DataProvider {
     public void addSC_canceledState() throws IOException {
 
         provideTestData("cart with 1 item && SC canceled");
-        p = open("http://admin.stage.foxcommerce.com/orders/" + orderId, OrderDetailsPage.class);
+        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
 
         click( p.editBtn_payment() );
         click( p.newPaymentBtn() );
