@@ -28,7 +28,7 @@ public class OrderCouponsTest extends DataProvider {
 //    public void addCoupon() throws IOException {
 //
 //        provideTestData("a cart and a single code coupon");
-//        p = open("http://admin.stage.foxcommerce.com/orders/" + orderId, OrderDetailsPage.class);
+//        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
 //
 //        click( p.editBtn_coupons() );
 //        setFieldVal( p.couponCode(), "newcpn-12345" );
@@ -45,7 +45,7 @@ public class OrderCouponsTest extends DataProvider {
 //
 //        // add coupon to order through the API
 //        provideTestData("cart with single code coupon");
-//        p = open("http://admin.stage.foxcommerce.com/orders/" + orderId, OrderDetailsPage.class);
+//        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
 //
 //        //assert that coupon affects order's grand total
 //
@@ -56,7 +56,7 @@ public class OrderCouponsTest extends DataProvider {
 //
 //        // add coupon to order through the API
 //        provideTestData("cart with single code coupon");
-//        p = open("http://admin.stage.foxcommerce.com/orders/" + orderId, OrderDetailsPage.class);
+//        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
 //
 ////        click( p.editBtn_coupons() );
 ////        click( p.deleteBtn_coupons() );

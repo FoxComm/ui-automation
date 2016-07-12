@@ -99,7 +99,7 @@ public class ContactInformationTest extends DataProvider {
 //    public void phoneNumbFromBillAddress() throws IOException {
 //
 //        provideTestData("customer with a credit card");
-//        p = open("http://admin.stage.foxcommerce.com/customers/" + customerId, CustomerPage.class);
+//        p = open(adminUrl + "/customers/" + customerId, CustomerPage.class);
 //
 //        assertEquals( p.phoneNumberVal_contactInfo(), "9879879876",
 //                "Phone number from billing address isn't displayed in customer contact information.");

@@ -43,7 +43,7 @@ public class OrdersListTest extends DataProvider {
     public void totalSalesTest() throws IOException {
 
         provideTestData("customer with 2 orders in remorse hold and fulfillment started");
-        p = open("http://admin.stage.foxcommerce.com/customers/" + customerId + "/transactions", CustomerPage.class);
+        p = open(adminUrl + "/customers/" + customerId + "/transactions", CustomerPage.class);
 
         p.orderListBy("Order");
 

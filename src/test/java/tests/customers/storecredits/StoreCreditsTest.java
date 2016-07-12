@@ -32,7 +32,7 @@ public class StoreCreditsTest extends DataProvider {
     public void issueSC_csrAppeasement() throws IOException {
 
         provideTestData("a customer");
-        p = open("http://admin.stage.foxcommerce.com/customers/" + customerId, CustomerPage.class);
+        p = open(adminUrl + "/customers/" + customerId, CustomerPage.class);
 
         click( p.storeCreditTab() );
         click( p.newSCBtn() );
@@ -69,7 +69,7 @@ public class StoreCreditsTest extends DataProvider {
     public void issuedSC_displayedOnList() throws IOException {
 
         provideTestData("a customer");
-        p = open("http://admin.stage.foxcommerce.com/customers/" + customerId, CustomerPage.class);
+        p = open(adminUrl + "/customers/" + customerId, CustomerPage.class);
 
         click( p.storeCreditTab() );
         click( p.newSCBtn() );
@@ -89,7 +89,7 @@ public class StoreCreditsTest extends DataProvider {
     public void issueSC_presetValues() throws IOException {
 
         provideTestData("a customer");
-        p = open("http://admin.stage.foxcommerce.com/customers/" + customerId, CustomerPage.class);
+        p = open(adminUrl + "/customers/" + customerId, CustomerPage.class);
 
         click( p.storeCreditTab() );
         click( p.newSCBtn() );
@@ -109,7 +109,7 @@ public class StoreCreditsTest extends DataProvider {
     public void setState_onHold() throws IOException {
 
         provideTestData("a customer with issued SC");
-        p = open("http://admin.stage.foxcommerce.com/customers/" + customerId, CustomerPage.class);
+        p = open(adminUrl + "/customers/" + customerId, CustomerPage.class);
 
         click( p.storeCreditTab() );
         p.setState("1", "On Hold");
@@ -123,7 +123,7 @@ public class StoreCreditsTest extends DataProvider {
     public void setState_canceled() throws IOException {
 
         provideTestData("a customer with issued SC");
-        p = open("http://admin.stage.foxcommerce.com/customers/" + customerId, CustomerPage.class);
+        p = open(adminUrl + "/customers/" + customerId, CustomerPage.class);
 
         click( p.storeCreditTab() );
         p.setState("1", "Cancel Store Credit");
@@ -137,7 +137,7 @@ public class StoreCreditsTest extends DataProvider {
     public void checkTransaction_csrAppeasement() throws IOException {
 
         provideTestData("order in Remorse Hold, payed with SC (CSR Appeasement)");
-        p = open("http://admin.stage.foxcommerce.com/customers/" + customerId, CustomerPage.class);
+        p = open(adminUrl + "/customers/" + customerId, CustomerPage.class);
 
         click( p.storeCreditTab() );
         click( p.transactionTab() );
@@ -152,7 +152,7 @@ public class StoreCreditsTest extends DataProvider {
     public void checkTransaction_gcTransfer() throws IOException {
 
         provideTestData("order in Remorse Hold, payed with SC (GC Transfer)");
-        p = open("http://admin.stage.foxcommerce.com/customers/" + customerId, CustomerPage.class);
+        p = open(adminUrl + "/customers/" + customerId, CustomerPage.class);
 
         click( p.storeCreditTab() );
         click( p.transactionTab() );

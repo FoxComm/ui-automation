@@ -132,7 +132,7 @@ public class PlaceOrderTest extends DataProvider {
 //    public void placeOrder_coupon() throws IOException {
 //
 //        provideTestData("cart with 1 item, shipping method, CC and coupon");
-//        p = open("http://admin.stage.foxcommerce.com/orders/" + orderId, OrderDetailsPage.class);
+//        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
 //
 //        assertTrue(p.couponName().is(visible),
 //                "Failed to apply coupon to an order.");

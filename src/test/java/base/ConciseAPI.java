@@ -3,14 +3,13 @@ package base;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.*;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import ru.yandex.qatools.allure.annotations.Step;
 
 import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Random;
 
+import static com.codeborne.selenide.Condition.exist;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.sleep;
@@ -128,8 +127,8 @@ public class ConciseAPI extends Configuration {
         return (int) ((grandTotal - firstAmount_double) * 100);
     }
 
-    private WebElement itemsOnList() {
-        return getWebDriver().findElement(By.xpath("//td[@class='fc-table-td']"));
+    private SelenideElement itemsOnList() {
+        return $(By.xpath("//td[@class='fc-table-td']"));
     }
 
     public SelenideElement emptyList() {
@@ -139,9 +138,9 @@ public class ConciseAPI extends Configuration {
     @Step("Wait for data on the list to be loaded.")
     public void waitForDataToLoad() {
         try {
-            new WebDriverWait(getWebDriver(), 8).until(
-                    ExpectedConditions.presenceOfElementLocated((By) itemsOnList()));
-//            itemsOnList().should(exist);
+//            new WebDriverWait(getWebDriver(), 8).until(
+//                    ExpectedConditions.presenceOfElementLocated((By) itemsOnList()));
+            itemsOnList().should(exist);
         } catch(NoSuchElementException nsee) {
             assertTrue( emptyList().is(visible),
                     "There's no content on the list.");

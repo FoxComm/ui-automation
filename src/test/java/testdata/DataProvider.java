@@ -48,7 +48,7 @@ public class DataProvider extends BaseTest {
                 "\n    \"kind\": \"admin\"\n}");
 
         Request request = new Request.Builder()
-                .url("http://admin.stage.foxcommerce.com/api/v1/public/login")
+                .url(adminUrl + "/api/v1/public/login")
                 .post(body)
                 .addHeader("accept", "application/json")
                 .addHeader("content-type", "application/json")
@@ -79,7 +79,7 @@ public class DataProvider extends BaseTest {
                 "\n    \"email\": \"" + customerEmail + "\"\n}");
 
         Request request = new Request.Builder()
-                .url("http://admin.stage.foxcommerce.com/api/v1/customers")
+                .url(adminUrl + "/api/v1/customers")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -109,7 +109,7 @@ public class DataProvider extends BaseTest {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{\n    \"customerId\": " + customerId + "\n}");
         Request request = new Request.Builder()
-                .url("http://admin.stage.foxcommerce.com/api/v1/orders")
+                .url(adminUrl + "/api/v1/orders")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -135,7 +135,7 @@ public class DataProvider extends BaseTest {
 //        OkHttpClient client = new OkHttpClient();
 //
 //        Request request = new Request.Builder()
-//                .url("http://admin.stage.foxcommerce.com/api/v1/orders/BR10116")
+//                .url(adminUrl + "/api/v1/orders/BR10116")
 //                .get()
 //                .addHeader("content-type", "application/json")
 //                .addHeader("accept", "application/json")
@@ -163,7 +163,7 @@ public class DataProvider extends BaseTest {
         RequestBody body = RequestBody.create(mediaType, "[{\n    \"sku\": \"" + SKU + "\"," +
                 "\n    \"quantity\": " + quantity + "\n}]");
         Request request = new Request.Builder()
-                .url("http://admin.stage.foxcommerce.com/api/v1/orders/" + orderRefNum + "/line-items")
+                .url(adminUrl + "/api/v1/orders/" + orderRefNum + "/line-items")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -186,7 +186,7 @@ public class DataProvider extends BaseTest {
         OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
-                .url("http://admin.stage.foxcommerce.com/api/v1/customers/" + customerId)
+                .url(adminUrl + "/api/v1/customers/" + customerId)
                 .get()
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -228,7 +228,7 @@ public class DataProvider extends BaseTest {
                 "\n    \"phoneNumber\": \"" + phoneNumber + "\"," +
                 "\n    \"isDefault\": " + isDefault + "\n}");
         Request request = new Request.Builder()
-                .url("http://admin.stage.foxcommerce.com/api/v1/customers/" + customerId + "/addresses")
+                .url(adminUrl + "/api/v1/customers/" + customerId + "/addresses")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -260,7 +260,7 @@ public class DataProvider extends BaseTest {
                 "\n  \"isDefault\": " + isDefault + "," +
                 "\n  \"phoneNumber\": \"" + phoneNumber + "\"\n}");
         Request request = new Request.Builder()
-                .url("http://admin.stage.foxcommerce.com/api/v1/orders/" + orderId + "/shipping-address")
+                .url(adminUrl + "/api/v1/orders/" + orderId + "/shipping-address")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -282,7 +282,7 @@ public class DataProvider extends BaseTest {
         OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
-                .url("http://admin.stage.foxcommerce.com/api/v1/customers/" + customerId + "/addresses")
+                .url(adminUrl + "/api/v1/customers/" + customerId + "/addresses")
                 .get()
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -312,7 +312,7 @@ public class DataProvider extends BaseTest {
         OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
-                .url("http://admin.stage.foxcommerce.com/api/v1/shipping-methods/" + orderId)
+                .url(adminUrl + "/api/v1/shipping-methods/" + orderId)
                 .get()
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -342,7 +342,7 @@ public class DataProvider extends BaseTest {
         RequestBody body = RequestBody.create(mediaType, "{" +
                 "\n  \"shippingMethodId\": " + shipMethodId + "\n}");
         Request request = new Request.Builder()
-                .url("http://admin.stage.foxcommerce.com/api/v1/orders/" + orderId + "/shipping-method")
+                .url(adminUrl + "/api/v1/orders/" + orderId + "/shipping-method")
                 .patch(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -375,7 +375,7 @@ public class DataProvider extends BaseTest {
                 "\n  \"addressId\": " + addressId + "," +
                 "\n  \"isDefault\": false\n}");
         Request request = new Request.Builder()
-                .url("http://admin.stage.foxcommerce.com/api/v1/customers/" + customerId + "/payment-methods/credit-cards")
+                .url(adminUrl + "/api/v1/customers/" + customerId + "/payment-methods/credit-cards")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -403,7 +403,7 @@ public class DataProvider extends BaseTest {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{\n  \"creditCardId\": " + creditCardId + "\n}");
         Request request = new Request.Builder()
-                .url("http://admin.stage.foxcommerce.com/api/v1/orders/" + orderId + "/payment-methods/credit-cards")
+                .url(adminUrl + "/api/v1/orders/" + orderId + "/payment-methods/credit-cards")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -431,7 +431,7 @@ public class DataProvider extends BaseTest {
                 "\n  \"subReasonId\": 1," +
                 "\n  \"currency\": \"USD\"\n}");
         Request request = new Request.Builder()
-                .url("http://admin.stage.foxcommerce.com/api/v1/customers/" + customerId + "/payment-methods/store-credit")
+                .url(adminUrl + "/api/v1/customers/" + customerId + "/payment-methods/store-credit")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -461,7 +461,7 @@ public class DataProvider extends BaseTest {
                 "\n  \"code\":\"CF13858F49E16CE7\"," +
                 "\n  \"subReasonId\":null\n}");
         Request request = new Request.Builder()
-                .url("http://admin.stage.foxcommerce.com/api/v1/gift-cards/" + gcNumber + "/convert/" + customerId)
+                .url(adminUrl + "/api/v1/gift-cards/" + gcNumber + "/convert/" + customerId)
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -489,7 +489,7 @@ public class DataProvider extends BaseTest {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{\n  \"amount\": " + amount + "\n}");
         Request request = new Request.Builder()
-                .url("http://admin.stage.foxcommerce.com/api/v1/orders/" + orderId + "/payment-methods/store-credit")
+                .url(adminUrl + "/api/v1/orders/" + orderId + "/payment-methods/store-credit")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -516,7 +516,7 @@ public class DataProvider extends BaseTest {
                 "\n  \"quantity\": " + quantity + "," +
                 "\n  \"reasonId\": 1\n}");
         Request request = new Request.Builder()
-                .url("http://admin.stage.foxcommerce.com/api/v1/gift-cards")
+                .url(adminUrl + "/api/v1/gift-cards")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -546,7 +546,7 @@ public class DataProvider extends BaseTest {
                 "\n  \"code\": \"" + gcNumber + "\"," +
                 "\n  \"amount\": " + amount + "}");
         Request request = new Request.Builder()
-                .url("http://admin.stage.foxcommerce.com/api/v1/orders/" + orderId + "/payment-methods/gift-cards")
+                .url(adminUrl + "/api/v1/orders/" + orderId + "/payment-methods/gift-cards")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -570,7 +570,7 @@ public class DataProvider extends BaseTest {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "");
         Request request = new Request.Builder()
-                .url("http://admin.stage.foxcommerce.com/api/v1/orders/" + orderId + "/checkout")
+                .url(adminUrl + "/api/v1/orders/" + orderId + "/checkout")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -596,7 +596,7 @@ public class DataProvider extends BaseTest {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{\n  \"state\":\"" + newState + "\"\n}");
         Request request = new Request.Builder()
-                .url("http://admin.stage.foxcommerce.com/api/v1/orders/" + orderId)
+                .url(adminUrl + "/api/v1/orders/" + orderId)
                 .patch(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -620,7 +620,7 @@ public class DataProvider extends BaseTest {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{\"applyType\":\"coupon\",\"form\":{\"id\":248,\"attributes\":{\"eaa8440703\":\"new promo " + generateRandomID() + "\",\"25e24d5d0f\":\"<p>new promo</p>\"},\"discounts\":[{\"id\":249,\"attributes\":{\"bb0b82afad\":{\"orderAny\":{}},\"3db8e5c670\":{\"orderPercentOff\":{\"discount\":10}}},\"createdAt\":\"2016-06-27T22:27:43.938Z\"}],\"createdAt\":\"2016-06-27T22:27:43.915Z\"},\"shadow\":{\"id\":303,\"formId\":248,\"attributes\":{\"name\":{\"type\":\"string\",\"ref\":\"eaa8440703\"},\"storefrontName\":{\"type\":\"richText\",\"ref\":\"25e24d5d0f\"},\"description\":{\"type\":\"richText\",\"ref\":\"eaa8440703\"},\"details\":{\"type\":\"richText\",\"ref\":\"25e24d5d0f\"}},\"discounts\":[{\"id\":249,\"attributes\":{\"qualifier\":{\"type\":\"qualifier\",\"ref\":\"bb0b82afad\"},\"offer\":{\"type\":\"offer\",\"ref\":\"3db8e5c670\"}},\"createdAt\":\"2016-06-27T22:27:43.938Z\"}],\"createdAt\":\"2016-06-27T22:27:43.915Z\"}}");
         Request request = new Request.Builder()
-                .url("http://admin.stage.foxcommerce.com/api/v1/promotions/default")
+                .url(adminUrl + "/api/v1/promotions/default")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -649,7 +649,7 @@ public class DataProvider extends BaseTest {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{\"form\":{\"id\":null,\"createdAt\":null,\"attributes\":{\"usageRules\":{\"isExclusive\":false,\"isUnlimitedPerCode\":false,\"usesPerCode\":1,\"isUnlimitedPerCustomer\":false,\"usesPerCustomer\":1},\"name\":\"test coupon " + randomId + "\",\"storefrontName\":\"storefront name " + randomId + "\",\"description\":\"test description\",\"details\":\"test details\",\"activeFrom\":\"2016-07-01T21:31:56.701+00:00\",\"activeTo\":null}},\"shadow\":{\"id\":null,\"createdAt\":null,\"attributes\":{\"usageRules\":{\"type\":\"usageRules\",\"ref\":\"usageRules\"},\"name\":{\"type\":\"string\",\"ref\":\"name\"},\"storefrontName\":{\"type\":\"richText\",\"ref\":\"storefrontName\"},\"description\":{\"type\":\"richText\",\"ref\":\"description\"},\"details\":{\"type\":\"richText\",\"ref\":\"details\"},\"activeFrom\":{\"type\":\"2016-07-01T21:31:56.701+00:00\",\"ref\":\"activeFrom\"},\"activeTo\":{\"type\":null,\"ref\":\"activeTo\"}}},\"promotion\":" + promotionId + "}");
         Request request = new Request.Builder()
-                .url("http://admin.stage.foxcommerce.com/api/v1/coupons/default")
+                .url(adminUrl + "/api/v1/coupons/default")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("cache-control", "no-cache")
@@ -677,7 +677,7 @@ public class DataProvider extends BaseTest {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{}");
         Request request = new Request.Builder()
-                .url("http://admin.stage.foxcommerce.com/api/v1/coupons/codes/generate/" + couponId + "/NWCPN-" + generateRandomID())
+                .url(adminUrl + "/api/v1/coupons/codes/generate/" + couponId + "/NWCPN-" + generateRandomID())
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -710,7 +710,7 @@ public class DataProvider extends BaseTest {
                 "\n    \"length\":" + length + "," +
                 "\n    \"quantity\":" + quantity + "\n}");
         Request request = new Request.Builder()
-                .url("http://admin.stage.foxcommerce.com/api/v1/coupons/codes/generate/" + couponId)
+                .url(adminUrl + "/api/v1/coupons/codes/generate/" + couponId)
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -747,7 +747,7 @@ public class DataProvider extends BaseTest {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{}");
         Request request = new Request.Builder()
-                .url("http://admin.stage.foxcommerce.com/api/v1/orders/" + orderId + "/coupon/" + couponCode)
+                .url(adminUrl + "/api/v1/orders/" + orderId + "/coupon/" + couponCode)
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -775,7 +775,7 @@ public class DataProvider extends BaseTest {
                 "\n  \"state\": \"" + state + "\"," +
                 "\n  \"reasonId\": 1\n}");
         Request request = new Request.Builder()
-                .url("http://admin.stage.foxcommerce.com/api/v1/store-credits/" + scId)
+                .url(adminUrl + "/api/v1/store-credits/" + scId)
                 .patch(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -805,7 +805,7 @@ public class DataProvider extends BaseTest {
 //        RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"" + skuCode + "\"},\"title\":{\"t\":\"string\",\"v\":\"Test Product " + randomId + "\"},\"upc\":{\"t\":\"string\",\"v\":\"Test UPC\"},\"description\":{\"t\":\"richText\",\"v\":\"<p>Just another test SKU.</p>\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"2000\"}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"2000\"}},\"unitCost\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"2000\"}},\"activeFrom\":{\"v\":\"2016-07-04T17:43:44.295+00:00\",\"t\":\"datetime\"},\"activeTo\":{\"v\":null,\"t\":\"datetime\"}}}");
         RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"" + skuCode + "\"},\"title\":{\"t\":\"string\",\"v\":\"THATS A TITLE OVER HERE\"},\"upc\":{\"t\":\"string\",\"v\":\"Test UPC\"},\"description\":{\"t\":\"richText\",\"v\":\"<p>Test description</p>\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"5000\"}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"5000\"}},\"unitCost\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"5000\"}},\"activeFrom\":{\"v\":\"2016-07-05T22:19:54.918+00:00\",\"t\":\"datetime\"},\"activeTo\":{\"v\":null,\"t\":\"datetime\"}}}");
         Request request = new Request.Builder()
-                .url("http://admin.stage.foxcommerce.com/api/v1/skus/default")
+                .url(adminUrl + "/api/v1/skus/default")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -835,7 +835,7 @@ public class DataProvider extends BaseTest {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"" + skuCode + "\"},\"title\":{\"t\":\"string\",\"v\":\"Test Product #" + randomId + "\"},\"upc\":{\"t\":\"string\",\"v\":\"Test UPC\"},\"description\":{\"t\":\"richText\",\"v\":\"<p>Just another test SKU.</p>\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"5000\"}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"5000\"}},\"unitCost\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"5000\"}}}}");
         Request request = new Request.Builder()
-                .url("http://admin.stage.foxcommerce.com/api/v1/skus/default")
+                .url(adminUrl + "/api/v1/skus/default")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -865,7 +865,7 @@ public class DataProvider extends BaseTest {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"" + skuCode + "\"},\"title\":{\"t\":\"string\",\"v\":\"\"},\"upc\":{\"t\":\"string\",\"v\":\"Test UPC\"},\"description\":{\"t\":\"richText\",\"v\":\"<p>Just another test SKU.</p>\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"1215\"}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"1215\"}},\"unitCost\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"0\"}},\"activeFrom\":{\"v\":\"2016-07-04T18:25:59.745+00:00\",\"t\":\"datetime\"},\"activeTo\":{\"v\":null,\"t\":\"datetime\"}}}");
         Request request = new Request.Builder()
-                .url("http://admin.stage.foxcommerce.com/api/v1/skus/default")
+                .url(adminUrl + "/api/v1/skus/default")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -895,7 +895,7 @@ public class DataProvider extends BaseTest {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"" + skuCode + "\"},\"title\":{\"t\":\"string\",\"v\":\"Test Product #" + randomId + "\"},\"upc\":{\"t\":\"string\",\"v\":\"Test UPC\"},\"description\":{\"t\":\"richText\",\"v\":\"\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"1215\"}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"1215\"}},\"unitCost\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"0\"}},\"activeFrom\":{\"v\":\"2016-07-04T18:25:59.745+00:00\",\"t\":\"datetime\"},\"activeTo\":{\"v\":null,\"t\":\"datetime\"}}}");
         Request request = new Request.Builder()
-                .url("http://admin.stage.foxcommerce.com/api/v1/skus/default")
+                .url(adminUrl + "/api/v1/skus/default")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -925,7 +925,7 @@ public class DataProvider extends BaseTest {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"" + skuCode + "\"},\"title\":{\"t\":\"string\",\"v\":\"Test Product #" + randomId + "\"},\"upc\":{\"t\":\"string\",\"v\":\"Test UPC\"},\"description\":{\"t\":\"richText\",\"v\":\"<p>Just another test SKU.</p>\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"0\"}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"0\"}},\"unitCost\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"0\"}},\"activeFrom\":{\"v\":\"2016-07-04T18:25:59.745+00:00\",\"t\":\"datetime\"},\"activeTo\":{\"v\":null,\"t\":\"datetime\"}}}");
         Request request = new Request.Builder()
-                .url("http://admin.stage.foxcommerce.com/api/v1/skus/default")
+                .url(adminUrl + "/api/v1/skus/default")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -954,7 +954,7 @@ public class DataProvider extends BaseTest {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"metaDescription\":{\"t\":\"string\",\"v\":null},\"metaTitle\":{\"t\":\"string\",\"v\":null},\"url\":{\"t\":\"string\",\"v\":null},\"description\":{\"t\":\"richText\",\"v\":\"The best thing to buy in 2016!\"},\"title\":{\"t\":\"string\",\"v\":\"" + productName_local + "\"},\"activeFrom\":{\"v\":\"2016-07-04T17:22:44.388+00:00\",\"t\":\"datetime\"},\"activeTo\":{\"v\":null,\"t\":\"datetime\"}},\"skus\":[{\"feCode\":\"F0QGTGBBINBQF5V53TYB9\",\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"SKU-TST\"},\"title\":{\"t\":\"string\",\"v\":\"\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"2718\"}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"2718\"}}}}]}");
         Request request = new Request.Builder()
-                .url("http://admin.stage.foxcommerce.com/api/v1/products/default")
+                .url(adminUrl + "/api/v1/products/default")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -985,7 +985,7 @@ public class DataProvider extends BaseTest {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"metaDescription\":{\"t\":\"string\",\"v\":null},\"metaTitle\":{\"t\":\"string\",\"v\":null},\"url\":{\"t\":\"string\",\"v\":null},\"description\":{\"t\":\"richText\",\"v\":\"The best thing to buy in 2016!\"},\"title\":{\"t\":\"string\",\"v\":\"" + productName_local + "\"},\"tags\":{\"t\":\"tags\",\"v\":[\"" + tag + "\"]},\"activeFrom\":{\"v\":\"2016-07-06T17:39:45.277+00:00\",\"t\":\"datetime\"},\"activeTo\":{\"v\":null,\"t\":\"datetime\"}},\"skus\":[{\"feCode\":\"1PZ1Z6FEB42BFOCYJH5MI\",\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"" + sku + "\"},\"title\":{\"t\":\"string\",\"v\":\"\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"2718\"}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"2718\"}}}}]}");
         Request request = new Request.Builder()
-                .url("http://admin.stage.foxcommerce.com/api/v1/products/default")
+                .url(adminUrl + "/api/v1/products/default")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -1016,7 +1016,7 @@ public class DataProvider extends BaseTest {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"metaDescription\":{\"t\":\"string\",\"v\":null},\"metaTitle\":{\"t\":\"string\",\"v\":null},\"url\":{\"t\":\"string\",\"v\":null},\"description\":{\"t\":\"richText\",\"v\":\"The best thing to buy in 2016!\"},\"title\":{\"t\":\"string\",\"v\":\"" + productName_local + "\"},\"activeFrom\":{\"v\":\"2016-07-04T17:22:44.388+00:00\",\"t\":\"datetime\"},\"activeTo\":{\"v\":null,\"t\":\"datetime\"}},\"skus\":[{\"feCode\":\"F0QGTGBBINBQF5V53TYB9\",\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"" + sku + "\"},\"title\":{\"t\":\"string\",\"v\":\"\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"2718\"}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"2718\"}}}}]}");
         Request request = new Request.Builder()
-                .url("http://admin.stage.foxcommerce.com/api/v1/products/default")
+                .url(adminUrl + "/api/v1/products/default")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -1047,7 +1047,7 @@ public class DataProvider extends BaseTest {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"metaDescription\":{\"t\":\"string\",\"v\":null},\"metaTitle\":{\"t\":\"string\",\"v\":null},\"url\":{\"t\":\"string\",\"v\":null},\"description\":{\"t\":\"richText\",\"v\":\"The best thing to buy in 2016!\"},\"title\":{\"t\":\"string\",\"v\":\"" + productName_local + "\"},\"tags\":{\"t\":\"tags\",\"v\":[\"" + tag + "\"]}},\"skus\":[{\"feCode\":\"JBV96IF5QRNZM9KQ33DI\",\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"" + sku + "\"},\"title\":{\"t\":\"string\",\"v\":\"\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"2718\"}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"2718\"}}}}]}");
         Request request = new Request.Builder()
-                .url("http://admin.stage.foxcommerce.com/api/v1/products/default")
+                .url(adminUrl + "/api/v1/products/default")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -1078,7 +1078,7 @@ public class DataProvider extends BaseTest {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"metaDescription\":{\"t\":\"string\",\"v\":null},\"metaTitle\":{\"t\":\"string\",\"v\":null},\"url\":{\"t\":\"string\",\"v\":null},\"description\":{\"t\":\"richText\",\"v\":\"The best thing to buy in 2016!\"},\"title\":{\"t\":\"string\",\"v\":\"" + productName_local + "\"}},\"skus\":[{\"feCode\":\"KB0SOK5PSSBEPP5H4CXR\",\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"" + sku + "\"},\"title\":{\"t\":\"string\",\"v\":\"\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"2718\"}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"2718\"}}}}]}");
         Request request = new Request.Builder()
-                .url("http://admin.stage.foxcommerce.com/api/v1/products/default")
+                .url(adminUrl + "/api/v1/products/default")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")

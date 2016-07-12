@@ -21,9 +21,9 @@ public class CouponsTest extends DataProvider {
     @BeforeClass(alwaysRun = true)
     public void setUp() {
 
-        open("http://admin.stage.foxcommerce.com/");
-        if ( (Objects.equals(getUrl(), "http://admin.stage.foxcommerce.com/login")) ) {
-            LoginPage loginPage = open("http://admin.stage.foxcommerce.com/login", LoginPage.class);
+        open(adminUrl);
+        if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
+            LoginPage loginPage = open(adminUrl + "/login", LoginPage.class);
             loginPage.login("admin@admin.com", "password");
         }
 
@@ -33,7 +33,7 @@ public class CouponsTest extends DataProvider {
     public void createCoupon_singleCode_active() throws IOException {
 
         provideTestData("a promotion");
-        p = open("http://admin.stage.foxcommerce.com/coupons/", CouponsPage.class);
+        p = open(adminUrl + "/coupons/", CouponsPage.class);
         String randomId = generateRandomID();
 
         click( p.addNewCoupon() );
@@ -57,7 +57,7 @@ public class CouponsTest extends DataProvider {
     public void createCoupon_bulkCodes_active() throws IOException {
 
         provideTestData("a promotion");
-        p = open("http://admin.stage.foxcommerce.com/coupons/", CouponsPage.class);
+        p = open(adminUrl + "/coupons/", CouponsPage.class);
         String randomId = generateRandomID();
 
         click( p.addNewCoupon() );
@@ -84,7 +84,7 @@ public class CouponsTest extends DataProvider {
     public void codesDisplayedInCodesTab_bulkGenerated() throws IOException {
 
         provideTestData("coupon with bulk generated codes");
-        p = open("http://admin.stage.foxcommerce.com/coupons/" + couponId + "/codes", CouponsPage.class);
+        p = open(adminUrl + "/coupons/" + couponId + "/codes", CouponsPage.class);
 
         p.assertCodesGenerated(5);
 
@@ -94,7 +94,7 @@ public class CouponsTest extends DataProvider {
     public void codesDisplayedInCodesTab_singleCode() throws IOException {
 
         provideTestData("coupon with single code");
-        p = open("http://admin.stage.foxcommerce.com/coupons/" + couponId + "/codes", CouponsPage.class);
+        p = open(adminUrl + "/coupons/" + couponId + "/codes", CouponsPage.class);
 
         p.assertCodesGenerated(1);
 
@@ -104,7 +104,7 @@ public class CouponsTest extends DataProvider {
     public void editCoupon_name() throws IOException {
 
         provideTestData("coupon with single code");
-        p = open("http://admin.stage.foxcommerce.com/coupons/" + couponId, CouponsPage.class);
+        p = open(adminUrl + "/coupons/" + couponId, CouponsPage.class);
         String randomId = generateRandomID();
 
         setFieldVal( p.nameFld(), "edited coupon " + randomId );
@@ -122,7 +122,7 @@ public class CouponsTest extends DataProvider {
     public void editCoupon_storefrontName() throws IOException {
 
         provideTestData("coupon with single code");
-        p = open("http://admin.stage.foxcommerce.com/coupons/" + couponId, CouponsPage.class);
+        p = open(adminUrl + "/coupons/" + couponId, CouponsPage.class);
 
         clearField( p.storefrontNameFld() );
         setFieldVal( p.storefrontNameFld(), "edited SF name" );
@@ -140,7 +140,7 @@ public class CouponsTest extends DataProvider {
     public void editCoupon_description() throws IOException {
 
         provideTestData("coupon with single code");
-        p = open("http://admin.stage.foxcommerce.com/coupons/" + couponId, CouponsPage.class);
+        p = open(adminUrl + "/coupons/" + couponId, CouponsPage.class);
 
         clearField( p.descriptionFld() );
         setFieldVal( p.descriptionFld(), "edited description" );
@@ -158,7 +158,7 @@ public class CouponsTest extends DataProvider {
     public void editCoupon_details() throws IOException {
 
         provideTestData("coupon with single code");
-        p = open("http://admin.stage.foxcommerce.com/coupons/" + couponId, CouponsPage.class);
+        p = open(adminUrl + "/coupons/" + couponId, CouponsPage.class);
 
         clearField( p.detailsFld() );
         setFieldVal( p.detailsFld(), "edited details" );
@@ -176,7 +176,7 @@ public class CouponsTest extends DataProvider {
     public void editCoupon_state() throws IOException {
 
         provideTestData("coupon with single code");
-        p = open("http://admin.stage.foxcommerce.com/coupons/" + couponId, CouponsPage.class);
+        p = open(adminUrl + "/coupons/" + couponId, CouponsPage.class);
 
         p.setState("Inactive");
         click( p.saveBtn() );
@@ -193,7 +193,7 @@ public class CouponsTest extends DataProvider {
     public void totalUses() throws IOException {
 
         provideTestData("order in remorse hold with applied coupon");
-        p = open("http://admin.stage.foxcommerce.com/coupons/", CouponsPage.class);
+        p = open(adminUrl + "/coupons/", CouponsPage.class);
 
         assertEquals( p.getCouponParamVal("1", "Total Uses"), "1",
                 "Checking out the order with coupon applied isn't reflected on the coupons list (Incorrect 'Total Uses' val)." );
@@ -204,7 +204,7 @@ public class CouponsTest extends DataProvider {
     public void currentCarts() throws IOException {
 
         provideTestData("a cart with a single code coupon applied");
-        p = open("http://admin.stage.foxcommerce.com/coupons/", CouponsPage.class);
+        p = open(adminUrl + "/coupons/", CouponsPage.class);
 
         assertEquals( p.getCouponParamVal("1", "Current Carts"), "1",
                 "Applying coupon to a cart isn't reflected on the coupons list (Incorrect 'Current Carts' val).");
