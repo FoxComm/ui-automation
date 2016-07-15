@@ -131,15 +131,14 @@ public class ConciseAPI extends Configuration {
         return $(By.xpath("//td[@class='fc-table-td']"));
     }
 
-    public SelenideElement emptyList() {
+    protected SelenideElement emptyList() {
         return $(By.xpath("//div[@class='fc-content-box__empty-row']"));
     }
 
     @Step("Wait for data on the list to be loaded.")
-    public void waitForDataToLoad() {
+    public void
+    waitForDataToLoad() {
         try {
-//            new WebDriverWait(getWebDriver(), 8).until(
-//                    ExpectedConditions.presenceOfElementLocated((By) itemsOnList()));
             itemsOnList().should(exist);
         } catch(NoSuchElementException nsee) {
             assertTrue( emptyList().is(visible),

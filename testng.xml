@@ -1,10 +1,10 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="Admin UI Tests" verbose="1" >
-    <!--<test name="General UI Tests" >-->
-        <!--<classes>-->
-            <!--<class name="tests.logintests.LoginTest" />-->
-        <!--</classes>-->
-    <!--</test>-->
+    <test name="General UI Tests" >
+        <classes>
+            <class name="tests.logintests.LoginTest" />
+        </classes>
+    </test>
     <test name="Orders Tests" >
         <classes>
             <class name="tests.orderstests.SearchTest" />
