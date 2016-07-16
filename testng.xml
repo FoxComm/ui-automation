@@ -36,4 +36,9 @@
             <class name="tests.products.EditProductTest" />
         </classes>
     </test>
+    <test name="SKU Tests">
+        <classes>
+            <class name="tests.skus.SkusTests" />
+        </classes>
+    </test>
 </suite>

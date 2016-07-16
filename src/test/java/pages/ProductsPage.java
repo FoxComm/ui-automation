@@ -59,8 +59,7 @@ public class ProductsPage extends BasePage {
         return state.getText();
     }
 
-    //locator isn't tested
-    private SelenideElement deleteStartDateBtn() {
+    private SelenideElement removeStartDateBtn() {
         return $(By.xpath("//div[text()='Start']/following-sibling::*/div[2]/a"));
     }
 
@@ -88,10 +87,6 @@ public class ProductsPage extends BasePage {
 
     private SelenideElement productsCounter() {
         return $(By.xpath("//span[@class='fc-section-title__subtitle fc-light']/span"));
-    }
-
-    public SelenideElement productsNavMenu() {
-        return $(By.xpath("//div[@id='foxcom']/div/aside/nav/ul/li[5]/div/div[1]/a/span"));
     }
 
     public SelenideElement noSKUsMsg() {
@@ -125,7 +120,7 @@ public class ProductsPage extends BasePage {
         switch (state) {
 
             case "Inactive":
-                click( deleteStartDateBtn() );
+                click( removeStartDateBtn() );
                 break;
 
             case "Active":
