@@ -25,7 +25,7 @@ public class DataProvider extends BaseTest {
     private static int shipMethodId;            // stored from listShipMethods()
     private static int creditCardId;            // stored from create createCreditCard()
 
-    protected static int promotionId;
+    protected static String promotionId;
     protected static int couponId;
     protected static String couponName;
     private static String singleCouponCode;
@@ -630,7 +630,7 @@ public class DataProvider extends BaseTest {
 
         Response response = client.newCall(request).execute();
         String responseBody = response.body().string();
-        promotionId = Integer.valueOf(responseBody.substring(35, 38));
+        promotionId = responseBody.substring(35, 38);
 
         System.out.println(response);
 //        System.out.println(responseBody);
@@ -639,7 +639,65 @@ public class DataProvider extends BaseTest {
 
     }
 
-    private static void createCoupon(int promotionId) throws IOException {
+    private static void createPromotion_auto_inactive() throws IOException {
+
+        System.out.println("Creating a new promotion...");
+
+        OkHttpClient client = new OkHttpClient();
+
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{\"form\":{\"id\":null,\"createdAt\":null,\"attributes\":{\"name\":\"new promo " + generateRandomID() + "\",\"storefrontName\":\"<p>sf name</p>\",\"description\":\"<p>descr</p>\",\"details\":\"<p>details</p>\"},\"discounts\":[{\"id\":null,\"createdAt\":null,\"attributes\":{\"qualifier\":{\"orderAny\":{}},\"offer\":{\"orderPercentOff\":{\"discount\":10}}}}]},\"shadow\":{\"id\":null,\"createdAt\":null,\"attributes\":{\"name\":{\"type\":\"string\",\"ref\":\"name\"},\"storefrontName\":{\"type\":\"richText\",\"ref\":\"storefrontName\"},\"description\":{\"type\":\"richText\",\"ref\":\"description\"},\"details\":{\"type\":\"richText\",\"ref\":\"details\"}},\"discounts\":[{\"id\":null,\"createdAt\":null,\"attributes\":{\"qualifier\":{\"type\":\"qualifier\",\"ref\":\"qualifier\"},\"offer\":{\"type\":\"offer\",\"ref\":\"offer\"}}}]},\"applyType\":\"auto\"}");
+        Request request = new Request.Builder()
+                .url("http://admin.stage.foxcommerce.com/api/v1/promotions/default")
+                .post(body)
+                .addHeader("content-type", "application/json")
+                .addHeader("accept", "application/json")
+                .addHeader("cache-control", "no-cache")
+                .addHeader("JWT", jwt)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+        promotionId = responseBody.substring(33, 36);
+
+        System.out.println(response);
+//        System.out.println(responseBody);
+        System.out.println("Promotion ID: " + promotionId);
+        System.out.println("---- ---- ---- ----");
+
+    }
+
+    private static void createPromotion_auto_active() throws IOException {
+
+        System.out.println("Creating a new promotion...");
+
+        OkHttpClient client = new OkHttpClient();
+
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{\"applyType\":\"auto\",\"form\":{\"id\":269,\"attributes\":{\"249b17717d\":\"<p>descr</p>\",\"634a7cea77\":\"<p>details</p>\",\"70dfb3ce4a\":\"new promo " + generateRandomID() + "\",\"c88302035b\":\"<p>sf name</p>\",\"name\":\"new promo " + generateRandomID() + "\",\"details\":\"<p>details</p>\",\"description\":\"<p>descr</p>\",\"storefrontName\":\"<p>sf name</p>\",\"activeFrom\":\"2016-07-18T20:54:34.537+00:00\",\"activeTo\":null},\"discounts\":[{\"id\":270,\"attributes\":{\"3db8e5c670\":{\"orderPercentOff\":{\"discount\":10}},\"bb0b82afad\":{\"orderAny\":{}},\"offer\":{\"orderPercentOff\":{\"discount\":10}},\"qualifier\":{\"orderAny\":{}}},\"createdAt\":\"2016-07-18T20:47:05.517Z\"}],\"createdAt\":\"2016-07-18T20:47:05.506Z\"},\"shadow\":{\"id\":295,\"formId\":269,\"attributes\":{\"name\":{\"type\":\"string\",\"ref\":\"name\"},\"details\":{\"ref\":\"details\",\"type\":\"richText\"},\"description\":{\"ref\":\"description\",\"type\":\"richText\"},\"storefrontName\":{\"ref\":\"storefrontName\",\"type\":\"richText\"},\"activeFrom\":{\"type\":\"2016-07-18T20:54:34.537+00:00\",\"ref\":\"activeFrom\"},\"activeTo\":{\"type\":null,\"ref\":\"activeTo\"}},\"discounts\":[{\"id\":270,\"attributes\":{\"offer\":{\"ref\":\"offer\",\"type\":\"offer\"},\"qualifier\":{\"ref\":\"qualifier\",\"type\":\"qualifier\"}},\"createdAt\":\"2016-07-18T20:47:05.517Z\"}],\"createdAt\":\"2016-07-18T20:47:05.506Z\"}}");
+        Request request = new Request.Builder()
+                .url("http://admin.stage.foxcommerce.com/api/v1/promotions/default")
+                .post(body)
+                .addHeader("content-type", "application/json")
+                .addHeader("accept", "application/json")
+                .addHeader("cache-control", "no-cache")
+                .addHeader("JWT", jwt)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+        promotionId = responseBody.substring(33, 36);
+
+        System.out.println(response);
+//        System.out.println(responseBody);
+        System.out.println("Promotion ID: " + promotionId);
+        System.out.println("---- ---- ---- ----");
+
+    }
+
+
+
+    private static void createCoupon(String promotionId) throws IOException {
 
         System.out.println("Creating a new coupon with promotion <" + promotionId + ">...");
         String randomId = generateRandomID();
@@ -1442,6 +1500,16 @@ public class DataProvider extends BaseTest {
                 issueStoreCredit_gcTransfer(customerId, gcNumber);
                 setPayment_storeCredit(orderId, 3727);
                 checkoutOrder(orderId);
+                break;
+
+            //---------------------------------- PROMOTIONS ---------------------------------//
+
+            case "active promotion with auto apply type":
+                createPromotion_auto_active();
+                break;
+
+            case "inactive promotion with auto apply type":
+                createPromotion_auto_inactive();
                 break;
 
             //----------------------------------- COUPONS -----------------------------------//

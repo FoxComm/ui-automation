@@ -35,7 +35,7 @@ public class SkusTests extends DataProvider {
         p = open(adminUrl + "/skus", SkusPage.class);
         String randomId = generateRandomID();
 
-        p.createNewSKU("SKU-" + randomId, "Active");
+        p.createNewSKU(randomId, "Active");
         p.waitForDataToLoad();
 
         p.search(randomId);
@@ -52,7 +52,7 @@ public class SkusTests extends DataProvider {
 
         p.addCustomProp("Text", "text fld");
         setFieldVal( p.customTextFld("text fld"), "test val" );
-        p.save();
+        p.clickSave();
         refresh();
 
         p.customTextFld("text fld").shouldBe(visible);
@@ -68,7 +68,7 @@ public class SkusTests extends DataProvider {
 
         p.addCustomProp("Rich Text", "richText fld");
         p.customRichTextFld().val("test val");
-        p.save();
+        p.clickSave();
         refresh();
 
         assertEquals( p.customRichTextFld().text(), "test val", "Customer property isn't saved." );
@@ -82,7 +82,7 @@ public class SkusTests extends DataProvider {
         p = open(adminUrl + "/skus/" + sku, SkusPage.class);
 
         setFieldVal( p.titleFld(), "Edited SKU Title" );
-        p.save();
+        p.clickSave();
         click( p.skusNavMenu() );
 
         p.search( sku.substring(4, sku.length()) );
@@ -103,7 +103,7 @@ public class SkusTests extends DataProvider {
         p = open(adminUrl + "/skus/" + sku, SkusPage.class);
 
         setFieldVal( p.upcFld(), "Edited UPC" );
-        p.save();
+        p.clickSave();
         click( p.skusNavMenu() );
         p.search( sku.substring(4, sku.length()) );
         p.openSKU(sku);
@@ -122,7 +122,7 @@ public class SkusTests extends DataProvider {
 
         clearField( p.descriptionFld() );
         setFieldVal( p.descriptionFld(), "Edited description" );
-        p.save();
+        p.clickSave();
         click( p.skusNavMenu() );
         p.search( sku.substring(4, sku.length()) );
         p.openSKU(sku);
@@ -140,7 +140,7 @@ public class SkusTests extends DataProvider {
         p = open(adminUrl + "/skus/" + sku, SkusPage.class);
 
         setFieldVal( p.retailPriceFld(), "70.00" );
-        p.save();
+        p.clickSave();
         click( p.skusNavMenu() );
         p.search( sku.substring(4, sku.length()) );
         p.openSKU(sku);
@@ -158,7 +158,7 @@ public class SkusTests extends DataProvider {
         p = open(adminUrl + "/skus/" + sku, SkusPage.class);
 
         setFieldVal( p.salePriceFld(), "28.00" );
-        p.save();
+        p.clickSave();
         click( p.skusNavMenu() );
         p.search( sku.substring(4, sku.length()) );
         assertEquals( p.getSKUParamVal("1", "Price"), "28.00",
@@ -178,7 +178,7 @@ public class SkusTests extends DataProvider {
         p = open(adminUrl + "/skus/" + sku, SkusPage.class);
 
         p.setState("Inactive");
-        p.save();
+        p.clickSave();
         click( p.skusNavMenu() );
         p.search( sku.substring(4, sku.length()) );
         p.openSKU(sku);

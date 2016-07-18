@@ -7,7 +7,6 @@ import ru.yandex.qatools.allure.annotations.Step;
 
 import java.util.List;
 
-import static com.codeborne.selenide.Condition.enabled;
 import static com.codeborne.selenide.Condition.exist;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
@@ -36,7 +35,6 @@ public class SkusPage extends BasePage {
     }
 
     public SelenideElement descriptionFld() {
-//        return $(By.xpath("//div[text()='description']/following-sibling::*[2]/div/div/div/div/div/div/span"));
         return $(By.xpath("//div[@id='foxcom']/div/div[1]/main/div/div[3]/div/div/div[1]/div[1]/div/div/div[4]/div/div[3]/div/div/div"));
     }
 
@@ -69,10 +67,6 @@ public class SkusPage extends BasePage {
         return stateVal.text();
     }
 
-    private SelenideElement saveBtn() {
-        return $(By.xpath("//span[text()='Save']/.."));
-    }
-
     public String skuCodeVal() {
         SelenideElement skuCode = $(By.xpath("//div[@class='fc-breadcrumbs']/ul/li[5]/a"));
         return skuCode.text();
@@ -96,10 +90,6 @@ public class SkusPage extends BasePage {
 
     private SelenideElement saveAndApplyBtn() {
         return $(By.xpath("//span[text()='Save and Apply']/.."));
-    }
-
-    private SelenideElement searchFld() {
-        return $(By.xpath("//input[@placeholder='filter or keyword search']"));
     }
 
     public SelenideElement customTextFld(String label) {
@@ -141,10 +131,10 @@ public class SkusPage extends BasePage {
     }
 
     @Step("Fill out new SKU form.")
-    public void createNewSKU(String code, String state) {
+    public void createNewSKU(String id, String state) {
 
         click( addNewSKUBtn() );
-        setFieldVal( codeFld(), code );
+        setFieldVal( codeFld(), "SKU-" + id );
         setFieldVal( titleFld(), "Test Title" );
         setFieldVal( upcFld(), "Test UPC" );
 //        setFieldVal( descriptionFld(), "Just another test SKU." );
@@ -154,9 +144,8 @@ public class SkusPage extends BasePage {
         setFieldVal( unitCostFld(), "32.00" );
         setState(state);
 
-        click( saveBtn() );
-        saveBtn().shouldBe(enabled);
-        assertEquals( skuCodeVal(), code, "Failed to create new SKU.");
+        clickSave();
+        assertEquals( skuCodeVal(), id, "Failed to create new SKU.");
         click( skusNavMenu() );
 
     }
@@ -173,7 +162,7 @@ public class SkusPage extends BasePage {
 
     }
 
-    @Step("Get '{1}' parameter value of {0}th product on the list")
+    @Step("Get '{1}' parameter value of {0}th SKU on the list")
     public String getSKUParamVal(String skuIndex, String paramName) {
         String skuParamVal = "";
         waitForDataToLoad();
@@ -217,19 +206,5 @@ public class SkusPage extends BasePage {
         return skuToClick;
 
     }
-
-    @Step("Save all changes.")
-    public void save() {
-        click( saveBtn() );
-        saveBtn().shouldBe(enabled);
-    }
-
-    @Step("Search for SKU: <{0}>")
-    public void search(String searchQuery) {
-        searchFld().val( searchQuery ).pressEnter();
-    }
-
-
-
 
 }

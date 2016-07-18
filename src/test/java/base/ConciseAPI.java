@@ -2,7 +2,10 @@ package base;
 
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.SelenideElement;
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoSuchElementException;
 import ru.yandex.qatools.allure.annotations.Step;
 
 import java.text.DecimalFormat;
@@ -38,6 +41,18 @@ public class ConciseAPI extends Configuration {
         element.click();
     }
 
+    @Step("Click {0}.")
+    protected void jsClick(SelenideElement element) {
+        JavascriptExecutor executor = (JavascriptExecutor)getWebDriver();
+        executor.executeScript("arguments[0].click();", element);
+    }
+
+    @Step("Select <{1}> option from <{0}> dropdown.")
+    protected void setDdVal(SelenideElement ddElement, String ddValue) {
+        ddElement.click();
+        $(By.xpath("//li[text()='" + ddValue + "']")).click();
+    }
+
     @Step("Check if {0} element is visible.")
     protected void elementIsVisible(SelenideElement element) {
         element.shouldBe(visible);
@@ -53,12 +68,6 @@ public class ConciseAPI extends Configuration {
         sleep(250);
         elementIsVisible(element);
         element.setValue(value);
-    }
-
-    @Step("Click {0}.")
-    protected void jsClick(SelenideElement element) {
-        JavascriptExecutor executor = (JavascriptExecutor)getWebDriver();
-        executor.executeScript("arguments[0].click();", element);
     }
 
     public void clearField(SelenideElement element) {

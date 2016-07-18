@@ -42,7 +42,7 @@ public class CouponsPage extends BasePage {
         return $(By.xpath("//input[@name='promotion']/../following-sibling::*"));
     }
 
-    private SelenideElement promotionListVal(int promotionId) {
+    private SelenideElement promotionListVal(String promotionId) {
         return $(By.xpath("//span[text()='" + promotionId + "']/.."));
     }
 
@@ -120,7 +120,7 @@ public class CouponsPage extends BasePage {
     //--------------------------------- HELPERS -----------------------------//
 
     @Step("Select promotion with id <{0}>")
-    public void setPromotion(int promotionId) {
+    public void setPromotion(String promotionId) {
         click( promotionDd() );
         click( promotionListVal(promotionId) );
     }

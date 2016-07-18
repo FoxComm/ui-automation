@@ -68,19 +68,6 @@ public class ProductsPage extends BasePage {
     }
     //--------------------------
 
-    private SelenideElement addTagsBtn() {
-        return $(By.xpath("//div[text()='Tags']/following-sibling::*"));
-    }
-
-    private SelenideElement tagFld() {
-        return $(By.xpath("//input[@placeholder='Separate tags with a comma']"));
-    }
-
-    public SelenideElement removeTagBtn(String index) {
-        // define only btn on the first tag in line
-        return $(By.xpath("//div[@class='_tags_tags__tags']/div[" + index + "]/button"));
-    }
-
     private SelenideElement searchFld() {
         return $(By.xpath("//input[@placeholder='filter or keyword search']"));
     }
@@ -157,13 +144,6 @@ public class ProductsPage extends BasePage {
         assertTrue( productToClick != null, "Requested product isn't displayed on the list.");
         return productToClick;
 
-    }
-
-    @Step("Add tag <{0}>")
-    public void addTag(String tagVal) {
-        click( addTagsBtn() );
-        setFieldVal( tagFld(), tagVal );
-        tagFld().pressEnter();
     }
 
     @Step("Clear all tags from product")
