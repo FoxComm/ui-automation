@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.Objects;
 
 import static com.codeborne.selenide.Selenide.open;
+import static com.codeborne.selenide.Selenide.sleep;
 import static org.testng.Assert.assertEquals;
 
 public class ContactInformationTest extends DataProvider {
@@ -53,7 +54,7 @@ public class ContactInformationTest extends DataProvider {
         click( p.editBtn_contactInfo() );
         setFieldVal( p.phoneNumberFld_contactInfo(), "7779994242" );
         click( p.saveBtn() );
-
+        sleep(2000);
         assertEquals( p.phoneNumberVal_contactInfo(), "7779994242",
                 "Failed to set customer's phone number.");
 
@@ -69,7 +70,7 @@ public class ContactInformationTest extends DataProvider {
         setFieldVal( p.phoneNumberFld_contactInfo(), "7779994242" );
         setFieldVal( p.nameFld_contactInfo(), newName );
         click( p.saveBtn() );
-
+        sleep(2000);
         assertEquals( p.nameVal_contactInfo(), newName,
                 "Failed to edit customer's name.");
         assertEquals( p.nameVal_overview(), newName,
@@ -87,7 +88,7 @@ public class ContactInformationTest extends DataProvider {
         setFieldVal( p.phoneNumberFld_contactInfo(), "7779994242" );
         setFieldVal( p.emailFld_contactInfo(), newEmail );
         click( p.saveBtn() );
-
+        sleep(2000);
         assertEquals( p.emailVal_contactInfo(), newEmail,
                 "Failed to edit customer's email.");
         assertEquals( p.emailVal_overview(), newEmail,

@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.util.Objects;
 
 import static com.codeborne.selenide.Selenide.open;
-import static com.codeborne.selenide.Selenide.sleep;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
@@ -108,10 +107,9 @@ public class CouponsTest extends DataProvider {
         String randomId = generateRandomID();
 
         setFieldVal( p.nameFld(), "edited coupon " + randomId );
-        click( p.saveBtn() );
-        sleep(5000);
+        p.clickSave();
         click( p.couponsNavMenu() );
-        p.waitForDataToLoad();
+        p.search(couponId);
 
         assertEquals( p.getCouponParamVal("1", "Name"), "edited coupon " + randomId,
                 "Failed to edit coupon's 'Name'.");
@@ -126,10 +124,9 @@ public class CouponsTest extends DataProvider {
 
         clearField( p.storefrontNameFld() );
         setFieldVal( p.storefrontNameFld(), "edited SF name" );
-        click( p.saveBtn() );
-        sleep(5000);
+        p.clickSave();
         click( p.couponsNavMenu() );
-        p.waitForDataToLoad();
+        p.search(couponId);
 
         assertEquals( p.getCouponParamVal("1", "Storefront Name"), "<p>edited SF name</p>",
                 "Failed to edit 'Storefront Name'.");
@@ -144,9 +141,9 @@ public class CouponsTest extends DataProvider {
 
         clearField( p.descriptionFld() );
         setFieldVal( p.descriptionFld(), "edited description" );
-        click( p.saveBtn() );
+        p.clickSave();
         click( p.couponsNavMenu() );
-        p.waitForDataToLoad();
+        p.search(couponId);
         p.openCoupon(couponName);
 
         assertEquals( p.descriptionFld().getText(), "edited description",
@@ -162,9 +159,9 @@ public class CouponsTest extends DataProvider {
 
         clearField( p.detailsFld() );
         setFieldVal( p.detailsFld(), "edited details" );
-        click( p.saveBtn() );
+        p.clickSave();
         click( p.couponsNavMenu() );
-        p.waitForDataToLoad();
+        p.search(couponId);
         p.openCoupon(couponName);
 
         assertEquals( p.detailsFld().getText(), "edited details",
@@ -179,10 +176,9 @@ public class CouponsTest extends DataProvider {
         p = open(adminUrl + "/coupons/" + couponId, CouponsPage.class);
 
         p.setState("Inactive");
-        click( p.saveBtn() );
-        sleep(5000);
+        p.clickSave();
         click( p.couponsNavMenu() );
-        p.waitForDataToLoad();
+        p.search(couponId);
 
         assertEquals( p.getCouponParamVal("1", "State"), "Inactive",
                 "Failed to edit 'State'.");
@@ -191,10 +187,10 @@ public class CouponsTest extends DataProvider {
 
     @Test(priority = 10)
     public void totalUses() throws IOException {
-
+        // will fail due to bug with applying coupon to order
         provideTestData("order in remorse hold with applied coupon");
         p = open(adminUrl + "/coupons/", CouponsPage.class);
-
+        p.search(couponId);
         assertEquals( p.getCouponParamVal("1", "Total Uses"), "1",
                 "Checking out the order with coupon applied isn't reflected on the coupons list (Incorrect 'Total Uses' val)." );
 
@@ -205,7 +201,7 @@ public class CouponsTest extends DataProvider {
 
         provideTestData("a cart with a single code coupon applied");
         p = open(adminUrl + "/coupons/", CouponsPage.class);
-
+        p.search(couponId);
         assertEquals( p.getCouponParamVal("1", "Current Carts"), "1",
                 "Applying coupon to a cart isn't reflected on the coupons list (Incorrect 'Current Carts' val).");
 

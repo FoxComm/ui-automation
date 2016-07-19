@@ -60,6 +60,7 @@ public class BasePage extends ConciseAPI {
 
     @Step("Search for: <{0}>")
     public void search(String searchQuery) {
+        waitForDataToLoad();
         searchFld().val( searchQuery ).pressEnter();
         waitForDataToLoad();
     }

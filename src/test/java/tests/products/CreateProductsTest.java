@@ -71,11 +71,11 @@ public class CreateProductsTest extends DataProvider {
                 "Product isn't displayed on the category page on sf.");
         sf.openProduct(productName);
         assertEquals( sf.titleVal(), productName,
-                "Wrong product title is displayed on PDP.");
+                "Incorrect product title is displayed on PDP.");
         assertEquals( sf.priceVal(), "27.18",
-                "Wrong product price is displayed on PDP.");
+                "Incorrect product price is displayed on PDP.");
         assertEquals( sf.descriptionVal(), "The best thing to buy in 2016!",
-                "Wrong product description is displayed on PDP.");
+                "Incorrect product description is displayed on PDP.");
 
     }
 

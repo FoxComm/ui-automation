@@ -10,7 +10,7 @@ import testdata.DataProvider;
 import java.io.IOException;
 import java.util.Objects;
 
-import static com.codeborne.selenide.Condition.enabled;
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.Selenide.sleep;
 import static org.testng.Assert.assertEquals;
@@ -41,8 +41,7 @@ public class EditProductTest extends DataProvider {
 
         clearField( p.titleFld() );
         setFieldVal( p.titleFld(), "Edited Product " + uid );
-        click( p.saveDraftBtn() );
-        p.saveDraftBtn().shouldBe(enabled);
+        p.clickSave();
         sleep(1000);
         click( p.productsNavMenu() );
         p.clearSearchFld();
@@ -62,8 +61,7 @@ public class EditProductTest extends DataProvider {
 
         clearField( p.descriptionFld() );
         setFieldVal( p.descriptionFld(), "Edited Description" );
-        click( p.saveDraftBtn() );
-        p.saveDraftBtn().shouldBe(enabled);
+        p.clickSave();
         sleep(1000);
         click( p.productsNavMenu() );
         p.clearSearchFld();
@@ -83,12 +81,11 @@ public class EditProductTest extends DataProvider {
         String uid = productName.substring(13, 20);
 
         p.setState( "Inactive" );
-        click( p.saveDraftBtn() );
-        p.saveDraftBtn().shouldBe(enabled);
+        p.clickSave();
 
         sf = open("http://stage.foxcommerce.com/sunglasses?type=men", StorefrontCategoryPage.class);
         assertTrue( !sf.productDisplayed(productName),
-                "Product is displayed ion the category page on storefront.");
+                "Product is displayed on the category page on storefront.");
 
     }
 
@@ -100,13 +97,13 @@ public class EditProductTest extends DataProvider {
         String uid = productName.substring(13, 20);
 
         setFieldVal( p.retailPriceFld(), "35.18" );
-        click( p.saveDraftBtn() );
-        p.saveDraftBtn().shouldBe(enabled);
+        p.clickSave();
         click( p.productsNavMenu() );
         p.clearSearchFld();
         p.addFilter("Product", "Name", uid);
 
         p.openProduct(productName);
+        p.retailPriceFld().shouldBe(visible);
         assertEquals( p.retailPriceFld().text(), "35.18",
                 "Failed to edit retail price.");
 
@@ -120,13 +117,14 @@ public class EditProductTest extends DataProvider {
         String uid = productName.substring(13, 20);
 
         setFieldVal( p.salePriceFld(), "35.18" );
-        click( p.saveDraftBtn() );
-        p.saveDraftBtn().shouldBe(enabled);
+        p.clickSave();
         click( p.productsNavMenu() );
         p.clearSearchFld();
         p.addFilter("Product", "Name", uid );
 
         p.openProduct(productName);
+        p.salePriceFld().shouldBe(visible);
+        sleep(1000);
         assertEquals( p.salePriceFld().text(), "35.18",
                 "Failed to edit sale price.");
 
@@ -140,8 +138,7 @@ public class EditProductTest extends DataProvider {
 
         click( p.removeTagBtn("1") );
         p.addTag("eyeglasses");
-        click( p.saveDraftBtn() );
-        p.saveDraftBtn().shouldBe(enabled);
+        p.clickSave();
 
         sf = open("http://stage.foxcommerce.com/eyeglasses?type=men", StorefrontCategoryPage.class);
         assertTrue( sf.productDisplayed(productName),

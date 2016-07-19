@@ -145,7 +145,7 @@ public class SkusPage extends BasePage {
         setState(state);
 
         clickSave();
-        assertEquals( skuCodeVal(), id, "Failed to create new SKU.");
+        assertEquals( skuCodeVal(), "SKU-" + id, "Failed to create new SKU.");
         click( skusNavMenu() );
 
     }

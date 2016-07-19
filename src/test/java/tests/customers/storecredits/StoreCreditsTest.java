@@ -9,8 +9,8 @@ import testdata.DataProvider;
 import java.io.IOException;
 import java.util.Objects;
 
-import static com.codeborne.selenide.Selenide.open;
-import static com.codeborne.selenide.Selenide.sleep;
+import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Selenide.*;
 import static org.testng.Assert.assertEquals;
 
 public class StoreCreditsTest extends DataProvider {
@@ -76,7 +76,9 @@ public class StoreCreditsTest extends DataProvider {
         p.selectType("Csr Appeasement");
         setFieldVal( p.valueFld(), "50" );
         click( p.submitBtn() );
-        p.waitForDataToLoad();
+        p.newSCBtn().shouldBe(visible);     //bug workaround
+        refresh();                          //bug workaround
+        waitForDataToLoad();
 
         assertEquals( p.amountOfSCs(), 1,
                 "A just issued SC isn't displayed on the list.");
@@ -96,7 +98,9 @@ public class StoreCreditsTest extends DataProvider {
         p.selectType("Csr Appeasement");
         click( p.presetValues("100") );
         click( p.submitBtn() );
-        p.waitForDataToLoad();
+        sleep(2000);
+        assertEquals( p.availableBalanceVal(), 100.00,
+                "Current available balance value is incorrect.");
 
         assertEquals( p.amountOfSCs(), 1,
                 "A just issued SC isn't displayed on the list.");
@@ -112,6 +116,7 @@ public class StoreCreditsTest extends DataProvider {
         p = open(adminUrl + "/customers/" + customerId, CustomerPage.class);
 
         click( p.storeCreditTab() );
+        waitForDataToLoad();
         p.setState("1", "On Hold");
 
         assertEquals( p.getSCParamVal("1", "State"), "On Hold",
@@ -126,6 +131,7 @@ public class StoreCreditsTest extends DataProvider {
         p = open(adminUrl + "/customers/" + customerId, CustomerPage.class);
 
         click( p.storeCreditTab() );
+        waitForDataToLoad();
         p.setState("1", "Cancel Store Credit");
 
         assertEquals( p.getSCParamVal("1", "State"), "Canceled",
@@ -141,6 +147,7 @@ public class StoreCreditsTest extends DataProvider {
 
         click( p.storeCreditTab() );
         click( p.transactionTab() );
+        waitForDataToLoad();
         assertEquals( p.getTransactionParamVal("1", "Amount"), "-$37.27",
                 "Incorrect amount of funds was applied to order as a payment.");
         assertEquals( p.getTransactionParamVal("1", "Transaction"), "CSR Appeasement",
@@ -156,6 +163,7 @@ public class StoreCreditsTest extends DataProvider {
 
         click( p.storeCreditTab() );
         click( p.transactionTab() );
+        waitForDataToLoad();
         assertEquals( p.getTransactionParamVal("1", "Amount"), "-$37.27",
                 "Incorrect amount of funds was applied to order as a payment.");
         assertEquals( p.getTransactionParamVal("1", "Transaction"), "Gift Card Transfer",

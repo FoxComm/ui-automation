@@ -5,17 +5,17 @@
             <class name="tests.logintests.LoginTest" />
         </classes>
     </test>
-    <test name="Orders Tests" >
-        <classes>
-            <class name="tests.orderstests.SearchTest" />
-            <class name="tests.orderstests.ItemsTest" />
-            <class name="tests.orderstests.ShippingAddressTest" />
-            <class name="tests.orderstests.ShippingMethodTest" />
-            <class name="tests.orderstests.PaymentMethodTest" />
-            <class name="tests.orderstests.PlaceOrderTest" />
-            <class name="tests.orderstests.OrderStateTest" />
-        </classes>
-    </test>
+    <!--<test name="Orders Tests" >-->
+        <!--<classes>-->
+            <!--<class name="tests.orderstests.SearchTest" />-->
+            <!--<class name="tests.orderstests.ItemsTest" />-->
+            <!--<class name="tests.orderstests.ShippingAddressTest" />-->
+            <!--<class name="tests.orderstests.ShippingMethodTest" />-->
+            <!--<class name="tests.orderstests.PaymentMethodTest" />-->
+            <!--<class name="tests.orderstests.PlaceOrderTest" />-->
+            <!--<class name="tests.orderstests.OrderStateTest" />-->
+        <!--</classes>-->
+    <!--</test>-->
     <test name="Customers Tests" >
         <classes>
             <class name="tests.customers.details.AddressBookTest" />

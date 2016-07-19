@@ -35,8 +35,8 @@ public class CreditCardsTest extends DataProvider {
         p = open(adminUrl + "/customers/" + customerId, CustomerPage.class);
 
         click( p.addNewCreditCardBtn() );
-        p.addNewBillAddress(customerName, "2101 Green Valley", "Suite 300", "Seattle", "Washington", "98101", "9879876");
-        p.addNewCreditCard(customerName, "5555555555554444", "777", "2", "2020");
+        p.fillOutNewCCForm(customerName, "5555555555554444", "777", "2", "2020");
+        p.addNewBillAddress(customerName, "2101 Green Valley", "Suite 300", "Seattle", "Washington", "98101", "9879879876");
         click( p.saveBtn() );
         p.assertCardAdded(customerName);
 
@@ -49,7 +49,7 @@ public class CreditCardsTest extends DataProvider {
         p = open(adminUrl + "/customers/" + customerId, CustomerPage.class);
 
         click( p.addNewCreditCardBtn() );
-        p.addNewCreditCard(customerName, "5555555555554444", "777", "2", "2020");
+        p.fillOutNewCCForm(customerName, "5555555555554444", "777", "2", "2020");
         click( p.chooseBtn("1") );
         click( p.saveBtn() );
         sleep(1500);
@@ -81,7 +81,7 @@ public class CreditCardsTest extends DataProvider {
         click( p.editCreditCardBtn("1") );
         p.setExpirationDate("12", "2030");
         click( p.saveBtn() );
-        sleep(2500);
+        sleep(3000);
         assertEquals( p.expirationDateVal("1"), "12/2030",
                 "Failed to edit expiration date; expected: <12/2030>, actual: <" + p.expirationDateVal("1") + ">.");
 
@@ -113,9 +113,8 @@ public class CreditCardsTest extends DataProvider {
         setFieldVal( p.nameFld(), "John Doe" );
         click( p.saveBtn() );
         sleep(2500);
-        assertEquals( p.nameFldVal_billAddress("1"), "John Doe",
-                "Billing address failed to get updated after editing a corresponding address in address book." +
-                        "\n expected: <John Doe>, actual <" + p.nameFldVal_billAddress("1") + ">.");
+        assertEquals( p.nameFldVal_billAddress("1"), customerName,
+                "Billing address has been modified (should be unchangeable once it's set)." );
 
     }
 

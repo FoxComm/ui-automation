@@ -145,8 +145,7 @@ public class ConciseAPI extends Configuration {
     }
 
     @Step("Wait for data on the list to be loaded.")
-    public void
-    waitForDataToLoad() {
+    public void waitForDataToLoad() {
         try {
             itemsOnList().should(exist);
         } catch(NoSuchElementException nsee) {

@@ -64,7 +64,7 @@ public class ProductsPage extends BasePage {
     }
 
     public SelenideElement saveDraftBtn() {
-        return $(By.xpath("//span[text()='Save Draft']/.."));
+        return $(By.xpath("//span[text()='Save']/.."));
     }
     //--------------------------
 

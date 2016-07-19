@@ -915,8 +915,8 @@ public class TestClass extends BaseTest {
 
         //---------------
 
-        loginAsAdmin();
-        createNewCustomer();
+//        loginAsAdmin();
+//        createNewCustomer();
 //        createCart(customerId);
 //        updSKULineItems(orderId, "SKU-YAX", 1);
 //        setShipAddress(orderId, customerName, 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
@@ -954,6 +954,7 @@ public class TestClass extends BaseTest {
 //        createSKU();
 //        createProduct(sku);
 //        createSKU_active();
+
     }
 
 }

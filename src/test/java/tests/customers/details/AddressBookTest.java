@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.util.Objects;
 
 import static com.codeborne.selenide.Selenide.open;
+import static com.codeborne.selenide.Selenide.sleep;
+import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 public class AddressBookTest extends DataProvider {
@@ -29,13 +31,13 @@ public class AddressBookTest extends DataProvider {
     @Test(priority = 1)
     public void addNewAddress() throws IOException {
 
-        provideTestData("customer");
+        provideTestData("a customer");
         p = open(adminUrl + "/customers/" + customerId, CustomerPage.class);
 
-        p.addNewAddress(customerName, "2101 Green Valley", "Suite 300", "Seattle", "Washington", "98101", "9879876");
+        p.addNewAddress(customerName, "2101 Green Valley", "Suite 300", "Seattle", "Washington", "98101", "9879879876");
 
-        assertTrue( p.addressBookSize() == 1,
-                "Failed to add new address to address book; expected address book size: <1>, actual: <" + p.addressBookSize() + ">.");
+        assertEquals( p.addressBookSize(), 1,
+                "Failed to add new address to address book.");
 
     }
 
@@ -136,11 +138,13 @@ public class AddressBookTest extends DataProvider {
         p = open(adminUrl + "/customers/" + customerId, CustomerPage.class);
 
         click( p.editAddressBtn("1") );
+        clearField( p.phoneNumberFld() );
         setFieldVal( p.phoneNumberFld(), "5551237575" );
         p.assertStateIsntReset();
         click( p.saveBtn() );
-        assertTrue( p.phoneNumberFldVal("1").equals("(555) 123-7575"),
-                "Failed to edit phone number field; expected: <(555) 123-7575>, actual: <" + p.phoneNumberFldVal("1") + ">.");
+        sleep(4000);
+        assertEquals( p.phoneNumberFldVal("1"), "(555) 123-7575",
+                "Failed to edit phone number in existing address at address book.");
 
     }
 

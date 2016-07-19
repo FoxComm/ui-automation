@@ -26,7 +26,7 @@ public class DataProvider extends BaseTest {
     private static int creditCardId;            // stored from create createCreditCard()
 
     protected static String promotionId;
-    protected static int couponId;
+    protected static String couponId;
     protected static String couponName;
     private static String singleCouponCode;
     private static List<String> bulkCodes = new ArrayList<>();
@@ -716,7 +716,7 @@ public class DataProvider extends BaseTest {
 
         Response response = client.newCall(request).execute();
         String responseBody = response.body().string();
-        couponId = Integer.valueOf(responseBody.substring(6, 9));
+        couponId = responseBody.substring(6, 9);
         couponName = "test coupon " + randomId;
 
         System.out.println(response);
@@ -726,7 +726,7 @@ public class DataProvider extends BaseTest {
 
     }
 
-    private static void generateSingleCode(int couponId) throws IOException {
+    private static void generateSingleCode(String couponId) throws IOException {
 
         System.out.println("Generating a single code for coupon <" + couponId + ">...");
 
@@ -754,7 +754,7 @@ public class DataProvider extends BaseTest {
 
     }
 
-    private static void bulkGenerateCodes(int couponId, String prefix, int codeLength, int quantity) throws IOException {
+    private static void bulkGenerateCodes(String couponId, String prefix, int codeLength, int quantity) throws IOException {
 
         int length = prefix.length() + codeLength;
 

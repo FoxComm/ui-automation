@@ -18,7 +18,7 @@ public class BaseTest extends ConciseAPI {
 
         System.setProperty("webdriver.chrome.driver", "/home/cosmic/IdeaProjects/FC/chromedriver_2.21");
         Configuration.browser = "chrome";
-        Configuration.timeout = 15000;
+        Configuration.timeout = 10000;
 
     }
 

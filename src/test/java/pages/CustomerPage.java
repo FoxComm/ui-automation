@@ -12,6 +12,7 @@ import java.util.Objects;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
 import static org.openqa.selenium.Keys.ENTER;
+import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 public class CustomerPage extends BasePage {
@@ -77,7 +78,7 @@ public class CustomerPage extends BasePage {
     }
 
     public int addressBookSize() {
-        List<SelenideElement> addresses = $$(By.xpath("//ul[@class='fc-address-details']"));
+        List<SelenideElement> addresses = $$(By.xpath("//li[@class='fc-card-container fc-address']"));
         return addresses.size();
     }
 
@@ -178,6 +179,9 @@ public class CustomerPage extends BasePage {
         setFieldVal(phoneNumberFld(), phoneNumber);
         assertStateIsntReset();
         click(saveBtn_addressForm());
+        assertTrue(!phoneNumbErrorMsg().is(visible),
+                "Failed to specify a full phone number (there might be a rendering issue).");
+        sleep(2000);
 
     }
 
@@ -287,7 +291,7 @@ public class CustomerPage extends BasePage {
     }
 
     public String nameFldVal_billAddress(String ccIndex) {
-        SelenideElement nameFld_billAddress = $(By.xpath("//div[contains(@class, 'credit-cards')]/div/ul/li[" + ccIndex + "]/div[3]/div/dl[2]/dd"));
+        SelenideElement nameFld_billAddress = $(By.xpath("//div[contains(@class, 'credit-cards')]/div/ul/li[" + ccIndex + "]/div[3]/div/dl[2]/dd/ul/li[1]"));
         return nameFld_billAddress.text();
     }
 
@@ -295,7 +299,7 @@ public class CustomerPage extends BasePage {
     //------------------------------ HELPERS --------------------------------//
 
     @Step("Add new credit card")
-    public void addNewCreditCard(String holderName, String cardNumber, String cvv, String month, String year) {
+    public void fillOutNewCCForm(String holderName, String cardNumber, String cvv, String month, String year) {
 
         setFieldVal(holderNameFld(), holderName);
         setFieldVal(cardNumberFld(), cardNumber);
@@ -316,21 +320,12 @@ public class CustomerPage extends BasePage {
     public void addNewBillAddress(String name, String streetAddress1, String streetAddress2, String city, String state, String zipCode, String phoneNumber) {
 
         click(newBillAddressBtn());
-        setFieldVal(nameFld(), name);
-        setFieldVal(address1Fld(), streetAddress1);
-        setFieldVal(address2Fld(), streetAddress2);
-        setFieldVal(cityFld(), city);
-        setState(state);
-        setFieldVal(zipFld(), zipCode);
-        setFieldVal(phoneNumberFld(), phoneNumber);
-        assertStateIsntReset();
+        addNewAddress(name, streetAddress1, streetAddress2, city, state, zipCode, phoneNumber);
         click(saveBtn());
-        sleep(1500);
-
-        assertTrue(!phoneNumbErrorMsg().is(visible),
-                "Phone number wasn't fully input; expected: <(987) 987-9876>, actual: <" + phoneNumberFld().getAttribute("value") + ">.");
-        assertTrue(changeBillAddressBtn().is(visible),
-                "Added address wasn't set as a billing address.");
+        sleep(2000);
+        assertEquals( addressBookSize(), 1,
+                  "Failed to create a new address." );
+        click( chooseBtn("1") );
         assertTrue(billName().equals(name),
                 "Incorrect address seems to be set as a billing address; expected name: <" + name + ">, actual: <" + billName() + ">.");
 
@@ -584,6 +579,10 @@ public class CustomerPage extends BasePage {
         return $(By.xpath("//tbody/tr[" + scIndex + "]/td[9]/div/div[2]/button"));
     }
 
+    private SelenideElement cancellationReason(String reason) {
+        return $(By.xpath("//li[contains(text(), '" + reason + "')]"));
+    }
+
     private SelenideElement scStateListVal(String stateVal) {
         return $(By.xpath("//tbody/tr[1]/td[9]/div/div[3]/ul/li[text()='" + stateVal + "']"));
     }
@@ -593,7 +592,7 @@ public class CustomerPage extends BasePage {
     }
 
     private SelenideElement yesBtn() {
-        return $(By.xpath("//span[text()='Yes, Cancel']/.."));
+        return $(By.xpath("//span[contains(text(), 'Yes')]/.."));
     }
 
     public SelenideElement transactionTab() {
@@ -653,6 +652,13 @@ public class CustomerPage extends BasePage {
     public void setState(String scIndex, String state) {
         click( scStateDd(scIndex) );
         click( scStateListVal(state) );
+        click( yesBtn() );
+    }
+
+    public void setState(String scIndex, String state,String reason) {
+        click( scStateDd(scIndex) );
+        click( scStateListVal(state) );
+        click( cancellationReason(reason) );
         click( yesBtn() );
     }
 
