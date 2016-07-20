@@ -88,7 +88,7 @@ public class CreateProductsTest extends DataProvider {
         p.assertSKUApplied();
 
         sf = open(storefrontUrl + "/sunglasses?type=men", StorefrontCategoryPage.class);
-        sf.waitForDataToLoad_s();
+        sf.waitForDataToLoad_sf();
         assertTrue( !sf.productDisplayed(productName),
                 "Product is displayed on the category page on sf.");
 
@@ -119,7 +119,7 @@ public class CreateProductsTest extends DataProvider {
         p.assertSKUApplied();
 
         sf = open(storefrontUrl + "/sunglasses?type=men", StorefrontCategoryPage.class);
-        sf.waitForDataToLoad_s();
+        sf.waitForDataToLoad_sf();
         assertTrue( !sf.productDisplayed(productName),
                 "Product is displayed on the category page on sf.");
 
@@ -150,7 +150,7 @@ public class CreateProductsTest extends DataProvider {
         p.assertSKUApplied();
 
         sf = open(storefrontUrl + "/sunglasses?type=men", StorefrontCategoryPage.class);
-        sf.waitForDataToLoad_s();
+        sf.waitForDataToLoad_sf();
         assertTrue( !sf.productDisplayed(productName),
                 "Product is displayed on the category page on sf.");
 
@@ -181,7 +181,7 @@ public class CreateProductsTest extends DataProvider {
         p.assertSKUApplied();
 
         sf = open(storefrontUrl + "/sunglasses?type=men", StorefrontCategoryPage.class);
-        sf.waitForDataToLoad_s();
+        sf.waitForDataToLoad_sf();
         assertTrue( !sf.productDisplayed(productName),
                 "Product is displayed on the category page on sf.");
 
@@ -212,7 +212,7 @@ public class CreateProductsTest extends DataProvider {
         p.assertSKUApplied();
 
         sf = open(storefrontUrl + "/sunglasses?type=men", StorefrontCategoryPage.class);
-        sf.waitForDataToLoad_s();
+        sf.waitForDataToLoad_sf();
         assertTrue( !sf.productDisplayed(productName),
                 "Product is displayed on the category page on sf.");
 

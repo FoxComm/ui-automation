@@ -170,7 +170,12 @@ public class ConciseAPI extends Configuration {
         System.out.println("**** **** **** ");
         System.out.println("Total amount of elements in list: <" + list.size() + ">.");
         for (SelenideElement element : list) {
-            System.out.println("Item name: <" + element.getText() + ">.");
+            try {
+                System.out.println("Item name: <" + element.getText() + ">.");
+            } catch (IndexOutOfBoundsException e){
+                System.out.println("IndexOutOfBoundsException is caught. Exiting printSEList() method.");
+                break;
+            }
         }
         System.out.println("**** **** **** ");
     }

@@ -1556,6 +1556,11 @@ public class DataProvider extends BaseTest {
                 createProduct_active(sku, "sunglasses");
                 break;
 
+            case "product in inactive state":
+                createSKU_active();
+                createProduct_inactive(sku, "sunglasses");
+                break;
+
             case "active SKU":
                 createSKU_active();
                 break;

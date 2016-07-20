@@ -62,7 +62,7 @@ public class StorefrontCategoryPage extends BasePage {
     }
 
     @Step("Wait for data on the list to be loaded.")
-    public void waitForDataToLoad_s() {
+    public void waitForDataToLoad_sf() {
         try {
             itemsOnList_s().shouldBe(visible);
         } catch (NoSuchElementException nsee) {
@@ -91,7 +91,7 @@ public class StorefrontCategoryPage extends BasePage {
 
     @Step("Assert that product <{0}> is displayed in the category")
     public boolean productDisplayed(String productName) {
-        waitForDataToLoad_s();
+        waitForDataToLoad_sf();
         return lookForProduct(productName);
     }
 
@@ -115,7 +115,7 @@ public class StorefrontCategoryPage extends BasePage {
     @Step("Find on the list a product with name <{0}>")
     private SelenideElement findProductOnList(String productName) {
 
-        waitForDataToLoad_s();
+        waitForDataToLoad_sf();
         List<SelenideElement> productsList = $$(By.xpath("//div[@class='_products_item_list_item__name']"));
         SelenideElement productToClick = null;
         printSEList(productsList);
