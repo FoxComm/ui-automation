@@ -535,6 +535,29 @@ public class DataProvider extends BaseTest {
 
     }
 
+    protected static void putGCOnHold(String gcNumber) throws IOException {
+
+        System.out.println("Puting <" + gcNumber + "> on hold..." );
+
+        OkHttpClient client = new OkHttpClient();
+
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{\n  \"state\": \"onHold\"\n}");
+        Request request = new Request.Builder()
+                .url("http://admin.stage.foxcommerce.com/api/v1/gift-cards/" + gcNumber)
+                .patch(body)
+                .addHeader("content-type", "application/json")
+                .addHeader("accept", "application/json")
+                .addHeader("cache-control", "no-cache")
+                .addHeader("JWT", jwt)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+        System.out.println(responseBody);
+
+    }
+
     protected static void setPayment_giftCard(String orderId, String gcNumber, int amount) throws IOException {
 
         System.out.println("Setting gict card <"+ gcNumber + "> in amount of <" + amount + "> as a payment for order <" + orderId + ">...");
@@ -1624,6 +1647,30 @@ public class DataProvider extends BaseTest {
             case "inactive product, no tag, inactive SKU":
                 createSKU_inactive();
                 createProduct_inactive_noTag(sku);
+                break;
+
+            //----------------------------------- GIFT CARDS -----------------------------------//
+
+            case "gift card":
+                issueGiftCard(5000, 1);
+                break;
+
+            case "used gift card":
+                issueGiftCard(20000, 1);
+                createNewCustomer();
+                createCart(customerId);
+                updSKULineItems(orderId, "SKU-YAX", 1);
+                setShipAddress(orderId, "John Doe", 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
+                listShipMethods(orderId);
+                setShipMethod(orderId, shipMethodId);
+                listCustomerAddresses(customerId);
+                setPayment_giftCard(orderId, gcNumber, 10000);
+                checkoutOrder(orderId);
+                break;
+
+            case "gift card on hold":
+                issueGiftCard(20000, 1);
+                putGCOnHold(gcNumber);
                 break;
 
         }

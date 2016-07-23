@@ -96,7 +96,7 @@ public class StoreCreditsTest extends DataProvider {
         click( p.storeCreditTab() );
         click( p.newSCBtn() );
         p.selectType("Csr Appeasement");
-        click( p.presetValues("100") );
+        click( p.presetValue("100") );
         click( p.submitBtn() );
         sleep(2000);
         assertEquals( p.availableBalanceVal(), 100.00,

@@ -41,6 +41,10 @@ public class BasePage extends ConciseAPI {
     public SelenideElement promotionsNavMenu() {
         return $(By.xpath("//span[text()='Promotions']/.."));
     }
+
+    public SelenideElement gcNavMenu() {
+        return $(By.xpath("//span[text()='Gift Cards']/.."));
+    }
     //----------------------------------------------------------------------------------------//
 
     //---------------------------- GENERAL CONTROLS, FORM SPECIFIC----------------------------//

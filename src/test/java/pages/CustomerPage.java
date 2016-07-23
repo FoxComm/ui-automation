@@ -587,7 +587,7 @@ public class CustomerPage extends BasePage {
         return $(By.xpath("//tbody/tr[1]/td[9]/div/div[3]/ul/li[text()='" + stateVal + "']"));
     }
 
-    public SelenideElement presetValues(String scVal) {
+    public SelenideElement presetValue(String scVal) {
         return $(By.xpath("//li[contains(@class, 'balances')]/div[text()='" + scVal + "']"));
     }
 

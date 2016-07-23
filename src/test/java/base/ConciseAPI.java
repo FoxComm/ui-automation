@@ -50,7 +50,8 @@ public class ConciseAPI extends Configuration {
     @Step("Select <{1}> option from <{0}> dropdown.")
     protected void setDdVal(SelenideElement ddElement, String ddValue) {
         ddElement.click();
-        $(By.xpath("//li[text()='" + ddValue + "']")).click();
+        SelenideElement option = $(By.xpath("//li[text()='" + ddValue + "']"));
+        option.click();
     }
 
     @Step("Check if {0} element is visible.")

@@ -295,13 +295,13 @@ public class TestClass extends BaseTest {
         Response response = client.newCall(request).execute();
 
         String responseBody = response.body().string();
-        addressId1 = Integer.valueOf(responseBody.substring(17, 21));
+        addressId1 = Integer.valueOf(responseBody.substring(7, 11));
 //        addressId2 = Integer.valueOf(addresses.substring(216, 220));
 //        addressId3 = Integer.valueOf(addresses.substring(415, 419));
 
         System.out.println(response);
         System.out.println("Address 1: <" + addressId1 + ">");
-        System.out.println("Address 2: <" + addressId2 + ">");
+//        System.out.println("Address 2: <" + addressId2 + ">");
 //        System.out.println("Addres 3: <" + addressId3 + ">");
         System.out.println("--------");
 
@@ -508,7 +508,7 @@ public class TestClass extends BaseTest {
 
     protected static void setPayment_giftCard(String orderId, String gcNumber, int amount) throws IOException {
 
-        System.out.println("Setting gict card <"+ gcNumber + "> in amount of <" + amount + "> as a payment for order <" + orderId + ">...");
+        System.out.println("Setting gift card <"+ gcNumber + "> in amount of <" + amount + "> as a payment for order <" + orderId + ">...");
 
         OkHttpClient client = new OkHttpClient();
 
@@ -889,71 +889,11 @@ public class TestClass extends BaseTest {
 
     public static void main(String[] args) throws IOException {
 
-//        loginAsAdmin();
-//        createNewCustomer();
-//        createCart(customerId);
-//
-//        updSKULineItems(orderId, "SKU-YAX", 1);
-//
-//        setShipAddress(orderId, customerName, 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
-//
-//        listShipMethods(orderId);
-//        setShipMethod(orderId, shipMethodId);
-//
-//        createAddress(customerId, customerName,4161, 234, "Washington", "2101 Green Valley", "Suite 300", "Seattle", "98101", "9879879876", true);
-//        listCustomerAddresses(customerId);
-//        createCreditCard("John Doe", "5555555555554444", "999", 4, 2020, addressId1);
-//        setPayment_creditCard(orderId, creditCardId);
-////
-//////        issueStoreCredit(customerId, 10000);
-//////        setPayment_storeCredit(orderId, 10000);
-////
-//////        issueGiftCard(500, 1);
-//////        setPayment_giftCard(orderId, gcNumber, 10000);
-//
-//        checkoutOrder(orderId);
+        loginAsAdmin();
 
-        //---------------
 
-//        loginAsAdmin();
-//        createNewCustomer();
-//        createCart(customerId);
-//        updSKULineItems(orderId, "SKU-YAX", 1);
-//        setShipAddress(orderId, customerName, 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
-//        listShipMethods(orderId);
-//        setShipMethod(orderId, shipMethodId);
-//        listCustomerAddresses(customerId);
-//        createCreditCard("John Doe", "5555555555554444", "999", 4, 2020, addressId1);
-//        setPayment_creditCard(orderId, creditCardId);
-//        checkoutOrder(orderId);
-//
-//        createCart(customerId);
-//        updSKULineItems(orderId, "SKU-BRO", 2);
-//        setShipAddress(orderId, customerName, 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
-//        listShipMethods(orderId);
-//        setShipMethod(orderId, shipMethodId);
-//        setPayment_creditCard(orderId, creditCardId);
-//        checkoutOrder(orderId);
-//
-//        changeOrderState(orderId, "fulfillmentStarted");
 
-//        createPromotion_coupon();
-//        createCoupon(promotionId);
-//        generateSingleCode(couponId);
-//        bulkGenerateCodes(263, "bulkcpn", 4, 4);
-//        applyCouponCode(orderId, bulkCodes.get(2));
-//        issueStoreCredit(customerId, 50000);
-//        updateSCState(scId, "canceled");
-//        viewOrder(orderId);
-//        setPayment_storeCredit(orderId, orderTotal);
-//        checkoutOrder(orderId);
-//        createPromotion_coupon();
-//        createCoupon(promotionId);
 
-//        createProduct_noSKU();
-//        createSKU();
-//        createProduct(sku);
-//        createSKU_active();
 
     }
 
