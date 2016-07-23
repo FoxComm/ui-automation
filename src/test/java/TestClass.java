@@ -890,7 +890,16 @@ public class TestClass extends BaseTest {
     public static void main(String[] args) throws IOException {
 
         loginAsAdmin();
-
+//        issueGiftCard(20000, 1);
+//        createNewCustomer();
+//        createCart(customerId);
+//        updSKULineItems(orderId, "SKU-YAX", 1);
+//        setShipAddress(orderId, "John Doe", 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
+//        listShipMethods(orderId);
+//        setShipMethod(orderId, shipMethodId);
+//        listCustomerAddresses(customerId);
+//        setPayment_giftCard(orderId, gcNumber, 10000);
+        checkoutOrder("BR11183");
 
 
 
