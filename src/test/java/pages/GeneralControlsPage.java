@@ -2,147 +2,96 @@ package pages;
 
 import base.BasePage;
 import com.codeborne.selenide.SelenideElement;
-import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.NoSuchElementException;
-import org.testng.Assert;
 import ru.yandex.qatools.allure.annotations.Step;
 
 import java.util.List;
 
-import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selenide.*;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
+import static com.codeborne.selenide.Condition.enabled;
+import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.$$;
+import static com.codeborne.selenide.Selenide.sleep;
+import static org.openqa.selenium.By.xpath;
 
-public class OrdersPage extends BasePage {
+public class GeneralControlsPage extends BasePage {
 
-    //--------------------------------------- ELEMENTS ---------------------------------------//
 
-    private SelenideElement ordersCounter() {
-        return $(By.xpath("//span[@class='fc-section-title__subtitle fc-light']"));
+    //------------------------------ ELEMENTS --------------------------------//
+
+    public SelenideElement filter(String filterTitle) {
+        return $(xpath("//div[@title='" + filterTitle + "']"));
     }
 
-    private SelenideElement orderOnList(String index) {
-        return $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/tr[" + index + "]"));
+    public SelenideElement removeFilterBtn(String filterTitle) {
+        return $(xpath("//div[@title='" + filterTitle + "']/a"));
     }
 
-    private List<SelenideElement> allSearchFilters() {
-        return $$(By.xpath("//div[@class='fc-pilled-input__pill']/a"));
+    private SelenideElement searchContextMenuBtn() {
+        return $(xpath("//i[@class='icon-search']/../following-sibling::*"));
+    }
+    public SelenideElement tab(String tabTitle) {
+        return $(xpath("//li[text()='" + tabTitle + "']"));
     }
 
-    public SelenideElement newOrderButton() {
-        return $(By.xpath("//button[@class='fc-btn fc-btn-primary']"));
+    public SelenideElement tabTitleFld() {
+        return $(xpath("//input[@placeholder='Name your search']"));
     }
 
-    public SelenideElement searchCriteriaList() {
-        return $(By.xpath("//div[@class='fc-menu']"));
+    public SelenideElement dirtySearchIndicator() {
+        return $(xpath("//div[@class='fc-editable-tab__dirty-icon']"));
     }
 
-    private SelenideElement columnLabel(int labelIndex) {
-        return $(By.xpath("//table[@class='fc-table fc-multi-select-table']/thead/tr/th[" + (labelIndex + 1) + "]"));
+    public SelenideElement ordersCounter() {
+        return $(xpath("//span[@class='fc-section-title__subtitle fc-light']"));
     }
 
-    private SelenideElement noSearchResults() {
-        return $(By.xpath("//div[@class='fc-content-box__empty-row']"));
+    public List<SelenideElement> tabs() {
+        return $$(xpath("//ul[@class='fc-tab-list__current-tabs']/div"));
     }
 
-
-
-    //---------------------------------------- HELPERS ----------------------------------------//
-
-    private void takeFocusAway() {
-        ordersCounter().click();
-        sleep(500);
+    public SelenideElement inviteUsersFld() {
+        return $(xpath("//input[@placeholder='Name or email...']"));
     }
 
-    //-------------------- ORDERS LIST --------------------//
+    public SelenideElement userName(String nameVal) {
+        return $(xpath(""));
+    }
 
-    private String getOrderParamValue(int orderIndex, String paramName) {
+    public SelenideElement shareBtn() {
+        return $(xpath("//span[text()='Share']/.."));
+    }
 
-        String orderParamVal = "";
+    //------------------------------ HELPERS ---------------------------------//
+
+    @Step("Select <{0}> option in search context menu.")
+    public void searchContextMenu(String option) {
+        sleep(3000);
+        searchContextMenuBtn().shouldBe(enabled);
+        click( searchContextMenuBtn() );
+        click( $(xpath("//li[text()='" + option + "']")) );
         waitForDataToLoad();
-
-        switch(paramName) {
-            case "Order":
-                orderParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + orderIndex + "]/td[2]")).getText();
-                break;
-            case "Date/Time Placed":
-                orderParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + orderIndex + "]/td[3]/time")).getText();
-                break;
-            case "Customer Name":
-                orderParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + orderIndex + "]/td[4]")).getText();
-                break;
-            case "Customer Email":
-                orderParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + orderIndex + "]/td[5]")).getText();
-                break;
-            case "Order State":
-                orderParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + orderIndex + "]/td[6]/span")).getText();
-                break;
-            case "Shipment State":
-                orderParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + orderIndex + "]/td[7]")).getText();
-                break;
-            case "Total":
-                orderParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + orderIndex + "]/td[8]/span")).getText();
-                break;
+        if (option.equals("Save New Search")) {
+            ordersCounter().click();
         }
-
-        return orderParamVal;
-
     }
 
-    @Step("{1} parameter value of {0}-th order on the list should be {2}")
-    public void assertOrderParameter(int index, String paramName, String expectedParamValue) {
-
-        String actualParamValue = null;
-        try {
-            actualParamValue = getOrderParamValue(index, paramName);
-        } catch (NoSuchElementException e) {
-            assertTrue(!emptyList().is(visible), "A specified search filter gave no results.");
+    @Step("Delete all search tabs")
+    public void deleteAllSearchTabs() {
+        for (int i = 0; i < tabs().size() - 1; i++) {
+            click(tabs().get(1));
+            searchContextMenu("Delete Search");
+            waitForDataToLoad();
         }
-        System.out.println(actualParamValue);
-        assertEquals(actualParamValue, expectedParamValue,
-                "Search results aren't relevant to a given search criteria");
-
     }
 
-    @Step("{1} parameter value of {0}-th order on the list should be '{2} {3}'")
-    public void assertOrderParameter(int index, String paramName, String operatorName, int expectedParamValue) {
-
-        String strActualParamValue = getOrderParamValue(index, paramName);
-        System.out.println("strActualParamValue :" + strActualParamValue);
-        double actualParamValue = Double.valueOf(strActualParamValue.substring(1, strActualParamValue.length()));
-        System.out.println("actualParamValue :" + actualParamValue);
-
-        switch (operatorName) {
-            case "=":
-                assertEquals(actualParamValue, expectedParamValue,
-                        "Search results aren't relevant to a given search criteria");
-                break;
-            case ">":
-                Assert.assertTrue(actualParamValue > expectedParamValue,
-                        "Search results aren't relevant to a given search criteria");
-                break;
-            case ">=":
-                System.out.println(actualParamValue >= expectedParamValue);
-                Assert.assertTrue( (actualParamValue >= expectedParamValue),
-                        "Search results aren't relevant to a given search criteria");
-                break;
-            case "<":
-                Assert.assertTrue(actualParamValue < expectedParamValue,
-                        "Search results aren't relevant to a given search criteria");
-                break;
-            case "<=":
-                Assert.assertTrue(actualParamValue <= expectedParamValue,
-                        "Search results aren't relevant to a given search criteria");
-                break;
-        }
-
+    @Step("Switch to <{0}> search tab")
+    public void switchToTab(String tabTitle) {
+        tab(tabTitle).shouldBe(enabled);
+        click( tab(tabTitle) );
+        waitForDataToLoad();
     }
-
 
     //-------------------- SEARCH FIELD --------------------//
-
     private void selectLine(int index) {
         for (int i = 0; i < index; i++) {
             searchFld().sendKeys(Keys.ARROW_DOWN);
@@ -153,6 +102,11 @@ public class OrdersPage extends BasePage {
     private void hitEnter() {
         searchFld().sendKeys(Keys.ENTER);
         sleep(200);
+    }
+
+    private void takeFocusAway() {
+        ordersCounter().click();
+        sleep(500);
     }
 
     @Step("Create a search filter {0} : {1} : {2}")
@@ -302,8 +256,8 @@ public class OrdersPage extends BasePage {
 
     }
 
-        // sub-method for defining 3rd and 4th method for 4-argument search filters
-        private void defineOperator(String thirdStatement, String fourthStatement) {
+    // sub-method for defining 3rd and 4th method for 4-argument search filters
+    private void defineOperator(String thirdStatement, String fourthStatement) {
 
         switch (thirdStatement)
         {
@@ -329,43 +283,13 @@ public class OrdersPage extends BasePage {
 
     }
 
-        private void setStatementVal(int index_arrowDown, String fourthStatement) {
+    private void setStatementVal(int index_arrowDown, String fourthStatement) {
         selectLine(index_arrowDown);
         sleep(500);
         searchFld().sendKeys(fourthStatement);
         hitEnter();
     }
-
-
-
-    @Step
-    public void removeFilter(String index) {
-        $(By.xpath("//div[@class='fc-pilled-input__pill'][" + index + "]/a")).click();
-    }
-
-    @Step
-    public void cleanSearchField() {
-        int index = allSearchFilters().size();
-
-        if (index > 0) {
-            for (int i = 0; i < index; i++) {
-                removeFilter("1");
-            }
-        }
-    }
-
-    // indexing starts with 1
-    @Step("Sort list of orders by {0} column index")
-    public void sortListBy(int columnIndex) {
-        click( columnLabel(columnIndex) );
-        waitForDataToLoad();
-    }
-
-    @Step
-    public void assertNoSearchResults() {
-        Assert.assertTrue(noSearchResults().is(visible),
-                "Search query output isn't empty");
-    }
+    //--------------------
 
 
 }

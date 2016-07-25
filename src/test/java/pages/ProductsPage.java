@@ -68,10 +68,6 @@ public class ProductsPage extends BasePage {
     }
     //--------------------------
 
-    private SelenideElement searchFld() {
-        return $(By.xpath("//input[@placeholder='filter or keyword search']"));
-    }
-
     private SelenideElement productsCounter() {
         return $(By.xpath("//span[@class='fc-section-title__subtitle fc-light']/span"));
     }

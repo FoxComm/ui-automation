@@ -1,4 +1,4 @@
-package tests.logintests;
+package tests.generalcontrols.login;
 
 import base.BaseTest;
 import com.codeborne.selenide.Condition;
@@ -28,9 +28,7 @@ public class LoginTest extends BaseTest {
     @Test(priority = 2)
     public void login_logout_test() {
         p.login("admin@admin.com", "password");
-        p.click( p.userMenuBtn() );
-        p.click( p.logoutBtn() );
-        p.logoutSuccessMsg().shouldBe(Condition.visible);
+        p.logout();
     }
 
     @AfterTest

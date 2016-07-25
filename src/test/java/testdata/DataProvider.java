@@ -35,6 +35,8 @@ public class DataProvider extends BaseTest {
     protected static String productName;         // stored from createProduct_<..>() methods
     protected static int productId;              // stored from createProduct_<..>() methods
 
+    protected static String searchId;            // stored from createSharedSearch() methods
+
     private static void loginAsAdmin() throws IOException {
 
         System.out.println("Authorizing as an admin...");
@@ -718,8 +720,6 @@ public class DataProvider extends BaseTest {
 
     }
 
-
-
     private static void createCoupon(String promotionId) throws IOException {
 
         System.out.println("Creating a new coupon with promotion <" + promotionId + ">...");
@@ -1176,6 +1176,86 @@ public class DataProvider extends BaseTest {
         System.out.println(responseBody);
         System.out.println("Product ID: <" + productId + ">.");
         System.out.println("Product name: <" + productName + ">.");
+        System.out.println("---- ---- ---- ----");
+
+    }
+
+    private static void createSharedSearch_oneFilter() throws IOException {
+
+        System.out.println("Creating a new shared search...");
+
+        OkHttpClient client = new OkHttpClient();
+
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{\"title\":\"Test Search\",\"query\":[{\"display\":\"Order : State : Remorse Hold\",\"term\":\"state\",\"operator\":\"eq\",\"value\":{\"type\":\"enum\",\"value\":\"remorseHold\"}}],\"scope\":\"ordersScope\",\"rawQuery\":{\"query\":{\"bool\":{\"filter\":[{\"term\":{\"state\":\"remorseHold\"}}]}}}}");
+        Request request = new Request.Builder()
+                .url("http://admin.stage.foxcommerce.com/api/v1/shared-search")
+                .post(body)
+                .addHeader("content-type", "application/json")
+                .addHeader("accept", "application/json")
+                .addHeader("cache-control", "no-cache")
+                .addHeader("JWT", jwt)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+        searchId = responseBody.substring(17, 33);
+
+        System.out.println(response);
+        System.out.println(responseBody);
+        System.out.println("Search ID: <" + searchId + ">.");
+        System.out.println("---- ---- ---- ----");
+
+    }
+
+    private static void createSharedSearch_twoFilters() throws IOException {
+
+        System.out.println("Creating a new shared search...");
+
+        OkHttpClient client = new OkHttpClient();
+
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{\"title\":\"Test Search\",\"query\":[{\"display\":\"Order : State : Remorse Hold\",\"term\":\"state\",\"operator\":\"eq\",\"value\":{\"type\":\"enum\",\"value\":\"remorseHold\"}},{\"display\":\"Order : Total : > : $1\",\"term\":\"grandTotal\",\"operator\":\"gt\",\"value\":{\"type\":\"currency\",\"value\":\"100\"}}],\"scope\":\"ordersScope\",\"rawQuery\":{\"query\":{\"bool\":{\"filter\":[{\"term\":{\"state\":\"remorseHold\"}},{\"range\":{\"grandTotal\":{\"gt\":\"100\"}}}]}}}}");
+        Request request = new Request.Builder()
+                .url("http://admin.stage.foxcommerce.com/api/v1/shared-search")
+                .post(body)
+                .addHeader("content-type", "application/json")
+                .addHeader("accept", "application/json")
+                .addHeader("cache-control", "no-cache")
+                .addHeader("JWT", jwt)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+        searchId = responseBody.substring(17, 33);
+
+        System.out.println(response);
+        System.out.println(responseBody);
+        System.out.println("Search ID: <" + searchId + ">.");
+        System.out.println("---- ---- ---- ----");
+
+    }
+
+    protected static void deleteSearch(String searchId) throws IOException {
+
+        System.out.println("Deleting saved search with id <" + searchId + ">.");
+
+        OkHttpClient client = new OkHttpClient();
+
+        Request request = new Request.Builder()
+                .url("http://admin.stage.foxcommerce.com/api/v1/shared-search/" + searchId)
+                .delete(null)
+                .addHeader("content-type", "application/json")
+                .addHeader("accept", "application/json")
+                .addHeader("cache-control", "no-cache")
+                .addHeader("JWT", jwt)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+
+        System.out.println(response);
+        System.out.println(responseBody);
         System.out.println("---- ---- ---- ----");
 
     }
@@ -1671,6 +1751,16 @@ public class DataProvider extends BaseTest {
             case "gift card on hold":
                 issueGiftCard(20000, 1);
                 putGCOnHold(gcNumber);
+                break;
+
+            //--------------------------------- SEARCH CONTROLS ---------------------------------//
+
+            case "saved search with 1 filter":
+                createSharedSearch_oneFilter();
+                break;
+
+            case "saved search with 2 filters":
+                createSharedSearch_twoFilters();
                 break;
 
         }

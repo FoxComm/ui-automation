@@ -1,5 +1,6 @@
 package base;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.By;
 import ru.yandex.qatools.allure.annotations.Step;
@@ -10,9 +11,11 @@ import static com.codeborne.selenide.Condition.enabled;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
+import static com.codeborne.selenide.Selenide.sleep;
 
 public class BasePage extends ConciseAPI {
 
+    //---------------------------------- GENERAL CONTROLS -----------------------------------//
     public SelenideElement userMenuBtn() {
         return $(By.xpath("//div[@class='_header_header__name']"));
     }
@@ -21,11 +24,11 @@ public class BasePage extends ConciseAPI {
         return $(By.xpath("//a[text()='Log out']"));
     }
 
-    public SelenideElement settingsBtn() {
+    public SelenideElement userSettingsBtn() {
         return $(By.xpath("//a[text()='Settings']"));
     }
 
-    //---------------------------- N A V I G A T I O N    M E N U ----------------------------//
+    //----------------------------------- NAVIGATION MENU ------------------------------------//
     public SelenideElement productsNavMenu() {
         return $(By.xpath("//span[text()='Products']"));
     }
@@ -45,9 +48,43 @@ public class BasePage extends ConciseAPI {
     public SelenideElement gcNavMenu() {
         return $(By.xpath("//span[text()='Gift Cards']/.."));
     }
-    //----------------------------------------------------------------------------------------//
 
-    //---------------------------- GENERAL CONTROLS, FORM SPECIFIC----------------------------//
+    //------------------------------------ LOGIN SCREEN --------------------------------------//
+    public SelenideElement emailField() {
+        return $("#form-field-1");
+    }
+
+    public SelenideElement passwordField() {
+        return $("#form-field-2");
+    }
+
+    public SelenideElement googleAuthButton() {
+        return $(By.xpath("//button[@class='fc-btn fc-login__google-btn']"));
+    }
+
+    public SelenideElement logoutSuccessMsg() {
+        return $(By.xpath("//div[@class='fc-alert is-alert-success']"));
+    }
+
+    public SelenideElement loginErrorMsg() {
+        return $(By.xpath("//div[@class='fc-alert is-alert-error']"));
+    }
+
+    @Step("Log in as {0} / {1}")
+    public void login(String email, String password) {
+        emailField().val(email);
+        passwordField().val(password).submit();
+        sleep(3000);
+    }
+
+    @Step("Log out.")
+    public void logout() {
+        click( userMenuBtn() );
+        click( logoutBtn() );
+        logoutSuccessMsg().shouldBe(Condition.visible);
+    }
+
+    //---------------------------- GENERAL FORM SPECIFIC----------------------------//
     private SelenideElement saveBtn() {
         return $(By.xpath("//span[text()='Save']/.."));
     }
@@ -58,7 +95,7 @@ public class BasePage extends ConciseAPI {
         saveBtn().shouldBe(enabled);
     }
 //----
-    private SelenideElement searchFld() {
+    public SelenideElement searchFld() {
         return $(By.xpath("//input[@placeholder='filter or keyword search']"));
     }
 

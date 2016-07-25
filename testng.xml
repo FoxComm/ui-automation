@@ -2,7 +2,9 @@
 <suite name="Admin UI Tests" verbose="1" >
     <test name="General UI Tests" >
         <classes>
-            <class name="tests.logintests.LoginTest" />
+            <class name="tests.generalcontrols.login.LoginTest" />
+            <class name="tests.generalcontrols.search.SearchControlsTest" />
+            <!--<class name="tests.generalcontrols.search.SharedSearchTest" />-->
         </classes>
     </test>
     <test name="Orders Tests" >
