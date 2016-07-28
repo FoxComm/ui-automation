@@ -4,7 +4,7 @@
         <classes>
             <class name="tests.generalcontrols.login.LoginTest" />
             <class name="tests.generalcontrols.search.SearchControlsTest" />
-            <!--<class name="tests.generalcontrols.search.SharedSearchTest" />-->
+            <class name="tests.generalcontrols.search.SharedSearchTest" />
         </classes>
     </test>
     <test name="Orders Tests" >
@@ -27,9 +27,9 @@
             <class name="tests.customers.storecredits.StoreCreditsTest" />
         </classes>
     </test>
-    <test name="Coupons Tests" >
+    <test name="SKUs Tests">
         <classes>
-            <class name="tests.coupons.CouponsTest" />
+            <class name="tests.skus.SkusTests" />
         </classes>
     </test>
     <test name="Products Tests">
@@ -38,14 +38,14 @@
             <class name="tests.products.EditProductTest" />
         </classes>
     </test>
-    <test name="SKUs Tests">
-        <classes>
-            <class name="tests.skus.SkusTests" />
-        </classes>
-    </test>
     <test name="Promotions Tests">
         <classes>
             <class name="tests.promotions.PromotionsTest" />
+        </classes>
+    </test>
+    <test name="Coupons Tests" >
+        <classes>
+            <class name="tests.coupons.CouponsTest" />
         </classes>
     </test>
     <test name="Gift Cards Tests">

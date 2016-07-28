@@ -97,7 +97,7 @@ public class EditProductTest extends DataProvider {
         setFieldVal( p.titleFld(), "Edited Product " + uid );
         p.clickSave();
 
-        sf = open("http://stage.foxcommerce.com/sunglasses?type=men", StorefrontCategoryPage.class);
+        sf = open(storefrontUrl + "/eyeglasses?type=men", StorefrontCategoryPage.class);
         sf.waitForDataToLoad_sf();
         assertTrue( sf.productDisplayed("Edited Product " + uid),
                 "Failed to edit product title - product isn't found by a new title on storefront category page." );
@@ -182,7 +182,7 @@ public class EditProductTest extends DataProvider {
         p.setState( "Active" );
         p.clickSave();
 
-        sf = open("http://stage.foxcommerce.com/sunglasses?type=men", StorefrontCategoryPage.class);
+        sf = open(storefrontUrl + "/eyeglasses?type=men", StorefrontCategoryPage.class);
         sf.waitForDataToLoad_sf();
         assertTrue( sf.productDisplayed(productName),
                 "Failed to edit product state - product isn't displayed on the category page on storefront.");
@@ -265,7 +265,7 @@ public class EditProductTest extends DataProvider {
         p.addTag("eyeglasses");
         p.clickSave();
 
-        sf = open("http://stage.foxcommerce.com/eyeglasses?type=men", StorefrontCategoryPage.class);
+        sf = open(storefrontUrl + "/eyeglasses?type=men", StorefrontCategoryPage.class);
         sf.waitForDataToLoad_sf();
         assertTrue( sf.productDisplayed(productName),
                 "Product isn't displayed on storefront category page.");
@@ -296,7 +296,7 @@ public class EditProductTest extends DataProvider {
         click( p.removeTagBtn("1") );
         p.clickSave();
 
-        sf = open("http://stage.foxcommerce.com/eyeglasses?type=men", StorefrontCategoryPage.class);
+        sf = open(storefrontUrl + "/eyeglasses?type=men", StorefrontCategoryPage.class);
         sf.waitForDataToLoad_sf();
         assertTrue( !sf.productDisplayed(productName),
                 "Product is displayed on the storefront category (it shouldn't).");

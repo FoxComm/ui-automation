@@ -12,7 +12,7 @@ import static org.testng.Assert.assertEquals;
 public class DataProvider extends BaseTest {
 
     protected static int customerId;
-    protected static String orderId;
+    protected static String orderId;            // responseBody.indexOf(",") not added
     protected static int orderTotal;
     private static String jwt;
 
@@ -93,7 +93,7 @@ public class DataProvider extends BaseTest {
         Response response = client.newCall(request).execute();
         String responseBody = response.body().string();
         System.out.println(responseBody);
-        customerId = Integer.valueOf(responseBody.substring(6, responseBody.indexOf(",")));
+        customerId = Integer.valueOf(responseBody.substring(6, responseBody.indexOf(",", 6)));
 
         System.out.println(response);
         System.out.println(responseBody);
@@ -121,7 +121,7 @@ public class DataProvider extends BaseTest {
 
         Response response = client.newCall(request).execute();
         String responseBody = response.body().string();
-        orderId = responseBody.substring(20, 27);
+        orderId = responseBody.substring(20, responseBody.indexOf(",", 20));
 
         System.out.println(response);
         System.out.println(responseBody);
@@ -295,7 +295,7 @@ public class DataProvider extends BaseTest {
         Response response = client.newCall(request).execute();
 
         String responseBody = response.body().string();
-        addressId1 = Integer.valueOf(responseBody.substring(7, 11));
+        addressId1 = Integer.valueOf(responseBody.substring(7, responseBody.indexOf(",", 7)));
 //        addressId2 = Integer.valueOf(addresses.substring(216, 220));
 //        addressId3 = Integer.valueOf(addresses.substring(415, 419));
 
@@ -325,7 +325,7 @@ public class DataProvider extends BaseTest {
         Response response = client.newCall(request).execute();
 
         String responseBody = response.body().string();
-        String strShipMethodId = responseBody.substring(7, 8);
+        String strShipMethodId = responseBody.substring(7, responseBody.indexOf(",", 7));
         shipMethodId = Integer.valueOf(strShipMethodId);
 
         System.out.println(response);
@@ -390,8 +390,8 @@ public class DataProvider extends BaseTest {
 
         System.out.println(response);
 //        System.out.println(responseBody);
-        creditCardId = Integer.valueOf(responseBody.substring(6, 10));
-        System.out.println("Credit Card ID: <" + responseBody.substring(6, 10) + ">");
+        creditCardId = Integer.valueOf(responseBody.substring(6, responseBody.indexOf(",", 6)));
+        System.out.println("Credit Card ID: <" + creditCardId + ">");
         System.out.println("---- ---- ---- ----");
 
     }
@@ -443,7 +443,7 @@ public class DataProvider extends BaseTest {
 
         Response response = client.newCall(request).execute();
         String responseBody = response.body().string();
-        scId = Integer.valueOf(responseBody.substring(6, 10));
+        scId = Integer.valueOf(responseBody.substring(6, responseBody.indexOf(",", 6)));
 
         System.out.println(response);
         System.out.println("Store Credit ID: <" + scId + ">...");
@@ -473,7 +473,7 @@ public class DataProvider extends BaseTest {
 
         Response response = client.newCall(request).execute();
         String responseBody = response.body().string();
-        scId = Integer.valueOf(responseBody.substring(6, 10));
+        scId = Integer.valueOf(responseBody.substring(6, responseBody.indexOf(",", 6)));
 
         System.out.println(response);
         System.out.println("Store Credit ID: <" + scId + ">...");
@@ -529,7 +529,7 @@ public class DataProvider extends BaseTest {
         Response response = client.newCall(request).execute();
         String responseBody = response.body().string();
 
-        gcNumber = responseBody.substring(86, 102);
+        gcNumber = responseBody.substring(86, responseBody.indexOf(",", 86));
 
         System.out.println(response);
         System.out.println("GC code: <" + gcNumber + ">");
@@ -655,7 +655,7 @@ public class DataProvider extends BaseTest {
 
         Response response = client.newCall(request).execute();
         String responseBody = response.body().string();
-        promotionId = responseBody.substring(35, 38);
+        promotionId = responseBody.substring(35, responseBody.indexOf(",", 35));
 
         System.out.println(response);
 //        System.out.println(responseBody);
@@ -683,7 +683,7 @@ public class DataProvider extends BaseTest {
 
         Response response = client.newCall(request).execute();
         String responseBody = response.body().string();
-        promotionId = responseBody.substring(33, 36);
+        promotionId = responseBody.substring(33, responseBody.indexOf(",", 33));
 
         System.out.println(response);
 //        System.out.println(responseBody);
@@ -711,7 +711,7 @@ public class DataProvider extends BaseTest {
 
         Response response = client.newCall(request).execute();
         String responseBody = response.body().string();
-        promotionId = responseBody.substring(33, 36);
+        promotionId = responseBody.substring(33, responseBody.indexOf(",", 33));
 
         System.out.println(response);
 //        System.out.println(responseBody);
@@ -739,7 +739,7 @@ public class DataProvider extends BaseTest {
 
         Response response = client.newCall(request).execute();
         String responseBody = response.body().string();
-        couponId = responseBody.substring(6, 9);
+        couponId = responseBody.substring(6, responseBody.indexOf(",", 6));
         couponName = "test coupon " + randomId;
 
         System.out.println(response);
@@ -1033,7 +1033,8 @@ public class DataProvider extends BaseTest {
         OkHttpClient client = new OkHttpClient();
 
         MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"metaDescription\":{\"t\":\"string\",\"v\":null},\"metaTitle\":{\"t\":\"string\",\"v\":null},\"url\":{\"t\":\"string\",\"v\":null},\"description\":{\"t\":\"richText\",\"v\":\"The best thing to buy in 2016!\"},\"title\":{\"t\":\"string\",\"v\":\"" + productName_local + "\"},\"activeFrom\":{\"v\":\"2016-07-04T17:22:44.388+00:00\",\"t\":\"datetime\"},\"activeTo\":{\"v\":null,\"t\":\"datetime\"}},\"skus\":[{\"feCode\":\"F0QGTGBBINBQF5V53TYB9\",\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"SKU-TST\"},\"title\":{\"t\":\"string\",\"v\":\"\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"2718\"}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"2718\"}}}}]}");
+//        RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"metaDescription\":{\"t\":\"string\",\"v\":null},\"metaTitle\":{\"t\":\"string\",\"v\":null},\"url\":{\"t\":\"string\",\"v\":null},\"description\":{\"t\":\"richText\",\"v\":\"The best thing to buy in 2016!\"},\"title\":{\"t\":\"string\",\"v\":\"" + productName_local + "\"},\"activeFrom\":{\"v\":\"2016-07-04T17:22:44.388+00:00\",\"t\":\"datetime\"},\"activeTo\":{\"v\":null,\"t\":\"datetime\"}},\"skus\":[{\"feCode\":\"F0QGTGBBINBQF5V53TYB9\",\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"SKU-TST\"},\"title\":{\"t\":\"string\",\"v\":\"\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"2718\"}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"2718\"}}}}]}");
+        RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"metaDescription\":{\"t\":\"string\",\"v\":null},\"metaTitle\":{\"t\":\"string\",\"v\":null},\"url\":{\"t\":\"string\",\"v\":null},\"description\":{\"t\":\"richText\",\"v\":\"The best thing to buy in 2016!\"},\"title\":{\"t\":\"string\",\"v\":\"" + productName_local + "\"},\"activeFrom\":{\"v\":\"2016-07-27T23:47:27.518Z\",\"t\":\"datetime\"},\"activeTo\":{\"v\":null,\"t\":\"datetime\"},\"tags\":{\"t\":\"tags\",\"v\":[\"sunglasses\"]}},\"skus\":[{\"feCode\":\"ODB4UPHFJ11UK4HOLXR\",\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"SKU-TST\"},\"title\":{\"t\":\"string\",\"v\":\"\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":2718}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":2718}}}}]}");
         Request request = new Request.Builder()
                 .url(adminUrl + "/api/v1/products/default")
                 .post(body)
@@ -1046,7 +1047,7 @@ public class DataProvider extends BaseTest {
         Response response = client.newCall(request).execute();
         String responseBody = response.body().string();
         productName = productName_local;
-        productId = Integer.valueOf(responseBody.substring(6, 9));
+        productId = Integer.valueOf(responseBody.substring(6, responseBody.indexOf(",", 6)));
 
         System.out.println(response);
         System.out.println(responseBody);
@@ -1064,7 +1065,7 @@ public class DataProvider extends BaseTest {
         OkHttpClient client = new OkHttpClient();
 
         MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"metaDescription\":{\"t\":\"string\",\"v\":null},\"metaTitle\":{\"t\":\"string\",\"v\":null},\"url\":{\"t\":\"string\",\"v\":null},\"description\":{\"t\":\"richText\",\"v\":\"The best thing to buy in 2016!\"},\"title\":{\"t\":\"string\",\"v\":\"" + productName_local + "\"},\"tags\":{\"t\":\"tags\",\"v\":[\"" + tag + "\"]},\"activeFrom\":{\"v\":\"2016-07-06T17:39:45.277+00:00\",\"t\":\"datetime\"},\"activeTo\":{\"v\":null,\"t\":\"datetime\"}},\"skus\":[{\"feCode\":\"1PZ1Z6FEB42BFOCYJH5MI\",\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"" + sku + "\"},\"title\":{\"t\":\"string\",\"v\":\"\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"2718\"}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"2718\"}}}}]}");
+        RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"metaDescription\":{\"t\":\"string\",\"v\":null},\"metaTitle\":{\"t\":\"string\",\"v\":null},\"url\":{\"t\":\"string\",\"v\":null},\"description\":{\"t\":\"richText\",\"v\":\"The best thing to buy in 2016!\"},\"title\":{\"t\":\"string\",\"v\":\"" + productName_local + "\"},\"tags\":{\"t\":\"tags\",\"v\":[\"" + tag + "\"]},\"activeFrom\": {\"t\": \"date\",\"v\": \"2016-07-26T14:48:12.493Z\"},\"activeTo\":{\"v\":null,\"t\":\"datetime\"}},\"skus\":[{\"feCode\":\"1PZ1Z6FEB42BFOCYJH5MI\",\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"" + sku + "\"},\"title\":{\"t\":\"string\",\"v\":\"\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"2718\"}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"2718\"}}}}]}");
         Request request = new Request.Builder()
                 .url(adminUrl + "/api/v1/products/default")
                 .post(body)
@@ -1076,7 +1077,7 @@ public class DataProvider extends BaseTest {
 
         Response response = client.newCall(request).execute();
         String responseBody = response.body().string();
-        productId = Integer.valueOf(responseBody.substring(6, 9));
+        productId = Integer.valueOf(responseBody.substring(6, responseBody.indexOf(",", 6)));
         productName = productName_local;
 
         System.out.println(response);
@@ -1095,7 +1096,7 @@ public class DataProvider extends BaseTest {
         OkHttpClient client = new OkHttpClient();
 
         MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"metaDescription\":{\"t\":\"string\",\"v\":null},\"metaTitle\":{\"t\":\"string\",\"v\":null},\"url\":{\"t\":\"string\",\"v\":null},\"description\":{\"t\":\"richText\",\"v\":\"The best thing to buy in 2016!\"},\"title\":{\"t\":\"string\",\"v\":\"" + productName_local + "\"},\"activeFrom\":{\"v\":\"2016-07-04T17:22:44.388+00:00\",\"t\":\"datetime\"},\"activeTo\":{\"v\":null,\"t\":\"datetime\"}},\"skus\":[{\"feCode\":\"F0QGTGBBINBQF5V53TYB9\",\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"" + sku + "\"},\"title\":{\"t\":\"string\",\"v\":\"\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"2718\"}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"2718\"}}}}]}");
+        RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"metaDescription\":{\"t\":\"string\",\"v\":null},\"metaTitle\":{\"t\":\"string\",\"v\":null},\"url\":{\"t\":\"string\",\"v\":null},\"description\":{\"t\":\"richText\",\"v\":\"The best thing to buy in 2016!\"},\"title\":{\"t\":\"string\",\"v\":\"" + productName_local + "\"},\"\"activeFrom\": {\"t\": \"date\",\"v\": \"2016-07-26T14:48:12.493Z\"},\"activeTo\":{\"v\":null,\"t\":\"datetime\"}},\"skus\":[{\"feCode\":\"F0QGTGBBINBQF5V53TYB9\",\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"" + sku + "\"},\"title\":{\"t\":\"string\",\"v\":\"\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"2718\"}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"2718\"}}}}]}");
         Request request = new Request.Builder()
                 .url(adminUrl + "/api/v1/products/default")
                 .post(body)
@@ -1108,7 +1109,7 @@ public class DataProvider extends BaseTest {
         Response response = client.newCall(request).execute();
         String responseBody = response.body().string();
         productName = productName_local;
-        productId = Integer.valueOf(responseBody.substring(6, 9));
+        productId = Integer.valueOf(responseBody.substring(6, responseBody.indexOf(",", 6)));
 
         System.out.println(response);
         System.out.println(responseBody);
@@ -1139,7 +1140,7 @@ public class DataProvider extends BaseTest {
         Response response = client.newCall(request).execute();
         String responseBody = response.body().string();
         productName = productName_local;
-        productId = Integer.valueOf(responseBody.substring(6, 9));
+        productId = Integer.valueOf(responseBody.substring(6, responseBody.indexOf(",", 6)));
 
         System.out.println(response);
         System.out.println(responseBody);
@@ -1170,7 +1171,7 @@ public class DataProvider extends BaseTest {
         Response response = client.newCall(request).execute();
         String responseBody = response.body().string();
         productName = productName_local;
-        productId = Integer.valueOf(responseBody.substring(6, 9));
+        productId = Integer.valueOf(responseBody.substring(6, responseBody.indexOf(",", 6)));
 
         System.out.println(response);
         System.out.println(responseBody);
@@ -1199,7 +1200,7 @@ public class DataProvider extends BaseTest {
 
         Response response = client.newCall(request).execute();
         String responseBody = response.body().string();
-        searchId = responseBody.substring(17, 33);
+        searchId = responseBody.substring(17, responseBody.indexOf(",", 17));
 
         System.out.println(response);
         System.out.println(responseBody);
@@ -1227,7 +1228,7 @@ public class DataProvider extends BaseTest {
 
         Response response = client.newCall(request).execute();
         String responseBody = response.body().string();
-        searchId = responseBody.substring(17, 33);
+        searchId = responseBody.substring(17, responseBody.indexOf(",", 17));
 
         System.out.println(response);
         System.out.println(responseBody);
