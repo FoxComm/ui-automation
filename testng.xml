@@ -4,7 +4,7 @@
         <classes>
             <class name="tests.generalcontrols.login.LoginTest" />
             <class name="tests.generalcontrols.search.SearchControlsTest" />
-            <!--<class name="tests.generalcontrols.search.SharedSearchTest" />-->
+            <class name="tests.generalcontrols.search.SharedSearchTest" />
         </classes>
     </test>
     <test name="Orders Tests" >
