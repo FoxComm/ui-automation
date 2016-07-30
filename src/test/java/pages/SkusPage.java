@@ -10,7 +10,6 @@ import java.util.List;
 import static com.codeborne.selenide.Condition.exist;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
-import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 public class SkusPage extends BasePage {
@@ -23,7 +22,7 @@ public class SkusPage extends BasePage {
     }
 
     public SelenideElement codeFld() {
-        return $(By.xpath("//input[@name='code']"));
+        return $(By.xpath("//input[@name='SKU']"));
     }
 
     public SelenideElement titleFld() {
@@ -31,7 +30,7 @@ public class SkusPage extends BasePage {
     }
 
     public SelenideElement upcFld() {
-        return $(By.xpath("//input[@name='upc']"));
+        return $(By.xpath("//input[@name='UPC']"));
     }
 
     public SelenideElement descriptionFld() {
@@ -39,15 +38,18 @@ public class SkusPage extends BasePage {
     }
 
     public SelenideElement retailPriceFld() {
-        return $(By.xpath("//input[@name='retailPrice']"));
+//        return $(By.xpath("//input[@name='retailPrice']"));
+        return $(By.xpath("//input[@name='retail Price']"));
     }
 
     public SelenideElement salePriceFld() {
-        return $(By.xpath("//input[@name='salePrice']"));
+//        return $(By.xpath("//input[@name='salePrice']"));
+        return $(By.xpath("//input[@name='sale Price']"));
     }
 
     public SelenideElement unitCostFld() {
-        return $(By.xpath("//input[@name='unitCost']"));
+//        return $(By.xpath("//input[@name='unitCost']"));
+        return $(By.xpath("//input[@name='unit Cost']"));
     }
 
     private SelenideElement removeStartDateBtn() {
@@ -133,20 +135,14 @@ public class SkusPage extends BasePage {
     @Step("Fill out new SKU form.")
     public void createNewSKU(String id, String state) {
 
-        click( addNewSKUBtn() );
         setFieldVal( codeFld(), "SKU-" + id );
         setFieldVal( titleFld(), "Test Title" );
         setFieldVal( upcFld(), "Test UPC" );
-//        setFieldVal( descriptionFld(), "Just another test SKU." );
         descriptionFld().val("Just another test SKU.");
         setFieldVal( retailPriceFld(), "50.00" );
         setFieldVal( salePriceFld(), "32.00" );
         setFieldVal( unitCostFld(), "32.00" );
         setState(state);
-
-        clickSave();
-        assertEquals( skuCodeVal(), "SKU-" + id, "Failed to create new SKU.");
-        click( skusNavMenu() );
 
     }
 

@@ -35,7 +35,11 @@ public class SkusTests extends DataProvider {
         p = open(adminUrl + "/skus", SkusPage.class);
         String randomId = generateRandomID();
 
+        click( p.addNewSKUBtn() );
         p.createNewSKU(randomId, "Active");
+        p.clickSave();
+        assertEquals( p.skuCodeVal(), "SKU-" + randomId, "Failed to create new SKU.");
+        click( p.skusNavMenu() );
         p.waitForDataToLoad();
 
         p.search(randomId);

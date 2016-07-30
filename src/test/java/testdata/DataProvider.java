@@ -37,6 +37,13 @@ public class DataProvider extends BaseTest {
 
     protected static String searchId;            // stored from createSharedSearch() methods
 
+    private static void failTest(String responseBody, int responseCode, String responseMsg) throws IOException {
+        System.out.println("Response: " + responseCode + " " + responseMsg);
+        System.out.println(responseBody);
+        System.out.println("--------");
+        assertEquals(responseCode, 200, "API call failed to succeed.");
+    }
+
     private static void loginAsAdmin() throws IOException {
 
         System.out.println("Authorizing as an admin...");
@@ -58,10 +65,17 @@ public class DataProvider extends BaseTest {
                 .build();
 
         Response response = client.newCall(request).execute();
-        jwt = response.header("JWT");
+        String responseBody = response.body().string();
+        int responseCode = response.code();
+        String responseMsg = response.message();
 
-        System.out.println(response);
-        System.out.println("---- ---- ---- ----");
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+            jwt = response.header("JWT");
+            System.out.println("--------");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
 
     }
 
@@ -92,13 +106,17 @@ public class DataProvider extends BaseTest {
 
         Response response = client.newCall(request).execute();
         String responseBody = response.body().string();
-        System.out.println(responseBody);
-        customerId = Integer.valueOf(responseBody.substring(6, responseBody.indexOf(",", 6)));
+        int responseCode = response.code();
+        String responseMsg = response.message();
 
-        System.out.println(response);
-        System.out.println(responseBody);
-        System.out.println("Customer ID: " + customerId);
-        System.out.println("---- ---- ---- ----");
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+            customerId = Integer.valueOf(responseBody.substring(6, responseBody.indexOf(",", 6)));
+            System.out.println("Customer ID: " + customerId);
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
 
     }
 
@@ -121,12 +139,17 @@ public class DataProvider extends BaseTest {
 
         Response response = client.newCall(request).execute();
         String responseBody = response.body().string();
-        orderId = responseBody.substring(20, responseBody.indexOf(",", 20));
+        int responseCode = response.code();
+        String responseMsg = response.message();
 
-        System.out.println(response);
-        System.out.println(responseBody);
-        System.out.println("Order ID: <" + orderId + ">");
-        System.out.println("---- ---- ---- ----");
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+            orderId = responseBody.substring(20, responseBody.indexOf(",", 20));
+            System.out.println("Order ID: <" + orderId + ">");
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
 
     }
 
@@ -175,9 +198,15 @@ public class DataProvider extends BaseTest {
 
         Response response = client.newCall(request).execute();
         String responseBody = response.body().string();
-        System.out.println(response);
-        System.out.println(responseBody);
-        System.out.println("---- ---- ---- ----");
+        int responseCode = response.code();
+        String responseMsg = response.message();
+
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
 
     }
 
@@ -198,15 +227,19 @@ public class DataProvider extends BaseTest {
 
         Response response = client.newCall(request).execute();
         String responseBody = response.body().string();
+        int responseCode = response.code();
+        String responseMsg = response.message();
 
-        customerName = responseBody.substring(55, 73);
-        customerEmail = responseBody.substring(20, 45);
-
-        System.out.println(response);
-        System.out.println(responseBody);
-        System.out.println("Customer name: <" + customerName + ">");
-        System.out.println("Customer email: <" + customerEmail + ">");
-        System.out.println("---- ---- ---- ----");
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+            customerName = responseBody.substring(55, 73);
+            customerEmail = responseBody.substring(20, 45);
+            System.out.println("Customer name: <" + customerName + ">");
+            System.out.println("Customer email: <" + customerEmail + ">");
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
 
     }
 
@@ -240,9 +273,15 @@ public class DataProvider extends BaseTest {
 
         Response response = client.newCall(request).execute();
         String responseBody = response.body().string();
-        System.out.println(response);
-        System.out.println(responseBody);
-        System.out.println("---- ---- ---- ----");
+        int responseCode = response.code();
+        String responseMsg = response.message();
+
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
 
     }
 
@@ -272,9 +311,15 @@ public class DataProvider extends BaseTest {
 
         Response response = client.newCall(request).execute();
         String responseBody = response.body().string();
-        System.out.println(response);
-        System.out.println(responseBody);
-        System.out.println("---- ---- ---- ----");
+        int responseCode = response.code();
+        String responseMsg = response.message();
+
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
 
     }
 
@@ -293,17 +338,18 @@ public class DataProvider extends BaseTest {
                 .build();
 
         Response response = client.newCall(request).execute();
-
         String responseBody = response.body().string();
-        addressId1 = Integer.valueOf(responseBody.substring(7, responseBody.indexOf(",", 7)));
-//        addressId2 = Integer.valueOf(addresses.substring(216, 220));
-//        addressId3 = Integer.valueOf(addresses.substring(415, 419));
+        int responseCode = response.code();
+        String responseMsg = response.message();
 
-        System.out.println(response);
-        System.out.println("Address 1: <" + addressId1 + ">");
-        System.out.println("Address 2: <" + addressId2 + ">");
-//        System.out.println("Addres 3: <" + addressId3 + ">");
-        System.out.println("---- ---- ---- ----");
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+            addressId1 = Integer.valueOf(responseBody.substring(7, responseBody.indexOf(",", 7)));
+            System.out.println("Address 1: <" + addressId1 + ">");
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
 
     }
 
@@ -323,14 +369,19 @@ public class DataProvider extends BaseTest {
                 .build();
 
         Response response = client.newCall(request).execute();
-
         String responseBody = response.body().string();
-        String strShipMethodId = responseBody.substring(7, responseBody.indexOf(",", 7));
-        shipMethodId = Integer.valueOf(strShipMethodId);
+        int responseCode = response.code();
+        String responseMsg = response.message();
 
-        System.out.println(response);
-        System.out.println("shipMethodId: <" + shipMethodId + ">");
-        System.out.println("---- ---- ---- ----");
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+            String strShipMethodId = responseBody.substring(7, responseBody.indexOf(",", 7));
+            shipMethodId = Integer.valueOf(strShipMethodId);
+            System.out.println("shipMethodId: <" + shipMethodId + ">");
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
 
     }
 
@@ -354,10 +405,15 @@ public class DataProvider extends BaseTest {
 
         Response response = client.newCall(request).execute();
         String responseBody = response.body().string();
-        System.out.println(responseBody);
+        int responseCode = response.code();
+        String responseMsg = response.message();
 
-        System.out.println(response);
-        System.out.println("---- ---- ---- ----");
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
 
     }
 
@@ -387,12 +443,17 @@ public class DataProvider extends BaseTest {
 
         Response response = client.newCall(request).execute();
         String responseBody = response.body().string();
+        int responseCode = response.code();
+        String responseMsg = response.message();
 
-        System.out.println(response);
-//        System.out.println(responseBody);
-        creditCardId = Integer.valueOf(responseBody.substring(6, responseBody.indexOf(",", 6)));
-        System.out.println("Credit Card ID: <" + creditCardId + ">");
-        System.out.println("---- ---- ---- ----");
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+            creditCardId = Integer.valueOf(responseBody.substring(6, responseBody.indexOf(",", 6)));
+            System.out.println("Credit Card ID: <" + creditCardId + ">");
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
 
     }
 
@@ -414,9 +475,16 @@ public class DataProvider extends BaseTest {
                 .build();
 
         Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+        int responseCode = response.code();
+        String responseMsg = response.message();
 
-        System.out.println(response);
-        System.out.println("---- ---- ---- ----");
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
 
     }
 
@@ -443,11 +511,17 @@ public class DataProvider extends BaseTest {
 
         Response response = client.newCall(request).execute();
         String responseBody = response.body().string();
-        scId = Integer.valueOf(responseBody.substring(6, responseBody.indexOf(",", 6)));
+        int responseCode = response.code();
+        String responseMsg = response.message();
 
-        System.out.println(response);
-        System.out.println("Store Credit ID: <" + scId + ">...");
-        System.out.println("--------");
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+            scId = Integer.valueOf(responseBody.substring(6, responseBody.indexOf(",", 6)));
+            System.out.println("Store Credit ID: <" + scId + ">...");
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
 
     }
 
@@ -473,11 +547,17 @@ public class DataProvider extends BaseTest {
 
         Response response = client.newCall(request).execute();
         String responseBody = response.body().string();
-        scId = Integer.valueOf(responseBody.substring(6, responseBody.indexOf(",", 6)));
+        int responseCode = response.code();
+        String responseMsg = response.message();
 
-        System.out.println(response);
-        System.out.println("Store Credit ID: <" + scId + ">...");
-        System.out.println("--------");
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+            scId = Integer.valueOf(responseBody.substring(6, responseBody.indexOf(",", 6)));
+            System.out.println("Store Credit ID: <" + scId + ">...");
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
 
 
     }
@@ -500,9 +580,16 @@ public class DataProvider extends BaseTest {
                 .build();
 
         Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+        int responseCode = response.code();
+        String responseMsg = response.message();
 
-        System.out.println(response);
-        System.out.println("---- ---- ---- ----");
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
 
     }
 
@@ -528,12 +615,17 @@ public class DataProvider extends BaseTest {
 
         Response response = client.newCall(request).execute();
         String responseBody = response.body().string();
+        int responseCode = response.code();
+        String responseMsg = response.message();
 
-        gcNumber = responseBody.substring(86, responseBody.indexOf(",", 86));
-
-        System.out.println(response);
-        System.out.println("GC code: <" + gcNumber + ">");
-        System.out.println("---- ---- ---- ----");
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+            gcNumber = responseBody.substring(86, responseBody.indexOf(",", 86));
+            System.out.println("GC code: <" + gcNumber + ">");
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
 
     }
 
@@ -556,7 +648,15 @@ public class DataProvider extends BaseTest {
 
         Response response = client.newCall(request).execute();
         String responseBody = response.body().string();
-        System.out.println(responseBody);
+        int responseCode = response.code();
+        String responseMsg = response.message();
+
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
 
     }
 
@@ -580,9 +680,16 @@ public class DataProvider extends BaseTest {
                 .build();
 
         Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+        int responseCode = response.code();
+        String responseMsg = response.message();
 
-        System.out.println(response);
-        System.out.println("---- ---- ---- ----");
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
 
     }
 
@@ -605,10 +712,15 @@ public class DataProvider extends BaseTest {
 
         Response response = client.newCall(request).execute();
         String responseBody = response.body().string();
+        int responseCode = response.code();
+        String responseMsg = response.message();
 
-        System.out.println(response);
-        System.out.println(responseBody);
-        System.out.println("---- ---- ---- ----");
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
 
     }
 
@@ -630,9 +742,16 @@ public class DataProvider extends BaseTest {
                 .build();
 
         Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+        int responseCode = response.code();
+        String responseMsg = response.message();
 
-        System.out.println(response);
-        System.out.println("---- ---- ---- ----");
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
 
     }
 
@@ -655,12 +774,17 @@ public class DataProvider extends BaseTest {
 
         Response response = client.newCall(request).execute();
         String responseBody = response.body().string();
-        promotionId = responseBody.substring(35, responseBody.indexOf(",", 35));
+        int responseCode = response.code();
+        String responseMsg = response.message();
 
-        System.out.println(response);
-//        System.out.println(responseBody);
-        System.out.println("Promotion ID: " + promotionId);
-        System.out.println("---- ---- ---- ----");
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+            promotionId = responseBody.substring(35, responseBody.indexOf(",", 35));
+            System.out.println("Promotion ID: " + promotionId);
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
 
     }
 
@@ -683,12 +807,17 @@ public class DataProvider extends BaseTest {
 
         Response response = client.newCall(request).execute();
         String responseBody = response.body().string();
-        promotionId = responseBody.substring(33, responseBody.indexOf(",", 33));
+        int responseCode = response.code();
+        String responseMsg = response.message();
 
-        System.out.println(response);
-//        System.out.println(responseBody);
-        System.out.println("Promotion ID: " + promotionId);
-        System.out.println("---- ---- ---- ----");
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+            promotionId = responseBody.substring(33, responseBody.indexOf(",", 33));
+            System.out.println("Promotion ID: " + promotionId);
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
 
     }
 
@@ -711,12 +840,17 @@ public class DataProvider extends BaseTest {
 
         Response response = client.newCall(request).execute();
         String responseBody = response.body().string();
-        promotionId = responseBody.substring(33, responseBody.indexOf(",", 33));
+        int responseCode = response.code();
+        String responseMsg = response.message();
 
-        System.out.println(response);
-//        System.out.println(responseBody);
-        System.out.println("Promotion ID: " + promotionId);
-        System.out.println("---- ---- ---- ----");
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+            promotionId = responseBody.substring(33, responseBody.indexOf(",", 33));
+            System.out.println("Promotion ID: " + promotionId);
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
 
     }
 
@@ -739,13 +873,18 @@ public class DataProvider extends BaseTest {
 
         Response response = client.newCall(request).execute();
         String responseBody = response.body().string();
-        couponId = responseBody.substring(6, responseBody.indexOf(",", 6));
-        couponName = "test coupon " + randomId;
+        int responseCode = response.code();
+        String responseMsg = response.message();
 
-        System.out.println(response);
-//        System.out.println(responseBody);
-        System.out.println("Coupon ID: " + couponId);
-        System.out.println("---- ---- ---- ----");
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+            couponId = responseBody.substring(6, responseBody.indexOf(",", 6));
+            couponName = "test coupon " + randomId;
+            System.out.println("Coupon ID: " + couponId);
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
 
     }
 
@@ -768,12 +907,17 @@ public class DataProvider extends BaseTest {
 
         Response response = client.newCall(request).execute();
         String responseBody = response.body().string();
-        singleCouponCode = responseBody.substring(1, responseBody.length() - 1);
+        int responseCode = response.code();
+        String responseMsg = response.message();
 
-        System.out.println(response);
-        System.out.println(responseBody);
-        System.out.println("Single coupon code: " + singleCouponCode);
-        System.out.println("---- ---- ---- ----");
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+            singleCouponCode = responseBody.substring(1, responseBody.length() - 1);
+            System.out.println("Single coupon code: " + singleCouponCode);
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
 
     }
 
@@ -801,21 +945,25 @@ public class DataProvider extends BaseTest {
 
         Response response = client.newCall(request).execute();
         String responseBody = response.body().string();
+        int responseCode = response.code();
+        String responseMsg = response.message();
 
-        int startIndex = 2;
-        for (int i = 0; i < quantity; i++) {
-            String code = responseBody.substring(startIndex, startIndex + length);
-            bulkCodes.add(code);
-            startIndex += (length + 3);
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+            int startIndex = 2;
+            for (int i = 0; i < quantity; i++) {
+                String code = responseBody.substring(startIndex, startIndex + length);
+                bulkCodes.add(code);
+                startIndex += (length + 3);
+            }
+            System.out.println("Number of codes generated: <" + bulkCodes.size() + ">");
+            assertEquals(bulkCodes.size(), quantity,
+                    "Amount of generated codes is lower than requested amount.");
+            printStringList(bulkCodes);
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
         }
-        System.out.println("Number of codes generated: <" + bulkCodes.size() + ">");
-        assertEquals(bulkCodes.size(), quantity,
-                "Amount of generated codes is lower than requested amount.");
-        printStringList(bulkCodes);
-
-        System.out.println(response);
-        System.out.println(responseBody);
-        System.out.println("--------");
 
     }
 
@@ -838,10 +986,15 @@ public class DataProvider extends BaseTest {
 
         Response response = client.newCall(request).execute();
         String responseBody = response.body().string();
+        int responseCode = response.code();
+        String responseMsg = response.message();
 
-        System.out.println(response);
-        System.out.println(responseBody);
-        System.out.println("---- ---- ---- ----");
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
 
     }
 
@@ -866,11 +1019,16 @@ public class DataProvider extends BaseTest {
 
         Response response = client.newCall(request).execute();
         String responseBody = response.body().string();
+        int responseCode = response.code();
+        String responseMsg = response.message();
 
-        System.out.println(response);
-        System.out.println(responseBody);
-        System.out.println("Update state: <" + state + ">...");
-        System.out.println("--------");
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+            System.out.println("Update stated: <" + state + ">.");
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
 
     }
 
@@ -884,7 +1042,7 @@ public class DataProvider extends BaseTest {
 
         MediaType mediaType = MediaType.parse("application/json");
 //        RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"" + skuCode + "\"},\"title\":{\"t\":\"string\",\"v\":\"Test Product " + randomId + "\"},\"upc\":{\"t\":\"string\",\"v\":\"Test UPC\"},\"description\":{\"t\":\"richText\",\"v\":\"<p>Just another test SKU.</p>\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"2000\"}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"2000\"}},\"unitCost\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"2000\"}},\"activeFrom\":{\"v\":\"2016-07-04T17:43:44.295+00:00\",\"t\":\"datetime\"},\"activeTo\":{\"v\":null,\"t\":\"datetime\"}}}");
-        RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"" + skuCode + "\"},\"title\":{\"t\":\"string\",\"v\":\"SKU Test Title\"},\"upc\":{\"t\":\"string\",\"v\":\"Test UPC\"},\"description\":{\"t\":\"richText\",\"v\":\"<p>Test description</p>\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"5000\"}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"5000\"}},\"unitCost\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"5000\"}},\"activeFrom\":{\"v\":\"2016-07-05T22:19:54.918+00:00\",\"t\":\"datetime\"},\"activeTo\":{\"v\":null,\"t\":\"datetime\"}}}");
+        RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"" + skuCode + "\"},\"title\":{\"t\":\"string\",\"v\":\"SKU Test Title\"},\"upc\":{\"t\":\"string\",\"v\":\"Test UPC\"},\"description\":{\"t\":\"richText\",\"v\":\"<p>Test description</p>\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"5000\"}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"5000\"}},\"unitCost\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"5000\"}},\"activeFrom\":{\"t\":\"datetime\",\"v\":\"2016-07-29T00:03:26.685Z\"},\"activeTo\":{\"v\":null,\"t\":\"datetime\"}}}");
         Request request = new Request.Builder()
                 .url(adminUrl + "/api/v1/skus/default")
                 .post(body)
@@ -896,12 +1054,17 @@ public class DataProvider extends BaseTest {
 
         Response response = client.newCall(request).execute();
         String responseBody = response.body().string();
+        int responseCode = response.code();
+        String responseMsg = response.message();
 
-        sku = skuCode;
-        System.out.println(response);
-        System.out.println(responseBody);
-        System.out.println("SKU code: <" + skuCode + ">.");
-        System.out.println("---- ---- ---- ----");
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+            sku = skuCode;
+            System.out.println("SKU code: <" + skuCode + ">.");
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
 
     }
 
@@ -926,12 +1089,17 @@ public class DataProvider extends BaseTest {
 
         Response response = client.newCall(request).execute();
         String responseBody = response.body().string();
+        int responseCode = response.code();
+        String responseMsg = response.message();
 
-        sku = skuCode;
-        System.out.println(response);
-        System.out.println(responseBody);
-        System.out.println("SKU code: <" + skuCode + ">.");
-        System.out.println("---- ---- ---- ----");
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+            sku = skuCode;
+            System.out.println("SKU code: <" + skuCode + ">.");
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
 
     }
 
@@ -944,7 +1112,7 @@ public class DataProvider extends BaseTest {
         OkHttpClient client = new OkHttpClient();
 
         MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"" + skuCode + "\"},\"title\":{\"t\":\"string\",\"v\":\"\"},\"upc\":{\"t\":\"string\",\"v\":\"Test UPC\"},\"description\":{\"t\":\"richText\",\"v\":\"<p>Just another test SKU.</p>\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"1215\"}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"1215\"}},\"unitCost\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"0\"}},\"activeFrom\":{\"v\":\"2016-07-04T18:25:59.745+00:00\",\"t\":\"datetime\"},\"activeTo\":{\"v\":null,\"t\":\"datetime\"}}}");
+        RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"" + skuCode + "\"},\"title\":{\"t\":\"string\",\"v\":\"\"},\"upc\":{\"t\":\"string\",\"v\":\"Test UPC\"},\"description\":{\"t\":\"richText\",\"v\":\"<p>Just another test SKU.</p>\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"1215\"}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"1215\"}},\"unitCost\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"0\"}},\"activeFrom\":{\"t\":\"datetime\",\"v\":\"2016-07-29T00:03:26.685Z\"},\"activeTo\":{\"v\":null,\"t\":\"datetime\"}}}");
         Request request = new Request.Builder()
                 .url(adminUrl + "/api/v1/skus/default")
                 .post(body)
@@ -956,12 +1124,17 @@ public class DataProvider extends BaseTest {
 
         Response response = client.newCall(request).execute();
         String responseBody = response.body().string();
+        int responseCode = response.code();
+        String responseMsg = response.message();
 
-        sku = skuCode;
-        System.out.println(response);
-        System.out.println(responseBody);
-        System.out.println("SKU code: <" + skuCode + ">.");
-        System.out.println("---- ---- ---- ----");
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+            sku = skuCode;
+            System.out.println("SKU code: <" + skuCode + ">.");
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
 
     }
 
@@ -974,7 +1147,7 @@ public class DataProvider extends BaseTest {
         OkHttpClient client = new OkHttpClient();
 
         MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"" + skuCode + "\"},\"title\":{\"t\":\"string\",\"v\":\"Test Product #" + randomId + "\"},\"upc\":{\"t\":\"string\",\"v\":\"Test UPC\"},\"description\":{\"t\":\"richText\",\"v\":\"\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"1215\"}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"1215\"}},\"unitCost\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"0\"}},\"activeFrom\":{\"v\":\"2016-07-04T18:25:59.745+00:00\",\"t\":\"datetime\"},\"activeTo\":{\"v\":null,\"t\":\"datetime\"}}}");
+        RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"" + skuCode + "\"},\"title\":{\"t\":\"string\",\"v\":\"Test Product #" + randomId + "\"},\"upc\":{\"t\":\"string\",\"v\":\"Test UPC\"},\"description\":{\"t\":\"richText\",\"v\":\"\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"1215\"}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"1215\"}},\"unitCost\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"0\"}},\"activeFrom\":{\"t\":\"datetime\",\"v\":\"2016-07-29T00:03:26.685Z\"},\"activeTo\":{\"v\":null,\"t\":\"datetime\"}}}");
         Request request = new Request.Builder()
                 .url(adminUrl + "/api/v1/skus/default")
                 .post(body)
@@ -986,12 +1159,17 @@ public class DataProvider extends BaseTest {
 
         Response response = client.newCall(request).execute();
         String responseBody = response.body().string();
+        int responseCode = response.code();
+        String responseMsg = response.message();
 
-        sku = skuCode;
-        System.out.println(response);
-        System.out.println(responseBody);
-        System.out.println("SKU code: <" + skuCode + ">.");
-        System.out.println("---- ---- ---- ----");
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+            sku = skuCode;
+            System.out.println("SKU code: <" + skuCode + ">.");
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
 
     }
 
@@ -1004,7 +1182,7 @@ public class DataProvider extends BaseTest {
         OkHttpClient client = new OkHttpClient();
 
         MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"" + skuCode + "\"},\"title\":{\"t\":\"string\",\"v\":\"Test Product #" + randomId + "\"},\"upc\":{\"t\":\"string\",\"v\":\"Test UPC\"},\"description\":{\"t\":\"richText\",\"v\":\"<p>Just another test SKU.</p>\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"0\"}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"0\"}},\"unitCost\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"0\"}},\"activeFrom\":{\"v\":\"2016-07-04T18:25:59.745+00:00\",\"t\":\"datetime\"},\"activeTo\":{\"v\":null,\"t\":\"datetime\"}}}");
+        RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"" + skuCode + "\"},\"title\":{\"t\":\"string\",\"v\":\"Test Product #" + randomId + "\"},\"upc\":{\"t\":\"string\",\"v\":\"Test UPC\"},\"description\":{\"t\":\"richText\",\"v\":\"<p>Just another test SKU.</p>\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"0\"}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"0\"}},\"unitCost\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"0\"}},\"activeFrom\":{\"t\":\"datetime\",\"v\":\"2016-07-29T00:03:26.685Z\"},\"activeTo\":{\"v\":null,\"t\":\"datetime\"}}}");
         Request request = new Request.Builder()
                 .url(adminUrl + "/api/v1/skus/default")
                 .post(body)
@@ -1016,12 +1194,17 @@ public class DataProvider extends BaseTest {
 
         Response response = client.newCall(request).execute();
         String responseBody = response.body().string();
+        int responseCode = response.code();
+        String responseMsg = response.message();
 
-        sku = skuCode;
-        System.out.println(response);
-        System.out.println(responseBody);
-        System.out.println("SKU code: <" + skuCode + ">.");
-        System.out.println("---- ---- ---- ----");
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+            sku = skuCode;
+            System.out.println("SKU code: <" + skuCode + ">.");
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
 
     }
 
@@ -1046,16 +1229,22 @@ public class DataProvider extends BaseTest {
 
         Response response = client.newCall(request).execute();
         String responseBody = response.body().string();
-        productName = productName_local;
-        productId = Integer.valueOf(responseBody.substring(6, responseBody.indexOf(",", 6)));
+        int responseCode = response.code();
+        String responseMsg = response.message();
 
-        System.out.println(response);
-        System.out.println(responseBody);
-        System.out.println("Product ID: <" + productId + ">.");
-        System.out.println("Product name: <" + productName + ">.");
-        System.out.println("---- ---- ---- ----");
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+            productName = productName_local;
+            productId = Integer.valueOf(responseBody.substring(6, responseBody.indexOf(",", 6)));
+            System.out.println("Product ID: <" + productId + ">.");
+            System.out.println("Product name: <" + productName + ">.");
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
 
     }
+
 
     private static void createProduct_active(String sku, String tag) throws IOException {
 
@@ -1077,14 +1266,19 @@ public class DataProvider extends BaseTest {
 
         Response response = client.newCall(request).execute();
         String responseBody = response.body().string();
-        productId = Integer.valueOf(responseBody.substring(6, responseBody.indexOf(",", 6)));
-        productName = productName_local;
+        int responseCode = response.code();
+        String responseMsg = response.message();
 
-        System.out.println(response);
-        System.out.println(responseBody);
-        System.out.println("Product ID: <" + productId + ">.");
-        System.out.println("Product name: <" + productName + ">.");
-        System.out.println("---- ---- ---- ----");
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+            productId = Integer.valueOf(responseBody.substring(6, responseBody.indexOf(",", 6)));
+            productName = productName_local;
+            System.out.println("Product ID: <" + productId + ">.");
+            System.out.println("Product name: <" + productName + ">.");
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
 
     }
 
@@ -1108,14 +1302,19 @@ public class DataProvider extends BaseTest {
 
         Response response = client.newCall(request).execute();
         String responseBody = response.body().string();
-        productName = productName_local;
-        productId = Integer.valueOf(responseBody.substring(6, responseBody.indexOf(",", 6)));
+        int responseCode = response.code();
+        String responseMsg = response.message();
 
-        System.out.println(response);
-        System.out.println(responseBody);
-        System.out.println("Product ID: <" + productId + ">.");
-        System.out.println("Product name: <" + productName + ">.");
-        System.out.println("---- ---- ---- ----");
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+            productName = productName_local;
+            productId = Integer.valueOf(responseBody.substring(6, responseBody.indexOf(",", 6)));
+            System.out.println("Product ID: <" + productId + ">.");
+            System.out.println("Product name: <" + productName + ">.");
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
 
     }
 
@@ -1139,14 +1338,19 @@ public class DataProvider extends BaseTest {
 
         Response response = client.newCall(request).execute();
         String responseBody = response.body().string();
-        productName = productName_local;
-        productId = Integer.valueOf(responseBody.substring(6, responseBody.indexOf(",", 6)));
+        int responseCode = response.code();
+        String responseMsg = response.message();
 
-        System.out.println(response);
-        System.out.println(responseBody);
-        System.out.println("Product ID: <" + productId + ">.");
-        System.out.println("Product name: <" + productName + ">.");
-        System.out.println("---- ---- ---- ----");
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+            productName = productName_local;
+            productId = Integer.valueOf(responseBody.substring(6, responseBody.indexOf(",", 6)));
+            System.out.println("Product ID: <" + productId + ">.");
+            System.out.println("Product name: <" + productName + ">.");
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
 
     }
 
@@ -1170,14 +1374,19 @@ public class DataProvider extends BaseTest {
 
         Response response = client.newCall(request).execute();
         String responseBody = response.body().string();
-        productName = productName_local;
-        productId = Integer.valueOf(responseBody.substring(6, responseBody.indexOf(",", 6)));
+        int responseCode = response.code();
+        String responseMsg = response.message();
 
-        System.out.println(response);
-        System.out.println(responseBody);
-        System.out.println("Product ID: <" + productId + ">.");
-        System.out.println("Product name: <" + productName + ">.");
-        System.out.println("---- ---- ---- ----");
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+            productName = productName_local;
+            productId = Integer.valueOf(responseBody.substring(6, responseBody.indexOf(",", 6)));
+            System.out.println("Product ID: <" + productId + ">.");
+            System.out.println("Product name: <" + productName + ">.");
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
 
     }
 
@@ -1200,12 +1409,17 @@ public class DataProvider extends BaseTest {
 
         Response response = client.newCall(request).execute();
         String responseBody = response.body().string();
-        searchId = responseBody.substring(17, responseBody.indexOf(",", 17));
+        int responseCode = response.code();
+        String responseMsg = response.message();
 
-        System.out.println(response);
-        System.out.println(responseBody);
-        System.out.println("Search ID: <" + searchId + ">.");
-        System.out.println("---- ---- ---- ----");
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+            searchId = responseBody.substring(17, responseBody.indexOf(",", 17));
+            System.out.println("Search ID: <" + searchId + ">.");
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
 
     }
 
@@ -1228,12 +1442,17 @@ public class DataProvider extends BaseTest {
 
         Response response = client.newCall(request).execute();
         String responseBody = response.body().string();
-        searchId = responseBody.substring(17, responseBody.indexOf(",", 17));
+        int responseCode = response.code();
+        String responseMsg = response.message();
 
-        System.out.println(response);
-        System.out.println(responseBody);
-        System.out.println("Search ID: <" + searchId + ">.");
-        System.out.println("---- ---- ---- ----");
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+            searchId = responseBody.substring(17, responseBody.indexOf(",", 17));
+            System.out.println("Search ID: <" + searchId + ">.");
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
 
     }
 
@@ -1254,10 +1473,15 @@ public class DataProvider extends BaseTest {
 
         Response response = client.newCall(request).execute();
         String responseBody = response.body().string();
+        int responseCode = response.code();
+        String responseMsg = response.message();
 
-        System.out.println(response);
-        System.out.println(responseBody);
-        System.out.println("---- ---- ---- ----");
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
 
     }
 

@@ -39,6 +39,13 @@ public class TestClass extends BaseTest {
     private static String sku;              // stored from createSKU();
     public static int productId;            // stored form createProduct() methods
 
+    private static void failTest(Response response, int responseCode, String responseMsg) throws IOException {
+        System.out.println("Response: " + responseCode + " " + responseMsg);
+        System.out.println(response.body().string());
+        System.out.println("--------");
+        assertEquals(responseCode, 200, "API call failed to succeed.");
+    }
+
     private static void loginAsAdmin() throws IOException {
 
         System.out.println("Authorizing as an admin...");
@@ -47,7 +54,7 @@ public class TestClass extends BaseTest {
 
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{" +
-                "\n    \"email\": \"admin@admin.com\"," +
+                "\n    \"email\": \"admn@admin.com\"," +
                 "\n    \"password\": \"password\"," +
                 "\n    \"kind\": \"admin\"\n}");
 
@@ -60,10 +67,16 @@ public class TestClass extends BaseTest {
                 .build();
 
         Response response = client.newCall(request).execute();
-        jwt = response.header("JWT");
+        int responseCode = response.code();
+        String responseMsg = response.message();
 
-        System.out.println(response);
-        System.out.println("--------");
+        if (responseCode == 200) {
+            jwt = response.header("JWT");
+            System.out.println(responseCode + " " + responseMsg);
+            System.out.println("--------");
+        } else {
+            failTest(response, responseCode, responseMsg);
+        }
 
     }
 
@@ -932,7 +945,7 @@ public class TestClass extends BaseTest {
 //        setPayment_giftCard(orderId, gcNumber, 10000);
 //        checkoutOrder("BR11183");
 
-        createProduct_active("SKU-TST", "sunglasses");
+//        createProduct_active("SKU-TST", "sunglasses");
 
 
     }
