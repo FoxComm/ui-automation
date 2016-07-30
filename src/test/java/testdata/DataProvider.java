@@ -620,7 +620,7 @@ public class DataProvider extends BaseTest {
 
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
-            gcNumber = responseBody.substring(86, responseBody.indexOf(",", 86));
+            gcNumber = responseBody.substring(86, 102);
             System.out.println("GC code: <" + gcNumber + ">");
             System.out.println("---- ---- ---- ----");
         } else {
