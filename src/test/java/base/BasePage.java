@@ -99,7 +99,7 @@ public class BasePage extends ConciseAPI {
     public void search(String searchQuery) {
         waitForDataToLoad();
         searchFld().val( searchQuery ).pressEnter();
-        waitForDataToLoad();
+        itemsOnList().shouldBe(visible.because("Search request returned no results."));
     }
 //----
     public SelenideElement addTagBtn() {

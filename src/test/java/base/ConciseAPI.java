@@ -5,7 +5,6 @@ import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.NoSuchElementException;
 import ru.yandex.qatools.allure.annotations.Step;
 
 import java.text.DecimalFormat;
@@ -17,7 +16,6 @@ import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.sleep;
 import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
-import static org.testng.Assert.assertTrue;
 
 public class ConciseAPI extends Configuration {
 
@@ -137,7 +135,7 @@ public class ConciseAPI extends Configuration {
         return (int) ((grandTotal - firstAmount_double) * 100);
     }
 
-    private SelenideElement itemsOnList() {
+    protected SelenideElement itemsOnList() {
         return $(By.xpath("//td[@class='fc-table-td']"));
     }
 
@@ -147,12 +145,7 @@ public class ConciseAPI extends Configuration {
 
     @Step("Wait for data on the list to be loaded.")
     public void waitForDataToLoad() {
-        try {
-            itemsOnList().should(exist);
-        } catch(NoSuchElementException nsee) {
-            assertTrue( emptyList().is(visible),
-                    "There's no content on the list.");
-        }
+            itemsOnList().should(exist.because("There's no content on the list."));
     }
 
 
