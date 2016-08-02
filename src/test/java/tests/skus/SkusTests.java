@@ -187,7 +187,7 @@ public class SkusTests extends DataProvider {
         p.search( sku.substring(4, sku.length()) );
         p.openSKU(sku);
 
-        p.codeFld().shouldBe(visible);
+        p.skuFld().shouldBe(visible);
         assertEquals( p.stateVal(), "Inactive",
                 "Failed to edit SKU state." );
 

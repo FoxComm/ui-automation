@@ -947,7 +947,6 @@ public class TestClass extends BaseTest {
 
 //        createProduct_active("SKU-TST", "sunglasses");
 
-
     }
 
 }

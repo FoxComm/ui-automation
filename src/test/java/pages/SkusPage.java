@@ -21,8 +21,8 @@ public class SkusPage extends BasePage {
         return $(By.xpath("//button[@class='fc-btn fc-btn-primary']"));
     }
 
-    public SelenideElement codeFld() {
-        return $(By.xpath("//input[@name='SKU']"));
+    public SelenideElement skuFld() {
+        return $(By.xpath("//input[@name='code']"));
     }
 
     public SelenideElement titleFld() {
@@ -30,7 +30,7 @@ public class SkusPage extends BasePage {
     }
 
     public SelenideElement upcFld() {
-        return $(By.xpath("//input[@name='UPC']"));
+        return $(By.xpath("//input[@name='upc']"));
     }
 
     public SelenideElement descriptionFld() {
@@ -38,18 +38,15 @@ public class SkusPage extends BasePage {
     }
 
     public SelenideElement retailPriceFld() {
-//        return $(By.xpath("//input[@name='retailPrice']"));
-        return $(By.xpath("//input[@name='retail Price']"));
+        return $(By.xpath("//input[@name='retailPrice']"));
     }
 
     public SelenideElement salePriceFld() {
-//        return $(By.xpath("//input[@name='salePrice']"));
-        return $(By.xpath("//input[@name='sale Price']"));
+        return $(By.xpath("//input[@name='salePrice']"));
     }
 
     public SelenideElement unitCostFld() {
-//        return $(By.xpath("//input[@name='unitCost']"));
-        return $(By.xpath("//input[@name='unit Cost']"));
+        return $(By.xpath("//input[@name='unitCost']"));
     }
 
     private SelenideElement removeStartDateBtn() {
@@ -135,7 +132,7 @@ public class SkusPage extends BasePage {
     @Step("Fill out new SKU form.")
     public void createNewSKU(String id, String state) {
 
-        setFieldVal( codeFld(), "SKU-" + id );
+        setFieldVal( skuFld(), "SKU-" + id );
         setFieldVal( titleFld(), "Test Title" );
         setFieldVal( upcFld(), "Test UPC" );
         descriptionFld().val("Just another test SKU.");
@@ -186,6 +183,7 @@ public class SkusPage extends BasePage {
     @Step("Find SKU with code <{0}> on the list.")
     private SelenideElement findSKUOnList(String skuCode) {
 
+        waitForDataToLoad();
         List<SelenideElement> skusList = $$(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a/td[2]"));
         SelenideElement skuToClick = null;
 
