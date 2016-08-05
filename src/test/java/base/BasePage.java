@@ -167,7 +167,7 @@ public class BasePage extends ConciseAPI {
         return $(xpath("//ul[@class='fc-menu-items']/li/span[text()='" + criteria + "']/.."));
     }
 
-    private void hitEnter() {
+    public void hitEnter() {
         searchFld().sendKeys(Keys.ENTER);
         sleep(200);
     }
