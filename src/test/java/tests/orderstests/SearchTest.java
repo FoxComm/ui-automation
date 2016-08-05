@@ -28,25 +28,29 @@ public class SearchTest extends DataProvider {
     }
 
     @Test (priority = 1)
-    public void removeFilter() {
+    public void removeFilter() throws IOException {
 
-        p.addFilter("Order", "State", "Cart");
+        provideTestData("order in remorse hold");
+
+        p.addFilter("Order", "Total", ">", "1");
         p.removeFilter("1");
 
     }
 
     @Test (priority = 2)
-    public void addSearchFilter_usingArrowKeys() {
+    public void addSearchFilter_usingArrowKeys() throws IOException {
 
-        p.addFilter("Order", "State", "Cart");
-        p.assertOrderParameter(1, "Order State", "Cart");
+        provideTestData("order in remorse hold");
+
+        p.addFilter("Order", "State", "Remorse Hold");
+        p.assertOrderParameter(1, "Order State", "Remorse Hold");
 
     }
 
     @Test (priority = 3)
     public void customerName_filter() throws IOException {
 
-        provideTestData("a customer");
+        provideTestData("order in remorse hold");
 
         p.addFilter("Customer", "Name", customerName);
         p.assertOrderParameter(1, "Customer Name", customerName);
@@ -55,6 +59,8 @@ public class SearchTest extends DataProvider {
 
     @Test (priority = 4)
     public void customerEmail_filter() throws IOException {
+
+        provideTestData("order in remorse hold");
 
         p.addFilter("Customer", "Email", customerEmail);
         p.assertOrderParameter(1, "Customer Email", customerEmail);
@@ -78,10 +84,10 @@ public class SearchTest extends DataProvider {
 
     }
 
-    @Test (priority = 6)
+    @Test (priority = 7)
     public void noSearchResults_SKU() {
 
-        p.addFilter("Items", "Product SKU", "SKU-NOP");
+        p.addFilter("Items", "Product SKU", "SKU-NONE");
         p.assertNoSearchResults();
 
     }
