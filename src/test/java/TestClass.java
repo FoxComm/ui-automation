@@ -1,14 +1,20 @@
+import base.BasePage;
 import base.BaseTest;
 import com.squareup.okhttp.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import testdata.DataProvider;
+import org.testng.annotations.Test;
+import pages.LoginPage;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
+import static org.openqa.selenium.By.xpath;
 import static org.testng.Assert.assertEquals;
 
 public class TestClass extends BaseTest {
@@ -19,6 +25,8 @@ public class TestClass extends BaseTest {
 //        return Double.valueOf(cutDecimals.format(numb));
 //
 //    }
+
+    private BasePage p;
 
     private static int customerId;
     private static String orderId;
@@ -1059,8 +1067,6 @@ public class TestClass extends BaseTest {
         System.out.println("---- ---- ---- ----");
 
     }
-
-
 
 
     public static void main(String[] args) throws IOException {

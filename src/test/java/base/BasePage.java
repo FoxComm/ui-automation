@@ -2,6 +2,9 @@ package base;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.testng.Assert;
 import ru.yandex.qatools.allure.annotations.Step;
 
 import java.util.List;
@@ -99,17 +102,6 @@ public class BasePage extends ConciseAPI {
         saveBtn().shouldBe(enabled);
     }
 //----
-    public SelenideElement searchFld() {
-        return $(xpath("//input[@placeholder='filter or keyword search']"));
-    }
-
-    @Step("Search for: <{0}>")
-    public void search(String searchQuery) {
-        waitForDataToLoad();
-        searchFld().val( searchQuery ).pressEnter();
-        itemsOnList().shouldBe(visible.because("Search request returned no results."));
-    }
-//----
     public SelenideElement addTagBtn() {
         return $(xpath("//div[text()='Tags']/following-sibling::*"));
     }
@@ -141,8 +133,124 @@ public class BasePage extends ConciseAPI {
         tagFld().shouldNotBe(visible);
 
     }
-    //----------------------------------------------------------------------------------------//
 
+    //---------------------------------------- SEARCH ------------------------------------------//
+    public SelenideElement searchFld() {
+        return $(xpath("//input[@placeholder='filter or keyword search']"));
+    }
 
+    private List<SelenideElement> allSearchFilters() {
+        return $$(By.xpath("//div[@class='fc-pilled-input__pill']/a"));
+    }
+
+    private SelenideElement columnLabel(int labelIndex) {
+        return $(By.xpath("//table[@class='fc-table fc-multi-select-table']/thead/tr/th[" + (labelIndex + 1) + "]"));
+    }
+
+    private SelenideElement noSearchResults() {
+        return $(By.xpath("//div[@class='fc-content-box__empty-row']"));
+    }
+
+    private SelenideElement firstCriteria(String criteria) {
+        return $(xpath("//ul[@class='fc-menu-items']/li/span[text()='" + criteria + "']/.."));
+    }
+
+    private SelenideElement secondCriteria(String criteria) {
+        return $(xpath("//ul[@class='fc-menu-items']/li/span[text()='" + criteria + "']/.."));
+    }
+
+    private SelenideElement thirdCriteria(String criteria) {
+        return $(xpath("//ul[@class='fc-menu-items']/li/span[text()='" + criteria + "']/.."));
+    }
+
+    private SelenideElement fourthCriteria(String criteria) {
+        return $(xpath("//ul[@class='fc-menu-items']/li/span[text()='" + criteria + "']/.."));
+    }
+
+    private void hitEnter() {
+        searchFld().sendKeys(Keys.ENTER);
+        sleep(200);
+    }
+
+    @Step("Create a search filter {0} : {1}")
+    public void addFilter(String firstCriteria, String secondCriteria) {
+
+        click( searchFld() );
+        click( firstCriteria(firstCriteria) );
+        searchFld().sendKeys(secondCriteria);
+        hitEnter();
+
+        waitForDataToLoad();
+
+    }
+
+    @Step("Create a search filter {0} : {1} : {2}")
+    public void addFilter(String firstCriteria, String secondCriteria, String thirdCriteria) {
+
+        String secondCriteriaVal = firstCriteria + " : " + secondCriteria;
+
+        click( searchFld() );
+        click( firstCriteria(firstCriteria) );
+        click( secondCriteria(secondCriteriaVal) );
+        searchFld().sendKeys(thirdCriteria);
+        hitEnter();
+
+        waitForDataToLoad();
+
+    }
+
+    @Step("Create a search filter {0} : {1} : {2} : {3}")
+    public void addFilter(String firstCriteria, String secondCriteria, String thirdCriteria, String fourthCriteria) {
+
+        String secondCriteriaVal = firstCriteria + " : " + secondCriteria;
+        String thirdCriteriaVal = secondCriteriaVal + " : " + thirdCriteria;
+
+        click( searchFld() );
+        click( firstCriteria(firstCriteria) );
+        click( secondCriteria(secondCriteriaVal) );
+        click( thirdCriteria(thirdCriteriaVal) );
+        searchFld().sendKeys(fourthCriteria);
+        hitEnter();
+
+        waitForDataToLoad();
+
+    }
+
+    // fast search, uses no search filters
+    @Step("Search for: <{0}>")
+    public void search(String searchQuery) {
+        waitForDataToLoad();
+        searchFld().val( searchQuery ).pressEnter();
+        itemsOnList().shouldBe(visible.because("Search request returned no results."));
+    }
+
+    @Step
+    public void removeFilter(String index) {
+        $(By.xpath("//div[@class='fc-pilled-input__pill'][" + index + "]/a")).click();
+    }
+
+    @Step
+    public void cleanSearchField() {
+        int index = allSearchFilters().size();
+
+        if (index > 0) {
+            for (int i = 0; i < index; i++) {
+                removeFilter("1");
+            }
+        }
+    }
+
+    // indexing starts with 1
+    @Step("Sort list of orders by {0} column index")
+    public void sortListBy(int columnIndex) {
+        click( columnLabel(columnIndex) );
+        waitForDataToLoad();
+    }
+
+    @Step
+    public void assertNoSearchResults() {
+        Assert.assertTrue(noSearchResults().is(visible),
+                "Search query output isn't empty");
+    }
 
 }
