@@ -2,6 +2,8 @@ package testdata;
 
 import base.BaseTest;
 import com.squareup.okhttp.*;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,11 +33,14 @@ public class DataProvider extends BaseTest {
     private static String singleCouponCode;
     private static List<String> bulkCodes = new ArrayList<>();
 
-    protected static String sku;                 // stored from createSKU_active();
-    protected static String productName;         // stored from createProduct_<..>() methods
-    protected static int productId;              // stored from createProduct_<..>() methods
+    protected static String sku;                    // stored from createSKU_active();
+    protected static String productName;            // stored from createProduct_<..>() methods
+    protected static int productId;                 // stored from createProduct_<..>() methods
 
-    protected static String searchId;            // stored from createSharedSearch() methods
+    private static int searchId;                    // stored from createSharedSearch() methods
+    public static String searchRandomId;            // stored at createSharedSearch() methods
+    protected static String searchCode;             // stored from createSharedSearch() methods
+    protected static int adminId;                   // stored from getAdminId() method
 
     private static void failTest(String responseBody, int responseCode, String responseMsg) throws IOException {
         System.out.println("Response: " + responseCode + " " + responseMsg);
@@ -1394,11 +1399,12 @@ public class DataProvider extends BaseTest {
     private static void createSharedSearch_oneFilter() throws IOException {
 
         System.out.println("Creating a new shared search...");
+        searchRandomId = generateRandomID();
 
         OkHttpClient client = new OkHttpClient();
 
         MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, "{\"title\":\"Test Search\",\"query\":[{\"display\":\"Order : State : Remorse Hold\",\"term\":\"state\",\"operator\":\"eq\",\"value\":{\"type\":\"enum\",\"value\":\"remorseHold\"}}],\"scope\":\"ordersScope\",\"rawQuery\":{\"query\":{\"bool\":{\"filter\":[{\"term\":{\"state\":\"remorseHold\"}}]}}}}");
+        RequestBody body = RequestBody.create(mediaType, "{\"title\":\"Search " + searchRandomId + "\",\"query\":[{\"display\":\"Order : Total : > : $0\",\"term\":\"grandTotal\",\"operator\":\"gt\",\"value\":{\"type\":\"currency\",\"value\":\"000\"}}],\"scope\":\"ordersScope\",\"rawQuery\":{\"query\":{\"bool\":{\"filter\":[{\"range\":{\"grandTotal\":{\"gt\":\"000\"}}}]}}}}");
         Request request = new Request.Builder()
                 .url("http://admin.stage.foxcommerce.com/api/v1/shared-search")
                 .post(body)
@@ -1415,8 +1421,13 @@ public class DataProvider extends BaseTest {
 
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
-            searchId = responseBody.substring(17, responseBody.indexOf(",", 17));
-            System.out.println("Search ID: <" + searchId + ">.");
+            JSONObject jsonData = new JSONObject(responseBody);
+            searchCode = jsonData.getString("code");
+            searchId = jsonData.getInt("id");
+//            searchId = Integer.valueOf( responseBody.substring(6, responseBody.indexOf(",", 6)) );
+//            searchCode = responseBody.substring(16, responseBody.indexOf("\"", 16));
+            System.out.println("Search ID: <" + searchId + ">");
+            System.out.println("Search code: <" + searchCode + ">");
             System.out.println("---- ---- ---- ----");
         } else {
             failTest(responseBody, responseCode, responseMsg);
@@ -1427,13 +1438,55 @@ public class DataProvider extends BaseTest {
     private static void createSharedSearch_twoFilters() throws IOException {
 
         System.out.println("Creating a new shared search...");
+        searchRandomId = generateRandomID();
 
         OkHttpClient client = new OkHttpClient();
 
         MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, "{\"title\":\"Test Search\",\"query\":[{\"display\":\"Order : State : Remorse Hold\",\"term\":\"state\",\"operator\":\"eq\",\"value\":{\"type\":\"enum\",\"value\":\"remorseHold\"}},{\"display\":\"Order : Total : > : $1\",\"term\":\"grandTotal\",\"operator\":\"gt\",\"value\":{\"type\":\"currency\",\"value\":\"100\"}}],\"scope\":\"ordersScope\",\"rawQuery\":{\"query\":{\"bool\":{\"filter\":[{\"term\":{\"state\":\"remorseHold\"}},{\"range\":{\"grandTotal\":{\"gt\":\"100\"}}}]}}}}");
+        RequestBody body = RequestBody.create(mediaType, "{\"title\":\"Search " + searchRandomId + "\",\"query\":[{\"display\":\"Order : State : Remorse Hold\",\"term\":\"state\",\"operator\":\"eq\",\"value\":{\"type\":\"enum\",\"value\":\"remorseHold\"}},{\"display\":\"Order : Total : > : $1\",\"term\":\"grandTotal\",\"operator\":\"gt\",\"value\":{\"type\":\"currency\",\"value\":\"100\"}}],\"scope\":\"ordersScope\",\"rawQuery\":{\"query\":{\"bool\":{\"filter\":[{\"term\":{\"state\":\"remorseHold\"}},{\"range\":{\"grandTotal\":{\"gt\":\"100\"}}}]}}}}");
         Request request = new Request.Builder()
                 .url("http://admin.stage.foxcommerce.com/api/v1/shared-search")
+                .post(body)
+                .addHeader("content-type", "application/json")
+                .addHeader("accept", "application/json")
+                .addHeader("cache-control", "no-cache")
+                .addHeader("JWT", jwt)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        response.body().charStream();
+        String responseBody = response.body().string();
+        int responseCode = response.code();
+        String responseMsg = response.message();
+
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+
+//            searchId = Integer.valueOf( responseBody.substring(6, responseBody.indexOf(",", 6)) );
+            JSONObject jsonData = new JSONObject(responseBody);
+            searchCode = jsonData.getString("code");
+            searchId = jsonData.getInt("id");
+            System.out.println("Search ID: <" + searchId + ">");
+            System.out.println("Search code: <" + searchCode + ">");
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
+
+    }
+
+    protected static void shareSearch(String searchCode, String adminName) throws IOException {
+
+        getAdminId(adminName);
+
+        System.out.println("Sharing saved search (code <" + searchCode + ">) with admin <" + adminName + ">, adminId <" + adminId + ">...");
+
+        OkHttpClient client = new OkHttpClient();
+
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{\n    \"associates\": [" + adminId + "]\n}");
+        Request request = new Request.Builder()
+                .url("http://admin.stage.foxcommerce.com/api/v1/shared-search/" + searchCode + "/associate")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -1448,8 +1501,49 @@ public class DataProvider extends BaseTest {
 
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
-            searchId = responseBody.substring(17, responseBody.indexOf(",", 17));
-            System.out.println("Search ID: <" + searchId + ">.");
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
+
+    }
+
+    private static void getAdminId(String adminName) throws IOException {
+
+        System.out.println("Getting ID of <" + adminName + "> admin");
+
+        OkHttpClient client = new OkHttpClient();
+
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{\"query\":{\"bool\":{}},\"sort\":[{\"createdAt\":{\"order\":\"desc\"}}]}");
+        Request request = new Request.Builder()
+                .url("http://admin.stage.foxcommerce.com/api/search/admin/store_admins_search_view/_search?size=50")
+                .post(body)
+                .addHeader("content-type", "application/json")
+                .addHeader("accept", "application/json")
+                .addHeader("cache-control", "no-cache")
+                .addHeader("JWT", jwt)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+        int responseCode = response.code();
+        String responseMsg = response.message();
+
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+
+            JSONObject jsonData = new JSONObject(responseBody);
+            JSONArray jsonArray = jsonData.getJSONArray("result");
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject object     = jsonArray.getJSONObject(i);
+                String adminName_local = object.getString("name");
+                if (adminName_local.equals(adminName)) {
+                    adminId = object.getInt("id");
+                    System.out.println("<" + adminName + "> ID: " + adminId);
+                }
+            }
+
             System.out.println("---- ---- ---- ----");
         } else {
             failTest(responseBody, responseCode, responseMsg);

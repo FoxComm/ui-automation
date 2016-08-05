@@ -26,6 +26,14 @@ public class BasePage extends ConciseAPI {
         return $(xpath("//a[text()='Settings']"));
     }
 
+    public SelenideElement closeModalWindowBtn() {
+        return $(xpath("//a[@class='fc-modal-close']"));
+    }
+
+    public SelenideElement successIcon() {
+        return $(xpath("//i[@class='icon-success']"));
+    }
+
     //----------------------------------- NAVIGATION MENU ------------------------------------//
     public SelenideElement productsNavMenu() {
         return $(xpath("//span[text()='Products']"));

@@ -54,11 +54,19 @@ public class GeneralControlsPage extends BasePage {
     }
 
     public SelenideElement userName(String nameVal) {
-        return $(xpath(""));
+        return $(xpath("//div[text()='" + nameVal + "']"));
     }
 
     public SelenideElement shareBtn() {
         return $(xpath("//span[text()='Share']/.."));
+    }
+
+    public SelenideElement adminPilledLabel() {
+        return $(xpath("//div[@class='fc-pilled-input__pills-wrapper']/div"));
+    }
+
+    public SelenideElement removeAdminBtn(String adminName) {
+        return $(xpath("//span[text()='" + adminName + "']/following-sibling::*[3]/a"));
     }
 
     //------------------------------ HELPERS ---------------------------------//

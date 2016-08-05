@@ -1,5 +1,8 @@
 import base.BaseTest;
 import com.squareup.okhttp.*;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import testdata.DataProvider;
 
 import java.io.IOException;
 import java.util.*;
@@ -39,9 +42,13 @@ public class TestClass extends BaseTest {
     private static String sku;              // stored from createSKU();
     public static int productId;            // stored form createProduct() methods
 
-    private static void failTest(Response response, int responseCode, String responseMsg) throws IOException {
+    private static int searchId;                    // stored from createSharedSearch() methods
+    private static String searchCode;               // stored from createSharedSearch() methods
+    protected static int adminId;                   // stored from getAdminId() method
+
+    private static void failTest(String responseBody, int responseCode, String responseMsg) throws IOException {
         System.out.println("Response: " + responseCode + " " + responseMsg);
-        System.out.println(response.body().string());
+        System.out.println(responseBody);
         System.out.println("--------");
         assertEquals(responseCode, 200, "API call failed to succeed.");
     }
@@ -54,7 +61,7 @@ public class TestClass extends BaseTest {
 
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{" +
-                "\n    \"email\": \"admn@admin.com\"," +
+                "\n    \"email\": \"admin@admin.com\"," +
                 "\n    \"password\": \"password\"," +
                 "\n    \"kind\": \"admin\"\n}");
 
@@ -67,15 +74,16 @@ public class TestClass extends BaseTest {
                 .build();
 
         Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
         int responseCode = response.code();
         String responseMsg = response.message();
 
         if (responseCode == 200) {
-            jwt = response.header("JWT");
             System.out.println(responseCode + " " + responseMsg);
+            jwt = response.header("JWT");
             System.out.println("--------");
         } else {
-            failTest(response, responseCode, responseMsg);
+            failTest(responseBody, responseCode, responseMsg);
         }
 
     }
@@ -926,7 +934,131 @@ public class TestClass extends BaseTest {
 
     }
 
+    protected static void shareSearch(String searchCode, String adminName) throws IOException {
 
+        getAdminId(adminName);
+
+        System.out.println("Sharing saved search with admin <" + adminName + ">, adminId <" + adminId + ">...");
+
+        OkHttpClient client = new OkHttpClient();
+
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{\n    \"associates\": [" + adminId + "]\n}");
+        Request request = new Request.Builder()
+                .url("http://admin.stage.foxcommerce.com/api/v1/shared-search/" + searchCode + "/associate")
+                .post(body)
+                .addHeader("content-type", "application/json")
+                .addHeader("accept", "application/json")
+                .addHeader("cache-control", "no-cache")
+                .addHeader("JWT", jwt)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+        int responseCode = response.code();
+        String responseMsg = response.message();
+
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
+
+    }
+
+    protected static void getAdminId(String adminName) throws IOException {
+
+        OkHttpClient client = new OkHttpClient();
+
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{\"query\":{\"bool\":{}},\"sort\":[{\"createdAt\":{\"order\":\"desc\"}}]}");
+        Request request = new Request.Builder()
+                .url("http://admin.stage.foxcommerce.com/api/search/admin/store_admins_search_view/_search?size=50")
+                .post(body)
+                .addHeader("content-type", "application/json")
+                .addHeader("accept", "application/json")
+                .addHeader("cache-control", "no-cache")
+                .addHeader("JWT", jwt)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+        int responseCode = response.code();
+        String responseMsg = response.message();
+
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+
+            JSONObject jsonData = new JSONObject(responseBody);
+            JSONArray jsonArray = jsonData.getJSONArray("result");
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject object     = jsonArray.getJSONObject(i);
+                String adminName_local = object.getString("name");
+                if (adminName_local.equals(adminName)) {
+                    adminId = object.getInt("id");
+                    System.out.println("<" + adminName + "> ID: " + adminId);
+                }
+            }
+
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
+
+    }
+
+    private static void createSharedSearch_oneFilter() throws IOException {
+
+        System.out.println("Creating a new shared search...");
+
+        OkHttpClient client = new OkHttpClient();
+
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{\"title\":\"Test Search\",\"query\":[{\"display\":\"Order : Total : > : $0\",\"term\":\"grandTotal\",\"operator\":\"gt\",\"value\":{\"type\":\"currency\",\"value\":\"000\"}}],\"scope\":\"ordersScope\",\"rawQuery\":{\"query\":{\"bool\":{\"filter\":[{\"range\":{\"grandTotal\":{\"gt\":\"000\"}}}]}}}}");
+        Request request = new Request.Builder()
+                .url("http://admin.stage.foxcommerce.com/api/v1/shared-search")
+                .post(body)
+                .addHeader("content-type", "application/json")
+                .addHeader("accept", "application/json")
+                .addHeader("cache-control", "no-cache")
+                .addHeader("JWT", jwt)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+        int responseCode = response.code();
+        String responseMsg = response.message();
+
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+            searchId = Integer.valueOf( responseBody.substring(6, responseBody.indexOf(",", 6)) );
+            searchCode = responseBody.substring(16, responseBody.indexOf("\"", 16));
+            System.out.println("Search ID: <" + searchId + ">.");
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
+
+    }
+
+    public static void getAllSavedSearches() throws IOException {
+
+        OkHttpClient client = new OkHttpClient();
+
+        Request request = new Request.Builder()
+                .url("http://admin.stage.foxcommerce.com/api/v1/shared-search?scope=ordersScope")
+                .get()
+                .addHeader("cache-control", "no-cache")
+                .addHeader("JWT", jwt)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+        System.out.println(responseBody);
+        System.out.println("---- ---- ---- ----");
+
+    }
 
 
 
@@ -946,11 +1078,10 @@ public class TestClass extends BaseTest {
 //        checkoutOrder("BR11183");
 
 //        createProduct_active("SKU-TST", "sunglasses");
+//        createSharedSearch_oneFilter();
+//        shareSearch(searchCode, "Such Root");
+        getAllSavedSearches();
 
     }
 
 }
-
-
-//Test Customer-12345
-//testcustomer.12345@mail.com
