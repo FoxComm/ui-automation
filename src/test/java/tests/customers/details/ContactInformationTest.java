@@ -2,7 +2,7 @@ package tests.customers.details;
 
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import pages.CustomerPage;
+import pages.CustomersPage;
 import pages.LoginPage;
 import testdata.DataProvider;
 
@@ -15,7 +15,7 @@ import static org.testng.Assert.assertEquals;
 
 public class ContactInformationTest extends DataProvider {
 
-    private CustomerPage p;
+    private CustomersPage p;
 
     private String randomId = generateRandomID();
     private String newName = "Test Buddy-" + randomId;
@@ -36,7 +36,7 @@ public class ContactInformationTest extends DataProvider {
     public void assertDefaultValues() throws IOException {
 
         provideTestData("customer");
-        p = open(adminUrl + "/customers/" + customerId, CustomerPage.class);
+        p = open(adminUrl + "/customers/" + customerId, CustomersPage.class);
 
         assertEquals( p.nameVal_contactInfo(), customerName,
                 "Incorrect name is displayed in 'Contact Information'.");
@@ -49,7 +49,7 @@ public class ContactInformationTest extends DataProvider {
     public void addPhoneNumber() throws IOException {
 
         provideTestData("customer");
-        p = open(adminUrl + "/customers/" + customerId, CustomerPage.class);
+        p = open(adminUrl + "/customers/" + customerId, CustomersPage.class);
 
         click( p.editBtn_contactInfo() );
         setFieldVal( p.phoneNumberFld_contactInfo(), "7779994242" );
@@ -64,7 +64,7 @@ public class ContactInformationTest extends DataProvider {
     public void editName() throws IOException {
 
         provideTestData("customer");
-        p = open(adminUrl + "/customers/" + customerId, CustomerPage.class);
+        p = open(adminUrl + "/customers/" + customerId, CustomersPage.class);
 
         click( p.editBtn_contactInfo() );
         setFieldVal( p.phoneNumberFld_contactInfo(), "7779994242" );
@@ -82,7 +82,7 @@ public class ContactInformationTest extends DataProvider {
     public void editEmail() throws IOException {
 
         provideTestData("customer");
-        p = open(adminUrl + "/customers/" + customerId, CustomerPage.class);
+        p = open(adminUrl + "/customers/" + customerId, CustomersPage.class);
 
         click( p.editBtn_contactInfo() );
         setFieldVal( p.phoneNumberFld_contactInfo(), "7779994242" );
@@ -100,7 +100,7 @@ public class ContactInformationTest extends DataProvider {
 //    public void phoneNumbFromBillAddress() throws IOException {
 //
 //        provideTestData("customer with a credit card");
-//        p = open(adminUrl + "/customers/" + customerId, CustomerPage.class);
+//        p = open(adminUrl + "/customers/" + customerId, CustomersPage.class);
 //
 //        assertEquals( p.phoneNumberVal_contactInfo(), "9879879876",
 //                "Phone number from billing address isn't displayed in customer contact information.");

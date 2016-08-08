@@ -1,6 +1,7 @@
 package base;
 
 import com.codeborne.selenide.Condition;
+import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -13,6 +14,7 @@ import static com.codeborne.selenide.Condition.enabled;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
 import static org.openqa.selenium.By.xpath;
+import static org.testng.Assert.assertTrue;
 
 public class BasePage extends ConciseAPI {
 
@@ -143,12 +145,20 @@ public class BasePage extends ConciseAPI {
         return $$(By.xpath("//div[@class='fc-pilled-input__pill']/a"));
     }
 
-    private SelenideElement columnLabel(int labelIndex) {
-        return $(By.xpath("//table[@class='fc-table fc-multi-select-table']/thead/tr/th[" + (labelIndex + 1) + "]"));
+    public SelenideElement today() {
+        return $(xpath("//div[@class='fc-datepicker__day _current']"));
     }
 
-    private SelenideElement noSearchResults() {
-        return $(By.xpath("//div[@class='fc-content-box__empty-row']"));
+    public SelenideElement yesterday() {
+        return $(xpath("//div[@class='fc-datepicker__day _current']/preceding-sibling::*[1]"));
+    }
+
+    public SelenideElement tomorrow() {
+        return $(xpath("//div[@class='fc-datepicker__day _current']/following-sibling::*[1]"));
+    }
+//----
+    private SelenideElement columnLabel(int labelIndex) {
+        return $(By.xpath("//table[@class='fc-table fc-multi-select-table']/thead/tr/th[" + (labelIndex + 1) + "]"));
     }
 
     private SelenideElement firstCriteria(String criteria) {
@@ -163,13 +173,17 @@ public class BasePage extends ConciseAPI {
         return $(xpath("//ul[@class='fc-menu-items']/li/span[text()='" + criteria + "']/.."));
     }
 
-    private SelenideElement fourthCriteria(String criteria) {
-        return $(xpath("//ul[@class='fc-menu-items']/li/span[text()='" + criteria + "']/.."));
-    }
-
     public void hitEnter() {
         searchFld().sendKeys(Keys.ENTER);
         sleep(200);
+    }
+//----
+    private SelenideElement noSearchResults() {
+        return $(By.xpath("//div[@class='fc-content-box__empty-row']"));
+    }
+
+    public ElementsCollection searchResults() {
+        return $$(xpath("//tbody[@class='fc-table-body']/a"));
     }
 
     @Step("Create a search filter {0} : {1}")
@@ -199,6 +213,18 @@ public class BasePage extends ConciseAPI {
 
     }
 
+    @Step("Create a search filter {0} : {1} : {2}")
+    public void addFilter(String firstCriteria, String secondCriteria, SelenideElement date) {
+
+        click( searchFld() );
+        click( firstCriteria(firstCriteria) );
+        searchFld().sendKeys(secondCriteria);
+        click( date );
+
+        waitForDataToLoad();
+
+    }
+
     @Step("Create a search filter {0} : {1} : {2} : {3}")
     public void addFilter(String firstCriteria, String secondCriteria, String thirdCriteria, String fourthCriteria) {
 
@@ -222,6 +248,31 @@ public class BasePage extends ConciseAPI {
         waitForDataToLoad();
         searchFld().val( searchQuery ).pressEnter();
         itemsOnList().shouldBe(visible.because("Search request returned no results."));
+    }
+
+    @Step("Open coupon with name <{0}>.")
+    public void openItem(String paramVal) {
+        click( findItemOnList(paramVal) );
+    }
+
+    @Step("Find coupon with name <{0}> on the list of coupons.")
+    public SelenideElement findItemOnList(String paramVal) {
+
+        List<SelenideElement> itemsList = $$(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a/td"));
+        SelenideElement itemToClick = null;
+
+        for(SelenideElement item : itemsList) {
+
+            String listCouponName = item.text();
+            if (listCouponName.equals(paramVal)) {
+                itemToClick = item;
+            }
+
+        }
+
+        assertTrue( itemToClick!= null, "Item with requested param value isn't displayed on the list.");
+        return itemToClick;
+
     }
 
     @Step

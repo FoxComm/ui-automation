@@ -2,7 +2,7 @@ package tests.customers.details;
 
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import pages.CustomerPage;
+import pages.CustomersPage;
 import pages.LoginPage;
 import testdata.DataProvider;
 
@@ -16,7 +16,7 @@ import static org.testng.Assert.assertTrue;
 
 public class AddressBookTest extends DataProvider {
 
-    private CustomerPage p;
+    private CustomersPage p;
 
     @BeforeClass(alwaysRun = true)
     public void setUp() {
@@ -32,7 +32,7 @@ public class AddressBookTest extends DataProvider {
     public void addNewAddress() throws IOException {
 
         provideTestData("a customer");
-        p = open(adminUrl + "/customers/" + customerId, CustomerPage.class);
+        p = open(adminUrl + "/customers/" + customerId, CustomersPage.class);
 
         p.addNewAddress(customerName, "2101 Green Valley", "Suite 300", "Seattle", "Washington", "98101", "9879879876");
 
@@ -45,7 +45,7 @@ public class AddressBookTest extends DataProvider {
     public void editNameFld() throws IOException {
 
         provideTestData("customer with a shipping address");
-        p = open(adminUrl + "/customers/" + customerId, CustomerPage.class);
+        p = open(adminUrl + "/customers/" + customerId, CustomersPage.class);
 
         click( p.editAddressBtn("1") );
         setFieldVal( p.nameFld(), "John Doe" );
@@ -60,7 +60,7 @@ public class AddressBookTest extends DataProvider {
     public void editAddress1Fld() throws IOException {
 
         provideTestData("customer with a shipping address");
-        p = open(adminUrl + "/customers/" + customerId, CustomerPage.class);
+        p = open(adminUrl + "/customers/" + customerId, CustomersPage.class);
 
         click( p.editAddressBtn("1") );
         setFieldVal( p.address1Fld(), "2525 Narrow Ave" );
@@ -75,7 +75,7 @@ public class AddressBookTest extends DataProvider {
     public void editAddress2Fld() throws IOException {
 
         provideTestData("customer with a shipping address");
-        p = open(adminUrl + "/customers/" + customerId, CustomerPage.class);
+        p = open(adminUrl + "/customers/" + customerId, CustomersPage.class);
 
         click( p.editAddressBtn("1") );
         setFieldVal( p.address2Fld(), "Suite 300" );
@@ -90,7 +90,7 @@ public class AddressBookTest extends DataProvider {
     public void editCityFld() throws IOException {
 
         provideTestData("customer with a shipping address");
-        p = open(adminUrl + "/customers/" + customerId, CustomerPage.class);
+        p = open(adminUrl + "/customers/" + customerId, CustomersPage.class);
 
         click( p.editAddressBtn("1") );
         setFieldVal( p.cityFld(), "New York" );
@@ -105,7 +105,7 @@ public class AddressBookTest extends DataProvider {
     public void editStateDd() throws IOException {
 
         provideTestData("customer with a shipping address");
-        p = open(adminUrl + "/customers/" + customerId, CustomerPage.class);
+        p = open(adminUrl + "/customers/" + customerId, CustomersPage.class);
 
         click( p.editAddressBtn("1") );
         p.setState("New York");
@@ -120,7 +120,7 @@ public class AddressBookTest extends DataProvider {
     public void editZipFld() throws IOException {
 
         provideTestData("customer with a shipping address");
-        p = open(adminUrl + "/customers/" + customerId, CustomerPage.class);
+        p = open(adminUrl + "/customers/" + customerId, CustomersPage.class);
 
         click( p.editAddressBtn("1") );
         setFieldVal( p.zipFld(), "10001" );
@@ -135,7 +135,7 @@ public class AddressBookTest extends DataProvider {
     public void editPhoneNumberFld() throws IOException {
 
         provideTestData("customer with a shipping address");
-        p = open(adminUrl + "/customers/" + customerId, CustomerPage.class);
+        p = open(adminUrl + "/customers/" + customerId, CustomersPage.class);
 
         click( p.editAddressBtn("1") );
         clearField( p.phoneNumberFld() );
@@ -152,7 +152,7 @@ public class AddressBookTest extends DataProvider {
     public void deleteAddress() throws IOException {
 
         provideTestData("customer with a shipping address");
-        p = open(adminUrl + "/customers/" + customerId, CustomerPage.class);
+        p = open(adminUrl + "/customers/" + customerId, CustomersPage.class);
 
         elementIsVisible( p.deleteAddressBtn("1") );
         int expectedResult = p.addressBookSize() - 1;

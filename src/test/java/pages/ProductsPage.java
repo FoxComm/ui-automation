@@ -9,11 +9,8 @@ import ru.yandex.qatools.allure.annotations.Step;
 
 import java.util.List;
 
-import static com.codeborne.selenide.Condition.enabled;
-import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
-import static org.openqa.selenium.Keys.ENTER;
 import static org.testng.Assert.assertTrue;
 
 public class ProductsPage extends BasePage {
@@ -179,11 +176,6 @@ public class ProductsPage extends BasePage {
             searchFld().sendKeys(Keys.ARROW_DOWN);
         }
         hitEnter();
-    }
-
-    private void hitEnter() {
-        searchFld().sendKeys(ENTER);
-        sleep(200);
     }
 
     @Step("Create a search filter {0} : {1} : {2}")

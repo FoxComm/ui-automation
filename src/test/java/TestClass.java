@@ -1086,7 +1086,9 @@ public class TestClass extends BaseTest {
 //        createProduct_active("SKU-TST", "sunglasses");
 //        createSharedSearch_oneFilter();
 //        shareSearch(searchCode, "Such Root");
-        getAllSavedSearches();
+//        getAllSavedSearches();
+
+        createAddress(1020, "John Doe", 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
 
     }
 

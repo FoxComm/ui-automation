@@ -107,7 +107,7 @@ public class GeneralControlsPage extends BasePage {
         hitEnter();
     }
 
-    private void hitEnter() {
+    public void hitEnter() {
         searchFld().sendKeys(Keys.ENTER);
         sleep(200);
     }

@@ -2,7 +2,7 @@ package tests.customers.orders;
 
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import pages.CustomerPage;
+import pages.CustomersPage;
 import pages.LoginPage;
 import testdata.DataProvider;
 
@@ -14,7 +14,7 @@ import static org.testng.Assert.assertEquals;
 
 public class OrdersListTest extends DataProvider {
 
-    private CustomerPage p;
+    private CustomersPage p;
 
     @BeforeClass(alwaysRun = true)
     public void setUp() {
@@ -31,7 +31,7 @@ public class OrdersListTest extends DataProvider {
     public void checkOrderOnList() throws IOException {
 
         provideTestData("customer with 2 orders in remorse hold");
-        p = open(adminUrl + "/customers/" + customerId + "/transactions", CustomerPage.class);
+        p = open(adminUrl + "/customers/" + customerId + "/transactions", CustomersPage.class);
 
         p.waitForDataToLoad();
         assertEquals( p.amountOfOrders(), 2,
@@ -43,7 +43,7 @@ public class OrdersListTest extends DataProvider {
 //    public void totalSalesTest() throws IOException {
 //
 //        provideTestData("customer with 2 orders in remorse hold and fulfillment started");
-//        p = open(adminUrl + "/customers/" + customerId + "/transactions", CustomerPage.class);
+//        p = open(adminUrl + "/customers/" + customerId + "/transactions", CustomersPage.class);
 //
 //        p.orderListBy("Order");
 //
@@ -62,7 +62,7 @@ public class OrdersListTest extends DataProvider {
     public void searchFld_orderRefNum() throws IOException {
 
         provideTestData("customer with 2 orders in remorse hold and fulfillment started");
-        p = open(adminUrl + "/customers/" + customerId + "/transactions", CustomerPage.class);
+        p = open(adminUrl + "/customers/" + customerId + "/transactions", CustomersPage.class);
 
         p.addFilter("Order", "Reference Number", orderId);
         assertEquals( p.getOrderParamVal(1, "Order State"), "Fulfillment Started",
@@ -74,7 +74,7 @@ public class OrdersListTest extends DataProvider {
     public void searchFld_productName() throws IOException {
 
         provideTestData("customer with 2 orders in remorse hold and fulfillment started");
-        p = open(adminUrl + "/customers/" + customerId + "/transactions", CustomerPage.class);
+        p = open(adminUrl + "/customers/" + customerId + "/transactions", CustomersPage.class);
 
         p.addFilter("Items", "Product Name", "Shark");
         assertEquals( p.amountOfOrders(), 1,
@@ -86,7 +86,7 @@ public class OrdersListTest extends DataProvider {
     public void searchFld_productSKU() throws IOException {
 
         provideTestData("customer with 2 orders in remorse hold and fulfillment started");
-        p = open(adminUrl + "/customers/" + customerId + "/transactions", CustomerPage.class);
+        p = open(adminUrl + "/customers/" + customerId + "/transactions", CustomersPage.class);
 
         p.addFilter("Items", "Product SKU", "SKU-BRO");
         assertEquals( p.amountOfOrders(), 1,

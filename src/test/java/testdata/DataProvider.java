@@ -358,6 +358,45 @@ public class DataProvider extends BaseTest {
 
     }
 
+    private static void updateCustomerShipAddress(int customerId, int addressId1, String customerName, int regionId, String address1, String address2, String city, String zip, String phoneNumber) throws IOException {
+
+        System.out.println("Updating shipping address ID:<" + addressId1 + "> for customer <" + customerId + ">...");
+
+        OkHttpClient client = new OkHttpClient();
+
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{" +
+                "\n  \"name\": \"" + customerName + "\"," +
+                "\n  \"regionId\": " + regionId + "," +
+                "\n  \"address1\": \"" + address1 + "\"," +
+                "\n  \"address2\": \"" + address2 + "\"," +
+                "\n  \"city\": \"" + city + "\"," +
+                "\n  \"zip\": \"" + zip + "\"," +
+                "\n  \"isDefault\": false," +
+                "\n  \"phoneNumber\": \"" + phoneNumber + "\"\n}");
+        Request request = new Request.Builder()
+                .url("http://admin.stage.foxcommerce.com/api/v1/customers/" + customerId + "/addresses/" + addressId1)
+                .patch(body)
+                .addHeader("content-type", "application/json")
+                .addHeader("accept", "application/json")
+                .addHeader("cache-control", "no-cache")
+                .addHeader("JWT", jwt)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+        int responseCode = response.code();
+        String responseMsg = response.message();
+
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
+
+    }
+
     private static void listShipMethods(String orderId) throws IOException {
 
         System.out.println("Getting possible shipping methods for order <" + orderId + ">...");
@@ -1632,27 +1671,27 @@ public class DataProvider extends BaseTest {
             case "cart with non-empty address book":
                 createNewCustomer();
                 createCart(customerId);
-                createAddress(customerId, "John Doe", 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
+                createAddress(customerId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 break;
 
             case "cart with chosen shipping address":
                 createNewCustomer();
                 createCart(customerId);
-                setShipAddress(orderId, "John Doe", 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
+                setShipAddress(orderId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 break;
 
             case "cart with 2 addresses in address book":
                 createNewCustomer();
                 createCart(customerId);
-                createAddress(customerId, "John Doe", 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
-                createAddress(customerId, "Paul Puga", 4161, 234, "Washington", "2101 Green Valley", "200 Suite", "Seattle", "98101", "5551237575", false);
+                createAddress(customerId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
+                createAddress(customerId, "Paul Puga", 4177, 234, "Washington", "2101 Green Valley", "200 Suite", "Seattle", "98101", "5551237575", false);
                 break;
 
             case "cart with 2 addresses and defined default shipping address":
                 createNewCustomer();
                 createCart(customerId);
-                createAddress(customerId, "John Doe", 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
-                createAddress(customerId, "Paul Puga", 4161, 234, "Washington", "2101 Green Valley", "200 Suite", "Seattle", "98101", "5551237575", false);
+                createAddress(customerId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
+                createAddress(customerId, "Paul Puga", 4177, 234, "Washington", "2101 Green Valley", "200 Suite", "Seattle", "98101", "5551237575", false);
                 break;
 
             //----------------------------------- ORDERS WITH COUPONS ------------------------------------//
@@ -1694,7 +1733,7 @@ public class DataProvider extends BaseTest {
                 createNewCustomer();
                 createCart(customerId);
                 updSKULineItems(orderId, "SKU-BRO", 1);
-                setShipAddress(orderId, "John Doe", 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
+                setShipAddress(orderId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 break;
 
             case "cart with 1 item && customer with GC":
@@ -1715,7 +1754,7 @@ public class DataProvider extends BaseTest {
                 createNewCustomer();
                 createCart(customerId);
                 updSKULineItems(orderId, "SKU-YAX", 1);
-                setShipAddress(orderId, "John Doe", 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
+                setShipAddress(orderId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(orderId);
                 setShipMethod(orderId, shipMethodId);
                 listCustomerAddresses(customerId);
@@ -1727,7 +1766,7 @@ public class DataProvider extends BaseTest {
                 createNewCustomer();
                 createCart(customerId);
                 updSKULineItems(orderId, "SKU-YAX", 1);
-                setShipAddress(orderId, "John Doe", 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
+                setShipAddress(orderId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(orderId);
                 setShipMethod(orderId, shipMethodId);
                 issueStoreCredit(customerId, 50000);
@@ -1737,7 +1776,7 @@ public class DataProvider extends BaseTest {
                 createNewCustomer();
                 createCart(customerId);
                 updSKULineItems(orderId, "SKU-YAX", 1);
-                setShipAddress(orderId, "John Doe", 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
+                setShipAddress(orderId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(orderId);
                 setShipMethod(orderId, shipMethodId);
                 issueGiftCard(50000, 1);
@@ -1747,7 +1786,7 @@ public class DataProvider extends BaseTest {
                 createNewCustomer();
                 createCart(customerId);
                 updSKULineItems(orderId, "SKU-YAX", 1);
-                setShipAddress(orderId, "John Doe", 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
+                setShipAddress(orderId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(orderId);
                 setShipMethod(orderId, shipMethodId);
                 listCustomerAddresses(customerId);
@@ -1760,7 +1799,7 @@ public class DataProvider extends BaseTest {
                 createNewCustomer();
                 createCart(customerId);
                 updSKULineItems(orderId, "SKU-YAX", 1);
-                setShipAddress(orderId, "John Doe", 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
+                setShipAddress(orderId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(orderId);
                 setShipMethod(orderId, shipMethodId);
                 listCustomerAddresses(customerId);
@@ -1772,7 +1811,7 @@ public class DataProvider extends BaseTest {
             case "cart with 1 item, shipping method, issued SC and GC":
                 createCart(customerId);
                 updSKULineItems(orderId, "SKU-YAX", 1);
-                setShipAddress(orderId, "John Doe", 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
+                setShipAddress(orderId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(orderId);
                 setShipMethod(orderId, shipMethodId);
                 listCustomerAddresses(customerId);
@@ -1802,7 +1841,7 @@ public class DataProvider extends BaseTest {
                 createNewCustomer();
                 createCart(customerId);
                 updSKULineItems(orderId, "SKU-YAX", 1);
-                setShipAddress(orderId, "John Doe", 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
+                setShipAddress(orderId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(orderId);
                 setShipMethod(orderId, shipMethodId);
                 listCustomerAddresses(customerId);
@@ -1815,22 +1854,22 @@ public class DataProvider extends BaseTest {
 
             case "customer with a shipping address":
                 createNewCustomer();
-                createAddress(customerId, "John Doe", 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
+                createAddress(customerId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 break;
 
             //--------------------------------- CUSTOMER CREDIT CARDS ---------------------------------//
 
             case "customer with a credit card":
                 createNewCustomer();
-                createAddress(customerId, customerName, 4161, 234, "Washington", "2101 Green Valley", "Suite 300", "Seattle", "98101", "9879879876", false);
+                createAddress(customerId, customerName, 4177, 234, "Washington", "2101 Green Valley", "Suite 300", "Seattle", "98101", "9879879876", false);
                 listCustomerAddresses(customerId);
                 createCreditCard("John Doe", "5555555555554444", "999", 4, 2020, addressId1);
                 break;
 
             case "customer with a credit card and 2 addresses":
                 createNewCustomer();
-                createAddress(customerId, customerName, 4161, 234, "New York", "545 Narrow Ave", "Suite 15", "New Jersey", "10201", "5551118888", false);
-                createAddress(customerId, customerName, 4161, 234, "Washington", "2101 Green Valley", "Suite 300", "Seattle", "98101", "9879879876", false);
+                createAddress(customerId, customerName, 4164, 234, "New York", "545 Narrow Ave", "Suite 15", "New Jersey", "10201", "5551118888", false);
+                createAddress(customerId, customerName, 4177, 234, "Washington", "2101 Green Valley", "Suite 300", "Seattle", "98101", "9879879876", false);
                 listCustomerAddresses(customerId);
                 createCreditCard("John Doe", "5555555555554444", "999", 4, 2020, addressId1);
                 break;
@@ -1842,7 +1881,7 @@ public class DataProvider extends BaseTest {
                 createNewCustomer();
                 createCart(customerId);
                 updSKULineItems(orderId, "SKU-YAX", 1);
-                setShipAddress(orderId, "John Doe", 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
+                setShipAddress(orderId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(orderId);
                 setShipMethod(orderId, shipMethodId);
                 listCustomerAddresses(customerId);
@@ -1852,7 +1891,7 @@ public class DataProvider extends BaseTest {
 
                 createCart(customerId);
                 updSKULineItems(orderId, "SKU-BRO", 2);
-                setShipAddress(orderId, "John Doe", 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
+                setShipAddress(orderId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(orderId);
                 setShipMethod(orderId, shipMethodId);
                 listCustomerAddresses(customerId);
@@ -1866,7 +1905,7 @@ public class DataProvider extends BaseTest {
                 createNewCustomer();
                 createCart(customerId);
                 updSKULineItems(orderId, "SKU-YAX", 1);
-                setShipAddress(orderId, "John Doe", 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
+                setShipAddress(orderId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(orderId);
                 setShipMethod(orderId, shipMethodId);
                 listCustomerAddresses(customerId);
@@ -1876,7 +1915,7 @@ public class DataProvider extends BaseTest {
 
                 createCart(customerId);
                 updSKULineItems(orderId, "SKU-BRO", 2);
-                setShipAddress(orderId, "John Doe", 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
+                setShipAddress(orderId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(orderId);
                 setShipMethod(orderId, shipMethodId);
                 listCustomerAddresses(customerId);
@@ -1902,7 +1941,7 @@ public class DataProvider extends BaseTest {
                 createNewCustomer();
                 createCart(customerId);
                 updSKULineItems(orderId, "SKU-YAX", 1);
-                setShipAddress(orderId, "John Doe", 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
+                setShipAddress(orderId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(orderId);
                 setShipMethod(orderId, shipMethodId);
                 listCustomerAddresses(customerId);
@@ -1915,7 +1954,7 @@ public class DataProvider extends BaseTest {
                 createNewCustomer();
                 createCart(customerId);
                 updSKULineItems(orderId, "SKU-YAX", 1);
-                setShipAddress(orderId, "John Doe", 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
+                setShipAddress(orderId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(orderId);
                 setShipMethod(orderId, shipMethodId);
                 listCustomerAddresses(customerId);
@@ -1962,7 +2001,7 @@ public class DataProvider extends BaseTest {
                 createNewCustomer();
                 createCart(customerId);
                 updSKULineItems(orderId, "SKU-YAX", 1);
-                setShipAddress(orderId, "John Doe", 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
+                setShipAddress(orderId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(orderId);
                 setShipMethod(orderId, shipMethodId);
                 listCustomerAddresses(customerId);
@@ -2060,7 +2099,7 @@ public class DataProvider extends BaseTest {
                 createNewCustomer();
                 createCart(customerId);
                 updSKULineItems(orderId, "SKU-YAX", 1);
-                setShipAddress(orderId, "John Doe", 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
+                setShipAddress(orderId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(orderId);
                 setShipMethod(orderId, shipMethodId);
                 listCustomerAddresses(customerId);
@@ -2083,8 +2122,122 @@ public class DataProvider extends BaseTest {
                 createSharedSearch_twoFilters();
                 break;
 
+            //--------------------------------- SEARCH FILTERS ---------------------------------//
+
+            case "order state: remorse hold":
+                createNewCustomer();
+                createCart(customerId);
+                updSKULineItems(orderId, "SKU-YAX", 1);
+                setShipAddress(orderId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
+                listShipMethods(orderId);
+                setShipMethod(orderId, shipMethodId);
+                listCustomerAddresses(customerId);
+                createCreditCard(customerName, "5555555555554444", "777", 3, 2020, addressId1);
+                setPayment_creditCard(orderId, creditCardId);
+                checkoutOrder(orderId);
+                break;
+
+            case "order state: manual hold":
+                createNewCustomer();
+                createCart(customerId);
+                updSKULineItems(orderId, "SKU-YAX", 1);
+                setShipAddress(orderId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
+                listShipMethods(orderId);
+                setShipMethod(orderId, shipMethodId);
+                listCustomerAddresses(customerId);
+                createCreditCard(customerName, "5555555555554444", "777", 3, 2020, addressId1);
+                setPayment_creditCard(orderId, creditCardId);
+                checkoutOrder(orderId);
+                changeOrderState(orderId, "manualHold");
+                break;
+
+            case "order state: fraud hold":
+                createNewCustomer();
+                createCart(customerId);
+                updSKULineItems(orderId, "SKU-YAX", 1);
+                setShipAddress(orderId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
+                listShipMethods(orderId);
+                setShipMethod(orderId, shipMethodId);
+                listCustomerAddresses(customerId);
+                createCreditCard(customerName, "5555555555554444", "777", 3, 2020, addressId1);
+                setPayment_creditCard(orderId, creditCardId);
+                checkoutOrder(orderId);
+                changeOrderState(orderId, "fraudHold");
+                break;
+
+            case "order state: fulfilment started":
+                createNewCustomer();
+                createCart(customerId);
+                updSKULineItems(orderId, "SKU-YAX", 1);
+                setShipAddress(orderId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
+                listShipMethods(orderId);
+                setShipMethod(orderId, shipMethodId);
+                listCustomerAddresses(customerId);
+                createCreditCard(customerName, "5555555555554444", "777", 3, 2020, addressId1);
+                setPayment_creditCard(orderId, creditCardId);
+                checkoutOrder(orderId);
+                changeOrderState(orderId, "fulfilmentStarted");
+                break;
+
+            case "order state: shipped":
+                createNewCustomer();
+                createCart(customerId);
+                updSKULineItems(orderId, "SKU-YAX", 1);
+                setShipAddress(orderId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
+                listShipMethods(orderId);
+                setShipMethod(orderId, shipMethodId);
+                listCustomerAddresses(customerId);
+                createCreditCard(customerName, "5555555555554444", "777", 3, 2020, addressId1);
+                setPayment_creditCard(orderId, creditCardId);
+                checkoutOrder(orderId);
+                changeOrderState(orderId, "shipped");
+                break;
+
+            case "order state: partially shipped":
+                createNewCustomer();
+                createCart(customerId);
+                updSKULineItems(orderId, "SKU-YAX", 1);
+                setShipAddress(orderId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
+                listShipMethods(orderId);
+                setShipMethod(orderId, shipMethodId);
+                listCustomerAddresses(customerId);
+                createCreditCard(customerName, "5555555555554444", "777", 3, 2020, addressId1);
+                setPayment_creditCard(orderId, creditCardId);
+                checkoutOrder(orderId);
+                changeOrderState(orderId, "partiallyShipped");
+                break;
+
+            case "order state: canceled":
+                createNewCustomer();
+                createCart(customerId);
+                updSKULineItems(orderId, "SKU-YAX", 1);
+                setShipAddress(orderId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
+                listShipMethods(orderId);
+                setShipMethod(orderId, shipMethodId);
+                listCustomerAddresses(customerId);
+                createCreditCard(customerName, "5555555555554444", "777", 3, 2020, addressId1);
+                setPayment_creditCard(orderId, creditCardId);
+                checkoutOrder(orderId);
+                changeOrderState(orderId, "canceled");
+                break;
+
+            case "customer with a billing address":
+                createNewCustomer();
+                createAddress(customerId, customerName, 4164, 234, "Oregon", "2101 Green Valley", "Suite 777", "Portland", "07097", "5557778686", false);
+                listCustomerAddresses(customerId);
+                createCreditCard("John Doe", "5555555555554444", "999", 4, 2020, addressId1);
+                updateCustomerShipAddress(customerId, addressId1, customerName, 4177, "4020 Green Valley", "Suite 4020", "Seattle", "98101", "9879879876");
+                break;
+
+
+
         }
 
     }
 
 }
+
+
+// 4177 - washington
+// 4161 - ny
+// 4164 - oregon

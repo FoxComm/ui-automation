@@ -3,7 +3,6 @@ package pages;
 import base.BasePage;
 import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import ru.yandex.qatools.allure.annotations.Step;
 
 import java.util.List;
@@ -11,11 +10,51 @@ import java.util.Objects;
 
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
-import static org.openqa.selenium.Keys.ENTER;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
-public class CustomerPage extends BasePage {
+public class CustomersPage extends BasePage {
+
+    //---------------------------- CATEGORY LIST ------------------------------//
+    //------------------------------ ELEMENTS ---------------------------------//
+
+
+
+    //------------------------------- HELPERS ---------------------------------//
+
+    @Step("Get {1} parameter value of {0}-th customer on the list.")
+    public String getCustomerParamVal(int customerIndex, String paramName) {
+
+        String customerParamVal = "";
+        waitForDataToLoad();
+
+        switch (paramName) {
+            case "Customer ID":
+                customerParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + customerIndex + "]/td[2]")).getText();
+                break;
+            case "Name":
+                customerParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + customerIndex + "]/td[3]")).getText();
+                break;
+            case "Email":
+                customerParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + customerIndex + "]/td[4]")).getText();
+                break;
+            case "Ship To Region":
+                customerParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + customerIndex + "]/td[5]")).getText();
+                break;
+            case "Bill To Region":
+                customerParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + customerIndex + "]/td[6]")).getText();
+                break;
+            case "Rank":
+                customerParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + customerIndex + "]/td[7]")).getText();
+                break;
+            case "Date/Time Joined":
+                customerParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + customerIndex + "]/td[8]/time")).getText();
+                break;
+        }
+
+        return customerParamVal;
+
+    }
 
     //-------------------- G E N E R A L    E L E M E N T S ------------------//
 
@@ -453,83 +492,83 @@ public class CustomerPage extends BasePage {
         waitForDataToLoad();
     }
 
-    public void hitEnter() {
-        searchFld().sendKeys(ENTER);
-        waitForDataToLoad();
-    }
-
-    private void selectLine(int index) {
-        for (int i = 0; i < index; i++) {
-            searchFld().sendKeys(Keys.ARROW_DOWN);
-        }
-        hitEnter();
-    }
-
-    @Step("Create a search filter {0} : {1} : {2}")
-    public void addFilter(String firstStatement, String secondStatement, String thirdStatement) {
-
-        searchFld().click();
-
-        switch (firstStatement) {
-
-            case "Order":
-                selectLine(1);
-                switch (secondStatement)
-                {
-                    case "Reference Number":
-                        selectLine(1);
-                        searchFld().sendKeys(thirdStatement);
-                        hitEnter();
-                        break;
-                    case "State":
-                        selectLine(2);
-                        switch(thirdStatement)
-                        {
-                            case "Cart":
-                                selectLine(1);
-                                break;
-                            case "Remorse Hold":
-                                selectLine(2);
-                                break;
-                            case "Manual Hold":
-                                selectLine(3);
-                                break;
-                            case "Fraud Hold":
-                                selectLine(4);
-                                break;
-                            case "Fulfillment Started":
-                                selectLine(5);
-                                break;
-                            case "Canceled":
-                                selectLine(8);
-                                break;
-                        }
-                        break;
-                }
-                break;
-
-            case "Items":
-                selectLine(3);
-                switch(secondStatement)
-                {
-                    case "Product Name":
-                        selectLine(2);
-                        searchFld().sendKeys(thirdStatement);
-                        hitEnter();
-                        break;
-                    case "Product SKU":
-                        selectLine(3);
-                        searchFld().sendKeys(thirdStatement);
-                        hitEnter();
-                        break;
-                }
-
-        }
-
-        $(By.xpath("//h1[text()='Orders']")).click();
-        sleep(500);
-
-    }
+//    public void hitEnter() {
+//        searchFld().sendKeys(ENTER);
+//        waitForDataToLoad();
+//    }
+//
+//    private void selectLine(int index) {
+//        for (int i = 0; i < index; i++) {
+//            searchFld().sendKeys(Keys.ARROW_DOWN);
+//        }
+//        hitEnter();
+//    }
+//
+//    @Step("Create a search filter {0} : {1} : {2}")
+//    public void addFilter(String firstStatement, String secondStatement, String thirdStatement) {
+//
+//        searchFld().click();
+//
+//        switch (firstStatement) {
+//
+//            case "Order":
+//                selectLine(1);
+//                switch (secondStatement)
+//                {
+//                    case "Reference Number":
+//                        selectLine(1);
+//                        searchFld().sendKeys(thirdStatement);
+//                        hitEnter();
+//                        break;
+//                    case "State":
+//                        selectLine(2);
+//                        switch(thirdStatement)
+//                        {
+//                            case "Cart":
+//                                selectLine(1);
+//                                break;
+//                            case "Remorse Hold":
+//                                selectLine(2);
+//                                break;
+//                            case "Manual Hold":
+//                                selectLine(3);
+//                                break;
+//                            case "Fraud Hold":
+//                                selectLine(4);
+//                                break;
+//                            case "Fulfillment Started":
+//                                selectLine(5);
+//                                break;
+//                            case "Canceled":
+//                                selectLine(8);
+//                                break;
+//                        }
+//                        break;
+//                }
+//                break;
+//
+//            case "Items":
+//                selectLine(3);
+//                switch(secondStatement)
+//                {
+//                    case "Product Name":
+//                        selectLine(2);
+//                        searchFld().sendKeys(thirdStatement);
+//                        hitEnter();
+//                        break;
+//                    case "Product SKU":
+//                        selectLine(3);
+//                        searchFld().sendKeys(thirdStatement);
+//                        hitEnter();
+//                        break;
+//                }
+//
+//        }
+//
+//        $(By.xpath("//h1[text()='Orders']")).click();
+//        sleep(500);
+//
+//    }
 
 
     //---------------------- S T O R E    C R E D I T S ----------------------//

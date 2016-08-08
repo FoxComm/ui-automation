@@ -3,7 +3,6 @@ package pages;
 import base.BasePage;
 import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import ru.yandex.qatools.allure.annotations.Step;
 
 import java.util.List;
@@ -19,7 +18,7 @@ public class StorefrontCategoryPage extends BasePage {
         return $(By.xpath("//div[@class='_products_item_list_item__list-item']"));
     }
 
-    private SelenideElement searchResults() {
+    private SelenideElement searchResult() {
         return $(By.xpath("//section/div[1]/div"));
     }
 
@@ -53,22 +52,12 @@ public class StorefrontCategoryPage extends BasePage {
 
     @Step("Wait for search output ot load.")
     public void waitForSearchResultsToLoad() {
-        try {
-            searchResults().shouldBe(visible);
-        } catch (NoSuchElementException nsee) {
-            assertTrue( !noContentMsg().is(visible),
-                    "Search gave no results." );
-        }
+        searchResult().shouldBe(visible.because("Search gave no results."));
     }
 
     @Step("Wait for data on the list to be loaded.")
     public void waitForDataToLoad_sf() {
-        try {
-            itemsOnList_s().shouldBe(visible);
-        } catch (NoSuchElementException nsee) {
-            assertTrue( !noContentMsg().is(visible),
-                    "'No products found.' message is displayed." );
-        }
+        itemsOnList_s().shouldBe(visible.because("'No products found.' message is displayed."));
     }
 
     @Step("Find product <{0}> on the list.")
