@@ -7,15 +7,18 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import ru.yandex.qatools.allure.annotations.Step;
 
+import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
-import static com.codeborne.selenide.Condition.exist;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.sleep;
 import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
+import static org.openqa.selenium.By.xpath;
 
 public class ConciseAPI extends Configuration {
 
@@ -90,7 +93,7 @@ public class ConciseAPI extends Configuration {
 
     }
 
-    protected String substractFromString(String string1, String string2) {
+    protected static String subtractFromString(String string1, String string2) {
 
         Integer intString1 = Integer.valueOf(string1);
         Integer intString2 = Integer.valueOf(string2);
@@ -99,7 +102,7 @@ public class ConciseAPI extends Configuration {
 
     }
 
-    protected String subtractFromString(String string, int integer) {
+    protected static String subtractFromString(String string, int integer) {
         Integer intString = Integer.valueOf(string);
         return String.valueOf(intString - integer);
     }
@@ -136,16 +139,43 @@ public class ConciseAPI extends Configuration {
     }
 
     protected SelenideElement itemsOnList() {
-        return $(By.xpath("//td[@class='fc-table-td']"));
+        return $(xpath("//td[@class='fc-table-td']"));
     }
 
     protected SelenideElement emptyList() {
-        return $(By.xpath("//div[@class='fc-content-box__empty-row']"));
+        return $(xpath("//div[@class='fc-content-box__empty-row']"));
+    }
+
+    private SelenideElement loadingSpinner() {
+        return $(xpath("//div[@class='fc-wait-animation fc-wait-animation_size_l']"));
     }
 
     @Step("Wait for data on the list to be loaded.")
     public void waitForDataToLoad() {
-            itemsOnList().should(exist.because("There's no content on the list."));
+//        itemsOnList().should(exist.because("There's no content on the list."));
+        sleep(1000);
+        loadingSpinner().shouldNotBe(visible
+                .because("Data loading either took too long or it was interrupted by an error."));
+    }
+
+    public static String getDate() {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date();
+        return dateFormat.format(date);
+    }
+
+    protected static String getTomorrowDate() {
+        String today = getDate();
+        String day = today.substring(8, 10);
+        String tomorrow = addToString(day, 1);
+        return today.substring(0, 8) + tomorrow;
+    }
+
+    public static String getYesterdayDate() {
+        String today = getDate();
+        String day = today.substring(8, 10);
+        String yesterday = subtractFromString(day, 1);
+        return today.substring(0, 8) + yesterday;
     }
 
 

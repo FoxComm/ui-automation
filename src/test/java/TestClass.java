@@ -7,7 +7,10 @@ import org.testng.annotations.Test;
 import pages.LoginPage;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -48,7 +51,8 @@ public class TestClass extends BaseTest {
     private static List<String> bulkCodes = new ArrayList<>();
 
     private static String sku;              // stored from createSKU();
-    public static int productId;            // stored form createProduct() methods
+    protected static String productId;                 // stored from createProduct_<..>() methods
+    protected static String productName;            // stored from createProduct_<..>() methods
 
     private static int searchId;                    // stored from createSharedSearch() methods
     private static String searchCode;               // stored from createSharedSearch() methods
@@ -841,7 +845,7 @@ public class TestClass extends BaseTest {
 
         Response response = client.newCall(request).execute();
         String responseBody = response.body().string();
-        productId = Integer.valueOf(responseBody.substring(6, 9));
+        productId = responseBody.substring(6, 9);
 
         System.out.println(response);
         System.out.println(responseBody);
@@ -919,7 +923,7 @@ public class TestClass extends BaseTest {
         OkHttpClient client = new OkHttpClient();
 
         MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"metaDescription\":{\"t\":\"string\",\"v\":null},\"metaTitle\":{\"t\":\"string\",\"v\":null},\"url\":{\"t\":\"string\",\"v\":null},\"description\":{\"t\":\"richText\",\"v\":\"The best thing to buy in 2016!\"},\"title\":{\"t\":\"string\",\"v\":\"" + productName_local + "\"},\"tags\":{\"t\":\"tags\",\"v\":[\"" + tag + "\"]},\"activeFrom\": {\"t\": \"date\",\"v\": \"2016-07-26T14:48:12.493Z\"},\"activeTo\":{\"v\":null,\"t\":\"datetime\"}},\"skus\":[{\"feCode\":\"1PZ1Z6FEB42BFOCYJH5MI\",\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"" + sku + "\"},\"title\":{\"t\":\"string\",\"v\":\"\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"2718\"}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"2718\"}}}}]}");
+        RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"metaDescription\":{\"t\":\"string\",\"v\":null},\"metaTitle\":{\"t\":\"string\",\"v\":null},\"url\":{\"t\":\"string\",\"v\":null},\"description\":{\"t\":\"richText\",\"v\":\"The best thing to buy in 2016!\"},\"title\":{\"t\":\"string\",\"v\":\"" + productName_local + "\"},\"tags\":{\"t\":\"tags\",\"v\":[\"" + tag + "\"]},\"activeFrom\": {\"t\": \"date\",\"v\": \"" + getDate() + "T14:48:12.493Z\"},\"activeTo\":{\"v\":null,\"t\":\"datetime\"}},\"skus\":[{\"feCode\":\"1PZ1Z6FEB42BFOCYJH5MI\",\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"" + sku + "\"},\"title\":{\"t\":\"string\",\"v\":\"\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"2718\"}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"2718\"}}}}]}");
         Request request = new Request.Builder()
                 .url(adminUrl + "/api/v1/products/default")
                 .post(body)
@@ -931,14 +935,19 @@ public class TestClass extends BaseTest {
 
         Response response = client.newCall(request).execute();
         String responseBody = response.body().string();
-        productId = Integer.valueOf(responseBody.substring(6, responseBody.indexOf(",", 6)));
-//        productName = productName_local;
+        int responseCode = response.code();
+        String responseMsg = response.message();
 
-        System.out.println(response);
-        System.out.println(responseBody);
-        System.out.println("Product ID: <" + productId + ">.");
-//        System.out.println("Product name: <" + productName + ">.");
-        System.out.println("---- ---- ---- ----");
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+            productId = responseBody.substring(6, responseBody.indexOf(",", 6));
+            productName = productName_local;
+            System.out.println("Product ID: <" + productId + ">.");
+            System.out.println("Product name: <" + productName + ">.");
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
 
     }
 
@@ -1068,6 +1077,69 @@ public class TestClass extends BaseTest {
 
     }
 
+    private static void createProduct_activeFromTo(String sku, String startDate, String endDate) throws IOException {
+
+        System.out.println("Creating product with active from-to dates; SKU: <" + sku + ">...");
+        String productName_local = "Test Product " + generateRandomID();
+
+        OkHttpClient client = new OkHttpClient();
+
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"productId\":null,\"attributes\":{\"metaDescription\":{\"t\":\"string\",\"v\":null},\"metaTitle\":{\"t\":\"string\",\"v\":null},\"url\":{\"t\":\"string\",\"v\":null},\"description\":{\"t\":\"richText\",\"v\":\"<p>The best thing to buy in 2016!</p>\"},\"title\":{\"t\":\"string\",\"v\":\"" + productName_local + "\"},\"activeFrom\":{\"t\":\"datetime\",\"v\":\"" + startDate + "T07:00:17.729Z\"},\"activeTo\":{\"t\":\"datetime\",\"v\":\"" + endDate + "T19:00:00.810Z\"},\"tags\":{\"t\":\"tags\",\"v\":[\"sunglasses\"]}},\"skus\":[{\"feCode\":\"CIEP39Z2WPQ1ETFVQUXR\",\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"" + sku + "\"},\"title\":{\"t\":\"string\",\"v\":\"\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":2718}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":2718}}}}],\"context\":\"\"}");
+        Request request = new Request.Builder()
+                .url("http://admin.stage.foxcommerce.com/api/v1/products/default")
+                .post(body)
+                .addHeader("content-type", "application/json")
+                .addHeader("accept", "application/json")
+                .addHeader("cache-control", "no-cache")
+                .addHeader("JWT", jwt)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+        int responseCode = response.code();
+        String responseMsg = response.message();
+
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+            productName = productName_local;
+            productId = responseBody.substring(6, responseBody.indexOf(",", 6));
+            System.out.println("Product ID: <" + productId + ">.");
+            System.out.println("Product name: <" + productName + ">.");
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
+
+    }
+
+    private static void archiveProduct(String productId) throws IOException {
+
+        System.out.println("Archiving product with ID <" + productId + ">...");
+
+        OkHttpClient client = new OkHttpClient();
+
+        Request request = new Request.Builder()
+                .url("http://admin.stage.foxcommerce.com/api/v1/products/default/" + productId)
+                .delete(null)
+                .addHeader("cache-control", "no-cache")
+                .addHeader("JWT", jwt)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+        int responseCode = response.code();
+        String responseMsg = response.message();
+
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
+
+    }
+
 
     public static void main(String[] args) throws IOException {
 
@@ -1088,7 +1160,16 @@ public class TestClass extends BaseTest {
 //        shareSearch(searchCode, "Such Root");
 //        getAllSavedSearches();
 
-        createAddress(1020, "John Doe", 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
+//        createAddress(1020, "John Doe", 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
+//        createSKU_active();
+        createProduct_active(sku, "sunglasses");
+        createProduct_activeFromTo(sku, getDate(), getTomorrowDate());
+        archiveProduct(productId);
+
+//        String today = getDate();
+//        String tomorrow = getTomorrowDate();
+//        System.out.println("Today: <" + today + ">");
+//        System.out.println("Tomorrow : <" + tomorrow + ">");
 
     }
 

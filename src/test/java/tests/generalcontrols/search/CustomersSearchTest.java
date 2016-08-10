@@ -36,7 +36,7 @@ public class CustomersSearchTest extends DataProvider {
         p.addFilter("Customer", "Name", customerName);
         waitForDataToLoad();
 
-        p.findItemOnList(customerName).shouldBe(visible
+        p.itemOnList(customerName).shouldBe(visible
                 .because("Search has failed to find a customer with requested name."));
         p.searchResults().shouldHaveSize(1);
 
@@ -51,7 +51,7 @@ public class CustomersSearchTest extends DataProvider {
         p.addFilter("Customer", "Name", customerName.substring(0, customerName.indexOf(" ")));
         waitForDataToLoad();
 
-        p.findItemOnList(customerName).shouldBe(visible
+        p.itemOnList(customerName).shouldBe(visible
                 .because("Search has failed to find a customer with requested part of the name."));
 
     }
@@ -63,7 +63,7 @@ public class CustomersSearchTest extends DataProvider {
         p = open(adminUrl + "/customers", CustomersPage.class);
 
         p.addFilter("Customer", "Name", customerName.substring(customerName.indexOf(" "), customerName.length()));
-        p.findItemOnList(customerName).shouldBe(visible
+        p.itemOnList(customerName).shouldBe(visible
                 .because("Search has failed to find a customer with requested part of the name."));
         p.searchResults().shouldHaveSize(1);
 
@@ -76,7 +76,7 @@ public class CustomersSearchTest extends DataProvider {
         p = open(adminUrl + "/customers", CustomersPage.class);
 
         p.addFilter("Customer", "Email", customerEmail);
-        p.findItemOnList(customerEmail).shouldBe(visible
+        p.itemOnList(customerEmail).shouldBe(visible
                 .because("Search has failed to find a customer with requested email."));
         p.searchResults().shouldHaveSize(1);
 
@@ -89,7 +89,7 @@ public class CustomersSearchTest extends DataProvider {
         p = open(adminUrl + "/customers", CustomersPage.class);
 
         p.addFilter("Customer", "Email", customerEmail.substring(0, customerEmail.indexOf("@")));
-        p.findItemOnList(customerEmail).shouldBe(visible
+        p.itemOnList(customerEmail).shouldBe(visible
                 .because("Search has failed to find a customer with requested email user name."));
         p.searchResults().shouldHaveSize(1);
 
@@ -111,7 +111,7 @@ public class CustomersSearchTest extends DataProvider {
         p = open(adminUrl + "/customers", CustomersPage.class);
 
         p.addFilter("Order", "Reference Number", orderId);
-        p.findItemOnList(customerName).shouldBe(visible
+        p.itemOnList(customerName).shouldBe(visible
                 .because("Failed to find a customer with requested order refNum (uppercase)."));
         p.searchResults().shouldHaveSize(1);
 
@@ -124,7 +124,7 @@ public class CustomersSearchTest extends DataProvider {
         p = open(adminUrl + "/customers", CustomersPage.class);
 
         p.addFilter("Order", "Reference Number", orderId.toLowerCase());
-        p.findItemOnList(customerName).shouldBe(visible
+        p.itemOnList(customerName).shouldBe(visible
                 .because("Failed to find a customer with requested order refNum (lowercase)."));
         p.searchResults().shouldHaveSize(1);
 
@@ -137,7 +137,7 @@ public class CustomersSearchTest extends DataProvider {
         p = open(adminUrl + "/customers", CustomersPage.class);
 
         p.addFilter("Order", "Reference Number", orderId.substring(0, orderId.length() - 1));
-        p.findItemOnList(customerName).shouldNotBe(visible
+        p.itemOnList(customerName).shouldNotBe(visible
                 .because("Failed to find a customer with requested order refNum (lowercase)."));
         p.searchResults().shouldHaveSize(0);
 
@@ -150,7 +150,7 @@ public class CustomersSearchTest extends DataProvider {
         p = open(adminUrl + "/customers", CustomersPage.class);
 
         p.addFilter("Order", "State", "Remorse Hold");
-        p.findItemOnList(customerName).shouldBe(visible
+        p.itemOnList(customerName).shouldBe(visible
                 .because("Failed to find a customer with order in 'Remorse Hold' state."));
 
     }
@@ -162,7 +162,7 @@ public class CustomersSearchTest extends DataProvider {
         p = open(adminUrl + "/customers", CustomersPage.class);
 
         p.addFilter("Order", "State", "Manual Hold");
-        p.findItemOnList(customerName).shouldBe(visible
+        p.itemOnList(customerName).shouldBe(visible
                 .because("Failed to find a customer with order in 'Manual Hold' state."));
 
     }
@@ -174,7 +174,7 @@ public class CustomersSearchTest extends DataProvider {
         p = open(adminUrl + "/customers", CustomersPage.class);
 
         p.addFilter("Order", "State", "Fraud Hold");
-        p.findItemOnList(customerName).shouldBe(visible
+        p.itemOnList(customerName).shouldBe(visible
                 .because("Failed to find a customer with order in 'Fraud Hold' state."));
 
     }
@@ -186,7 +186,7 @@ public class CustomersSearchTest extends DataProvider {
         p = open(adminUrl + "/customers", CustomersPage.class);
 
         p.addFilter("Order", "State", "Fulfilment Started");
-        p.findItemOnList(customerName).shouldBe(visible
+        p.itemOnList(customerName).shouldBe(visible
                 .because("Failed to find a customer with order in 'Fulfilment Started' state."));
 
     }
@@ -198,7 +198,7 @@ public class CustomersSearchTest extends DataProvider {
         p = open(adminUrl + "/customers", CustomersPage.class);
 
         p.addFilter("Order", "State", "Shipped");
-        p.findItemOnList(customerName).shouldBe(visible
+        p.itemOnList(customerName).shouldBe(visible
                 .because("Failed to find a customer with order in 'Shipped' state."));
 
     }
@@ -210,7 +210,7 @@ public class CustomersSearchTest extends DataProvider {
         p = open(adminUrl + "/customers", CustomersPage.class);
 
         p.addFilter("Order", "State", "Partially Shipped");
-        p.findItemOnList(customerName).shouldBe(visible
+        p.itemOnList(customerName).shouldBe(visible
                 .because("Failed to find a customer with order in 'Partially Shipped' state."));
 
     }
@@ -222,7 +222,7 @@ public class CustomersSearchTest extends DataProvider {
         p = open(adminUrl + "/customers", CustomersPage.class);
 
         p.addFilter("Order", "State", "Canceled");
-        p.findItemOnList(customerName).shouldBe(visible
+        p.itemOnList(customerName).shouldBe(visible
                 .because("Failed to find a customer with order in 'Canceled' state."));
 
     }
@@ -240,7 +240,7 @@ public class CustomersSearchTest extends DataProvider {
         p = open(adminUrl + "/customers", CustomersPage.class);
 
         p.addFilter("Shipping", "City", "Portland");
-        p.findItemOnList(customerName).shouldBe(visible
+        p.itemOnList(customerName).shouldBe(visible
                 .because("Failed to find a customer with 'Portland' as shipping city."));
 
     }
@@ -252,7 +252,7 @@ public class CustomersSearchTest extends DataProvider {
         p = open(adminUrl + "/customers", CustomersPage.class);
 
         p.addFilter("Shipping", "City", "Oregon");
-        p.findItemOnList(customerName).shouldBe(visible
+        p.itemOnList(customerName).shouldBe(visible
                 .because("Failed to find a customer with 'Oregon' as shipping state."));
 
     }
@@ -264,7 +264,7 @@ public class CustomersSearchTest extends DataProvider {
         p = open(adminUrl + "/customers", CustomersPage.class);
 
         p.addFilter("Shipping", "Zip", "97201");
-        p.findItemOnList(customerName).shouldBe(visible
+        p.itemOnList(customerName).shouldBe(visible
                 .because("Failed to find a customer with '97201' as shipping ZIP."));
 
     }
@@ -276,7 +276,7 @@ public class CustomersSearchTest extends DataProvider {
         p = open(adminUrl + "/customers", CustomersPage.class);
 
         p.addFilter("Billing", "City", "Portland");
-        p.findItemOnList(customerName).shouldBe(visible
+        p.itemOnList(customerName).shouldBe(visible
                 .because("Failed to find a customer with 'Portland' as billing city."));
 
     }
@@ -288,7 +288,7 @@ public class CustomersSearchTest extends DataProvider {
         p = open(adminUrl + "/customers", CustomersPage.class);
 
         p.addFilter("Billing", "State", "Oregon");
-        p.findItemOnList(customerName).shouldBe(visible
+        p.itemOnList(customerName).shouldBe(visible
                 .because("Failed to find a customer with 'Oregon' as billing state."));
 
     }
@@ -300,7 +300,7 @@ public class CustomersSearchTest extends DataProvider {
         p = open(adminUrl + "/customers", CustomersPage.class);
 
         p.addFilter("Billing", "Zip", "07097");
-        p.findItemOnList(customerName).shouldBe(visible
+        p.itemOnList(customerName).shouldBe(visible
                 .because("Failed to find a customer with '07097' as billing ZIP."));
 
     }

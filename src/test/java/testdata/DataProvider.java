@@ -35,7 +35,7 @@ public class DataProvider extends BaseTest {
 
     protected static String sku;                    // stored from createSKU_active();
     protected static String productName;            // stored from createProduct_<..>() methods
-    protected static int productId;                 // stored from createProduct_<..>() methods
+    protected static String productId;                 // stored from createProduct_<..>() methods
 
     private static int searchId;                    // stored from createSharedSearch() methods
     public static String searchRandomId;            // stored at createSharedSearch() methods
@@ -1280,7 +1280,7 @@ public class DataProvider extends BaseTest {
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
             productName = productName_local;
-            productId = Integer.valueOf(responseBody.substring(6, responseBody.indexOf(",", 6)));
+            productId = responseBody.substring(6, responseBody.indexOf(",", 6));
             System.out.println("Product ID: <" + productId + ">.");
             System.out.println("Product name: <" + productName + ">.");
             System.out.println("---- ---- ---- ----");
@@ -1316,7 +1316,7 @@ public class DataProvider extends BaseTest {
 
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
-            productId = Integer.valueOf(responseBody.substring(6, responseBody.indexOf(",", 6)));
+            productId = responseBody.substring(6, responseBody.indexOf(",", 6));
             productName = productName_local;
             System.out.println("Product ID: <" + productId + ">.");
             System.out.println("Product name: <" + productName + ">.");
@@ -1353,7 +1353,7 @@ public class DataProvider extends BaseTest {
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
             productName = productName_local;
-            productId = Integer.valueOf(responseBody.substring(6, responseBody.indexOf(",", 6)));
+            productId = responseBody.substring(6, responseBody.indexOf(",", 6));
             System.out.println("Product ID: <" + productId + ">.");
             System.out.println("Product name: <" + productName + ">.");
             System.out.println("---- ---- ---- ----");
@@ -1389,7 +1389,7 @@ public class DataProvider extends BaseTest {
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
             productName = productName_local;
-            productId = Integer.valueOf(responseBody.substring(6, responseBody.indexOf(",", 6)));
+            productId = responseBody.substring(6, responseBody.indexOf(",", 6));
             System.out.println("Product ID: <" + productId + ">.");
             System.out.println("Product name: <" + productName + ">.");
             System.out.println("---- ---- ---- ----");
@@ -1425,9 +1425,72 @@ public class DataProvider extends BaseTest {
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
             productName = productName_local;
-            productId = Integer.valueOf(responseBody.substring(6, responseBody.indexOf(",", 6)));
+            productId = responseBody.substring(6, responseBody.indexOf(",", 6));
             System.out.println("Product ID: <" + productId + ">.");
             System.out.println("Product name: <" + productName + ">.");
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
+
+    }
+
+    private static void createProduct_activeFromTo(String sku, String startDate, String endDate) throws IOException {
+
+        System.out.println("Creating product with active from-to dates; SKU: <" + sku + ">...");
+        String productName_local = "Test Product " + generateRandomID();
+
+        OkHttpClient client = new OkHttpClient();
+
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"productId\":null,\"attributes\":{\"metaDescription\":{\"t\":\"string\",\"v\":null},\"metaTitle\":{\"t\":\"string\",\"v\":null},\"url\":{\"t\":\"string\",\"v\":null},\"description\":{\"t\":\"richText\",\"v\":\"<p>The best thing to buy in 2016!</p>\"},\"title\":{\"t\":\"string\",\"v\":\"" + productName_local + "\"},\"activeFrom\":{\"t\":\"datetime\",\"v\":\"" + startDate + "T07:00:17.729Z\"},\"activeTo\":{\"t\":\"datetime\",\"v\":\"" + endDate + "T19:00:00.810Z\"},\"tags\":{\"t\":\"tags\",\"v\":[\"sunglasses\"]}},\"skus\":[{\"feCode\":\"CIEP39Z2WPQ1ETFVQUXR\",\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"" + sku + "\"},\"title\":{\"t\":\"string\",\"v\":\"\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":2718}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":2718}}}}],\"context\":\"\"}");
+        Request request = new Request.Builder()
+        .url("http://admin.stage.foxcommerce.com/api/v1/products/default")
+        .post(body)
+                .addHeader("content-type", "application/json")
+                .addHeader("accept", "application/json")
+                .addHeader("cache-control", "no-cache")
+                .addHeader("JWT", jwt)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+        int responseCode = response.code();
+        String responseMsg = response.message();
+
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+            productName = productName_local;
+            productId = responseBody.substring(6, responseBody.indexOf(",", 6));
+            System.out.println("Product ID: <" + productId + ">.");
+            System.out.println("Product name: <" + productName + ">.");
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
+
+    }
+
+    private static void archiveProduct(String productId) throws IOException {
+
+        System.out.println("Archiving product with ID <" + productId + ">...");
+
+        OkHttpClient client = new OkHttpClient();
+
+        Request request = new Request.Builder()
+                .url("http://admin.stage.foxcommerce.com/api/v1/products/default/" + productId)
+                .delete(null)
+                .addHeader("cache-control", "no-cache")
+                .addHeader("JWT", jwt)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+        int responseCode = response.code();
+        String responseMsg = response.message();
+
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
             System.out.println("---- ---- ---- ----");
         } else {
             failTest(responseBody, responseCode, responseMsg);
@@ -2229,7 +2292,16 @@ public class DataProvider extends BaseTest {
                 updateCustomerShipAddress(customerId, addressId1, customerName, 4177, "4020 Green Valley", "Suite 4020", "Seattle", "98101", "9879879876");
                 break;
 
+            case "product for search tests":
+                createSKU_active();
+                createProduct_activeFromTo(sku, getDate(), getTomorrowDate());
+                break;
 
+            case "archived product":
+                createSKU_active();
+                createProduct_activeFromTo(sku, getDate(), getTomorrowDate());
+                archiveProduct(productId);
+                break;
 
         }
 

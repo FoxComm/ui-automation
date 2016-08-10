@@ -3,7 +3,6 @@ package pages;
 import base.BasePage;
 import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import ru.yandex.qatools.allure.annotations.Step;
 
@@ -85,14 +84,14 @@ public class ProductsPage extends BasePage {
 
     //------------------------------- HELPERS --------------------------------//
 
-    @Step("Remove all filters from the search field")
-    public void clearSearchFld() {
-        waitForDataToLoad();
-        List<SelenideElement> searchFiltersList = $$(By.xpath("//a[@class='fc-pilled-input__pill-close']"));
-        for(SelenideElement filterCloseBtn : searchFiltersList) {
-            click( filterCloseBtn );
-        }
-    }
+//    @Step("Remove all filters from the search field")
+//    public void clearSearchFld() {
+//        waitForDataToLoad();
+//        List<SelenideElement> searchFiltersList = $$(By.xpath("//a[@class='fc-pilled-input__pill-close']"));
+//        for(SelenideElement filterCloseBtn : searchFiltersList) {
+//            click( filterCloseBtn );
+//        }
+//    }
 
     @Step("Set product state to '{0}'")
     public void setState(String state) {
@@ -171,52 +170,52 @@ public class ProductsPage extends BasePage {
         return productParamVal;
     }
 
-    private void selectLine(int index) {
-        for (int i = 0; i < index; i++) {
-            searchFld().sendKeys(Keys.ARROW_DOWN);
-        }
-        hitEnter();
-    }
-
-    @Step("Create a search filter {0} : {1} : {2}")
-    public void addFilter(String firstStatement, String secondStatement, String thirdStatement) {
-
-        searchFld().click();
-
-        switch(firstStatement)
-        {
-            case "Product":
-
-                switch(secondStatement)
-                {
-                    case "ID":
-                        selectLine(1);
-                        waitForDataToLoad();
+//    private void selectLine(int index) {
+//        for (int i = 0; i < index; i++) {
+//            searchFld().sendKeys(Keys.ARROW_DOWN);
+//        }
+//        hitEnter();
+//    }
+//
+//    @Step("Create a search filter {0} : {1} : {2}")
+//    public void addFilter(String firstStatement, String secondStatement, String thirdStatement) {
+//
+//        searchFld().click();
+//
+//        switch(firstStatement)
+//        {
+//            case "Product":
+//
+//                switch(secondStatement)
+//                {
+//                    case "ID":
+//                        selectLine(1);
+//                        waitForDataToLoad();
+////                        hitEnter();
+//                        searchFld().sendKeys(thirdStatement);
 //                        hitEnter();
-                        searchFld().sendKeys(thirdStatement);
-                        hitEnter();
-                        waitForDataToLoad();
-                        break;
-                    case "Name":
-                        selectLine(2);
+//                        waitForDataToLoad();
+//                        break;
+//                    case "Name":
+//                        selectLine(2);
+////                        hitEnter();
+//                        searchFld().sendKeys(thirdStatement);
 //                        hitEnter();
-                        searchFld().sendKeys(thirdStatement);
-                        hitEnter();
-                        waitForDataToLoad();
-                        break;
-                }
-                break;
-
-        }
-        // resets searchFld focus (works as a hack)
-        takeFocusAway();
-
-    }
-
-    private void takeFocusAway() {
-        productsCounter().click();
-        sleep(500);
-    }
+//                        waitForDataToLoad();
+//                        break;
+//                }
+//                break;
+//
+//        }
+//        // resets searchFld focus (works as a hack)
+//        takeFocusAway();
+//
+//    }
+//
+//    private void takeFocusAway() {
+//        productsCounter().click();
+//        sleep(500);
+//    }
 
     @Step("Fill out the 'New Product' form - Title: <{0}>, SKU: <{1}>, Retail Price: <{2}>, Sale Price: <{3}>, State: <{4}>")
     public void fillOutProductForm(String productTitle, String SKU, String retailPrice, String salePrice, String tagVal, String state) {

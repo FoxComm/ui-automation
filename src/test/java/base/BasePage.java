@@ -14,11 +14,11 @@ import static com.codeborne.selenide.Condition.enabled;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
 import static org.openqa.selenium.By.xpath;
-import static org.testng.Assert.assertTrue;
 
 public class BasePage extends ConciseAPI {
 
     //---------------------------------- GENERAL CONTROLS -----------------------------------//
+
     public SelenideElement userMenuBtn() {
         return $(xpath("//div[@class='_header_header__name']"));
     }
@@ -149,6 +149,10 @@ public class BasePage extends ConciseAPI {
         return $(xpath("//div[@class='fc-datepicker__day _current']"));
     }
 
+    public SelenideElement beforeYesterday() {
+        return $(xpath("//div[@class='fc-datepicker__day _current']/preceding-sibling::*[2]"));
+    }
+
     public SelenideElement yesterday() {
         return $(xpath("//div[@class='fc-datepicker__day _current']/preceding-sibling::*[1]"));
     }
@@ -156,6 +160,11 @@ public class BasePage extends ConciseAPI {
     public SelenideElement tomorrow() {
         return $(xpath("//div[@class='fc-datepicker__day _current']/following-sibling::*[1]"));
     }
+
+    public SelenideElement afterTomorrow() {
+        return $(xpath("//div[@class='fc-datepicker__day _current']/following-sibling::*[2]"));
+    }
+
 //----
     private SelenideElement columnLabel(int labelIndex) {
         return $(By.xpath("//table[@class='fc-table fc-multi-select-table']/thead/tr/th[" + (labelIndex + 1) + "]"));
@@ -186,6 +195,7 @@ public class BasePage extends ConciseAPI {
         return $$(xpath("//tbody[@class='fc-table-body']/a"));
     }
 
+    // used with filters like 'Products : ID : val', where "Products : ID" - is a single (non-composite) line
     @Step("Create a search filter {0} : {1}")
     public void addFilter(String firstCriteria, String secondCriteria) {
 
@@ -193,11 +203,12 @@ public class BasePage extends ConciseAPI {
         click( firstCriteria(firstCriteria) );
         searchFld().sendKeys(secondCriteria);
         hitEnter();
-
         waitForDataToLoad();
+        $(xpath("//h1")).click();
 
     }
 
+    // used with filters like 'Orders : State : Canceled'
     @Step("Create a search filter {0} : {1} : {2}")
     public void addFilter(String firstCriteria, String secondCriteria, String thirdCriteria) {
 
@@ -208,23 +219,27 @@ public class BasePage extends ConciseAPI {
         click( secondCriteria(secondCriteriaVal) );
         searchFld().sendKeys(thirdCriteria);
         hitEnter();
-
         waitForDataToLoad();
+        $(xpath("//h1")).click();
 
     }
 
+    // used with date pickers
     @Step("Create a search filter {0} : {1} : {2}")
     public void addFilter(String firstCriteria, String secondCriteria, SelenideElement date) {
 
+        String secondCriteriaVal = firstCriteria + " : " + secondCriteria;
+
         click( searchFld() );
         click( firstCriteria(firstCriteria) );
-        searchFld().sendKeys(secondCriteria);
+        click( secondCriteria(secondCriteriaVal) );
         click( date );
-
         waitForDataToLoad();
+        $(xpath("//h1")).click();
 
     }
 
+    //used with filters like 'Order : Total : > : $1'
     @Step("Create a search filter {0} : {1} : {2} : {3}")
     public void addFilter(String firstCriteria, String secondCriteria, String thirdCriteria, String fourthCriteria) {
 
@@ -237,8 +252,8 @@ public class BasePage extends ConciseAPI {
         click( thirdCriteria(thirdCriteriaVal) );
         searchFld().sendKeys(fourthCriteria);
         hitEnter();
-
         waitForDataToLoad();
+        $(xpath("//h1")).click();
 
     }
 
@@ -270,9 +285,13 @@ public class BasePage extends ConciseAPI {
 
         }
 
-        assertTrue( itemToClick!= null, "Item with requested param value isn't displayed on the list.");
+//        assertTrue( itemToClick!= null, "Item with requested param value isn't displayed on the list.");
         return itemToClick;
 
+    }
+
+    public SelenideElement itemOnList(String itemParam) {
+        return $(xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a/td[text()='" + itemParam + "']"));
     }
 
     @Step
