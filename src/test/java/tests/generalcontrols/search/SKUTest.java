@@ -32,196 +32,196 @@ public class SKUTest extends DataProvider {
 
     }
 
-//    @Test(priority = 1)
-//    public void skuCode() {
-//
-//        p.addFilter("SKU : Code", sku);
-//        p.itemOnList(sku).shouldBe(visible
-//                .because("Search has failed to find a SKU with requested code."));
-//
-//    }
-//
-//    @Test(priority = 2)
-//    public void skuTitle() {
-//
-//        p.addFilter("SKU : Title", skuTitle);
-//        p.itemOnList(skuTitle).shouldBe(visible
-//                .because("Search has failed to find a SKU with requested code."));
-//
-//    }
-//
-//    //--------------- PRICE
-//    //---- '='
-//
-//    @Test(priority = 3)
-//    public void skuPrice_equals_lowerPrice() {
-//
-//        p.addFilter("SKU : Price", "=", "899.00");
-//        p.itemOnList_byPrice("$900.00").shouldNotBe(visible
-//                .because("Search has found a SKU that has 'Price = $900.00' while it should give no results."));
-//
-//    }
-//
-//    @Test(priority = 4)
-//    public void skuPrice_equals_exactPrice() {
-//
-//        p.addFilter("SKU : Price", "=", "900.00");
-//        p.itemOnList_byPrice("$900.00").shouldBe(visible
-//                .because("Search has failed to find a SKU with requested price value."));
-//
-//    }
-//
-//    @Test(priority = 5)
-//    public void skuPrice_equals_higherPrice() {
-//
-//        p.addFilter("SKU : Price", "=", "999.00");
-//        p.itemOnList_byPrice("$900.00").shouldNotBe(visible
-//                .because("Search has found a SKU that has 'Price = $900.00' while it should give no results."));
-//
-//    }
-//
-//    //---- '<>'
-//
-//    @Test(priority = 6)
-//    public void skuPrice_notEquals_lowerPrice() {
-//
-//        p.addFilter("SKU : Price", "<>", "899.00");
-//        p.itemOnList_byPrice("$900.00").shouldBe(visible
-//                .because("Search has failed to find a SKU with requested price value."));
-//
-//    }
-//
-//    @Test(priority = 7)
-//    public void skuPrice_notEquals_exactPrice() {
-//
-//        p.addFilter("SKU : Price", "<>", "900.00");
-//        p.itemOnList_byPrice("$900.00").shouldNotBe(visible
-//                .because("Search has found a SKU that has 'Price = $900.00' while it should give no results."));
-//
-//    }
-//
-//    @Test(priority = 8)
-//    public void skuPrice_notEquals_higherPrice() {
-//
-//        p.addFilter("SKU : Price", "<>", "999.00");
-//        p.itemOnList_byPrice("$900.00").shouldBe(visible
-//                .because("Search has failed to find a SKU with requested price value."));
-//
-//    }
-//
-//    //---- '>'
-//
-//    @Test(priority = 9)
-//    public void skuPrice_moreThan_lowerPrice() {
-//
-//        p.addFilter("SKU : Price", ">", "999.00");
-//        p.itemOnList_byPrice("$900.00").shouldBe(visible
-//                .because("Search has failed to find a SKU with requested price value."));
-//
-//    }
-//
-//    @Test(priority = 10)
-//    public void skuPrice_moreThan_exactPrice() {
-//
-//        p.addFilter("SKU : Price", ">", "900.00");
-//        p.itemOnList_byPrice("$900.00").shouldNotBe(visible
-//                .because("Search has found a SKU that has 'Price = $900.00' while it should give no results."));
-//
-//    }
-//
-//    @Test(priority = 11)
-//    public void skuPrice_moreThan_higherPrice() {
-//
-//        p.addFilter("SKU : Price", ">", "999.00");
-//        p.itemOnList_byPrice("$900.00").shouldNotBe(visible
-//                .because("Search has found a SKU that has 'Price = $900.00' while it should give no results."));
-//
-//    }
-//
-//    //---- '>='
-//    @Test(priority = 12)
-//    public void skuPrice_moreOrEquals_lowerPrice() {
-//
-//        p.addFilter("SKU : Price", ">=", "899.00");
-//        p.itemOnList_byPrice("$900.00").shouldBe(visible
-//                .because("Search has failed to find a SKU with requested price value."));
-//
-//    }
-//
-//    @Test(priority = 13)
-//    public void skuPrice_moreOrEquals_exactPrice() {
-//
-//        p.addFilter("SKU : Price", ">=", "900.00");
-//        p.itemOnList_byPrice("$900.00").shouldBe(visible
-//                .because("Search has failed to find a SKU with requested price value."));
-//
-//    }
-//
-//    @Test(priority = 14)
-//    public void skuPrice_moreOrEquals_higherPrice() {
-//
-//        p.addFilter("SKU : Price", ">=", "999.00");
-//        p.itemOnList_byPrice("$900.00").shouldNotBe(visible
-//                .because("Search has found a SKU that has 'Price = $900.00' while it should give no results."));
-//
-//    }
-//
-//    //---- '<'
-//    @Test(priority = 15)
-//    public void skuPrice_lessThan_lowerPrice() {
-//
-//        p.addFilter("SKU : Price", "<", "899.00");
-//        p.itemOnList_byPrice("$900.00").shouldNotBe(visible
-//                .because("Search has found a SKU that has 'Price = $900.00' while it should give no results."));
-//
-//    }
-//
-//    @Test(priority = 16)
-//    public void skuPrice_lessThan_exactPrice() {
-//
-//        p.addFilter("SKU : Price", "<", "900.00");
-//        p.itemOnList_byPrice("$900.00").shouldNotBe(visible
-//                .because("Search has found a SKU that has 'Price = $900.00' while it should give no results."));
-//
-//    }
-//
-//    @Test(priority = 17)
-//    public void skuPrice_lessThan_higherPrice() {
-//
-//        p.addFilter("SKU : Price", "<", "900.00");
-//        p.itemOnList_byPrice("$900.00").shouldBe(visible
-//                .because("Search has failed to find a SKU with requested price value."));
-//
-//    }
-//
-//    //---- '<='
-//
-//    @Test(priority = 18)
-//    public void skuPrice_lessOrEquals_lowerPrice() {
-//
-//        p.addFilter("SKU : Price", "<=", "899.00");
-//        p.itemOnList_byPrice("$900.00").shouldNotBe(visible
-//                .because("Search has found a SKU that has 'Price = $900.00' while it should give no results."));
-//
-//    }
-//
-//    @Test(priority = 19)
-//    public void skuPrice_lessOrEquals_exactPrice() {
-//
-//        p.addFilter("SKU : Price", "<=", "900.00");
-//        p.itemOnList_byPrice("$900.00").shouldNotBe(visible
-//                .because("Search has found a SKU that has 'Price = $900.00' while it should give no results."));
-//
-//    }
-//
-//    @Test(priority = 20)
-//    public void skuPrice_lessOrEquals_higherPrice() {
-//
-//        p.addFilter("SKU : Price", "<=", "999.00");
-//        p.itemOnList_byPrice("$900.00").shouldBe(visible
-//                .because("Search has failed to find a SKU with requested price value."));
-//
-//    }
+    @Test(priority = 1)
+    public void skuCode() {
+
+        p.addFilter("SKU : Code", sku);
+        p.itemOnList(sku).shouldBe(visible
+                .because("Search has failed to find a SKU with requested code."));
+
+    }
+
+    @Test(priority = 2)
+    public void skuTitle() {
+
+        p.addFilter("SKU : Title", skuTitle);
+        p.itemOnList(skuTitle).shouldBe(visible
+                .because("Search has failed to find a SKU with requested code."));
+
+    }
+
+    //--------------- PRICE
+    //---- '='
+
+    @Test(priority = 3)
+    public void skuPrice_equals_lowerPrice() {
+
+        p.addFilter("SKU : Price", "=", "899.00");
+        p.itemOnList_byPrice("$900.00").shouldNotBe(visible
+                .because("Search has found a SKU that has 'Price = $900.00' while it should give no results."));
+
+    }
+
+    @Test(priority = 4)
+    public void skuPrice_equals_exactPrice() {
+
+        p.addFilter("SKU : Price", "=", "900.00");
+        p.itemOnList_byPrice("$900.00").shouldBe(visible
+                .because("Search has failed to find a SKU with requested price value."));
+
+    }
+
+    @Test(priority = 5)
+    public void skuPrice_equals_higherPrice() {
+
+        p.addFilter("SKU : Price", "=", "999.00");
+        p.itemOnList_byPrice("$900.00").shouldNotBe(visible
+                .because("Search has found a SKU that has 'Price = $900.00' while it should give no results."));
+
+    }
+
+    //---- '<>'
+
+    @Test(priority = 6)
+    public void skuPrice_notEquals_lowerPrice() {
+
+        p.addFilter("SKU : Price", "<>", "899.00");
+        p.itemOnList_byPrice("$900.00").shouldBe(visible
+                .because("Search has failed to find a SKU with requested price value."));
+
+    }
+
+    @Test(priority = 7)
+    public void skuPrice_notEquals_exactPrice() {
+
+        p.addFilter("SKU : Price", "<>", "900.00");
+        p.itemOnList_byPrice("$900.00").shouldNotBe(visible
+                .because("Search has found a SKU that has 'Price = $900.00' while it should give no results."));
+
+    }
+
+    @Test(priority = 8)
+    public void skuPrice_notEquals_higherPrice() {
+
+        p.addFilter("SKU : Price", "<>", "999.00");
+        p.itemOnList_byPrice("$900.00").shouldBe(visible
+                .because("Search has failed to find a SKU with requested price value."));
+
+    }
+
+    //---- '>'
+
+    @Test(priority = 9)
+    public void skuPrice_moreThan_lowerPrice() {
+
+        p.addFilter("SKU : Price", ">", "999.00");
+        p.itemOnList_byPrice("$900.00").shouldBe(visible
+                .because("Search has failed to find a SKU with requested price value."));
+
+    }
+
+    @Test(priority = 10)
+    public void skuPrice_moreThan_exactPrice() {
+
+        p.addFilter("SKU : Price", ">", "900.00");
+        p.itemOnList_byPrice("$900.00").shouldNotBe(visible
+                .because("Search has found a SKU that has 'Price = $900.00' while it should give no results."));
+
+    }
+
+    @Test(priority = 11)
+    public void skuPrice_moreThan_higherPrice() {
+
+        p.addFilter("SKU : Price", ">", "999.00");
+        p.itemOnList_byPrice("$900.00").shouldNotBe(visible
+                .because("Search has found a SKU that has 'Price = $900.00' while it should give no results."));
+
+    }
+
+    //---- '>='
+    @Test(priority = 12)
+    public void skuPrice_moreOrEquals_lowerPrice() {
+
+        p.addFilter("SKU : Price", ">=", "899.00");
+        p.itemOnList_byPrice("$900.00").shouldBe(visible
+                .because("Search has failed to find a SKU with requested price value."));
+
+    }
+
+    @Test(priority = 13)
+    public void skuPrice_moreOrEquals_exactPrice() {
+
+        p.addFilter("SKU : Price", ">=", "900.00");
+        p.itemOnList_byPrice("$900.00").shouldBe(visible
+                .because("Search has failed to find a SKU with requested price value."));
+
+    }
+
+    @Test(priority = 14)
+    public void skuPrice_moreOrEquals_higherPrice() {
+
+        p.addFilter("SKU : Price", ">=", "999.00");
+        p.itemOnList_byPrice("$900.00").shouldNotBe(visible
+                .because("Search has found a SKU that has 'Price = $900.00' while it should give no results."));
+
+    }
+
+    //---- '<'
+    @Test(priority = 15)
+    public void skuPrice_lessThan_lowerPrice() {
+
+        p.addFilter("SKU : Price", "<", "899.00");
+        p.itemOnList_byPrice("$900.00").shouldNotBe(visible
+                .because("Search has found a SKU that has 'Price = $900.00' while it should give no results."));
+
+    }
+
+    @Test(priority = 16)
+    public void skuPrice_lessThan_exactPrice() {
+
+        p.addFilter("SKU : Price", "<", "900.00");
+        p.itemOnList_byPrice("$900.00").shouldNotBe(visible
+                .because("Search has found a SKU that has 'Price = $900.00' while it should give no results."));
+
+    }
+
+    @Test(priority = 17)
+    public void skuPrice_lessThan_higherPrice() {
+
+        p.addFilter("SKU : Price", "<", "900.00");
+        p.itemOnList_byPrice("$900.00").shouldBe(visible
+                .because("Search has failed to find a SKU with requested price value."));
+
+    }
+
+    //---- '<='
+
+    @Test(priority = 18)
+    public void skuPrice_lessOrEquals_lowerPrice() {
+
+        p.addFilter("SKU : Price", "<=", "899.00");
+        p.itemOnList_byPrice("$900.00").shouldNotBe(visible
+                .because("Search has found a SKU that has 'Price = $900.00' while it should give no results."));
+
+    }
+
+    @Test(priority = 19)
+    public void skuPrice_lessOrEquals_exactPrice() {
+
+        p.addFilter("SKU : Price", "<=", "900.00");
+        p.itemOnList_byPrice("$900.00").shouldNotBe(visible
+                .because("Search has found a SKU that has 'Price = $900.00' while it should give no results."));
+
+    }
+
+    @Test(priority = 20)
+    public void skuPrice_lessOrEquals_higherPrice() {
+
+        p.addFilter("SKU : Price", "<=", "999.00");
+        p.itemOnList_byPrice("$900.00").shouldBe(visible
+                .because("Search has failed to find a SKU with requested price value."));
+
+    }
 
     //--------------- ARCHIVED AT
     //---- '='
