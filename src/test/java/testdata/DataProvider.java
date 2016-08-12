@@ -34,6 +34,7 @@ public class DataProvider extends BaseTest {
     private static List<String> bulkCodes = new ArrayList<>();
 
     protected static String sku;                    // stored from createSKU_active();
+    protected static String skuTitle;               // stored from createSKU_active();
     protected static String productName;            // stored from createProduct_<..>() methods
     protected static String productId;                 // stored from createProduct_<..>() methods
 
@@ -1082,12 +1083,12 @@ public class DataProvider extends BaseTest {
         System.out.println("Creating a new SKU, options: ACTIVE state...");
         String randomId = generateRandomID();
         String skuCode = "SKU-" + randomId;
+        String title = "SKU Test Title " + randomId;
 
         OkHttpClient client = new OkHttpClient();
 
         MediaType mediaType = MediaType.parse("application/json");
-//        RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"" + skuCode + "\"},\"title\":{\"t\":\"string\",\"v\":\"Test Product " + randomId + "\"},\"upc\":{\"t\":\"string\",\"v\":\"Test UPC\"},\"description\":{\"t\":\"richText\",\"v\":\"<p>Just another test SKU.</p>\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"2000\"}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"2000\"}},\"unitCost\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"2000\"}},\"activeFrom\":{\"v\":\"2016-07-04T17:43:44.295+00:00\",\"t\":\"datetime\"},\"activeTo\":{\"v\":null,\"t\":\"datetime\"}}}");
-        RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"" + skuCode + "\"},\"title\":{\"t\":\"string\",\"v\":\"SKU Test Title\"},\"upc\":{\"t\":\"string\",\"v\":\"Test UPC\"},\"description\":{\"t\":\"richText\",\"v\":\"<p>Test description</p>\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"5000\"}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"5000\"}},\"unitCost\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"5000\"}},\"activeFrom\":{\"t\":\"datetime\",\"v\":\"2016-07-29T00:03:26.685Z\"},\"activeTo\":{\"v\":null,\"t\":\"datetime\"}}}");
+        RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"" + skuCode + "\"},\"title\":{\"t\":\"string\",\"v\":\"" + title + "\"},\"upc\":{\"t\":\"string\",\"v\":\"Test UPC\"},\"description\":{\"t\":\"richText\",\"v\":\"<p>Test description</p>\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"5000\"}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"5000\"}},\"unitCost\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"5000\"}},\"activeFrom\":{\"t\":\"datetime\",\"v\":\"" + getDate() + "T00:03:26.685Z\"},\"activeTo\":{\"t\":\"datetime\",\"v\":null}}}");
         Request request = new Request.Builder()
                 .url(adminUrl + "/api/v1/skus/default")
                 .post(body)
@@ -1105,6 +1106,7 @@ public class DataProvider extends BaseTest {
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
             sku = skuCode;
+            skuTitle = title;
             System.out.println("SKU code: <" + skuCode + ">.");
             System.out.println("---- ---- ---- ----");
         } else {
@@ -1675,6 +1677,73 @@ public class DataProvider extends BaseTest {
 
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
+
+    }
+
+    private static void createSKU_search() throws IOException {
+
+        System.out.println("Creating a new SKU, options: ACTIVE state...");
+        String randomId = generateRandomID();
+        String skuCode = "SKU-" + randomId;
+        String title = "SKU Test Title " + randomId;
+
+        OkHttpClient client = new OkHttpClient();
+
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"" + skuCode + "\"},\"title\":{\"t\":\"string\",\"v\":\"" + title + "\"},\"upc\":{\"t\":\"string\",\"v\":\"Test UPC\"},\"description\":{\"t\":\"richText\",\"v\":\"<p>Test description</p>\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"90000\"}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"90000\"}},\"unitCost\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"90000\"}},\"activeFrom\":{\"t\":\"datetime\",\"v\":\"" + getDate() + "T00:03:26.685Z\"},\"activeTo\":{\"t\":\"datetime\",\"v\":null}}}");
+        Request request = new Request.Builder()
+                .url(adminUrl + "/api/v1/skus/default")
+                .post(body)
+                .addHeader("content-type", "application/json")
+                .addHeader("accept", "application/json")
+                .addHeader("cache-control", "no-cache")
+                .addHeader("JWT", jwt)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+        int responseCode = response.code();
+        String responseMsg = response.message();
+
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+            sku = skuCode;
+            skuTitle = title;
+            System.out.println("SKU code: <" + skuCode + ">.");
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
+
+    }
+
+    public static void archiveSKU(String skuCode) throws IOException {
+
+        System.out.println("Archiving SKU <" + skuCode + ">...");
+
+        OkHttpClient client = new OkHttpClient();
+
+        Request request = new Request.Builder()
+                .url("http://admin.stage.foxcommerce.com/api/v1/skus/default/" + skuCode)
+                .delete(null)
+                .addHeader("content-type", "application/json")
+                .addHeader("accept", "application/json")
+                .addHeader("cache-control", "no-cache")
+                .addHeader("JWT", jwt)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+        int responseCode = response.code();
+        String responseMsg = response.message();
+
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+            System.out.println("SKU code: <" + skuCode + ">.");
             System.out.println("---- ---- ---- ----");
         } else {
             failTest(responseBody, responseCode, responseMsg);
@@ -2301,6 +2370,15 @@ public class DataProvider extends BaseTest {
                 createSKU_active();
                 createProduct_activeFromTo(sku, getDate(), getTomorrowDate());
                 archiveProduct(productId);
+                break;
+
+            case "SKU for search tests":
+                createSKU_search();
+                break;
+
+            case "archived SKU":
+                createSKU_search();
+                archiveSKU(sku);
                 break;
 
         }

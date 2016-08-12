@@ -294,6 +294,10 @@ public class BasePage extends ConciseAPI {
         return $(xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a/td[text()='" + itemParam + "']"));
     }
 
+    public SelenideElement itemOnList_byPrice(String priceVal) {
+        return $(xpath("//span[text()='" + priceVal + "']"));
+    }
+
     @Step
     public void removeFilter(String index) {
         $(By.xpath("//div[@class='fc-pilled-input__pill'][" + index + "]/a")).click();
