@@ -51,7 +51,7 @@ public class PaymentMethodTest extends DataProvider {
     public void addPaymentMethod_giftCard() throws IOException {
 
         provideTestData("cart with 1 item && customer with GC");
-        open(adminUrl + "/gift-cards/" + gcNumber);
+        open(adminUrl + "/gift-cards/" + gcCode);
         p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
 
         click( p.editBtn_payment() );
@@ -117,7 +117,7 @@ public class PaymentMethodTest extends DataProvider {
 
         p.cartSummary().waitUntil(visible, 10000);
         double amountToUse = p.grandTotal() + 10.00;
-        p.addPaymentMethod_GC(gcNumber, String.valueOf(amountToUse));
+        p.addPaymentMethod_GC(gcCode, String.valueOf(amountToUse));
 
         assertTrue(p.appliedAmount() == p.grandTotal(),
                 "Amount of funds to be applied as a payment isn't auto-adjusted.");

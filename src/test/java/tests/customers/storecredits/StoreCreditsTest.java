@@ -55,7 +55,7 @@ public class StoreCreditsTest extends DataProvider {
         click( p.storeCreditTab() );
         click( p.newSCBtn() );
         p.selectType("Gift Card Transfer");
-        setFieldVal( p.gcNumberFld(), gcNumber );
+        setFieldVal( p.gcNumberFld(), gcCode);
         sleep(2000);
         assertEquals( p.gcAvailableBalanceVal(), 125.00,
                 "GC available balance isn't displayed.");

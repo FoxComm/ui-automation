@@ -67,7 +67,7 @@ public class PlaceOrderTest extends DataProvider {
         int amountToUse = (int) (p.grandTotal() * 100);
 
 
-        setPayment_giftCard(orderId, gcNumber, amountToUse);
+        setPayment_giftCard(orderId, gcCode, amountToUse);
         refresh();
         p.assertNoWarnings();
         click( p.placeOrderBtn() );
@@ -101,7 +101,7 @@ public class PlaceOrderTest extends DataProvider {
         p.cartSummary().waitUntil(visible, 10000);
         int amountToUse = (int) (p.grandTotal() / 2 * 100);
 
-        setPayment_giftCard(orderId, gcNumber, amountToUse);
+        setPayment_giftCard(orderId, gcCode, amountToUse);
         refresh();
         p.assertNoWarnings();
         click( p.placeOrderBtn() );
@@ -119,7 +119,7 @@ public class PlaceOrderTest extends DataProvider {
         int amountToUse_GC = (int) (p.grandTotal() / 2 * 100);
         int amountToUse_SC = calcAmount(amountToUse_GC, p.grandTotal());
 
-        setPayment_giftCard(orderId, gcNumber, amountToUse_GC);
+        setPayment_giftCard(orderId, gcCode, amountToUse_GC);
         setPayment_storeCredit(orderId, amountToUse_SC);
         refresh();
         p.assertNoWarnings();

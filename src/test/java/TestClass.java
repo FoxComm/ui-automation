@@ -3,21 +3,13 @@ import base.BaseTest;
 import com.squareup.okhttp.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.testng.annotations.Test;
-import pages.LoginPage;
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
-import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
-import static org.openqa.selenium.By.xpath;
 import static org.testng.Assert.assertEquals;
 
 public class TestClass extends BaseTest {
@@ -40,13 +32,14 @@ public class TestClass extends BaseTest {
     private static String customerEmail;    // stored from viewCustomer()
     private static int addressId1;          // stored from listCustomerAddresses()
     private static int addressId2;          // stored from listCustomerAddresses()
-    private static String gcNumber;         // stored from issueGiftCard()
+    private static String gcCode;         // stored from issueGiftCard()
     private static int scId;                // stored from issueStoreCredit()
     private static int shipMethodId;        // stored from listShipMethods()
     private static int creditCardId;        // stored from createCreditCard()
 
-    private static int promotionId;
-    private static int couponId;
+    private static String promotionId;
+    private static String couponId;
+    protected static String couponName;
     private static String singleCouponCode;
     private static List<String> bulkCodes = new ArrayList<>();
 
@@ -530,12 +523,20 @@ public class TestClass extends BaseTest {
 
         Response response = client.newCall(request).execute();
         String responseBody = response.body().string();
+        int responseCode = response.code();
+        String responseMsg = response.message();
 
-        gcNumber = responseBody.substring(86, 102);
-
-        System.out.println(response);
-        System.out.println("GC code: <" + gcNumber + ">");
-        System.out.println("--------");
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+            JSONArray jsonData = new JSONArray(responseBody);
+            JSONObject gcInfo = jsonData.getJSONObject(0).getJSONObject("giftCard");
+            gcCode = gcInfo.getString("code");
+//            gcCode = responseBody.substring(86, 102);
+            System.out.println("GC code: <" + gcCode + ">");
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
 
     }
 
@@ -636,7 +637,7 @@ public class TestClass extends BaseTest {
 
         Response response = client.newCall(request).execute();
         String responseBody = response.body().string();
-        promotionId = Integer.valueOf(responseBody.substring(35, 38));
+        promotionId = responseBody.substring(35, 38);
 
         System.out.println(response);
         System.out.println(responseBody);
@@ -644,14 +645,15 @@ public class TestClass extends BaseTest {
 
     }
 
-    private static void createCoupon(int promotionId) throws IOException {
+    private static void createCoupon(String promotionId) throws IOException {
 
-        System.out.println("Creating a new coupon...");
+        System.out.println("Creating a new coupon with promotion <" + promotionId + ">...");
+        String randomId = generateRandomID();
 
         OkHttpClient client = new OkHttpClient();
 
         MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, "{\"id\":247,\"form\":{\"id\":247,\"attributes\":{\"cafec63e4b\":{\"isExclusive\":false,\"usesPerCode\":1,\"usesPerCustomer\":1,\"isUnlimitedPerCode\":false,\"isUnlimitedPerCustomer\":false},\"267d79dd58\":\"coupon one\",\"2be88ca424\":null,\"8cee41dd60\":\"<p>coupon one</p>\",\"c23781011c\":\"2016-06-26T21:42:23.804+00:00\"},\"createdAt\":\"2016-06-27T21:29:30.861Z\"},\"shadow\":{\"id\":302,\"formId\":247,\"attributes\":{\"name\":{\"type\":\"coupon one\",\"ref\":\"267d79dd58\"},\"details\":{\"type\":\"<p>coupon one</p>\",\"ref\":\"8cee41dd60\"},\"activeTo\":{\"type\":null,\"ref\":\"2be88ca424\"},\"activeFrom\":{\"type\":\"2016-06-26T21:42:23.804+00:00\",\"ref\":\"c23781011c\"},\"usageRules\":{\"type\":\"usageRules\",\"ref\":\"cafec63e4b\"},\"description\":{\"type\":\"coupon one\",\"ref\":\"267d79dd58\"},\"storefrontName\":{\"type\":\"<p>coupon one</p>\",\"ref\":\"8cee41dd60\"}},\"createdAt\":\"2016-06-27T21:29:30.861Z\"},\"promotion\":" + promotionId + "}");
+        RequestBody body = RequestBody.create(mediaType, "{\"form\":{\"id\":null,\"createdAt\":null,\"attributes\":{\"usageRules\":{\"isExclusive\":false,\"isUnlimitedPerCode\":false,\"usesPerCode\":1,\"isUnlimitedPerCustomer\":false,\"usesPerCustomer\":1},\"name\":\"test coupon " + randomId + "\",\"storefrontName\":\"storefront name " + randomId + "\",\"description\":\"<p>test description</p>\",\"details\":\"<p>test details</p>\",\"storefront Name\":\"<p>storefront name 77777</p>\",\"activeFrom\":\"2016-07-30T18:59:10.402Z\",\"activeTo\":null}},\"shadow\":{\"id\":null,\"createdAt\":null,\"attributes\":{\"usageRules\":{\"type\":\"usageRules\",\"ref\":\"usageRules\"},\"name\":{\"type\":\"string\",\"ref\":\"name\"},\"storefrontName\":{\"type\":\"richText\",\"ref\":\"storefrontName\"},\"description\":{\"type\":\"richText\",\"ref\":\"description\"},\"details\":{\"type\":\"richText\",\"ref\":\"details\"},\"storefront Name\":{\"type\":\"richText\",\"ref\":\"storefront Name\"},\"activeFrom\":{\"type\":\"2016-07-30T18:59:10.402Z\",\"ref\":\"activeFrom\"},\"activeTo\":{\"type\":null,\"ref\":\"activeTo\"}}},\"promotion\":" + promotionId + "}");
         Request request = new Request.Builder()
                 .url(adminUrl + "/api/v1/coupons/default")
                 .post(body)
@@ -662,12 +664,20 @@ public class TestClass extends BaseTest {
 
         Response response = client.newCall(request).execute();
         String responseBody = response.body().string();
-        couponId = Integer.valueOf(responseBody.substring(6, 9));
+        int responseCode = response.code();
+        String responseMsg = response.message();
 
-        System.out.println(response);
-        System.out.println(responseBody);
-        System.out.println(couponId);
-        System.out.println("--------");
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+            JSONObject jsonData = new JSONObject(responseBody);
+            couponId = String.valueOf(jsonData.getInt("id"));
+//            couponId = responseBody.substring(6, responseBody.indexOf(",", 6));
+            couponName = "test coupon " + randomId;
+            System.out.println("Coupon ID: " + couponId);
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
 
     }
 
@@ -699,7 +709,7 @@ public class TestClass extends BaseTest {
 
     }
 
-    private static void bulkGenerateCodes(int couponId, String prefix, int codeLength, int quantity) throws IOException {
+    private static void bulkGenerateCodes(String couponId, String prefix, int codeLength, int quantity) throws IOException {
 
         int length = prefix.length() + codeLength;
 
@@ -723,21 +733,29 @@ public class TestClass extends BaseTest {
 
         Response response = client.newCall(request).execute();
         String responseBody = response.body().string();
+        int responseCode = response.code();
+        String responseMsg = response.message();
 
-        int startIndex = 2;
-        for (int i = 0; i < quantity; i++) {
-            String code = responseBody.substring(startIndex, startIndex + length);
-            bulkCodes.add(code);
-            startIndex += (length + 3);
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+//            int startIndex = 2;
+//            for (int i = 0; i < quantity; i++) {
+//                String code = responseBody.substring(startIndex, startIndex + length);
+//                bulkCodes.add(code);
+//                startIndex += (length + 3);
+//            }
+            JSONArray jsonData = new JSONArray(responseBody);
+            for (int i = 0; i < jsonData.length(); i++) {
+                bulkCodes.add(jsonData.getString(i));
+            }
+            System.out.println("Number of codes generated: <" + bulkCodes.size() + ">");
+            assertEquals(bulkCodes.size(), quantity,
+                    "Amount of generated codes is lower than requested amount.");
+            printStringList(bulkCodes);
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
         }
-        System.out.println("Number of codes generated: <" + bulkCodes.size() + ">");
-        assertEquals(bulkCodes.size(), quantity,
-                "Amount of generated codes is lower than requested amount.");
-        printStringList(bulkCodes);
-
-        System.out.println(response);
-        System.out.println(responseBody);
-        System.out.println("--------");
 
     }
 
@@ -923,7 +941,7 @@ public class TestClass extends BaseTest {
         OkHttpClient client = new OkHttpClient();
 
         MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"metaDescription\":{\"t\":\"string\",\"v\":null},\"metaTitle\":{\"t\":\"string\",\"v\":null},\"url\":{\"t\":\"string\",\"v\":null},\"description\":{\"t\":\"richText\",\"v\":\"The best thing to buy in 2016!\"},\"title\":{\"t\":\"string\",\"v\":\"" + productName_local + "\"},\"tags\":{\"t\":\"tags\",\"v\":[\"" + tag + "\"]},\"activeFrom\": {\"t\": \"date\",\"v\": \"" + getDate() + "T14:48:12.493Z\"},\"activeTo\":{\"v\":null,\"t\":\"datetime\"}},\"skus\":[{\"feCode\":\"1PZ1Z6FEB42BFOCYJH5MI\",\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"" + sku + "\"},\"title\":{\"t\":\"string\",\"v\":\"\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"2718\"}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"2718\"}}}}]}");
+        RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"metaDescription\":{\"t\":\"string\",\"v\":null},\"metaTitle\":{\"t\":\"string\",\"v\":null},\"url\":{\"t\":\"string\",\"v\":null},\"description\":{\"t\":\"richText\",\"v\":\"The best thing to buy in 2016!\"},\"title\":{\"t\":\"string\",\"v\":\"" + productName_local + "\"},\"tags\":{\"t\":\"tags\",\"v\":[\"" + tag + "\"]},\"activeFrom\": {\"t\": \"date\",\"v\": \"2016-07-26T14:48:12.493Z\"},\"activeTo\":{\"v\":null,\"t\":\"datetime\"}},\"skus\":[{\"feCode\":\"1PZ1Z6FEB42BFOCYJH5MI\",\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"" + sku + "\"},\"title\":{\"t\":\"string\",\"v\":\"\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"2718\"}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"2718\"}}}}]}");
         Request request = new Request.Builder()
                 .url(adminUrl + "/api/v1/products/default")
                 .post(body)
@@ -940,7 +958,9 @@ public class TestClass extends BaseTest {
 
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
-            productId = responseBody.substring(6, responseBody.indexOf(",", 6));
+            JSONObject jsonData = new JSONObject(responseBody);
+            productId = String.valueOf(jsonData.getInt("id"));
+//            productId = responseBody.substring(6, responseBody.indexOf(",", 6));
             productName = productName_local;
             System.out.println("Product ID: <" + productId + ">.");
             System.out.println("Product name: <" + productName + ">.");
@@ -1152,10 +1172,10 @@ public class TestClass extends BaseTest {
 //        listShipMethods(orderId);
 //        setShipMethod(orderId, shipMethodId);
 //        listCustomerAddresses(customerId);
-//        setPayment_giftCard(orderId, gcNumber, 10000);
+//        setPayment_giftCard(orderId, gcCode, 10000);
 //        checkoutOrder("BR11183");
 
-//        createProduct_active("SKU-TST", "sunglasses");
+        createProduct_active("SKU-TST", "sunglasses");
 //        createSharedSearch_oneFilter();
 //        shareSearch(searchCode, "Such Root");
 //        getAllSavedSearches();
@@ -1171,7 +1191,10 @@ public class TestClass extends BaseTest {
 //        System.out.println("Today: <" + today + ">");
 //        System.out.println("Tomorrow : <" + tomorrow + ">");
 
-        createSKU_active();
+//        createSKU_active();
+
+//        createCoupon("198");
+//        bulkGenerateCodes(couponId, "BLKNWCPN" + couponId + "-", 4, 5);
 
     }
 

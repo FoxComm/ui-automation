@@ -22,7 +22,8 @@ public class DataProvider extends BaseTest {
     protected static String customerEmail;      // stored from viewCustomer()
     private static int addressId1;              // stored from listCustomerAddresses()
     private static int addressId2;              // stored from listCustomerAddresses()
-    protected static String gcNumber;           // stored from issueGiftCard()
+
+    protected static String gcCode;           // stored from issueGiftCard()
     private static int scId;                    // stored from issueStoreCredit()
     private static int shipMethodId;            // stored from listShipMethods()
     private static int creditCardId;            // stored from create createCreditCard()
@@ -117,7 +118,8 @@ public class DataProvider extends BaseTest {
 
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
-            customerId = Integer.valueOf(responseBody.substring(6, responseBody.indexOf(",", 6)));
+            JSONObject jsonData = new JSONObject(responseBody);
+            customerId = jsonData.getInt("id");
             System.out.println("Customer ID: " + customerId);
             System.out.println("---- ---- ---- ----");
         } else {
@@ -150,7 +152,9 @@ public class DataProvider extends BaseTest {
 
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
-            orderId = responseBody.substring(20, responseBody.indexOf(",", 20));
+            JSONObject jsonData = new JSONObject(responseBody);
+            orderId = String.valueOf(jsonData.getInt("id"));
+//            orderId = responseBody.substring(20, responseBody.indexOf(",", 20));
             System.out.println("Order ID: <" + orderId + ">");
             System.out.println("---- ---- ---- ----");
         } else {
@@ -350,7 +354,9 @@ public class DataProvider extends BaseTest {
 
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
-            addressId1 = Integer.valueOf(responseBody.substring(7, responseBody.indexOf(",", 7)));
+            JSONArray jsonData = new JSONArray(responseBody);
+            addressId1 = jsonData.getJSONObject(0).getInt("id");
+//            addressId1 = Integer.valueOf(responseBody.substring(7, responseBody.indexOf(",", 7)));
             System.out.println("Address 1: <" + addressId1 + ">");
             System.out.println("---- ---- ---- ----");
         } else {
@@ -420,8 +426,10 @@ public class DataProvider extends BaseTest {
 
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
-            String strShipMethodId = responseBody.substring(7, responseBody.indexOf(",", 7));
-            shipMethodId = Integer.valueOf(strShipMethodId);
+            JSONArray jsonData = new JSONArray(responseBody);
+            shipMethodId = jsonData.getJSONObject(0).getInt("id");
+//            String strShipMethodId = responseBody.substring(7, responseBody.indexOf(",", 7));
+//            shipMethodId = Integer.valueOf(strShipMethodId);
             System.out.println("shipMethodId: <" + shipMethodId + ">");
             System.out.println("---- ---- ---- ----");
         } else {
@@ -493,7 +501,9 @@ public class DataProvider extends BaseTest {
 
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
-            creditCardId = Integer.valueOf(responseBody.substring(6, responseBody.indexOf(",", 6)));
+            JSONObject jsonData = new JSONObject(responseBody);
+            creditCardId = jsonData.getInt("id");
+//            creditCardId = Integer.valueOf(responseBody.substring(6, responseBody.indexOf(",", 6)));
             System.out.println("Credit Card ID: <" + creditCardId + ">");
             System.out.println("---- ---- ---- ----");
         } else {
@@ -561,7 +571,9 @@ public class DataProvider extends BaseTest {
 
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
-            scId = Integer.valueOf(responseBody.substring(6, responseBody.indexOf(",", 6)));
+            JSONObject jsonData = new JSONObject(responseBody);
+            scId = jsonData.getInt("id");
+//            scId = Integer.valueOf(responseBody.substring(6, responseBody.indexOf(",", 6)));
             System.out.println("Store Credit ID: <" + scId + ">...");
             System.out.println("---- ---- ---- ----");
         } else {
@@ -597,7 +609,9 @@ public class DataProvider extends BaseTest {
 
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
-            scId = Integer.valueOf(responseBody.substring(6, responseBody.indexOf(",", 6)));
+            JSONObject jsonData = new JSONObject(responseBody);
+            scId = jsonData.getInt("id");
+//            scId = Integer.valueOf(responseBody.substring(6, responseBody.indexOf(",", 6)));
             System.out.println("Store Credit ID: <" + scId + ">...");
             System.out.println("---- ---- ---- ----");
         } else {
@@ -665,8 +679,11 @@ public class DataProvider extends BaseTest {
 
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
-            gcNumber = responseBody.substring(86, 102);
-            System.out.println("GC code: <" + gcNumber + ">");
+            JSONArray jsonData = new JSONArray(responseBody);
+            JSONObject gcInfo = jsonData.getJSONObject(0).getJSONObject("giftCard");
+            gcCode = gcInfo.getString("code");
+//            gcCode = responseBody.substring(86, 102);
+            System.out.println("GC code: <" + gcCode + ">");
             System.out.println("---- ---- ---- ----");
         } else {
             failTest(responseBody, responseCode, responseMsg);
@@ -824,7 +841,9 @@ public class DataProvider extends BaseTest {
 
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
-            promotionId = responseBody.substring(35, responseBody.indexOf(",", 35));
+            JSONObject jsonData = new JSONObject(responseBody);
+            promotionId = String.valueOf(jsonData.getJSONObject("form").getInt("id"));
+//            promotionId = responseBody.substring(35, responseBody.indexOf(",", 35));
             System.out.println("Promotion ID: " + promotionId);
             System.out.println("---- ---- ---- ----");
         } else {
@@ -857,7 +876,9 @@ public class DataProvider extends BaseTest {
 
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
-            promotionId = responseBody.substring(33, responseBody.indexOf(",", 33));
+            JSONObject jsonData = new JSONObject(responseBody);
+            promotionId = String.valueOf(jsonData.getJSONObject("form").getInt("id"));
+//            promotionId = responseBody.substring(33, responseBody.indexOf(",", 33));
             System.out.println("Promotion ID: " + promotionId);
             System.out.println("---- ---- ---- ----");
         } else {
@@ -891,7 +912,9 @@ public class DataProvider extends BaseTest {
 
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
-            promotionId = responseBody.substring(33, responseBody.indexOf(",", 33));
+            JSONObject jsonData = new JSONObject(responseBody);
+            promotionId = String.valueOf(jsonData.getJSONObject("form").getInt("id"));
+//            promotionId = responseBody.substring(33, responseBody.indexOf(",", 33));
             System.out.println("Promotion ID: " + promotionId);
             System.out.println("---- ---- ---- ----");
         } else {
@@ -924,7 +947,9 @@ public class DataProvider extends BaseTest {
 
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
-            couponId = responseBody.substring(6, responseBody.indexOf(",", 6));
+            JSONObject jsonData = new JSONObject(responseBody);
+            couponId = String.valueOf(jsonData.getInt("id"));
+//            couponId = responseBody.substring(6, responseBody.indexOf(",", 6));
             couponName = "test coupon " + randomId;
             System.out.println("Coupon ID: " + couponId);
             System.out.println("---- ---- ---- ----");
@@ -996,11 +1021,15 @@ public class DataProvider extends BaseTest {
 
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
-            int startIndex = 2;
-            for (int i = 0; i < quantity; i++) {
-                String code = responseBody.substring(startIndex, startIndex + length);
-                bulkCodes.add(code);
-                startIndex += (length + 3);
+//            int startIndex = 2;
+//            for (int i = 0; i < quantity; i++) {
+//                String code = responseBody.substring(startIndex, startIndex + length);
+//                bulkCodes.add(code);
+//                startIndex += (length + 3);
+//            }
+            JSONArray jsonData = new JSONArray(responseBody);
+            for (int i = 0; i < jsonData.length(); i++) {
+                bulkCodes.add(jsonData.getString(i));
             }
             System.out.println("Number of codes generated: <" + bulkCodes.size() + ">");
             assertEquals(bulkCodes.size(), quantity,
@@ -1282,7 +1311,9 @@ public class DataProvider extends BaseTest {
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
             productName = productName_local;
-            productId = responseBody.substring(6, responseBody.indexOf(",", 6));
+            JSONObject jsonData = new JSONObject(responseBody);
+            productId = String.valueOf(jsonData.getInt("id"));
+//            productId = responseBody.substring(6, responseBody.indexOf(",", 6));
             System.out.println("Product ID: <" + productId + ">.");
             System.out.println("Product name: <" + productName + ">.");
             System.out.println("---- ---- ---- ----");
@@ -1318,7 +1349,9 @@ public class DataProvider extends BaseTest {
 
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
-            productId = responseBody.substring(6, responseBody.indexOf(",", 6));
+            JSONObject jsonData = new JSONObject(responseBody);
+            productId = String.valueOf(jsonData.getInt("id"));
+//            productId = responseBody.substring(6, responseBody.indexOf(",", 6));
             productName = productName_local;
             System.out.println("Product ID: <" + productId + ">.");
             System.out.println("Product name: <" + productName + ">.");
@@ -1355,7 +1388,9 @@ public class DataProvider extends BaseTest {
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
             productName = productName_local;
-            productId = responseBody.substring(6, responseBody.indexOf(",", 6));
+            JSONObject jsonData = new JSONObject(responseBody);
+            productId = String.valueOf(jsonData.getInt("id"));
+//            productId = responseBody.substring(6, responseBody.indexOf(",", 6));
             System.out.println("Product ID: <" + productId + ">.");
             System.out.println("Product name: <" + productName + ">.");
             System.out.println("---- ---- ---- ----");
@@ -1391,7 +1426,9 @@ public class DataProvider extends BaseTest {
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
             productName = productName_local;
-            productId = responseBody.substring(6, responseBody.indexOf(",", 6));
+            JSONObject jsonData = new JSONObject(responseBody);
+            productId = String.valueOf(jsonData.getInt("id"));
+//            productId = responseBody.substring(6, responseBody.indexOf(",", 6));
             System.out.println("Product ID: <" + productId + ">.");
             System.out.println("Product name: <" + productName + ">.");
             System.out.println("---- ---- ---- ----");
@@ -1427,7 +1464,9 @@ public class DataProvider extends BaseTest {
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
             productName = productName_local;
-            productId = responseBody.substring(6, responseBody.indexOf(",", 6));
+            JSONObject jsonData = new JSONObject(responseBody);
+            productId = String.valueOf(jsonData.getInt("id"));
+//            productId = responseBody.substring(6, responseBody.indexOf(",", 6));
             System.out.println("Product ID: <" + productId + ">.");
             System.out.println("Product name: <" + productName + ">.");
             System.out.println("---- ---- ---- ----");
@@ -1463,7 +1502,9 @@ public class DataProvider extends BaseTest {
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
             productName = productName_local;
-            productId = responseBody.substring(6, responseBody.indexOf(",", 6));
+            JSONObject jsonData = new JSONObject(responseBody);
+            productId = String.valueOf(jsonData.getInt("id"));
+//            productId = responseBody.substring(6, responseBody.indexOf(",", 6));
             System.out.println("Product ID: <" + productId + ">.");
             System.out.println("Product name: <" + productName + ">.");
             System.out.println("---- ---- ---- ----");
@@ -1640,7 +1681,7 @@ public class DataProvider extends BaseTest {
             JSONObject jsonData = new JSONObject(responseBody);
             JSONArray jsonArray = jsonData.getJSONArray("result");
             for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject object     = jsonArray.getJSONObject(i);
+                JSONObject object = jsonArray.getJSONObject(i);
                 String adminName_local = object.getString("name");
                 if (adminName_local.equals(adminName)) {
                     adminId = object.getInt("id");
@@ -2091,7 +2132,7 @@ public class DataProvider extends BaseTest {
                 setShipMethod(orderId, shipMethodId);
                 listCustomerAddresses(customerId);
                 issueGiftCard(50000, 1);
-                issueStoreCredit_gcTransfer(customerId, gcNumber);
+                issueStoreCredit_gcTransfer(customerId, gcCode);
                 setPayment_storeCredit(orderId, 3727);
                 checkoutOrder(orderId);
                 break;
@@ -2235,13 +2276,13 @@ public class DataProvider extends BaseTest {
                 listShipMethods(orderId);
                 setShipMethod(orderId, shipMethodId);
                 listCustomerAddresses(customerId);
-                setPayment_giftCard(orderId, gcNumber, 10000);
+                setPayment_giftCard(orderId, gcCode, 10000);
                 checkoutOrder(orderId);
                 break;
 
             case "gift card on hold":
                 issueGiftCard(20000, 1);
-                putGCOnHold(gcNumber);
+                putGCOnHold(gcCode);
                 break;
 
             //--------------------------------- SEARCH CONTROLS ---------------------------------//

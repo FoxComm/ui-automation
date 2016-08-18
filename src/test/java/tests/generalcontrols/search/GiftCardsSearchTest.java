@@ -35,9 +35,9 @@ public class GiftCardsSearchTest extends DataProvider {
     @Test(priority = 1)
     public void gcNumber() {
 
-        p.addFilter("Gift Card : Number", gcNumber);
-        p.itemOnList(gcNumber).shouldBe(visible
-                .because("Search failed to find GC with number <" + gcNumber + ">."));
+        p.addFilter("Gift Card : Number", gcCode);
+        p.itemOnList(gcCode).shouldBe(visible
+                .because("Search failed to find GC with number <" + gcCode + ">."));
 
     }
 
