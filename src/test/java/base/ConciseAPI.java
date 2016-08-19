@@ -72,6 +72,16 @@ public class ConciseAPI extends Configuration {
         element.setValue(value);
     }
 
+    @Step("Set {0} field value to {1}")
+    protected void setFieldVal_delayed(SelenideElement element, String value) {
+        sleep(250);
+        elementIsVisible(element);
+        for(int i = 0; i < value.length(); i++) {
+            element.sendKeys(String.valueOf(value.charAt(i)));
+            sleep(100);
+        }
+    }
+
     public void clearField(SelenideElement element) {
         element.sendKeys(Keys.chord(Keys.CONTROL, "a"));
         element.sendKeys(Keys.BACK_SPACE);

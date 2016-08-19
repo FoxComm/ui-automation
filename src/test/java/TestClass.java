@@ -1,13 +1,21 @@
 import base.BasePage;
 import base.BaseTest;
+import com.codeborne.selenide.Condition;
 import com.squareup.okhttp.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.openqa.selenium.By;
+import org.testng.annotations.Test;
+import pages.LoginPage;
+import pages.OrderDetailsPage;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
+import static com.codeborne.selenide.Condition.attribute;
+import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 import static org.testng.Assert.assertEquals;
@@ -21,7 +29,7 @@ public class TestClass extends BaseTest {
 //
 //    }
 
-    private BasePage p;
+    private OrderDetailsPage p;
 
     private static int customerId;
     private static String orderId;
@@ -1159,6 +1167,24 @@ public class TestClass extends BaseTest {
         }
 
     }
+
+//    @Test
+//    public void testTest() {
+//
+//        open(adminUrl);
+//        if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
+//            LoginPage loginPage = open(adminUrl + "/login", LoginPage.class);
+//            loginPage.login("admin@admin.com", "password");
+//        }
+//
+//        p = open("http://admin.stage.foxcommerce.com/carts/BR10066", OrderDetailsPage.class);
+//
+//        click(p.editBtn_shipAddress());
+//        click( p.addNewAddressBtn() );
+//        setFieldVal_delayed( $(By.name("name")), "Hello World!" );
+//        $(By.name("name")).shouldHave(attribute("value", "Hello World!").because("Input has failed"));
+//
+//    }
 
 
     public static void main(String[] args) throws IOException {

@@ -47,7 +47,7 @@ public class PlaceOrderTest extends DataProvider {
         p = open(adminUrl + "/carts/" + cartId, OrderDetailsPage.class);
 
         p.cartSummary().waitUntil(visible, 10000);
-        int amountToUse = (int) (p.grandTotal() * 100);
+        int amountToUse = (int) (p.grandTotalVal() * 100);
 
         setPayment_storeCredit(cartId, amountToUse);
         refresh();
@@ -64,7 +64,7 @@ public class PlaceOrderTest extends DataProvider {
         p = open(adminUrl + "/carts/" + cartId, OrderDetailsPage.class);
 
         p.cartSummary().waitUntil(visible, 10000);
-        int amountToUse = (int) (p.grandTotal() * 100);
+        int amountToUse = (int) (p.grandTotalVal() * 100);
 
 
         setPayment_giftCard(cartId, gcCode, amountToUse);
@@ -82,7 +82,7 @@ public class PlaceOrderTest extends DataProvider {
         p = open(adminUrl + "/carts/" + cartId, OrderDetailsPage.class);
 
         p.cartSummary().waitUntil(visible, 10000);
-        int amountToUse = (int) (p.grandTotal() / 2 * 100);
+        int amountToUse = (int) (p.grandTotalVal() / 2 * 100);
 
         setPayment_storeCredit(cartId, amountToUse);
         refresh();
@@ -99,7 +99,7 @@ public class PlaceOrderTest extends DataProvider {
         p = open(adminUrl + "/carts/" + cartId, OrderDetailsPage.class);
 
         p.cartSummary().waitUntil(visible, 10000);
-        int amountToUse = (int) (p.grandTotal() / 2 * 100);
+        int amountToUse = (int) (p.grandTotalVal() / 2 * 100);
 
         setPayment_giftCard(cartId, gcCode, amountToUse);
         refresh();
@@ -116,8 +116,8 @@ public class PlaceOrderTest extends DataProvider {
         p = open(adminUrl + "/carts/" + cartId, OrderDetailsPage.class);
 
         p.cartSummary().waitUntil(visible, 10000);
-        int amountToUse_GC = (int) (p.grandTotal() / 2 * 100);
-        int amountToUse_SC = calcAmount(amountToUse_GC, p.grandTotal());
+        int amountToUse_GC = (int) (p.grandTotalVal() / 2 * 100);
+        int amountToUse_SC = calcAmount(amountToUse_GC, p.grandTotalVal());
 
         setPayment_giftCard(cartId, gcCode, amountToUse_GC);
         setPayment_storeCredit(cartId, amountToUse_SC);

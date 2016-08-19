@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.util.Objects;
 
 import static com.codeborne.selenide.Selenide.open;
-import static org.testng.Assert.assertTrue;
 
 public class ShippingMethodTest extends DataProvider {
 
@@ -28,7 +27,7 @@ public class ShippingMethodTest extends DataProvider {
     }
 
     @Test(priority = 1)
-    public void setShipMethod() throws IOException {
+    public void setShippingMethod() throws IOException {
 
         provideTestData("cart with chosen shipping address");
         p = open(adminUrl + "/carts/" + cartId, CartPage.class);
@@ -36,7 +35,8 @@ public class ShippingMethodTest extends DataProvider {
         click( p.editBtn_shipMethod() );
         jsClick( p.shipMethodRdbtn() );
         click( p.doneBtn_shipMethod() );
-        assertTrue( p.isShipMethodDefined(), "Shipping Method isn't defined" );
+
+        p.assertShipMethodDefined();
 
     }
 

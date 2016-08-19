@@ -4,9 +4,11 @@ import base.BasePage;
 import com.codeborne.selenide.SelenideElement;
 import ru.yandex.qatools.allure.annotations.Step;
 
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.sleep;
 import static org.openqa.selenium.By.xpath;
+import static org.testng.Assert.assertEquals;
 
 public class GiftCardsPage extends BasePage {
 
@@ -146,6 +148,16 @@ public class GiftCardsPage extends BasePage {
         jsClick( selectCustomerChbx(customerQuery) );
         sleep(1500);
 
+    }
+
+    @Step("Issue new GC with value <{0}>")
+    public void issueGC(String gcVal) {
+        setDdVal( typeDd(), "Appeasement" );
+        setFieldVal( valueFld(), gcVal );
+        click( issueGCBtn() );
+        availableBalance().shouldBe(visible);
+        assertEquals( availableBalanceVal(), gcVal,
+                "Incorrect available balance value.");
     }
 
 }

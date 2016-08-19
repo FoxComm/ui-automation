@@ -38,11 +38,11 @@ public class ShippingAddressTest extends DataProvider {
 
         p.clickEditBtn_shipAddress();
         p.clearAddressBook();
-        p.addNewAddress("John Doe", "2101 Green Valley #320", "Seattle", "Washington", "98101", "9879879876");
+        p.addNewAddress("John Doe", "2101 Green Valley #320", "Suite 300", "Seattle", "Washington", "98101", "9879879876");
 
         assertTrue(p.addressBookHeader().is(visible),
                 "A just added address isn't displayed in address book.");
-        assertTrue(p.chosenAddressHeader().is(visible),
+        assertTrue(p.chosenAddress().is(visible),
                 "A just added address isn't set as a chosen shipping address.");
 
     }
@@ -55,11 +55,13 @@ public class ShippingAddressTest extends DataProvider {
         p = open(adminUrl + "/carts/" + cartId, CartPage.class);
 
         p.clickEditBtn_shipAddress();
-        p.addNewAddress("John Doe", "2101 Green Valley #320", "Seattle", "Washington", "98101", "9879879876");
+        p.addNewAddress("John Doe", "2101 Green Valley #320", "Suite 300", "Seattle", "Washington", "98101", "9879879876");
+        click( p.doneBtn_shipAddress() );
 
-        String actualResult = p.getNameFromAddressBook(1);
-        assertEquals(actualResult, "John Doe",
-                "New shipping address isn't displayed in address book.");
+        p.successIcon_shipAddress().shouldBe(visible
+                .because("'Success' icon is not displayed"));
+        p.shipAddressWarn().shouldNotBe(visible
+                .because("'No shipping address' warning is displayed."));
 
     }
 
@@ -73,6 +75,9 @@ public class ShippingAddressTest extends DataProvider {
         p.chooseShipAddress(1);
         click( p.doneBtn_shipAddress() );
 
+        p.chosenAddress().shouldBe(visible
+                .because("A chosen address isn't displayed as a choosen shipping address."));
+
     }
 
     @Test(priority = 3)
@@ -80,10 +85,10 @@ public class ShippingAddressTest extends DataProvider {
 
         p.clickEditBtn_shipAddress();
         click( p.editBtn_chosenAddress() );
-        setFieldVal( p.nameFld(), "John Doe" );
+        setFieldVal( p.nameFld(), "Edited Customer Name" );
         p.applyChangesToAddress();
 
-        assertEquals(p.getCustomerName_chosenShipAddress(), "John Doe",
+        assertEquals(p.getCustomerName_chosenShipAddress(), "Edited Customer Name",
                 "Chosen address has failed to get updated.");
 
     }
@@ -98,7 +103,7 @@ public class ShippingAddressTest extends DataProvider {
         click( p.deleteBtn_chosenAddress() );
         click( p.confirmDeletionBtn() );
 
-        elementNotVisible( p.chosenAddressHeader() );
+        elementNotVisible( p.chosenAddress() );
 
     }
 

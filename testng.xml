@@ -16,7 +16,7 @@
             <class name="tests.cart.ShippingAddressTest" />
             <class name="tests.cart.ShippingMethodTest" />
             <class name="tests.cart.PaymentMethodTest" />
-            <!--<class name="tests.cart.OrderCouponsTest" />-->
+            <class name="tests.cart.OrderCouponsTest" />
             <class name="tests.cart.PlaceOrderTest" />
         </classes>
     </test>

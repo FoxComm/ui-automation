@@ -3,21 +3,23 @@ package tests.cart;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import pages.CartPage;
+import pages.GiftCardsPage;
 import pages.LoginPage;
 import testdata.DataProvider;
 
 import java.io.IOException;
 import java.util.Objects;
 
+import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.open;
+import static com.codeborne.selenide.Selenide.refresh;
 import static com.codeborne.selenide.Selenide.sleep;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
 
 public class PaymentMethodTest extends DataProvider {
 
     private CartPage p;
+    private GiftCardsPage gcp;
 
     @BeforeClass(alwaysRun = true)
     public void setUp() {
@@ -30,42 +32,45 @@ public class PaymentMethodTest extends DataProvider {
 
     }
 
-    @Test(priority = 1)
-    public void addPaymentMethod_creditCard() throws IOException {
-
-        provideTestData("cart with 1 item and chosen shipping address");
-        p = open(adminUrl + "/carts/" + cartId, CartPage.class);
-
-        click( p.editBtn_payment() );
-        click( p.newPaymentBtn() );
-        p.selectPaymentType("Credit Card");
-        p.addNewCreditCard("John Doe", "5555555555554444", "777", "2", "2020");
-
-        p.assertCardAdded();
-        p.assertNoFundsWarn();
-
-    }
+//    @Test(priority = 1)
+//    public void addPaymentMethod_creditCard() throws IOException {
+//
+//        provideTestData("cart with 1 item and chosen shipping address");
+//        p = open(adminUrl + "/carts/" + cartId, CartPage.class);
+//
+//        click( p.editBtn_payment() );
+//        click( p.newPaymentBtn() );
+//        p.selectPaymentType("Credit Card");
+//        p.addNewCreditCard("John Doe", "5555555555554444", "777", "2", "2020");
+//
+//        p.assertCardAdded();
+//        p.assertNoFundsWarn();
+//
+//    }
 
 
     @Test(priority = 2)
     public void addPaymentMethod_giftCard() throws IOException {
 
         provideTestData("cart with 1 item && customer with GC");
-        open(adminUrl + "/gift-cards/" + gcCode);
+        gcp = open(adminUrl + "/gift-cards/new", GiftCardsPage.class);
+        gcp.issueGC("500.00");
+        refresh();
         p = open(adminUrl + "/carts/" + cartId, CartPage.class);
 
         click( p.editBtn_payment() );
         click( p.newPaymentBtn() );
         p.selectPaymentType("Gift Card");
         setFieldVal( p.gcNumberFld(), "D26BB43F228AA2CD" );
+        clearField(p.amountToUseFld());
         setFieldVal( p.amountToUseFld(), String.valueOf(p.grandTotal()) );
         System.out.println(p.gcAvailableBalance());
 
-        double expectedVal = cutDecimal( p.gcAvailableBalance() - p.grandTotal() );
+        double expectedVal = cutDecimal( p.gcAvailableBalanceVal() - p.grandTotalVal() );
         System.out.println(expectedVal);
         sleep(1000);
-        assertTrue( p.gcNewAvailableBalance() == expectedVal,
-                "New available balance calculations are incorrect." );
+        p.gcNewAvailableBalance().shouldHave(text("$" + expectedVal)
+                .because("New available balance calculations are incorrect."));
 
         click( p.addPaymentBtn() );
         p.assertNoFundsWarn();
@@ -76,18 +81,20 @@ public class PaymentMethodTest extends DataProvider {
     public void addPaymentMethod_storeCredit() throws IOException {
 
         provideTestData("cart with 1 item && customer with SC");
+        refresh();
         p = open(adminUrl + "/carts/" + cartId, CartPage.class);
 
         click( p.editBtn_payment() );
         click( p.newPaymentBtn() );
         p.selectPaymentType("Store Credit");
+        clearField(p.amountToUseFld());
         setFieldVal( p.amountToUseFld(), String.valueOf(p.grandTotal()) );
 
-        double expectedVal = cutDecimal( p.gcAvailableBalance() - p.grandTotal() );
-        System.out.println(expectedVal);
+        double expectedVal = cutDecimal( p.gcAvailableBalanceVal() - p.grandTotalVal() );
+        System.out.println("GC New available balance should be: <$" + expectedVal + ">");
         sleep(1000);
-        assertTrue( p.gcNewAvailableBalance() == expectedVal,
-                "New available balance calculations are incorrect." );
+        p.gcNewAvailableBalance().shouldHave(text("$" + expectedVal)
+                .because("New available balance calculations are incorrect."));
 
         click( p.addPaymentBtn() );
         p.assertNoFundsWarn();
@@ -98,14 +105,15 @@ public class PaymentMethodTest extends DataProvider {
     public void addStoreCredit_exceedsTotal() throws IOException {
 
         provideTestData("cart with 1 item && customer with SC");
+        refresh();
         p = open(adminUrl + "/carts/" + cartId, CartPage.class);
 
         p.cartSummary().waitUntil(visible, 10000);
-        double amountToUse = p.grandTotal() + 10.00;
+        double amountToUse = p.grandTotalVal() + 10.00;
         p.addPaymentMethod_SC( String.valueOf(amountToUse) );
 
-        assertTrue(p.appliedAmount() == p.grandTotal(),
-                "Amount of funds to be applied as a payment isn't auto-adjusted.");
+        p.appliedAmount().shouldHave(text(p.grandTotal().getText())
+                .because("Amount of funds to be applied as a payment isn't auto-adjusted."));
 
     }
 
@@ -113,14 +121,15 @@ public class PaymentMethodTest extends DataProvider {
     public void addGiftCard_exceedsTotal() throws IOException {
 
         provideTestData("cart with 1 item && customer with GC");
+        refresh();
         p = open(adminUrl + "/carts/" + cartId, CartPage.class);
 
         p.cartSummary().waitUntil(visible, 10000);
-        double amountToUse = p.grandTotal() + 10.00;
+        double amountToUse = p.grandTotalVal() + 10.00;
         p.addPaymentMethod_GC(gcCode, String.valueOf(amountToUse));
 
-        assertTrue(p.appliedAmount() == p.grandTotal(),
-                "Amount of funds to be applied as a payment isn't auto-adjusted.");
+        p.appliedAmount().shouldHave(text(p.grandTotal().getText())
+                .because("Amount of funds to be applied as a payment isn't auto-adjusted."));
 
     }
 
@@ -128,6 +137,7 @@ public class PaymentMethodTest extends DataProvider {
     public void addSC_onHoldState() throws IOException {
 
         provideTestData("cart with 1 item && SC onHold");
+        refresh();
         p = open(adminUrl + "/carts/" + cartId, CartPage.class);
 
         click( p.editBtn_payment() );
@@ -135,8 +145,8 @@ public class PaymentMethodTest extends DataProvider {
         p.selectPaymentType("Store Credit");
         setFieldVal( p.amountToUseFld(), String.valueOf(p.grandTotal()) );
 
-        assertEquals( p.gcAvailableBalance(), 0.00,
-                "A store credit with 'onHold' state can be used as a payment method.");
+        p.gcAvailableBalance().shouldHave(text("$0.00")
+                .because("A store credit with 'onHold' state can be used as a payment method."));
 
     }
 
@@ -144,6 +154,7 @@ public class PaymentMethodTest extends DataProvider {
     public void addSC_canceledState() throws IOException {
 
         provideTestData("cart with 1 item && SC canceled");
+        refresh();
         p = open(adminUrl + "/carts/" + cartId, CartPage.class);
 
         click( p.editBtn_payment() );
@@ -151,8 +162,8 @@ public class PaymentMethodTest extends DataProvider {
         p.selectPaymentType("Store Credit");
         setFieldVal( p.amountToUseFld(), String.valueOf(p.grandTotal()) );
 
-        assertEquals( p.gcAvailableBalance(), 0.00,
-                "A store credit with 'canceled' state can be used as a payment method.");
+        p.gcAvailableBalance().shouldHave(text("$0.00")
+                .because("A store credit with 'canceled' state can be used as a payment method."));
 
     }
 

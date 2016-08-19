@@ -61,14 +61,14 @@ public class OrderDetailsPage extends CartPage {
             Objects.equals( expectedState, "Manual Hold" ) ||
             Objects.equals( expectedState, "Fraud Hold" )) {
 
-            assertTrue($(By.xpath("//div[text()='" + expectedState + "']")).is(visible),
-                    "Order is not on " + expectedState + ".");
+            $(By.xpath("//div[text()='" + expectedState + "']")).is(visible
+                    .because("Order is not on " + expectedState + "."));
 
         } else if (Objects.equals( expectedState, "Fulfillment Started" ) ||
                     Objects.equals( expectedState, "Canceled" )) {
 
-            assertTrue($(By.xpath("//div[@class=' fc-panel-list']/div[1]/div/span[text()='" + expectedState + "']")).is(visible),
-                    "Order is not in '" + expectedState + "' state");
+            $(By.xpath("//div[@class=' fc-panel-list']/div[1]/div/span[text()='" + expectedState + "']")).shouldBe(visible
+                    .because("Order is not in '" + expectedState + "' state"));
 
         }
 

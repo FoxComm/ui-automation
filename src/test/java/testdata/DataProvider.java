@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.codeborne.selenide.Selenide.sleep;
 import static org.testng.Assert.assertEquals;
 
 public class DataProvider extends BaseTest {
@@ -1916,6 +1917,7 @@ public class DataProvider extends BaseTest {
                 createCart(customerId);
                 updSKULineItems(cartId, "SKU-BRO", 1);
                 issueGiftCard(50000, 1);
+                sleep(10000);
                 break;
 
             case "cart with 1 item && customer with SC":
