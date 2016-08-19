@@ -1,10 +1,9 @@
-package tests.orderstests;
+package tests.cart;
 
-import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import pages.CartPage;
 import pages.LoginPage;
-import pages.OrderDetailsPage;
 import testdata.DataProvider;
 
 import java.io.IOException;
@@ -18,7 +17,7 @@ import static org.testng.Assert.assertTrue;
 
 public class ShippingAddressTest extends DataProvider {
 
-    private OrderDetailsPage p;
+    private CartPage p;
 
     @BeforeClass(alwaysRun = true)
     public void setUp() {
@@ -35,7 +34,7 @@ public class ShippingAddressTest extends DataProvider {
     public void addNewAddress_emptyAddressBook() throws IOException {
 
         provideTestData("cart with empty address book");
-        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
+        p = open(adminUrl + "/carts/" + cartId, CartPage.class);
 
         p.clickEditBtn_shipAddress();
         p.clearAddressBook();
@@ -53,7 +52,7 @@ public class ShippingAddressTest extends DataProvider {
     public void addNewAddress_nonEmptyAddressBook() throws IOException {
 
         provideTestData("cart with non-empty address book");
-        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
+        p = open(adminUrl + "/carts/" + cartId, CartPage.class);
 
         p.clickEditBtn_shipAddress();
         p.addNewAddress("John Doe", "2101 Green Valley #320", "Seattle", "Washington", "98101", "9879879876");
@@ -68,7 +67,7 @@ public class ShippingAddressTest extends DataProvider {
     public void chooseShippingAddress() throws IOException {
 
         provideTestData("cart with non-empty address book");
-        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
+        p = open(adminUrl + "/carts/" + cartId, CartPage.class);
 
         p.clickEditBtn_shipAddress();
         p.chooseShipAddress(1);
@@ -93,7 +92,7 @@ public class ShippingAddressTest extends DataProvider {
     public void deleteChosenShippingAddress() throws IOException {
 
         provideTestData("cart with chosen shipping address");
-        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
+        p = open(adminUrl + "/carts/" + cartId, CartPage.class);
 
         click( p.editBtn_shipAddress() );
         click( p.deleteBtn_chosenAddress() );
@@ -107,7 +106,7 @@ public class ShippingAddressTest extends DataProvider {
     public void setDefaultShippingAddress() throws IOException {
 
         provideTestData("cart with 2 addresses in address book");
-        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
+        p = open(adminUrl + "/carts/" + cartId, CartPage.class);
 
         p.clickEditBtn_shipAddress();
         click( p.defaultShipAddressChkbox("1") );
@@ -121,7 +120,7 @@ public class ShippingAddressTest extends DataProvider {
     public void changeDefaultShippingAddress() throws IOException {
 
         provideTestData("cart with 2 addresses and defined default shipping address");
-        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
+        p = open(adminUrl + "/carts/" + cartId, CartPage.class);
 
         p.clickEditBtn_shipAddress();
         click( p.defaultShipAddressChkbox("1") );
@@ -131,10 +130,11 @@ public class ShippingAddressTest extends DataProvider {
 
     }
 
-
-    @AfterMethod
-    public void cleanUp() {
-        p.restorePageDefaultState();
-    }
+    // If tests in here doesn't fail because of garbage from previous tests - then delete @AfterMethod
+    // And delete restorePageDefaultState() from CartPage.class
+//    @AfterMethod
+//    public void cleanUp() {
+//        p.restorePageDefaultState();
+//    }
 
 }

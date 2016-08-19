@@ -1,9 +1,9 @@
-package tests.orderstests;
+package tests.cart;
 
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import pages.CartPage;
 import pages.LoginPage;
-import pages.OrderDetailsPage;
 import testdata.DataProvider;
 
 import java.io.IOException;
@@ -15,7 +15,7 @@ import static org.testng.Assert.assertEquals;
 
 public class ItemsTest extends DataProvider {
 
-    private OrderDetailsPage p;
+    private CartPage p;
 
     @BeforeClass(alwaysRun = true)
     public void setUp() {
@@ -32,7 +32,7 @@ public class ItemsTest extends DataProvider {
     public void addItemToCart() throws IOException {
 
         provideTestData("empty cart");
-        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
+        p = open(adminUrl + "/carts/" + cartId, CartPage.class);
 
         p.addItemToCart("Shark");
         p.addItemToCart("Fox");
@@ -43,7 +43,7 @@ public class ItemsTest extends DataProvider {
     public void increaseItemQuantity_arrowBtn() throws IOException {
 
         provideTestData("cart with 1 item");
-        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
+        p = open(adminUrl + "/carts/" + cartId, CartPage.class);
         sleep(750);
 
         String expectedResult = addToString(p.getItemQty("1"), 2);
@@ -57,7 +57,7 @@ public class ItemsTest extends DataProvider {
     public void decreaseItemQuantity_arrowBtn() throws IOException {
 
         provideTestData("cart with 1 item, qty: 3");
-        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
+        p = open(adminUrl + "/carts/" + cartId, CartPage.class);
         sleep(750);
 
         String expectedResult = subtractFromString(p.getItemQty("1"), 1);
@@ -71,7 +71,7 @@ public class ItemsTest extends DataProvider {
     public void decreaseItemQuantityBelowZero() throws IOException {
 
         provideTestData("cart with 3 items");
-        p = open(adminUrl + "/orders" + orderId, OrderDetailsPage.class);
+        p = open(adminUrl + "/carts/" + cartId, CartPage.class);
         sleep(750);
 
         int expectedResult = p.itemsInCartAmount() - 1;
@@ -89,7 +89,7 @@ public class ItemsTest extends DataProvider {
     public void editItemQuantity_directInput() throws IOException {
 
         provideTestData("cart with 1 item");
-        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
+        p = open(adminUrl + "/carts/" + cartId, CartPage.class);
 
         // increase value
         p.editItemQty("1", "3");
@@ -106,7 +106,7 @@ public class ItemsTest extends DataProvider {
     public void deletionCancel_deleteBtn() throws IOException {
 
         provideTestData("cart with 1 item, qty: 3");
-        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
+        p = open(adminUrl + "/carts/" + cartId, CartPage.class);
         sleep(750);
 
         int expectedResult = p.itemsInCartAmount();
@@ -124,7 +124,7 @@ public class ItemsTest extends DataProvider {
     public void deletionCancel_qtyBelowZero() throws IOException {
 
         provideTestData("cart with 3 items");
-        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
+        p = open(adminUrl + "/carts/" + cartId, CartPage.class);
         sleep(750);
 
         int expectedResult = p.itemsInCartAmount();
@@ -142,7 +142,7 @@ public class ItemsTest extends DataProvider {
     public void deleteItem_deleteBtn() throws IOException {
 
         provideTestData("cart with 3 items");
-        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
+        p = open(adminUrl + "/carts/" + cartId, CartPage.class);
         sleep(750);
 
         int expectedItemsAmount = p.cart().size() - 1;

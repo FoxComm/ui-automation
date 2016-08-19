@@ -1,9 +1,9 @@
-package tests.orderstests;
+package tests.cart;
 
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import pages.CartPage;
 import pages.LoginPage;
-import pages.OrderDetailsPage;
 import testdata.DataProvider;
 
 import java.io.IOException;
@@ -14,7 +14,7 @@ import static org.testng.Assert.assertTrue;
 
 public class ShippingMethodTest extends DataProvider {
 
-    OrderDetailsPage p;
+    CartPage p;
 
     @BeforeClass(alwaysRun = true)
     public void setUp() {
@@ -31,7 +31,7 @@ public class ShippingMethodTest extends DataProvider {
     public void setShipMethod() throws IOException {
 
         provideTestData("cart with chosen shipping address");
-        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
+        p = open(adminUrl + "/carts/" + cartId, CartPage.class);
 
         click( p.editBtn_shipMethod() );
         jsClick( p.shipMethodRdbtn() );

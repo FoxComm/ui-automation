@@ -10,15 +10,20 @@
             <class name="tests.generalcontrols.search.SKUTest" />
         </classes>
     </test>
+    <test name="Cart Tests" >
+        <classes>
+            <class name="tests.cart.ItemsTest" />
+            <class name="tests.cart.ShippingAddressTest" />
+            <class name="tests.cart.ShippingMethodTest" />
+            <class name="tests.cart.PaymentMethodTest" />
+            <!--<class name="tests.cart.OrderCouponsTest" />-->
+            <class name="tests.cart.PlaceOrderTest" />
+        </classes>
+    </test>
     <test name="Orders Tests" >
         <classes>
-            <class name="tests.orderstests.SearchTest" />
-            <class name="tests.orderstests.ItemsTest" />
-            <class name="tests.orderstests.ShippingAddressTest" />
-            <class name="tests.orderstests.ShippingMethodTest" />
-            <class name="tests.orderstests.PaymentMethodTest" />
-            <class name="tests.orderstests.PlaceOrderTest" />
-            <class name="tests.orderstests.OrderStateTest" />
+            <class name="tests.orders.SearchTest" />
+            <class name="tests.orders.OrderStateTest" />
         </classes>
     </test>
     <test name="Customers Tests" >

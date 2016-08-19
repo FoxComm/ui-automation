@@ -1,9 +1,9 @@
-package tests.orderstests;
+package tests.cart;
 
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import pages.CartPage;
 import pages.LoginPage;
-import pages.OrderDetailsPage;
 import testdata.DataProvider;
 
 import java.io.IOException;
@@ -17,7 +17,7 @@ import static org.testng.Assert.assertTrue;
 
 public class PaymentMethodTest extends DataProvider {
 
-    private OrderDetailsPage p;
+    private CartPage p;
 
     @BeforeClass(alwaysRun = true)
     public void setUp() {
@@ -34,7 +34,7 @@ public class PaymentMethodTest extends DataProvider {
     public void addPaymentMethod_creditCard() throws IOException {
 
         provideTestData("cart with 1 item and chosen shipping address");
-        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
+        p = open(adminUrl + "/carts/" + cartId, CartPage.class);
 
         click( p.editBtn_payment() );
         click( p.newPaymentBtn() );
@@ -52,7 +52,7 @@ public class PaymentMethodTest extends DataProvider {
 
         provideTestData("cart with 1 item && customer with GC");
         open(adminUrl + "/gift-cards/" + gcCode);
-        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
+        p = open(adminUrl + "/carts/" + cartId, CartPage.class);
 
         click( p.editBtn_payment() );
         click( p.newPaymentBtn() );
@@ -76,7 +76,7 @@ public class PaymentMethodTest extends DataProvider {
     public void addPaymentMethod_storeCredit() throws IOException {
 
         provideTestData("cart with 1 item && customer with SC");
-        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
+        p = open(adminUrl + "/carts/" + cartId, CartPage.class);
 
         click( p.editBtn_payment() );
         click( p.newPaymentBtn() );
@@ -98,7 +98,7 @@ public class PaymentMethodTest extends DataProvider {
     public void addStoreCredit_exceedsTotal() throws IOException {
 
         provideTestData("cart with 1 item && customer with SC");
-        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
+        p = open(adminUrl + "/carts/" + cartId, CartPage.class);
 
         p.cartSummary().waitUntil(visible, 10000);
         double amountToUse = p.grandTotal() + 10.00;
@@ -113,7 +113,7 @@ public class PaymentMethodTest extends DataProvider {
     public void addGiftCard_exceedsTotal() throws IOException {
 
         provideTestData("cart with 1 item && customer with GC");
-        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
+        p = open(adminUrl + "/carts/" + cartId, CartPage.class);
 
         p.cartSummary().waitUntil(visible, 10000);
         double amountToUse = p.grandTotal() + 10.00;
@@ -128,7 +128,7 @@ public class PaymentMethodTest extends DataProvider {
     public void addSC_onHoldState() throws IOException {
 
         provideTestData("cart with 1 item && SC onHold");
-        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
+        p = open(adminUrl + "/carts/" + cartId, CartPage.class);
 
         click( p.editBtn_payment() );
         click( p.newPaymentBtn() );
@@ -144,7 +144,7 @@ public class PaymentMethodTest extends DataProvider {
     public void addSC_canceledState() throws IOException {
 
         provideTestData("cart with 1 item && SC canceled");
-        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
+        p = open(adminUrl + "/carts/" + cartId, CartPage.class);
 
         click( p.editBtn_payment() );
         click( p.newPaymentBtn() );

@@ -1,4 +1,4 @@
-package tests.orderstests;
+package tests.cart;
 
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -32,7 +32,7 @@ public class PlaceOrderTest extends DataProvider {
     public void placeOrder_CC() throws IOException {
 
         provideTestData("cart with 1 item, shipping method, and credit card payment");
-        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
+        p = open(adminUrl + "/carts/" + cartId, OrderDetailsPage.class);
 
         p.assertNoWarnings();
         click( p.placeOrderBtn() );
@@ -44,12 +44,12 @@ public class PlaceOrderTest extends DataProvider {
     public void placeOrder_SC() throws IOException {
 
         provideTestData("cart with 1 item, shipping method and issued SC");
-        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
+        p = open(adminUrl + "/carts/" + cartId, OrderDetailsPage.class);
 
         p.cartSummary().waitUntil(visible, 10000);
         int amountToUse = (int) (p.grandTotal() * 100);
 
-        setPayment_storeCredit(orderId, amountToUse);
+        setPayment_storeCredit(cartId, amountToUse);
         refresh();
         p.assertNoWarnings();
         click( p.placeOrderBtn() );
@@ -61,13 +61,13 @@ public class PlaceOrderTest extends DataProvider {
     public void placeOrder_GC() throws IOException {
 
         provideTestData("cart with 1 item, shipping method and issued GC");
-        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
+        p = open(adminUrl + "/carts/" + cartId, OrderDetailsPage.class);
 
         p.cartSummary().waitUntil(visible, 10000);
         int amountToUse = (int) (p.grandTotal() * 100);
 
 
-        setPayment_giftCard(orderId, gcCode, amountToUse);
+        setPayment_giftCard(cartId, gcCode, amountToUse);
         refresh();
         p.assertNoWarnings();
         click( p.placeOrderBtn() );
@@ -79,12 +79,12 @@ public class PlaceOrderTest extends DataProvider {
     public void placeOrder_CC_SC() throws IOException {
 
         provideTestData("cart with 1 item, shipping method, credit card payment and issued SC");
-        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
+        p = open(adminUrl + "/carts/" + cartId, OrderDetailsPage.class);
 
         p.cartSummary().waitUntil(visible, 10000);
         int amountToUse = (int) (p.grandTotal() / 2 * 100);
 
-        setPayment_storeCredit(orderId, amountToUse);
+        setPayment_storeCredit(cartId, amountToUse);
         refresh();
         p.assertNoWarnings();
         click( p.placeOrderBtn() );
@@ -96,12 +96,12 @@ public class PlaceOrderTest extends DataProvider {
     public void placeOrder_CC_GC() throws IOException {
 
         provideTestData("cart with 1 item, shipping method, credit card payment and issued GC");
-        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
+        p = open(adminUrl + "/carts/" + cartId, OrderDetailsPage.class);
 
         p.cartSummary().waitUntil(visible, 10000);
         int amountToUse = (int) (p.grandTotal() / 2 * 100);
 
-        setPayment_giftCard(orderId, gcCode, amountToUse);
+        setPayment_giftCard(cartId, gcCode, amountToUse);
         refresh();
         p.assertNoWarnings();
         click( p.placeOrderBtn() );
@@ -113,14 +113,14 @@ public class PlaceOrderTest extends DataProvider {
     public void placeOrder_SC_GC() throws IOException {
 
         provideTestData("cart with 1 item, shipping method, issued SC and GC");
-        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
+        p = open(adminUrl + "/carts/" + cartId, OrderDetailsPage.class);
 
         p.cartSummary().waitUntil(visible, 10000);
         int amountToUse_GC = (int) (p.grandTotal() / 2 * 100);
         int amountToUse_SC = calcAmount(amountToUse_GC, p.grandTotal());
 
-        setPayment_giftCard(orderId, gcCode, amountToUse_GC);
-        setPayment_storeCredit(orderId, amountToUse_SC);
+        setPayment_giftCard(cartId, gcCode, amountToUse_GC);
+        setPayment_storeCredit(cartId, amountToUse_SC);
         refresh();
         p.assertNoWarnings();
         click( p.placeOrderBtn() );
@@ -132,7 +132,7 @@ public class PlaceOrderTest extends DataProvider {
 //    public void placeOrder_coupon() throws IOException {
 //
 //        provideTestData("cart with 1 item, shipping method, CC and coupon");
-//        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
+//        p = open(adminUrl + "/carts/" + cartId, OrderDetailsPage.class);
 //
 //        assertTrue(p.couponName().is(visible),
 //                "Failed to apply coupon to an order.");

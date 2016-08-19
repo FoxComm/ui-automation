@@ -1,4 +1,4 @@
-package tests.orderstests;
+package tests.orders;
 
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;

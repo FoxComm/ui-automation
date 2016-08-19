@@ -1,4 +1,4 @@
-package tests.orderstests;
+package tests.cart;
 
 import org.testng.annotations.BeforeClass;
 import pages.LoginPage;
