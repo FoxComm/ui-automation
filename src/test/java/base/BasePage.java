@@ -20,7 +20,7 @@ public class BasePage extends ConciseAPI {
     //---------------------------------- GENERAL CONTROLS -----------------------------------//
 
     public SelenideElement userMenuBtn() {
-        return $(xpath("//div[@class='_header_header__name']"));
+        return $(xpath("//div[contains(@class, 'user')]/div[3]"));
     }
 
     public SelenideElement logoutBtn() {

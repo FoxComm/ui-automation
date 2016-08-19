@@ -86,12 +86,14 @@ public class SearchControlsTest extends DataProvider {
         provideTestData("saved search with 1 filter");
         p = open(adminUrl, GeneralControlsPage.class);
 
-        p.switchToTab("Test Search");
+        p.switchToTab("Search " + searchRandomId);
         p.searchContextMenu("Edit Search Name");
         p.tabTitleFld().setValue("Edited Name").pressEnter();
         refresh();
-        p.tab("All - Copy").shouldNotBe(visible.because("A saved search tab with an old name is visible."));
-        p.tab("Edited Name").shouldBe(visible.because("Saved search name failed to get edited."));
+        p.tab("Search " + searchRandomId).shouldNotBe(visible
+                .because("A saved search tab with an old name is visible."));
+        p.tab("Edited Name").shouldBe(visible
+                .because("Saved search name failed to get edited."));
 
     }
 
@@ -101,7 +103,7 @@ public class SearchControlsTest extends DataProvider {
         provideTestData("saved search with 2 filters");
         p = open(adminUrl, GeneralControlsPage.class);
 
-        p.switchToTab("Test Search");
+        p.switchToTab("Search " + searchRandomId);
         click( p.removeFilterBtn("Order : State : Remorse Hold") );
         waitForDataToLoad();
         p.dirtySearchIndicator().shouldBe(visible
@@ -115,12 +117,12 @@ public class SearchControlsTest extends DataProvider {
         provideTestData("saved search with 2 filters");
         p = open(adminUrl, GeneralControlsPage.class);
 
-        p.switchToTab("Test Search");
+        p.switchToTab("Search " + searchRandomId);
         click( p.removeFilterBtn("Order : Total : > : $1") );
         waitForDataToLoad();
         p.searchContextMenu("Update Search");
         refresh();
-        p.switchToTab("Test Search");
+        p.switchToTab("Search " + searchRandomId);
         p.filter("Order : Total : > : $1").shouldNot(exist
                 .because("A just removed search filter is displayed in a search field."));
         p.filter("Order : State : Remorse Hold").should(exist
@@ -134,11 +136,11 @@ public class SearchControlsTest extends DataProvider {
         provideTestData("saved search with 1 filter");
         p = open(adminUrl, GeneralControlsPage.class);
 
-        p.switchToTab("Test Search");
+        p.switchToTab("Search " + searchRandomId);
         p.searchContextMenu("Delete Search");
         refresh();
         waitForDataToLoad();
-        p.tab("Test Search").shouldNot(exist.because("A just deleted saved search is displayed."));
+        p.tab("Search " + searchRandomId).shouldNot(exist.because("A just deleted saved search is displayed."));
 
     }
 
