@@ -13,3 +13,5 @@
 /src/test/java/TestClass.java
 
 /src/test/java/tests/generalcontrols/search/GiftCardsSearchTest.java
+/bin
+/build

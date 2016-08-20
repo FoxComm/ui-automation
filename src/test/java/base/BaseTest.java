@@ -16,7 +16,7 @@ public class BaseTest extends ConciseAPI {
     @BeforeSuite
     public void browserConfig() {
 
-        System.setProperty("webdriver.chrome.driver", "/home/cosmic/IdeaProjects/FC/chromedriver_2.21");
+        System.setProperty("webdriver.chrome.driver", "bin/chromedriver");
         Configuration.browser = "chrome";
         Configuration.timeout = 10000;
 
