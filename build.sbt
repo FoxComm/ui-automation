@@ -12,5 +12,6 @@ libraryDependencies ++= Seq(
   "com.squareup.okhttp" % "okhttp" % "2.7.5",
   "org.testng" % "testng" % "6.9.10",
   "org.aspectj" % "aspectjweaver" % "1.8.6",
-  "ru.yandex.qatools.allure" % "allure-testng-adaptor" % "1.4.23"
+  "ru.yandex.qatools.allure" % "allure-testng-adaptor" % "1.4.23",
+  "org.scalatest" %% "scalatest" % "3.0.0" % "test"
 )
