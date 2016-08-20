@@ -9,6 +9,7 @@ import testdata.DataProvider;
 import java.io.IOException;
 import java.util.Objects;
 
+import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.Selenide.sleep;
 import static org.testng.Assert.assertEquals;
@@ -111,8 +112,8 @@ public class AddressBookTest extends DataProvider {
         p.setState("New York");
         p.assertStateIsntReset();
         click( p.saveBtn() );
-        assertTrue( p.stateDdVal("1").equals("New York"),
-                "Failed to edit state dd value; expected: <New York>, actual: " + p.stateDdVal("1") + ">.");
+        p.stateDdVal("1").shouldHave(text("New York")
+                .because("Failed to edit state dd value; expected: <New York>, actual: " + p.stateDdVal("1") + ">."));
 
     }
 
@@ -126,8 +127,9 @@ public class AddressBookTest extends DataProvider {
         setFieldVal( p.zipFld(), "10001" );
         p.assertStateIsntReset();
         click( p.saveBtn() );
-        assertTrue( p.zipFldVal("1").equals("10001"),
-                "Failed to edit zip field; expected: <10001>, actual: <" + p.zipFldVal("1") + ">.");
+
+        p.zipFldVal("1").shouldHave(text("10001")
+                .because("Failed to edit zip field; expected: <10001>, actual: <" + p.zipFldVal("1") + ">."));
 
     }
 
@@ -139,12 +141,13 @@ public class AddressBookTest extends DataProvider {
 
         click( p.editAddressBtn("1") );
         clearField( p.phoneNumberFld() );
-        setFieldVal( p.phoneNumberFld(), "5551237575" );
+        setFieldVal_delayed( p.phoneNumberFld(), "5551237575" );
         p.assertStateIsntReset();
         click( p.saveBtn() );
         sleep(4000);
-        assertEquals( p.phoneNumberFldVal("1"), "(555) 123-7575",
-                "Failed to edit phone number in existing address at address book.");
+
+        p.phoneNumberFldVal("1").shouldHave(text("(555) 123-7575")
+                .because("Failed to edit phone number in existing address at address book."));
 
     }
 

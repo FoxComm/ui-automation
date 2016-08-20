@@ -9,9 +9,9 @@ import testdata.DataProvider;
 import java.io.IOException;
 import java.util.Objects;
 
+import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.Selenide.sleep;
-import static org.testng.Assert.assertEquals;
 
 public class ContactInformationTest extends DataProvider {
 
@@ -35,35 +35,35 @@ public class ContactInformationTest extends DataProvider {
     @Test(priority = 1)
     public void assertDefaultValues() throws IOException {
 
-        provideTestData("customer");
+        provideTestData("a customer");
         p = open(adminUrl + "/customers/" + customerId, CustomersPage.class);
 
-        assertEquals( p.nameVal_contactInfo(), customerName,
-                "Incorrect name is displayed in 'Contact Information'.");
-        assertEquals( p.emailVal_contactInfo(), customerEmail,
-                "Incorrect email is displayed in 'Contact Information'.");
+        p.nameVal_contactInfo().shouldHave(text(customerName)
+                .because("Incorrect name is displayed in 'Contact Information'."));
+        p.emailVal_contactInfo().shouldHave(text(customerEmail)
+                .because("Incorrect email is displayed in 'Contact Information'."));
 
     }
 
     @Test(priority = 2)
     public void addPhoneNumber() throws IOException {
 
-        provideTestData("customer");
+        provideTestData("a customer");
         p = open(adminUrl + "/customers/" + customerId, CustomersPage.class);
 
         click( p.editBtn_contactInfo() );
         setFieldVal( p.phoneNumberFld_contactInfo(), "7779994242" );
         click( p.saveBtn() );
         sleep(2000);
-        assertEquals( p.phoneNumberVal_contactInfo(), "7779994242",
-                "Failed to set customer's phone number.");
+        p.phoneNumberVal_contactInfo().shouldHave(text("7779994242")
+                .because("Failed to set customer's phone number."));
 
     }
 
     @Test(priority = 3)
     public void editName() throws IOException {
 
-        provideTestData("customer");
+        provideTestData("a customer");
         p = open(adminUrl + "/customers/" + customerId, CustomersPage.class);
 
         click( p.editBtn_contactInfo() );
@@ -71,17 +71,17 @@ public class ContactInformationTest extends DataProvider {
         setFieldVal( p.nameFld_contactInfo(), newName );
         click( p.saveBtn() );
         sleep(2000);
-        assertEquals( p.nameVal_contactInfo(), newName,
-                "Failed to edit customer's name.");
-        assertEquals( p.nameVal_overview(), newName,
-                "Failed to update name value at customer overview block.");
+        p.nameVal_contactInfo().shouldHave(text(newName)
+                .because("Failed to edit customer's name."));
+        p.nameVal_overview().shouldHave(text(newName)
+                .because("Failed to update name value at customer overview block."));
 
     }
 
     @Test(priority = 4)
     public void editEmail() throws IOException {
 
-        provideTestData("customer");
+        provideTestData("a customer");
         p = open(adminUrl + "/customers/" + customerId, CustomersPage.class);
 
         click( p.editBtn_contactInfo() );
@@ -89,10 +89,10 @@ public class ContactInformationTest extends DataProvider {
         setFieldVal( p.emailFld_contactInfo(), newEmail );
         click( p.saveBtn() );
         sleep(2000);
-        assertEquals( p.emailVal_contactInfo(), newEmail,
-                "Failed to edit customer's email.");
-        assertEquals( p.emailVal_overview(), newEmail,
-                "Failed to update email value at customer overview block.");
+        p.emailVal_contactInfo().shouldHave(text(newEmail)
+                .because("Failed to edit customer's email."));
+        p.emailVal_overview().shouldHave(text(newEmail)
+                .because("Failed to update email value at customer overview block."));
 
     }
 
