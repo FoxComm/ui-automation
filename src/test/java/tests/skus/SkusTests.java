@@ -147,6 +147,8 @@ public class SkusTests extends DataProvider {
         p.clickSave();
         click( p.skusNavMenu() );
         p.search( sku.substring(4, sku.length()) );
+        assertEquals( p.getSKUParamVal("1", "Retail Price"), "70.00",
+                "Retail price isn't updated on the list.");
         p.openSKU(sku);
 
         p.retailPriceFld().shouldBe(visible);
@@ -161,17 +163,17 @@ public class SkusTests extends DataProvider {
         provideTestData("active SKU");
         p = open(adminUrl + "/skus/" + sku, SkusPage.class);
 
-        setFieldVal( p.salePriceFld(), "28.00" );
+        setFieldVal( p.salePriceFld(), "70.00" );
         p.clickSave();
         click( p.skusNavMenu() );
         p.search( sku.substring(4, sku.length()) );
-        assertEquals( p.getSKUParamVal("1", "Price"), "28.00",
-                "Retail price isn't updated on the list.");
+        assertEquals( p.getSKUParamVal("1", "Sale Price"), "70.00",
+                "Sale price isn't updated on the list.");
         p.openSKU(sku);
 
         p.salePriceFld().shouldBe(visible);
-        assertEquals( p.salePriceFld().getValue(), "28.00",
-                "Failed to edit retail price." );
+        assertEquals( p.salePriceFld().getValue(), "70.00",
+                "Failed to edit sale price." );
 
     }
 

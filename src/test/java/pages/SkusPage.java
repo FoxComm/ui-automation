@@ -161,14 +161,18 @@ public class SkusPage extends BasePage {
         waitForDataToLoad();
         switch (paramName) {
             case "Code":
-                skuParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + skuIndex + "]/td[2]")).getText();
+                skuParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + skuIndex + "]/td[2]")).getText();
                 break;
             case "Title":
-                skuParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + skuIndex + "]/td[3]")).getText();
+                skuParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + skuIndex + "]/td[3]")).getText();
                 break;
-            case "Price":
-                String skuPrice = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + skuIndex + "]/td[4]/span")).text();
-                skuParamVal = skuPrice.substring(1, skuPrice.length());
+            case "Sale Price":
+                String salePrice = $(By.xpath("//tbody[@class='fc-table-body']/a[" + skuIndex + "]/td[4]/span")).text();
+                skuParamVal = salePrice.substring(1, salePrice.length());
+                break;
+            case "Retail Price":
+                String retailPrice = $(By.xpath("//tbody[@class='fc-table-body']/a[" + skuIndex + "]/td[5]/span")).text();
+                skuParamVal = retailPrice.substring(1, retailPrice.length());
                 break;
 
         }
@@ -184,7 +188,7 @@ public class SkusPage extends BasePage {
     private SelenideElement findSKUOnList(String skuCode) {
 
         waitForDataToLoad();
-        List<SelenideElement> skusList = $$(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a/td[2]"));
+        List<SelenideElement> skusList = $$(By.xpath("//tbody[@class='fc-table-body']/a/td[2]"));
         SelenideElement skuToClick = null;
 
         for(SelenideElement sku : skusList) {
