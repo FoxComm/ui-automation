@@ -48,7 +48,8 @@
     </test>
     <test name="Promotions Tests">
         <classes>
-            <class name="tests.promotions.PromotionsTest" />
+            <!--<class name="tests.promotions.PromotionsTest" />-->
+            <class name="tests.promotions.PromotionsTest_NoAPI" />
         </classes>
     </test>
     <test name="Coupons Tests" >

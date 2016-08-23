@@ -5,11 +5,8 @@ import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.By;
 import ru.yandex.qatools.allure.annotations.Step;
 
-import java.util.List;
-
+import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.$$;
-import static org.testng.Assert.assertTrue;
 
 public class PromotionsPage extends BasePage {
 
@@ -51,9 +48,8 @@ public class PromotionsPage extends BasePage {
         return $(By.xpath("//input[@class='fc-append-input__input-field']"));
     }
 
-    public String promotionIdVal() {
-        SelenideElement promotionId = $(By.xpath("//div[@class='fc-breadcrumbs']/ul/li[5]/a"));
-        return promotionId.text();
+    public SelenideElement promotionIdVal() {
+        return $(By.xpath("//div[@class='fc-breadcrumbs']/ul/li[5]/a"));
     }
 
     public SelenideElement stateDd() {
@@ -73,6 +69,10 @@ public class PromotionsPage extends BasePage {
         return $(By.xpath("//a[@class='fc-date-time-picker__close']"));
     }
 
+    public SelenideElement promotion(String idOrName) {
+        return $(By.xpath("//tbody[@class='fc-table-body']/a/td[text()='" + idOrName + "']"));
+    }
+
 
     //--------------------------------------- HELPERS ----------------------------------------//
 
@@ -89,6 +89,27 @@ public class PromotionsPage extends BasePage {
         setDdVal( offerTypeDd(), "Percent off order" );
         setFieldVal( offerGetFld(), "10" );
         clickSave();
+        promotionIdVal().shouldNotHave(text("new")
+                .because("Failed to create a new promotion."));
+
+    }
+
+    @Step("Create a new promotion with <{0}> apply type")
+    public void createNewPromo_autoApply_active(String applyType, String id) {
+
+        click( addNewPromoBtn() );
+        setDdVal( applyTypeDd(), applyType );
+        setFieldVal( nameFld(), "Test Promo " + id );
+        setFieldVal( storefrontNameFld(), "sf name" );
+        setFieldVal( descriptionFld(), "test promo" );
+        setFieldVal( detailsFld(), "promo details" );
+        setDdVal( qualifierTypeDd(), "Order - No qualifier" );
+        setDdVal( offerTypeDd(), "Percent off order" );
+        setFieldVal( offerGetFld(), "10" );
+        setDdVal( stateDd(), "Active" );
+        clickSave();
+        promotionIdVal().shouldNotHave(text("new")
+                .because("Failed to create a new promotion."));
 
     }
 
@@ -98,57 +119,32 @@ public class PromotionsPage extends BasePage {
         waitForDataToLoad();
         switch (paramName) {
             case "Promotion ID":
-                promoParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + promoIndex + "]/td[2]")).getText();
+                promoParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + promoIndex + "]/td[2]")).getText();
                 break;
             case "Name":
-                promoParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + promoIndex + "]/td[3]")).getText();
+                promoParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + promoIndex + "]/td[3]")).getText();
                 break;
             case "Storefront Name":
-                promoParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + promoIndex + "]/td[4]")).getText();
+                promoParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + promoIndex + "]/td[4]")).getText();
                 break;
             case "Apply Type":
-                promoParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + promoIndex + "]/td[5]")).getText();
+                promoParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + promoIndex + "]/td[5]")).getText();
                 break;
             case "Total Uses":
-                promoParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + promoIndex + "]/td[6]")).getText();
+                promoParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + promoIndex + "]/td[6]")).getText();
                 break;
             case "Current Carts":
-                promoParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + promoIndex + "]/td[7]")).getText();
+                promoParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + promoIndex + "]/td[7]")).getText();
                 break;
             case "Date/Time Created":
-                promoParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + promoIndex + "]/td[8]/time")).getText();
+                promoParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + promoIndex + "]/td[8]/time")).getText();
                 break;
             case "State":
-                promoParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + promoIndex + "]/td[9]/div/div")).getText();
+                promoParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + promoIndex + "]/td[9]/div/div")).getText();
                 break;
 
         }
         return promoParamVal;
-    }
-
-    @Step("Open promotion with code <{0}>.")
-    public void openPromo(String promotionId) {
-        click( findPromoOnList(promotionId) );
-    }
-
-    @Step("Find promotion with ID <{0}> on the list.")
-    private SelenideElement findPromoOnList(String promotionId) {
-
-        List<SelenideElement> promoList = $$(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a/td[2]"));
-        SelenideElement promoToClick = null;
-
-        for(SelenideElement promo : promoList) {
-
-            String promoIdVal = promo.text();
-            if (promoIdVal.equals(promotionId)) {
-                promoToClick = promo;
-            }
-
-        }
-
-        assertTrue( promoToClick != null, "Requested coupon isn't displayed on the list.");
-        return promoToClick;
-
     }
 
     @Step("Set promotion's state to <{0}>")
