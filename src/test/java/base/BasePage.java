@@ -94,7 +94,7 @@ public class BasePage extends ConciseAPI {
     }
 
     //---------------------------- GENERAL FORM SPECIFIC----------------------------//
-    private SelenideElement saveBtn() {
+    public SelenideElement saveBtn() {
         return $(xpath("//span[text()='Save']/.."));
     }
 
