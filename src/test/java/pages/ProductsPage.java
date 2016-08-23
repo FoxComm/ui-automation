@@ -2,7 +2,6 @@ package pages;
 
 import base.BasePage;
 import com.codeborne.selenide.SelenideElement;
-import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import ru.yandex.qatools.allure.annotations.Step;
 
@@ -10,6 +9,7 @@ import java.util.List;
 
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
+import static org.openqa.selenium.By.xpath;
 import static org.testng.Assert.assertTrue;
 
 public class ProductsPage extends BasePage {
@@ -18,66 +18,70 @@ public class ProductsPage extends BasePage {
     //------------------------------ ELEMENTS --------------------------------//
 
     public SelenideElement addNewProduct() {
-        return $(By.xpath("//span[text()='Product']/.."));
+        return $(xpath("//span[text()='Product']/.."));
     }
 
     //-------------------------- NEW PRODUCT
     public SelenideElement titleFld() {
-        return $(By.xpath("//input[@name='title']"));
+        return $(xpath("//input[@name='title']"));
     }
 
     public SelenideElement descriptionFld() {
-        return $(By.xpath("//div[@class='public-DraftEditor-content']"));
+        return $(xpath("//div[@class='public-DraftEditor-content']"));
     }
 
     public SelenideElement sku() {
-        return $(By.xpath("//tbody/tr[1]/td[2]/div/input"));
+        return $(xpath("//input[@placeholder='SKU']"));
+    }
+
+    private SelenideElement skuSearchView(String skuCode) {
+        return $(xpath("//div[contains(@class, 'sku-cell')]/ul/li/strong[text()='" + skuCode + "']"));
     }
 
     public SelenideElement retailPriceFld() {
-        return $(By.xpath("//tbody/tr[1]/td[3]/div/div/input"));
+        return $(xpath("//tbody[@class='fc-table-body']/tr/td[3]/div/div/input"));
     }
 
     public SelenideElement salePriceFld() {
-        return $(By.xpath("//tbody/tr[1]/td[4]/div/div/input"));
+        return $(xpath("//tbody[@class='fc-table-body']/tr/td[4]/div/div/input"));
     }
 
     public SelenideElement stateDd() {
-        return $(By.xpath("//div[@class='fc-product-state']/div[2]/div[2]/button"));
+        return $(xpath("//div[@class='fc-product-state']/div[2]/div[2]/button"));
     }
 
     public SelenideElement stateListVal(String state) {
-        return $(By.xpath("//li[text()='" + state + "']"));
+        return $(xpath("//li[text()='" + state + "']"));
     }
 
     public String stateVal() {
-        SelenideElement state = $(By.xpath("//div[@class='fc-product-state']/div[2]/div[2]/div"));
+        SelenideElement state = $(xpath("//div[@class='fc-product-state']/div[2]/div[2]/div"));
         return state.getText();
     }
 
     private SelenideElement removeStartDateBtn() {
-        return $(By.xpath("//div[text()='Start']/following-sibling::*/div[2]/a"));
+        return $(xpath("//div[text()='Start']/following-sibling::*/div[2]/a"));
     }
 
     public SelenideElement saveDraftBtn() {
-        return $(By.xpath("//span[text()='Save']/.."));
+        return $(xpath("//span[text()='Save']/.."));
     }
     //--------------------------
 
     private SelenideElement productsCounter() {
-        return $(By.xpath("//span[@class='fc-section-title__subtitle fc-light']/span"));
+        return $(xpath("//span[@class='fc-section-title__subtitle fc-light']/span"));
     }
 
     public SelenideElement noSKUsMsg() {
-        return $(By.xpath("//div[text()='No SKUs.']"));
+        return $(xpath("//div[text()='No SKUs.']"));
     }
 
     public SelenideElement productId() {
-        return $(By.xpath("//header/div/ul/li[5]"));
+        return $(xpath("//header/div/ul/li[5]"));
     }
 
     private SelenideElement skuName() {
-        return $(By.xpath("//tr[@class='fc-table-tr']/td[2]/div"));
+        return $(xpath("//tr[@class='fc-table-tr']/td[2]/div"));
     }
 
 
@@ -120,7 +124,7 @@ public class ProductsPage extends BasePage {
     private SelenideElement findProductOnList(String productName) {
 
         waitForDataToLoad();
-        List<SelenideElement> productsList = $$(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a/td[4]"));
+        List<SelenideElement> productsList = $$(xpath("//tbody[@class='fc-table-body']/a/td[4]"));
         SelenideElement productToClick = null;
         printSEList(productsList);
 
@@ -140,7 +144,7 @@ public class ProductsPage extends BasePage {
 
     @Step("Clear all tags from product")
     public void clearTags() {
-        List<SelenideElement> tags = $$(By.xpath("//div[@class='_tags_tags__tags']/div/button"));
+        List<SelenideElement> tags = $$(xpath("//div[@class='_tags_tags__tags']/div/button"));
         System.out.println(tags.size());
         for(int i = 0; i < tags.size(); i++) {
             click( removeTagBtn("1") );
@@ -154,16 +158,16 @@ public class ProductsPage extends BasePage {
         waitForDataToLoad();
         switch (paramName) {
             case "Product ID":
-                productParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + productIndex + "]/td[2]")).getText();
+                productParamVal = $(xpath("//tbody[@class='fc-table-body']/a[" + productIndex + "]/td[2]")).getText();
                 break;
 //            case "Image":
-//                productParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + productIndex + "]/td[3]/div/div")).getText();
+//                productParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + productIndex + "]/td[3]/img")).getAttribute("src");
 //                break;
             case "Name":
-                productParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + productIndex + "]/td[4]")).getText();
+                productParamVal = $(xpath("//tbody[@class='fc-table-body']/a[" + productIndex + "]/td[4]")).getText();
                 break;
             case "State":
-                productParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + productIndex + "]/td[5]/div/div")).getText();
+                productParamVal = $(xpath("//tbody[@class='fc-table-body']/a[" + productIndex + "]/td[5]/div/div")).getText();
                 break;
 
         }
@@ -224,6 +228,7 @@ public class ProductsPage extends BasePage {
         setFieldVal( titleFld(), productTitle );
         setFieldVal( descriptionFld(), "The best thing to buy in 2016!" );
         setFieldVal( sku(), SKU );
+        click( skuSearchView(SKU) );
         setFieldVal( retailPriceFld(), retailPrice );
         setFieldVal( salePriceFld(), salePrice );
         setState( state );

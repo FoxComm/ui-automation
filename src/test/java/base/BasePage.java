@@ -114,15 +114,15 @@ public class BasePage extends ConciseAPI {
 
     public SelenideElement removeTagBtn(String index) {
         // define only btn on the first tag in line
-        return $(xpath("//div[@class='_tags_tags__tags']/div[" + index + "]/button"));
+        return $(xpath("//div[contains(@class, '_tags_')]/div[" + index + "]/button"));
     }
 
     public SelenideElement tag(String tagVal) {
-        return $(xpath("//div[@class='_tags_tags__tags']//div[text()='" + tagVal + "']"));
+        return $(xpath("//div[contains(@class, '_tags_')]/div/div[text()='" + tagVal + "']"));
     }
 
     public int getTagsAmount() {
-        List<SelenideElement> listOfTags = $$(xpath("//div[@class='_tags_tags__tags']/div"));
+        List<SelenideElement> listOfTags = $$(xpath("//div[contains(@class, '_tags_')]/div"));
         return listOfTags.size();
     }
 

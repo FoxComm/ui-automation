@@ -15,34 +15,40 @@ import static org.testng.Assert.assertTrue;
 public class StorefrontCategoryPage extends BasePage {
 
     private SelenideElement itemsOnList_s() {
-        return $(By.xpath("//div[@class='_products_item_list_item__list-item']"));
+        return $(By.xpath("//div[contains(@class, 'list-item')]"));
     }
+
+    public SelenideElement product(String productName) {
+        return $(By.xpath("//div[contains(@class, '_list_')]/div/div[text()='" + productName + "']"));
+    }
+
+    //.shouldBe(visible.because("Product isn't found on the category page."));
 
     private SelenideElement searchResult() {
         return $(By.xpath("//section/div[1]/div"));
     }
 
-    public SelenideElement searchBtn() {
-        return $(By.xpath("//div[@class='_search_search__search']/div[1]"));
+    private SelenideElement searchBtn() {
+        return $(By.xpath("//div[contains(@class, 'header')]/div/div[2]/div/div[1]"));
     }
 
     public SelenideElement searchFld() {
-        return $(By.xpath("//div[@class='_header_header__search']/div/input"));
+        return $(By.xpath("//div[contains(@class, 'header')]/div/div[2]/div/input"));
     }
 
     public String titleVal() {
-        SelenideElement title = $(By.xpath("//h1[contains(@class, 'pdp__name')]"));
+        SelenideElement title = $(By.xpath("//h1"));
         return title.text();
     }
 
     public String priceVal() {
-        SelenideElement price = $(By.xpath("//div[contains(@class, 'pdp__price')]/span"));
+        SelenideElement price = $(By.xpath("//div[contains(@class, '_price_')]/span"));
         String priceVal = price.text();
         return priceVal.substring(1, priceVal.length());
     }
 
     public String descriptionVal() {
-        SelenideElement description = $(By.xpath("//div[contains(@class, 'pdp__description')]"));
+        SelenideElement description = $(By.xpath("//div[contains(@class, '_description_')]"));
         return description.text();
     }
 
@@ -58,36 +64,6 @@ public class StorefrontCategoryPage extends BasePage {
     @Step("Wait for data on the list to be loaded.")
     public void waitForDataToLoad_sf() {
         itemsOnList_s().shouldBe(visible.because("'No products found.' message is displayed."));
-    }
-
-    @Step("Find product <{0}> on the list.")
-    private boolean lookForProduct(String productName) {
-        boolean result = false;
-
-        List<SelenideElement> itemsList = $$(By.xpath("//div[@class='_products_item_list_item__name']"));
-        printSEList(itemsList);
-        for(SelenideElement item : itemsList) {
-
-            String listItemName = item.text();
-            if (listItemName.equals(productName)) {
-                result = true;
-                break;
-            }
-
-        }
-        return result;
-    }
-
-    @Step("Assert that product <{0}> is displayed in the category")
-    public boolean productDisplayed(String productName) {
-        waitForDataToLoad_sf();
-        return lookForProduct(productName);
-    }
-
-    @Step("Assert that product <{0}> is found by search")
-    public boolean productIsFound(String productName) {
-        waitForSearchResultsToLoad();
-        return lookForProduct(productName);
     }
 
     public void search(String productName) {
