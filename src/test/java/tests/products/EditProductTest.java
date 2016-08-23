@@ -11,9 +11,7 @@ import java.io.IOException;
 import java.util.Objects;
 
 import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selenide.open;
-import static com.codeborne.selenide.Selenide.refresh;
-import static com.codeborne.selenide.Selenide.sleep;
+import static com.codeborne.selenide.Selenide.*;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
@@ -99,8 +97,8 @@ public class EditProductTest extends DataProvider {
 
         sf = open(storefrontUrl + "/sunglasses?type=men", StorefrontCategoryPage.class);
         sf.waitForDataToLoad_sf();
-        assertTrue( sf.productDisplayed("Edited Product " + uid),
-                "Failed to edit product title - product isn't found by a new title on storefront category page." );
+        sf.product("Edited Product " + uid).shouldBe(visible
+                .because("Failed to edit product title - product isn't found by a new title on storefront category page."));
 
     }
 
@@ -109,7 +107,6 @@ public class EditProductTest extends DataProvider {
 
         provideTestData("product in active state");
         p = open(adminUrl + "/products/default/" + productId, ProductsPage.class);
-        String uid = productName.substring(13, 20);
 
         clearField( p.descriptionFld() );
         setFieldVal( p.descriptionFld(), "Edited Description" );
@@ -184,8 +181,8 @@ public class EditProductTest extends DataProvider {
 
         sf = open(storefrontUrl + "/sunglasses?type=men", StorefrontCategoryPage.class);
         sf.waitForDataToLoad_sf();
-        assertTrue( sf.productDisplayed(productName),
-                "Failed to edit product state - product isn't displayed on the category page on storefront.");
+        sf.product(productName).shouldBe(visible
+                .because("Failed to edit product state - product isn't displayed on the category page on storefront."));
 
     }
 
@@ -210,7 +207,6 @@ public class EditProductTest extends DataProvider {
 
         provideTestData("product in active state");
         p = open(adminUrl + "/products/default/" + productId, ProductsPage.class);
-        String uid = productName.substring(13, 20);
 
         setFieldVal( p.salePriceFld(), "35.18" );
         p.clickSave();
@@ -267,8 +263,8 @@ public class EditProductTest extends DataProvider {
 
         sf = open(storefrontUrl + "/sunglasses?type=men", StorefrontCategoryPage.class);
         sf.waitForDataToLoad_sf();
-        assertTrue( sf.productDisplayed(productName),
-                "Product isn't displayed on storefront category page.");
+        sf.product(productName).shouldBe(visible
+                .because("Product isn't displayed on storefront category page."));
 
     }
 
@@ -298,8 +294,8 @@ public class EditProductTest extends DataProvider {
 
         sf = open(storefrontUrl + "/eyeglasses?type=men", StorefrontCategoryPage.class);
         sf.waitForDataToLoad_sf();
-        assertTrue( !sf.productDisplayed(productName),
-                "Product is displayed on the storefront category (it shouldn't).");
+        sf.product(productName).shouldNotBe(visible
+                .because("Product is displayed on the storefront category (it shouldn't)."));
 
     }
 

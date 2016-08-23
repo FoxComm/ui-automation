@@ -10,10 +10,10 @@ import testdata.DataProvider;
 import java.io.IOException;
 import java.util.Objects;
 
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.Selenide.sleep;
 import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
 
 public class CreateProductsTest extends DataProvider {
 
@@ -42,7 +42,7 @@ public class CreateProductsTest extends DataProvider {
         p.fillOutProductForm( productName, sku, "27.18", "27.18", "sunglasses", "Active");
         click( p.productsNavMenu() );
         p.waitForDataToLoad();
-        p.addFilter("Product", "Name", randomId);
+        p.addFilter("Product : Name", randomId);
         assertEquals( p.getProductParamVal("1", "Name"), productName,
                 "Product is not found - either search doesn't work or product wasn't created.");
 
@@ -67,9 +67,11 @@ public class CreateProductsTest extends DataProvider {
         p.assertSKUApplied();
 
         sf = open(storefrontUrl + "/sunglasses?type=men", StorefrontCategoryPage.class);
-        assertTrue( sf.productDisplayed(productName),
-                "Product isn't displayed on the category page on sf.");
-        sf.openProduct(productName);
+        sf.waitForDataToLoad_sf();
+
+        sf.product(productName).shouldBe(visible
+                .because("Product isn't displayed on the category page on sf."));
+        click( sf.product(productName) );
         assertEquals( sf.titleVal(), productName,
                 "Incorrect product title is displayed on PDP.");
         assertEquals( sf.priceVal(), "27.18",
@@ -89,8 +91,8 @@ public class CreateProductsTest extends DataProvider {
 
         sf = open(storefrontUrl + "/sunglasses?type=men", StorefrontCategoryPage.class);
         sf.waitForDataToLoad_sf();
-        assertTrue( !sf.productDisplayed(productName),
-                "Product is displayed on the category page on sf.");
+        sf.product(productName).shouldNotBe(visible
+                .because("Product is displayed on the category page on sf."));
 
     }
 
@@ -105,8 +107,8 @@ public class CreateProductsTest extends DataProvider {
         sf = open(storefrontUrl + "/sunglasses?type=men", StorefrontCategoryPage.class);
         sf.search(productName);
         sf.waitForSearchResultsToLoad();
-        assertTrue( sf.productDisplayed(productName),
-                "Product isn't found by search.");
+        sf.product(productName).shouldBe(visible
+                .because("Product isn't found by search."));
 
     }
 
@@ -120,8 +122,8 @@ public class CreateProductsTest extends DataProvider {
 
         sf = open(storefrontUrl + "/sunglasses?type=men", StorefrontCategoryPage.class);
         sf.waitForDataToLoad_sf();
-        assertTrue( !sf.productDisplayed(productName),
-                "Product is displayed on the category page on sf.");
+        sf.product(productName).shouldNotBe(visible
+                .because("Product is displayed on the category page on sf."));
 
     }
 
@@ -136,8 +138,8 @@ public class CreateProductsTest extends DataProvider {
         sf = open(storefrontUrl + "/sunglasses?type=men", StorefrontCategoryPage.class);
         sf.search(productName);
         sf.waitForSearchResultsToLoad();
-        assertTrue( !sf.productIsFound(productName),
-                "Product isn't found by search.");
+        sf.product(productName).shouldNotBe(visible
+                .because("Product isn't found by search."));
 
     }
 
@@ -151,8 +153,8 @@ public class CreateProductsTest extends DataProvider {
 
         sf = open(storefrontUrl + "/sunglasses?type=men", StorefrontCategoryPage.class);
         sf.waitForDataToLoad_sf();
-        assertTrue( !sf.productDisplayed(productName),
-                "Product is displayed on the category page on sf.");
+        sf.product(productName).shouldNotBe(visible
+                .because("Product is displayed on the category page on sf."));
 
     }
 
@@ -167,8 +169,8 @@ public class CreateProductsTest extends DataProvider {
         sf = open(storefrontUrl + "/sunglasses?type=men", StorefrontCategoryPage.class);
         sf.search(productName);
         sf.waitForSearchResultsToLoad();
-        assertTrue( !sf.productIsFound(productName),
-                "Product is found by search.");
+        sf.product(productName).shouldNotBe(visible
+                .because("Product is found by search."));
 
     }
 
@@ -182,8 +184,8 @@ public class CreateProductsTest extends DataProvider {
 
         sf = open(storefrontUrl + "/sunglasses?type=men", StorefrontCategoryPage.class);
         sf.waitForDataToLoad_sf();
-        assertTrue( !sf.productDisplayed(productName),
-                "Product is displayed on the category page on sf.");
+        sf.product(productName).shouldNotBe(visible
+                .because("Product is displayed on the category page on sf."));
 
     }
 
@@ -198,8 +200,8 @@ public class CreateProductsTest extends DataProvider {
         sf = open(storefrontUrl + "/sunglasses?type=men", StorefrontCategoryPage.class);
         sf.search(productName);
         sf.waitForSearchResultsToLoad();
-        assertTrue( !sf.productIsFound(productName),
-                "Product is found by search.");
+        sf.product(productName).shouldNotBe(visible
+                .because("Product is found by search."));
 
     }
 
@@ -213,8 +215,8 @@ public class CreateProductsTest extends DataProvider {
 
         sf = open(storefrontUrl + "/sunglasses?type=men", StorefrontCategoryPage.class);
         sf.waitForDataToLoad_sf();
-        assertTrue( !sf.productDisplayed(productName),
-                "Product is displayed on the category page on sf.");
+        sf.product(productName).shouldNotBe(visible
+                .because("Product is displayed on the category page on sf."));
 
     }
 
@@ -229,8 +231,8 @@ public class CreateProductsTest extends DataProvider {
         sf = open(storefrontUrl + "/sunglasses?type=men", StorefrontCategoryPage.class);
         sf.search(productName);
         sf.waitForSearchResultsToLoad();
-        assertTrue( !sf.productIsFound(productName),
-                "Product is found by search.");
+        sf.product(productName).shouldNotBe(visible
+                .because("Product is found by search."));
 
     }
 
@@ -249,7 +251,7 @@ public class CreateProductsTest extends DataProvider {
         click( p.productsNavMenu() );
         p.waitForDataToLoad();
 
-        p.addFilter("Product", "Name", randomId);
+        p.addFilter("Product : Name", randomId);
         assertEquals(p.getProductParamVal("1", "Name"), "Test Product " + randomId,
                 "Queried product is not found - either search doesn't work or product wasn't created.");
         p.openProduct( productTitle );
@@ -271,7 +273,7 @@ public class CreateProductsTest extends DataProvider {
         click(p.productsNavMenu());
         p.waitForDataToLoad();
 
-        p.addFilter("Product", "Name", randomId);
+        p.addFilter("Product : Name", randomId);
         assertEquals(p.getProductParamVal("1", "Name"), "Test Product " + randomId,
                 "Queried product is not found - either search doesn't work or product wasn't created.");
         p.openProduct( productTitle );
@@ -292,7 +294,7 @@ public class CreateProductsTest extends DataProvider {
         click(p.saveDraftBtn());
         click(p.productsNavMenu());
         p.waitForDataToLoad();
-        p.addFilter("Product", "Name", randomId);
+        p.addFilter("Product : Name", randomId);
         p.openProduct( productTitle );
         sleep(1500);
         p.assertSKUApplied();
@@ -312,7 +314,7 @@ public class CreateProductsTest extends DataProvider {
         click(p.productsNavMenu());
         p.waitForDataToLoad();
 
-        p.addFilter("Product", "Name", randomId);
+        p.addFilter("Product : Name", randomId);
         assertEquals(p.getProductParamVal("1", "Name"), "Test Product " + randomId,
                 "Queried product is not found - either search doesn't work or product wasn't created.");
         p.openProduct( productTitle );
