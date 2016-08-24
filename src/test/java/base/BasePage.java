@@ -40,24 +40,9 @@ public class BasePage extends ConciseAPI {
     }
 
     //----------------------------------- NAVIGATION MENU ------------------------------------//
-    public SelenideElement productsNavMenu() {
-        return $(xpath("//span[text()='Products']"));
-    }
 
-    public SelenideElement skusNavMenu() {
-        return $(xpath("//span[text()='SKUs']"));
-    }
-
-    public SelenideElement couponsNavMenu() {
-        return $(xpath("//span[text()='Coupons']"));
-    }
-
-    public SelenideElement promotionsNavMenu() {
-        return $(xpath("//span[text()='Promotions']/.."));
-    }
-
-    public SelenideElement gcNavMenu() {
-        return $(xpath("//span[text()='Gift Cards']/.."));
+    public SelenideElement sideMenu(String sectionName) {
+        return $(xpath("//span[text()='" + sectionName + "']"));
     }
 
     //------------------------------------ LOGIN SCREEN --------------------------------------//

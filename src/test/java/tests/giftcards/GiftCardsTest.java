@@ -73,7 +73,7 @@ public class GiftCardsTest extends DataProvider {
         click( p.issueGCBtn() );
         p.availableBalance().shouldBe(visible);
         String gcNumber = getUrl().substring(46, 62);
-        click( p.gcNavMenu() );
+        click( p.sideMenu("Gift Cards") );
         p.search(gcNumber);
         assertEquals( p.getGCParamVal("1", "Gift Card Number"), gcNumber,
                 "Search failed to find a just created GC.");
@@ -94,7 +94,7 @@ public class GiftCardsTest extends DataProvider {
                 "Incorrect 'State' value is displayed on GC details page.");
 
         String gcNumber = getUrl().substring(46, 62);
-        click( p.gcNavMenu() );
+        click( p.sideMenu("Gift Cards") );
         p.search(gcNumber);
         assertEquals( p.getGCParamVal("1", "State"), "Active",
                 "A just created gift card isn't in 'Active state'.");
@@ -157,7 +157,7 @@ public class GiftCardsTest extends DataProvider {
         setDdVal( p.stateDd(), "Hold" );
         click( p.yesBtn() );
         p.yesBtn().shouldNotBe(visible);
-        click( p.gcNavMenu() );
+        click( p.sideMenu("Gift Cards") );
         p.search(gcCode);
         assertEquals( p.getGCParamVal("1", "State"), "On Hold" );
 
@@ -173,7 +173,7 @@ public class GiftCardsTest extends DataProvider {
         click( p.yesBtn() );
         refresh();
         assertEquals( p.stateVal(), "Active", "Failed to set GC 'State' to 'Active'.");
-        click( p.gcNavMenu() );
+        click( p.sideMenu("Gift Cards") );
         p.search(gcCode);
         assertEquals( p.getGCParamVal("1", "State"), "Active", "Incorrect 'State' value is displayed on the list.");
 

@@ -59,7 +59,7 @@ public class EditProductTest extends DataProvider {
         setFieldVal( p.titleFld(), "Edited Product " + uid );
         p.clickSave();
         sleep(1000);
-        click( p.productsNavMenu() );
+        click( p.sideMenu("Products") );
         p.search(uid);
 
         assertEquals( p.getProductParamVal("1", "Name"), "Edited Product " + uid,
@@ -161,7 +161,7 @@ public class EditProductTest extends DataProvider {
         p.setState( "Inactive" );
         p.clickSave();
         sleep(1000);
-        click( p.productsNavMenu() );
+        click( p.sideMenu("Products") );
         p.search(uid);
 
         assertEquals( p.getProductParamVal("1", "State"), "Inactive",

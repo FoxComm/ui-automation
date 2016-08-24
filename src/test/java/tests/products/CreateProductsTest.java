@@ -40,7 +40,7 @@ public class CreateProductsTest extends DataProvider {
         String productName = "Test Product " + randomId;
 
         p.fillOutProductForm( productName, sku, "27.18", "27.18", "sunglasses", "Active");
-        click( p.productsNavMenu() );
+        click( p.sideMenu("Products") );
         p.waitForDataToLoad();
         p.addFilter("Product : Name", randomId);
         assertEquals( p.getProductParamVal("1", "Name"), productName,
@@ -248,7 +248,7 @@ public class CreateProductsTest extends DataProvider {
 
         p.fillOutProductForm(productTitle, sku, "27.18", "27.18", "sunglasses", "Active");
         click( p.saveDraftBtn() );
-        click( p.productsNavMenu() );
+        click( p.sideMenu("Products") );
         p.waitForDataToLoad();
 
         p.addFilter("Product : Name", randomId);
@@ -270,7 +270,7 @@ public class CreateProductsTest extends DataProvider {
 
         p.fillOutProductForm(productTitle, sku, "27.18", "27.18", "sunglasses", "Active");
         click(p.saveDraftBtn());
-        click(p.productsNavMenu());
+        click( p.sideMenu("Products") );
         p.waitForDataToLoad();
 
         p.addFilter("Product : Name", randomId);
@@ -292,7 +292,7 @@ public class CreateProductsTest extends DataProvider {
 
         p.fillOutProductForm(productTitle, sku, "27.18", "27.18", "sunglasses", "Active");
         click(p.saveDraftBtn());
-        click(p.productsNavMenu());
+        click( p.sideMenu("Products") );
         p.waitForDataToLoad();
         p.addFilter("Product : Name", randomId);
         p.openProduct( productTitle );
@@ -311,7 +311,7 @@ public class CreateProductsTest extends DataProvider {
 
         p.fillOutProductForm(productTitle, sku, "27.18", "27.18", "sunglasses", "Active");
         click(p.saveDraftBtn());
-        click(p.productsNavMenu());
+        click( p.sideMenu("Products") );
         p.waitForDataToLoad();
 
         p.addFilter("Product : Name", randomId);

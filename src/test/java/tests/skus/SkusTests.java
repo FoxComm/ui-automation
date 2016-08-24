@@ -39,7 +39,7 @@ public class SkusTests extends DataProvider {
         p.createNewSKU(randomId, "Active");
         p.clickSave();
         assertEquals( p.skuCodeVal(), "SKU-" + randomId, "Failed to create new SKU.");
-        click( p.skusNavMenu() );
+        click( p.sideMenu("SKUs") );
         p.waitForDataToLoad();
 
         p.search(randomId);
@@ -87,7 +87,7 @@ public class SkusTests extends DataProvider {
 
         setFieldVal( p.titleFld(), "Edited SKU Title" );
         p.clickSave();
-        click( p.skusNavMenu() );
+        click( p.sideMenu("SKUs") );
 
         p.search( sku.substring(4, sku.length()) );
         assertEquals( p.getSKUParamVal("1", "Title"), "Edited SKU Title",
@@ -108,7 +108,7 @@ public class SkusTests extends DataProvider {
 
         setFieldVal( p.upcFld(), "Edited UPC" );
         p.clickSave();
-        click( p.skusNavMenu() );
+        click( p.sideMenu("SKUs") );
         p.search( sku.substring(4, sku.length()) );
         p.openSKU(sku);
 
@@ -127,7 +127,7 @@ public class SkusTests extends DataProvider {
         clearField( p.descriptionFld() );
         setFieldVal( p.descriptionFld(), "Edited description" );
         p.clickSave();
-        click( p.skusNavMenu() );
+        click( p.sideMenu("SKUs") );
         p.search( sku.substring(4, sku.length()) );
         p.openSKU(sku);
 
@@ -145,7 +145,7 @@ public class SkusTests extends DataProvider {
 
         setFieldVal( p.retailPriceFld(), "70.00" );
         p.clickSave();
-        click( p.skusNavMenu() );
+        click( p.sideMenu("SKUs") );
         p.search( sku.substring(4, sku.length()) );
         assertEquals( p.getSKUParamVal("1", "Retail Price"), "70.00",
                 "Retail price isn't updated on the list.");
@@ -165,7 +165,7 @@ public class SkusTests extends DataProvider {
 
         setFieldVal( p.salePriceFld(), "70.00" );
         p.clickSave();
-        click( p.skusNavMenu() );
+        click( p.sideMenu("SKUs") );
         p.search( sku.substring(4, sku.length()) );
         assertEquals( p.getSKUParamVal("1", "Sale Price"), "70.00",
                 "Sale price isn't updated on the list.");
@@ -185,7 +185,7 @@ public class SkusTests extends DataProvider {
 
         p.setState("Inactive");
         p.clickSave();
-        click( p.skusNavMenu() );
+        click( p.sideMenu("SKUs") );
         p.search( sku.substring(4, sku.length()) );
         p.openSKU(sku);
 

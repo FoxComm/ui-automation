@@ -38,7 +38,7 @@ public class PromotionsTest_NoAPI extends DataProvider {
 
         p.createNewPromo("Coupon", randomId);
         promoId = p.promotionIdVal().text();
-        click( p.promotionsNavMenu() );
+        click( p.sideMenu("Promotions") );
         p.search(randomId);
         assertEquals( p.getPromoParamVal("1", "Promotion ID"), promoId,
                 "A just created promo isn't displayed on the list." );
@@ -54,7 +54,7 @@ public class PromotionsTest_NoAPI extends DataProvider {
         p.createNewPromo("Coupon", randomId);
         promoId = p.promotionIdVal().text();
 
-        click( p.promotionsNavMenu() );
+        click( p.sideMenu("Promotions") );
         p.search(promoId);
         assertEquals( p.getPromoParamVal("1", "Promotion ID"), promoId,
                 "Promotion isn't displayed on the list." );
@@ -69,7 +69,7 @@ public class PromotionsTest_NoAPI extends DataProvider {
 
         p.createNewPromo("Coupon", randomId);
         promoId = p.promotionIdVal().text();
-        click( p.promotionsNavMenu() );
+        click( p.sideMenu("Promotions") );
         p.search(promoId);
         assertEquals( p.getPromoParamVal("1", "State"), "Active",
                 "State isn't automatically set to 'Active' for 'Coupon' apply type promotions." );
@@ -91,7 +91,7 @@ public class PromotionsTest_NoAPI extends DataProvider {
         setFieldVal( p.nameFld(), "Edited Promo Name" );
         p.clickSave();
 
-        click( p.promotionsNavMenu() );
+        click( p.sideMenu("Promotions") );
         p.search(promoId);
         assertEquals( p.getPromoParamVal("1", "Name"), "Edited Promo Name",
                 "An old promo name is displayed on the list." );
@@ -118,7 +118,7 @@ public class PromotionsTest_NoAPI extends DataProvider {
         setFieldVal( p.storefrontNameFld(), "Edited Promo Storefront Name" );
         p.clickSave();
 
-        click( p.promotionsNavMenu() );
+        click( p.sideMenu("Promotions") );
         p.search(promoId);
         assertEquals( p.getPromoParamVal("1", "Storefront Name"), "Edited Promo Storefront Name",
                 "An old promo storefront name is displayed on the list." );
@@ -145,7 +145,7 @@ public class PromotionsTest_NoAPI extends DataProvider {
         setFieldVal( p.descriptionFld(), "Edited Promo Description" );
         p.clickSave();
 
-        click( p.promotionsNavMenu() );
+        click( p.sideMenu("Promotions") );
         p.search(promoId);
         click( p.promotion(promoId) );
         p.descriptionFld().shouldBe(visible);
@@ -170,7 +170,7 @@ public class PromotionsTest_NoAPI extends DataProvider {
         setFieldVal( p.detailsFld(), "Edited Promo Details" );
         p.clickSave();
 
-        click( p.promotionsNavMenu() );
+        click( p.sideMenu("Promotions") );
         p.search(promoId);
         click( p.promotion(promoId) );
         p.detailsFld().shouldBe(visible);
@@ -196,7 +196,7 @@ public class PromotionsTest_NoAPI extends DataProvider {
                 .because("'State' dd doesn't appear after changing 'Apply Type' from 'Coupon' to 'Auto'."));
         p.clickSave();
 
-        click( p.promotionsNavMenu() );
+        click( p.sideMenu("Promotions") );
         p.search(promoId);
         assertEquals( p.getPromoParamVal("1", "Apply Type"), "auto" );
         click( p.promotion(promoId) );
@@ -220,7 +220,7 @@ public class PromotionsTest_NoAPI extends DataProvider {
         p.setState("Inactive");
         p.clickSave();
 
-        click( p.promotionsNavMenu() );
+        click( p.sideMenu("Promotions") );
         p.search(promoId);
         assertEquals( p.getPromoParamVal("1", "State"), "Inactive",
                 "Incorrect promotion's 'State' value is displayed on the list.");
@@ -246,7 +246,7 @@ public class PromotionsTest_NoAPI extends DataProvider {
         p.setState("Active");
         p.clickSave();
 
-        click( p.promotionsNavMenu() );
+        click( p.sideMenu("Promotions") );
         p.search(promoId);
         assertEquals( p.getPromoParamVal("1", "State"), "Active",
                 "Incorrect promotion's 'State' value is displayed on the list.");
@@ -272,7 +272,7 @@ public class PromotionsTest_NoAPI extends DataProvider {
         p.addTag("test promo");
         p.clickSave();
 
-        click( p.promotionsNavMenu() );
+        click( p.sideMenu("Promotions") );
         p.search(promoId);
         click( p.promotion(promoId) );
         p.addTagBtn().shouldBe(visible);

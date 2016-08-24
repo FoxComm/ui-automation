@@ -44,7 +44,7 @@ public class CouponsTest extends DataProvider {
         jsClick( p.singleCodeRbtn() );
         setFieldVal( p.singleCodeFld(), "NWCPN-" + randomId );
         click( p.saveBtn() );
-        click( p.couponsNavMenu() );
+        click( p.sideMenu("Coupons") );
         p.waitForDataToLoad();
 
         assertEquals( p.getCouponParamVal("1", "Name"), "test coupon " + randomId,
@@ -72,7 +72,7 @@ public class CouponsTest extends DataProvider {
                 "Failed to create a new coupon.");
 
         click( p.saveBtn() );
-        click( p.couponsNavMenu() );
+        click( p.sideMenu("Coupons") );
         p.waitForDataToLoad();
         assertEquals( p.getCouponParamVal("1", "Name"), "test coupon " + randomId,
                 "A just created coupon isn't displayed on the list.");
@@ -108,7 +108,7 @@ public class CouponsTest extends DataProvider {
 
         setFieldVal( p.nameFld(), "edited coupon " + randomId );
         p.clickSave();
-        click( p.couponsNavMenu() );
+        click( p.sideMenu("Coupons") );
         p.search(couponId);
 
         assertEquals( p.getCouponParamVal("1", "Name"), "edited coupon " + randomId,
@@ -125,7 +125,7 @@ public class CouponsTest extends DataProvider {
         clearField( p.storefrontNameFld() );
         setFieldVal( p.storefrontNameFld(), "edited SF name" );
         p.clickSave();
-        click( p.couponsNavMenu() );
+        click( p.sideMenu("Coupons") );
         p.search(couponId);
 
         assertEquals( p.getCouponParamVal("1", "Storefront Name"), "<p>edited SF name</p>",
@@ -142,7 +142,7 @@ public class CouponsTest extends DataProvider {
         clearField( p.descriptionFld() );
         setFieldVal( p.descriptionFld(), "edited description" );
         p.clickSave();
-        click( p.couponsNavMenu() );
+        click( p.sideMenu("Coupons") );
         p.search(couponId);
         System.out.println("Coupon name: <" + couponName + ">");
         click( p.coupon(couponName) );
@@ -161,7 +161,7 @@ public class CouponsTest extends DataProvider {
         clearField( p.detailsFld() );
         setFieldVal( p.detailsFld(), "edited details" );
         p.clickSave();
-        click( p.couponsNavMenu() );
+        click( p.sideMenu("Coupons") );
         p.search(couponId);
         click( p.coupon(couponName) );
 
@@ -178,7 +178,7 @@ public class CouponsTest extends DataProvider {
 
         p.setState("Inactive");
         p.clickSave();
-        click( p.couponsNavMenu() );
+        click( p.sideMenu("Coupons") );
         p.search(couponId);
 
         assertEquals( p.getCouponParamVal("1", "State"), "Inactive",
