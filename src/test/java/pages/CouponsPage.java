@@ -17,6 +17,10 @@ public class CouponsPage extends BasePage {
 
     //--------------------------------- ELEMENTS -----------------------------//
 
+    public SelenideElement coupon(String nameOrId) {
+        return $(By.xpath("//tbody[@class='fc-table-body']/a[1]/td[text()='" + nameOrId + "']"));
+    }
+
     public SelenideElement addNewCoupon() {
         return $(By.xpath("//span[text()='Coupon']/.."));
     }
@@ -169,7 +173,7 @@ public class CouponsPage extends BasePage {
     }
 
         private int getAmountOfCodes() {
-            List<SelenideElement> listOfCodes = $$(By.xpath("//tbody/tr/td[3]"));
+            List<SelenideElement> listOfCodes = $$(By.xpath("//tbody[@class='fc-table-body']/tr/td[3]"));
             return listOfCodes.size();
         }
 
@@ -197,55 +201,30 @@ public class CouponsPage extends BasePage {
 
         switch (paramName) {
             case "Name":
-                couponParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + couponIndex + "]/td[2]")).getText();
+                couponParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + couponIndex + "]/td[2]")).getText();
                 break;
             case "Storefront Name":
-                couponParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + couponIndex + "]/td[3]")).getText();
+                couponParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + couponIndex + "]/td[3]")).getText();
                 break;
             case "Code":
-                couponParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + couponIndex + "]/td[4]")).getText();
+                couponParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + couponIndex + "]/td[4]")).getText();
                 break;
             case "Total Uses":
-                couponParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + couponIndex + "]/td[5]")).getText();
+                couponParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + couponIndex + "]/td[5]")).getText();
                 break;
             case "Current Carts":
-                couponParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + couponIndex + "]/td[6]")).getText();
+                couponParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + couponIndex + "]/td[6]")).getText();
                 break;
             case "Date/Time Created":
-                couponParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + couponIndex + "]/td[7]/time")).getText();
+                couponParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + couponIndex + "]/td[7]/time")).getText();
                 break;
             case "State":
-                couponParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + couponIndex + "]/td[8]/div/div")).getText();
+                couponParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + couponIndex + "]/td[8]/div/div")).getText();
                 break;
 
         }
 
         return couponParamVal;
-
-    }
-
-    @Step("Open coupon with name <{0}>.")
-    public void openCoupon(String couponName) {
-        click( findCouponOnList(couponName) );
-    }
-
-    @Step("Find coupon with name <{0}> on the list of coupons.")
-    private SelenideElement findCouponOnList(String couponName) {
-
-        List<SelenideElement> couponsList = $$(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a/td[2]"));
-        SelenideElement couponToClick = null;
-
-        for(SelenideElement coupon : couponsList) {
-
-            String listCouponName = coupon.text();
-            if (listCouponName.equals(couponName)) {
-                couponToClick = coupon;
-            }
-
-        }
-
-        assertTrue( couponToClick!= null, "Requested coupon isn't displayed on the list.");
-        return couponToClick;
 
     }
 

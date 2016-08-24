@@ -11,7 +11,6 @@ import java.util.Objects;
 
 import static com.codeborne.selenide.Selenide.open;
 import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
 
 public class CouponsTest extends DataProvider {
 
@@ -144,7 +143,8 @@ public class CouponsTest extends DataProvider {
         p.clickSave();
         click( p.couponsNavMenu() );
         p.search(couponId);
-        p.openCoupon(couponName);
+        System.out.println("Coupon name: <" + couponName + ">");
+        click( p.coupon(couponName) );
 
         assertEquals( p.descriptionFld().getText(), "edited description",
                 "Failed to edit 'Description'.");
@@ -162,7 +162,7 @@ public class CouponsTest extends DataProvider {
         p.clickSave();
         click( p.couponsNavMenu() );
         p.search(couponId);
-        p.openCoupon(couponName);
+        click( p.coupon(couponName) );
 
         assertEquals( p.detailsFld().getText(), "edited details",
                 "Failed to edit 'Details'.");
