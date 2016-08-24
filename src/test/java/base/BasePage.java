@@ -263,6 +263,7 @@ public class BasePage extends ConciseAPI {
         waitForDataToLoad();
         searchFld().val( searchQuery ).pressEnter();
         itemsOnList().shouldBe(visible.because("Search request returned no results."));
+        $(xpath("//h1")).click();
     }
 
     @Step("Open coupon with name <{0}>.")
