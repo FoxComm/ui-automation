@@ -9,9 +9,8 @@ import testdata.DataProvider;
 import java.io.IOException;
 import java.util.Objects;
 
+import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.open;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
 
 public class CouponsTest extends DataProvider {
 
@@ -47,8 +46,8 @@ public class CouponsTest extends DataProvider {
         click( p.sideMenu("Coupons") );
         p.waitForDataToLoad();
 
-        assertEquals( p.getCouponParamVal("1", "Name"), "test coupon " + randomId,
-                "A just created coupon isn't displayed on the list.");
+        p.getCouponParamVal("1", "Name").shouldHave(text("test coupon " + randomId)
+                .because("A just created coupon isn't displayed on the list."));
 
     }
 
@@ -68,14 +67,14 @@ public class CouponsTest extends DataProvider {
         jsClick( p.bulkGenerateCodesBrtn() );
         p.bulkGenerateCodes(4, "BULKCPN_" + randomId + "-", 5);
         p.setState("Active");
-        assertTrue( !p.couponIdVal().equals("new"),
-                "Failed to create a new coupon.");
+        p.couponIdVal().shouldNotHave(text("new")
+                .because("Failed to create a new coupon."));
 
         click( p.saveBtn() );
         click( p.sideMenu("Coupons") );
         p.waitForDataToLoad();
-        assertEquals( p.getCouponParamVal("1", "Name"), "test coupon " + randomId,
-                "A just created coupon isn't displayed on the list.");
+        p.getCouponParamVal("1", "Name").shouldHave(text("test coupon " + randomId)
+                .because("A just created coupon isn't displayed on the list."));
 
     }
 
@@ -111,8 +110,8 @@ public class CouponsTest extends DataProvider {
         click( p.sideMenu("Coupons") );
         p.search(couponId);
 
-        assertEquals( p.getCouponParamVal("1", "Name"), "edited coupon " + randomId,
-                "Failed to edit coupon's 'Name'.");
+        p.getCouponParamVal("1", "Name").shouldHave(text("edited coupon " + randomId)
+                .because("Failed to edit coupon's 'Name'."));
 
     }
 
@@ -128,8 +127,8 @@ public class CouponsTest extends DataProvider {
         click( p.sideMenu("Coupons") );
         p.search(couponId);
 
-        assertEquals( p.getCouponParamVal("1", "Storefront Name"), "<p>edited SF name</p>",
-                "Failed to edit 'Storefront Name'.");
+        p.getCouponParamVal("1", "Storefront Name").shouldHave(text("<p>edited SF name</p>")
+                .because("Failed to edit 'Storefront Name'."));
 
     }
 
@@ -147,8 +146,8 @@ public class CouponsTest extends DataProvider {
         System.out.println("Coupon name: <" + couponName + ">");
         click( p.coupon(couponName) );
 
-        assertEquals( p.descriptionFld().getText(), "edited description",
-                "Failed to edit 'Description'.");
+        p.descriptionFld().shouldHave(text("edited description")
+                .because("Failed to edit 'Description'."));
 
     }
 
@@ -165,8 +164,8 @@ public class CouponsTest extends DataProvider {
         p.search(couponId);
         click( p.coupon(couponName) );
 
-        assertEquals( p.detailsFld().getText(), "edited details",
-                "Failed to edit 'Details'.");
+        p.detailsFld().shouldHave(text("edited details")
+                .because("Failed to edit 'Details'."));
 
     }
 
@@ -181,8 +180,8 @@ public class CouponsTest extends DataProvider {
         click( p.sideMenu("Coupons") );
         p.search(couponId);
 
-        assertEquals( p.getCouponParamVal("1", "State"), "Inactive",
-                "Failed to edit 'State'.");
+        p.getCouponParamVal("1", "State").shouldHave(text("Inactive")
+                .because("Failed to edit 'State'."));
 
     }
 
@@ -192,8 +191,8 @@ public class CouponsTest extends DataProvider {
         provideTestData("order in remorse hold with applied coupon");
         p = open(adminUrl + "/coupons/", CouponsPage.class);
         p.search(couponId);
-        assertEquals( p.getCouponParamVal("1", "Total Uses"), "1",
-                "Checking out the order with coupon applied isn't reflected on the coupons list (Incorrect 'Total Uses' val)." );
+        p.getCouponParamVal("1", "Total Uses").shouldHave(text("1")
+                .because("Checking out the order with coupon applied isn't reflected on the coupons list (Incorrect 'Total Uses' val)."));
 
     }
 
@@ -203,8 +202,8 @@ public class CouponsTest extends DataProvider {
         provideTestData("a cart with a single code coupon applied");
         p = open(adminUrl + "/coupons/", CouponsPage.class);
         p.search(couponId);
-        assertEquals( p.getCouponParamVal("1", "Current Carts"), "1",
-                "Applying coupon to a cart isn't reflected on the coupons list (Incorrect 'Current Carts' val).");
+        p.getCouponParamVal("1", "Current Carts").shouldHave(text("1")
+                .because("Applying coupon to a cart isn't reflected on the coupons list (Incorrect 'Current Carts' val)."));
 
     }
 

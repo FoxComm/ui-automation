@@ -1,123 +1,120 @@
 package pages;
 
 import base.BasePage;
+import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
-import org.openqa.selenium.By;
 import ru.yandex.qatools.allure.annotations.Step;
 
-import java.util.List;
-
+import static com.codeborne.selenide.CollectionCondition.size;
+import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
+import static org.openqa.selenium.By.xpath;
 
 public class CouponsPage extends BasePage {
 
     //--------------------------------- ELEMENTS -----------------------------//
 
     public SelenideElement coupon(String nameOrId) {
-        return $(By.xpath("//tbody[@class='fc-table-body']/a[1]/td[text()='" + nameOrId + "']"));
+        return $(xpath("//tbody[@class='fc-table-body']/a[1]/td[text()='" + nameOrId + "']"));
     }
 
     public SelenideElement addNewCoupon() {
-        return $(By.xpath("//span[text()='Coupon']/.."));
+        return $(xpath("//span[text()='Coupon']/.."));
     }
 
     public SelenideElement nameFld() {
-        return $(By.xpath("//input[@name='name']"));
+        return $(xpath("//input[@name='name']"));
     }
 
     // may fail, as well as other rich text fields
     public SelenideElement storefrontNameFld() {
-        return $(By.xpath("//div[@class='fc-object-form']/div[2]/div[1]/div[3]/div/div/div"));
+        return $(xpath("//div[@class='fc-object-form']/div[2]/div[1]/div[3]/div/div/div"));
     }
 
     public SelenideElement descriptionFld() {
-        return $(By.xpath("//div[@class='fc-object-form']/div[3]/div[1]/div[3]/div/div/div"));
+        return $(xpath("//div[@class='fc-object-form']/div[3]/div[1]/div[3]/div/div/div"));
     }
 
     public SelenideElement detailsFld() {
-        return $(By.xpath("//div[@class='fc-object-form']/div[4]/div[1]/div[3]/div/div/div"));
+        return $(xpath("//div[@class='fc-object-form']/div[4]/div[1]/div[3]/div/div/div"));
     }
 
     private SelenideElement promotionDd() {
-        return $(By.xpath("//input[@name='promotion']/../following-sibling::*"));
+        return $(xpath("//input[@name='promotion']/../following-sibling::*"));
     }
 
     private SelenideElement promotionListVal(String promotionId) {
-        return $(By.xpath("//span[text()='" + promotionId + "']/.."));
+        return $(xpath("//span[text()='" + promotionId + "']/.."));
     }
 
     public SelenideElement singleCodeRbtn() {
-        return $(By.xpath("//input[@id='singleCouponCodeRadio']"));
+        return $(xpath("//input[@id='singleCouponCodeRadio']"));
     }
 
     public SelenideElement bulkGenerateCodesBrtn() {
-        return $(By.xpath("//input[@id='bulkCouponCodeRadio']"));
+        return $(xpath("//input[@id='bulkCouponCodeRadio']"));
     }
 
     public SelenideElement singleCodeFld() {
-        return $(By.xpath("//input[@name='singleCode']"));
+        return $(xpath("//input[@name='singleCode']"));
     }
 
     public SelenideElement saveBtn() {
-        return $(By.xpath("//span[text()='Save']/.."));
+        return $(xpath("//span[text()='Save']/.."));
     }
 
-    public String couponIdVal() {
-        SelenideElement couponId = $(By.xpath("//div[@class='fc-breadcrumbs']/ul/li[5]/a"));
-        return couponId.getText();
+    public SelenideElement couponIdVal() {
+        return $(xpath("//div[@class='fc-breadcrumbs']/ul/li[5]/a"));
     }
 
     private SelenideElement qtyDecrBtn() {
-        return $(By.xpath("//input[@id='codesQuantity']/preceding-sibling::*/button"));
+        return $(xpath("//input[@id='codesQuantity']/preceding-sibling::*/button"));
     }
 
     private SelenideElement qtyIncrBtn() {
-        return $(By.xpath("//input[@id='codesQuantity']/following-sibling::*/button"));
+        return $(xpath("//input[@id='codesQuantity']/following-sibling::*/button"));
     }
 
     private SelenideElement codePrefixFld() {
-        return $(By.xpath("//input[@name='codesPrefix']"));
+        return $(xpath("//input[@name='codesPrefix']"));
     }
 
     private SelenideElement codeLengthDecrBtn() {
-        return $(By.xpath("//input[@id='codesLength']/preceding-sibling::*/button"));
+        return $(xpath("//input[@id='codesLength']/preceding-sibling::*/button"));
     }
 
     private SelenideElement codeLengthIncrBtn() {
-        return $(By.xpath("//input[@id='codesLength']/following-sibling::*/button"));
+        return $(xpath("//input[@id='codesLength']/following-sibling::*/button"));
     }
 
     private SelenideElement generateCodesBtn() {
-        return $(By.xpath("//span[text()='Generate Codes']/.."));
+        return $(xpath("//span[text()='Generate Codes']/.."));
     }
 
     private SelenideElement submitBtn() {
-        return $(By.xpath("//div[@class='fc-modal-footer']/button"));
+        return $(xpath("//div[@class='fc-modal-footer']/button"));
     }
 
     public SelenideElement couponCodesTab() {
-        return $(By.xpath("//a[text()='Coupon Codes']/.."));
+        return $(xpath("//a[text()='Coupon Codes']/.."));
     }
 
     private SelenideElement stateDd() {
-        return $(By.xpath("//div[@class='fc-product-state']//following-sibling::*/div[2]/button"));
+        return $(xpath("//div[@class='fc-product-state']//following-sibling::*/div[2]/button"));
     }
 
     private SelenideElement stateListVal(String state) {
-        return $(By.xpath("//li[text()='" + state + "']"));
+        return $(xpath("//li[text()='" + state + "']"));
     }
 
-    private String stateVal() {
-        SelenideElement state = $(By.xpath("//div[@class='fc-product-state']/div[2]/div[2]/div"));
-        return state.getText();
+    private SelenideElement stateVal() {
+        return $(xpath("//div[@class='fc-product-state']/div[2]/div[2]/div"));
     }
 
     private SelenideElement deleteStartDateBtn() {
-        return $(By.xpath("//div[text()='Start']/following-sibling::*/div[2]/a"));
+        return $(xpath("//div[text()='Start']/following-sibling::*/div[2]/a"));
     }
 
 
@@ -165,61 +162,64 @@ public class CouponsPage extends BasePage {
     public void assertCodesGenerated(int codesQty) {
 
         waitForDataToLoad();
-        assertTrue( !$(By.xpath("//div[text()='No coupon codes found.']")).is(visible),
-                "No coupon codes is displayed on the list.");
-        assertEquals( getAmountOfCodes(), codesQty,
-                "There are less codes on the list than it should.");
+        $(xpath("//div[text()='No coupon codes found.']")).shouldNotBe(visible
+                .because("No coupon codes is displayed on the list."));
+        listOfCodes().shouldHave(size(codesQty));
+        //.because("There are less codes on the list than it should.")
 
     }
 
-        private int getAmountOfCodes() {
-            List<SelenideElement> listOfCodes = $$(By.xpath("//tbody[@class='fc-table-body']/tr/td[3]"));
-            return listOfCodes.size();
-        }
+    private ElementsCollection listOfCodes() {
+        return $$(xpath("//tbody[@class='fc-table-body']/tr/td[3]"));
+    }
 
     @Step("Assert that all changes to coupon were saved")
     public void assertCouponIsEdited(String name, String storefrontName, String description, String details, String state) {
 
-        assertEquals( nameFld().getText(), name,
-                "'Name' has failed to get edited.");
-        assertEquals( storefrontNameFld().getText(), storefrontName,
-                "'Storefront Name' has failed to get edited.");
-        assertEquals( descriptionFld().getText(), description,
-                "'Description' has failed to get edited.");
-        assertEquals( detailsFld().getText(), details,
-                "'Details' has failed to get edited.");
-        assertEquals( stateVal(), state,
-                "'State' has failed to get edited.");
+        nameFld().shouldHave(text(name)
+                .because("'Name' has failed to get edited."));
+
+        storefrontNameFld().shouldHave(text(storefrontName)
+                .because("'Storefront Name' has failed to get edited."));
+
+        descriptionFld().shouldHave(text(description)
+                .because("'Description' has failed to get edited."));
+
+        detailsFld().shouldHave(text(details)
+                .because("'Details' has failed to get edited."));
+
+        stateVal().shouldHave(text(state)
+                .because("'State' has failed to get edited."));
 
     }
 
     @Step("Get '{1}' parameter value of {0}th coupon on the list")
-    public String getCouponParamVal(String couponIndex, String paramName) {
+    public SelenideElement getCouponParamVal(String couponIndex, String paramName) {
 
-        String couponParamVal = "";
+        SelenideElement couponParamVal = null;
         waitForDataToLoad();
 
         switch (paramName) {
             case "Name":
-                couponParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + couponIndex + "]/td[2]")).getText();
+                couponParamVal = $(xpath("//tbody[@class='fc-table-body']/a[" + couponIndex + "]/td[2]"));
                 break;
             case "Storefront Name":
-                couponParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + couponIndex + "]/td[3]")).getText();
+                couponParamVal = $(xpath("//tbody[@class='fc-table-body']/a[" + couponIndex + "]/td[3]"));
                 break;
             case "Code":
-                couponParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + couponIndex + "]/td[4]")).getText();
+                couponParamVal = $(xpath("//tbody[@class='fc-table-body']/a[" + couponIndex + "]/td[4]"));
                 break;
             case "Total Uses":
-                couponParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + couponIndex + "]/td[5]")).getText();
+                couponParamVal = $(xpath("//tbody[@class='fc-table-body']/a[" + couponIndex + "]/td[5]"));
                 break;
             case "Current Carts":
-                couponParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + couponIndex + "]/td[6]")).getText();
+                couponParamVal = $(xpath("//tbody[@class='fc-table-body']/a[" + couponIndex + "]/td[6]"));
                 break;
             case "Date/Time Created":
-                couponParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + couponIndex + "]/td[7]/time")).getText();
+                couponParamVal = $(xpath("//tbody[@class='fc-table-body']/a[" + couponIndex + "]/td[7]/time"));
                 break;
             case "State":
-                couponParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + couponIndex + "]/td[8]/div/div")).getText();
+                couponParamVal = $(xpath("//tbody[@class='fc-table-body']/a[" + couponIndex + "]/td[8]/div/div"));
                 break;
 
         }
