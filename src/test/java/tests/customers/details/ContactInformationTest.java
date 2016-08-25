@@ -11,7 +11,6 @@ import java.util.Objects;
 
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.open;
-import static com.codeborne.selenide.Selenide.sleep;
 
 public class ContactInformationTest extends DataProvider {
 
@@ -54,7 +53,6 @@ public class ContactInformationTest extends DataProvider {
         click( p.editBtn_contactInfo() );
         setFieldVal( p.phoneNumberFld_contactInfo(), "7779994242" );
         click( p.saveBtn() );
-        sleep(2000);
         p.phoneNumberVal_contactInfo().shouldHave(text("7779994242")
                 .because("Failed to set customer's phone number."));
 
@@ -70,7 +68,6 @@ public class ContactInformationTest extends DataProvider {
         setFieldVal( p.phoneNumberFld_contactInfo(), "7779994242" );
         setFieldVal( p.nameFld_contactInfo(), newName );
         click( p.saveBtn() );
-        sleep(2000);
         p.nameVal_contactInfo().shouldHave(text(newName)
                 .because("Failed to edit customer's name."));
         p.nameVal_overview().shouldHave(text(newName)
@@ -88,7 +85,6 @@ public class ContactInformationTest extends DataProvider {
         setFieldVal( p.phoneNumberFld_contactInfo(), "7779994242" );
         setFieldVal( p.emailFld_contactInfo(), newEmail );
         click( p.saveBtn() );
-        sleep(2000);
         p.emailVal_contactInfo().shouldHave(text(newEmail)
                 .because("Failed to edit customer's email."));
         p.emailVal_overview().shouldHave(text(newEmail)
