@@ -426,40 +426,39 @@ public class CustomersPage extends BasePage {
         return $(By.xpath("//input[@placeholder='filter or keyword search']"));
     }
 
-    public int amountOfOrders() {
-        List<SelenideElement> orders = $$(By.xpath("//table[@class='fc-table']/tbody/a"));
-        return orders.size();
+    public ElementsCollection ordersOnList() {
+        return $$(By.xpath("//table[@class='fc-table']/tbody/a"));
     }
 
     //------------------------------ HELPERS --------------------------------//
 
     @Step("Get {1} parameter value of {0}-th order on the list.")
-    public String getOrderParamVal(int orderIndex, String paramName) {
+    public SelenideElement getOrderParamVal(int orderIndex, String paramName) {
 
-        String orderParamVal = "";
+        SelenideElement orderParamVal = null;
         waitForDataToLoad();
 
         switch (paramName) {
             case "Order":
-                orderParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + orderIndex + "]/td[2]")).getText();
+                orderParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + orderIndex + "]/td[2]"));
                 break;
             case "Date/Time Placed":
-                orderParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + orderIndex + "]/td[3]/time")).getText();
+                orderParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + orderIndex + "]/td[3]/time"));
                 break;
             case "Modality":
-                orderParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + orderIndex + "]/td[4]")).getText();
+                orderParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + orderIndex + "]/td[4]"));
                 break;
             case "Order State":
-                orderParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + orderIndex + "]/td[5]/span")).getText();
+                orderParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + orderIndex + "]/td[5]/span"));
                 break;
             case "Payment State":
-                orderParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + orderIndex + "]/td[6]")).getText();
+                orderParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + orderIndex + "]/td[6]"));
                 break;
             case "Assignee":
-                orderParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + orderIndex + "]/td[7]")).getText();
+                orderParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + orderIndex + "]/td[7]"));
                 break;
             case "Total":
-                orderParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + orderIndex + "]/td[8]/span")).getText();
+                orderParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + orderIndex + "]/td[8]/span"));
                 break;
         }
 

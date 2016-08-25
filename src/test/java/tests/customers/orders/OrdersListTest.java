@@ -9,8 +9,9 @@ import testdata.DataProvider;
 import java.io.IOException;
 import java.util.Objects;
 
+import static com.codeborne.selenide.CollectionCondition.size;
+import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.open;
-import static org.testng.Assert.assertEquals;
 
 public class OrdersListTest extends DataProvider {
 
@@ -34,8 +35,8 @@ public class OrdersListTest extends DataProvider {
         p = open(adminUrl + "/customers/" + customerId + "/transactions", CustomersPage.class);
 
         p.waitForDataToLoad();
-        assertEquals( p.amountOfOrders(), 2,
-                "Amount of orders on the list is lower than it should.");
+        p.ordersOnList().shouldHave(size(2));
+//                "Amount of orders on the list is lower than it should."
 
     }
 
@@ -65,8 +66,8 @@ public class OrdersListTest extends DataProvider {
         p = open(adminUrl + "/customers/" + customerId + "/transactions", CustomersPage.class);
 
         p.addFilter("Order", "Reference Number", orderId);
-        assertEquals( p.getOrderParamVal(1, "Order State"), "Fulfillment Started",
-                "Found order <" + orderId + "> is not in 'Fulfillment Started' state.");
+        p.getOrderParamVal(1, "Order State").shouldHave(text("Fulfillment Started")
+                .because("Found order <" + orderId + "> is not in 'Fulfillment Started' state."));
 
     }
 
@@ -77,8 +78,8 @@ public class OrdersListTest extends DataProvider {
         p = open(adminUrl + "/customers/" + customerId + "/transactions", CustomersPage.class);
 
         p.addFilter("Items", "Product Name", "Shark");
-        assertEquals( p.amountOfOrders(), 1,
-                "Order with 'Shark' product in it isn't listed in search results.");
+        p.ordersOnList().shouldHaveSize(1);
+//                "Order with 'Shark' product in it isn't listed in search results."
 
     }
 
@@ -89,8 +90,8 @@ public class OrdersListTest extends DataProvider {
         p = open(adminUrl + "/customers/" + customerId + "/transactions", CustomersPage.class);
 
         p.addFilter("Items", "Product SKU", "SKU-BRO");
-        assertEquals( p.amountOfOrders(), 1,
-                "Order with 'Shark' product in it isn't listed in search results.");
+        p.ordersOnList().shouldHaveSize(1);
+//                "Order with 'Shark' product in it isn't listed in search results."
 
     }
 
