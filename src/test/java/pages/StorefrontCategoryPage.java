@@ -36,20 +36,16 @@ public class StorefrontCategoryPage extends BasePage {
         return $(By.xpath("//div[contains(@class, 'header')]/div/div[2]/div/input"));
     }
 
-    public String titleVal() {
-        SelenideElement title = $(By.xpath("//h1"));
-        return title.text();
+    public SelenideElement titleVal() {
+        return $(By.xpath("//h1"));
     }
 
-    public String priceVal() {
-        SelenideElement price = $(By.xpath("//div[contains(@class, '_price_')]/span"));
-        String priceVal = price.text();
-        return priceVal.substring(1, priceVal.length());
+    public SelenideElement priceVal() {
+        return $(By.xpath("//div[contains(@class, '_price_')]/span"));
     }
 
-    public String descriptionVal() {
-        SelenideElement description = $(By.xpath("//div[contains(@class, '_description_')]"));
-        return description.text();
+    public SelenideElement descriptionVal() {
+        return $(By.xpath("//div[contains(@class, '_description_')]"));
     }
 
     private SelenideElement noContentMsg() {

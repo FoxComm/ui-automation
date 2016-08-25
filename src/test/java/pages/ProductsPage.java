@@ -2,7 +2,6 @@ package pages;
 
 import base.BasePage;
 import com.codeborne.selenide.SelenideElement;
-import org.openqa.selenium.NoSuchElementException;
 import ru.yandex.qatools.allure.annotations.Step;
 
 import java.util.List;
@@ -153,25 +152,29 @@ public class ProductsPage extends BasePage {
     }
 
     @Step("Get '{1}' parameter value of {0}th product on the list")
-    public String getProductParamVal(String productIndex, String paramName) {
-        String productParamVal = "";
+    public SelenideElement getProductParamVal(String productIndex, String paramName) {
+
+        SelenideElement productParamVal = null;
         waitForDataToLoad();
+
         switch (paramName) {
             case "Product ID":
-                productParamVal = $(xpath("//tbody[@class='fc-table-body']/a[" + productIndex + "]/td[2]")).getText();
+                productParamVal = $(xpath("//tbody[@class='fc-table-body']/a[" + productIndex + "]/td[2]"));
                 break;
 //            case "Image":
 //                productParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + productIndex + "]/td[3]/img")).getAttribute("src");
 //                break;
             case "Name":
-                productParamVal = $(xpath("//tbody[@class='fc-table-body']/a[" + productIndex + "]/td[4]")).getText();
+                productParamVal = $(xpath("//tbody[@class='fc-table-body']/a[" + productIndex + "]/td[4]"));
                 break;
             case "State":
-                productParamVal = $(xpath("//tbody[@class='fc-table-body']/a[" + productIndex + "]/td[5]/div/div")).getText();
+                productParamVal = $(xpath("//tbody[@class='fc-table-body']/a[" + productIndex + "]/td[5]/div/div"));
                 break;
 
         }
+
         return productParamVal;
+
     }
 
 //    private void selectLine(int index) {
@@ -242,12 +245,8 @@ public class ProductsPage extends BasePage {
     @Step("Assert that SKU is applied to the product")
     public void assertSKUApplied() {
 
-        try{
-            skuName().shouldBe(visible);
-        } catch(NoSuchElementException nsee) {
-            assertTrue( noSKUsMsg().is(visible),
-                    "'No SKUs.' msg is displayed - SKU wasn't applied, product won't be displayed on storefront." );
-        }
+        skuName().shouldBe(visible
+                .because("'No SKUs.' msg is displayed - SKU wasn't applied, product won't be displayed on storefront."));
 
     }
 

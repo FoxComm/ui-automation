@@ -10,10 +10,10 @@ import testdata.DataProvider;
 import java.io.IOException;
 import java.util.Objects;
 
+import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.Selenide.sleep;
-import static org.testng.Assert.assertEquals;
 
 public class CreateProductsTest extends DataProvider {
 
@@ -43,8 +43,8 @@ public class CreateProductsTest extends DataProvider {
         click( p.sideMenu("Products") );
         p.waitForDataToLoad();
         p.addFilter("Product : Name", randomId);
-        assertEquals( p.getProductParamVal("1", "Name"), productName,
-                "Product is not found - either search doesn't work or product wasn't created.");
+        p.getProductParamVal("1", "Name").shouldHave(text(productName)
+                .because("Product is not found - either search doesn't work or product wasn't created."));
 
     }
 
@@ -53,7 +53,6 @@ public class CreateProductsTest extends DataProvider {
 
         provideTestData("active product, has tag, active SKU");
         p = open(adminUrl + "/products/default/" + productId, ProductsPage.class);
-        sleep(1500);
         p.assertSKUApplied();
 
     }
@@ -72,12 +71,12 @@ public class CreateProductsTest extends DataProvider {
         sf.product(productName).shouldBe(visible
                 .because("Product isn't displayed on the category page on sf."));
         click( sf.product(productName) );
-        assertEquals( sf.titleVal(), productName,
-                "Incorrect product title is displayed on PDP.");
-        assertEquals( sf.priceVal(), "27.18",
-                "Incorrect product price is displayed on PDP.");
-        assertEquals( sf.descriptionVal(), "The best thing to buy in 2016!",
-                "Incorrect product description is displayed on PDP.");
+        sf.titleVal().shouldHave(text(productName)
+                .because("Incorrect product title is displayed on PDP."));
+        sf.priceVal().shouldHave(text("27.18")
+                .because("Incorrect product price is displayed on PDP."));
+        sf.descriptionVal().shouldHave(text("The best thing to buy in 2016!")
+                .because("Incorrect product description is displayed on PDP."));
 
     }
 
@@ -86,7 +85,6 @@ public class CreateProductsTest extends DataProvider {
 
         provideTestData("active product, no tag, active SKU");
         p = open(adminUrl + "/products/default/" + productId, ProductsPage.class);
-        sleep(1500);
         p.assertSKUApplied();
 
         sf = open(storefrontUrl + "/sunglasses?type=men", StorefrontCategoryPage.class);
@@ -252,10 +250,9 @@ public class CreateProductsTest extends DataProvider {
         p.waitForDataToLoad();
 
         p.addFilter("Product : Name", randomId);
-        assertEquals(p.getProductParamVal("1", "Name"), "Test Product " + randomId,
-                "Queried product is not found - either search doesn't work or product wasn't created.");
+        p.getProductParamVal("1", "Name").shouldHave(text("Test Product " + randomId)
+                .because("Queried product is not found - either search doesn't work or product wasn't created."));
         p.openProduct( productTitle );
-        sleep(1500);
         p.assertSKUApplied();
 
     }
@@ -274,10 +271,9 @@ public class CreateProductsTest extends DataProvider {
         p.waitForDataToLoad();
 
         p.addFilter("Product : Name", randomId);
-        assertEquals(p.getProductParamVal("1", "Name"), "Test Product " + randomId,
-                "Queried product is not found - either search doesn't work or product wasn't created.");
+        p.getProductParamVal("1", "Name").shouldHave(text("Test Product " + randomId)
+                .because("Queried product is not found - either search doesn't work or product wasn't created."));
         p.openProduct( productTitle );
-        sleep(1500);
         p.assertSKUApplied();
 
     }
@@ -296,7 +292,6 @@ public class CreateProductsTest extends DataProvider {
         p.waitForDataToLoad();
         p.addFilter("Product : Name", randomId);
         p.openProduct( productTitle );
-        sleep(1500);
         p.assertSKUApplied();
 
     }
@@ -315,10 +310,9 @@ public class CreateProductsTest extends DataProvider {
         p.waitForDataToLoad();
 
         p.addFilter("Product : Name", randomId);
-        assertEquals(p.getProductParamVal("1", "Name"), "Test Product " + randomId,
-                "Queried product is not found - either search doesn't work or product wasn't created.");
+        p.getProductParamVal("1", "Name").shouldHave(text("Test Product " + randomId)
+                .because("Queried product is not found - either search doesn't work or product wasn't created."));
         p.openProduct( productTitle );
-        sleep(1500);
         p.assertSKUApplied();
 
     }
