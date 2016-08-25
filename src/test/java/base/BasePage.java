@@ -106,9 +106,8 @@ public class BasePage extends ConciseAPI {
         return $(xpath("//div[contains(@class, '_tags_')]/div/div[text()='" + tagVal + "']"));
     }
 
-    public int getTagsAmount() {
-        List<SelenideElement> listOfTags = $$(xpath("//div[contains(@class, '_tags_')]/div"));
-        return listOfTags.size();
+    public ElementsCollection allTags() {
+        return $$(xpath("//div[contains(@class, '_tags_')]/div"));
     }
 
     @Step("Add tag <{0}>")

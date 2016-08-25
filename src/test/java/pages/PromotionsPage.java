@@ -60,9 +60,8 @@ public class PromotionsPage extends BasePage {
         return $(By.xpath("//li[text()='" + state + "']"));
     }
 
-    public String stateVal() {
-        SelenideElement stateVal = $(By.xpath("//div[text()='State']/../following-sibling::*[1]/div[2]/div"));
-        return stateVal.text();
+    public SelenideElement stateVal() {
+        return $(By.xpath("//div[text()='State']/../following-sibling::*[1]/div[2]/div"));
     }
 
     private SelenideElement removeStartDateBtn() {
@@ -114,37 +113,41 @@ public class PromotionsPage extends BasePage {
     }
 
     @Step("Get '{1}' parameter value of {0}th promotion on the list")
-    public String getPromoParamVal(String promoIndex, String paramName) {
-        String promoParamVal = "";
+    public SelenideElement getPromoParamVal(String promoIndex, String paramName) {
+
+        SelenideElement promoParamVal = null;
         waitForDataToLoad();
+
         switch (paramName) {
             case "Promotion ID":
-                promoParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + promoIndex + "]/td[2]")).getText();
+                promoParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + promoIndex + "]/td[2]"));
                 break;
             case "Name":
-                promoParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + promoIndex + "]/td[3]")).getText();
+                promoParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + promoIndex + "]/td[3]"));
                 break;
             case "Storefront Name":
-                promoParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + promoIndex + "]/td[4]")).getText();
+                promoParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + promoIndex + "]/td[4]"));
                 break;
             case "Apply Type":
-                promoParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + promoIndex + "]/td[5]")).getText();
+                promoParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + promoIndex + "]/td[5]"));
                 break;
             case "Total Uses":
-                promoParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + promoIndex + "]/td[6]")).getText();
+                promoParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + promoIndex + "]/td[6]"));
                 break;
             case "Current Carts":
-                promoParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + promoIndex + "]/td[7]")).getText();
+                promoParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + promoIndex + "]/td[7]"));
                 break;
             case "Date/Time Created":
-                promoParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + promoIndex + "]/td[8]/time")).getText();
+                promoParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + promoIndex + "]/td[8]/time"));
                 break;
             case "State":
-                promoParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + promoIndex + "]/td[9]/div/div")).getText();
+                promoParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + promoIndex + "]/td[9]/div/div"));
                 break;
 
         }
+
         return promoParamVal;
+
     }
 
     @Step("Set promotion's state to <{0}>")

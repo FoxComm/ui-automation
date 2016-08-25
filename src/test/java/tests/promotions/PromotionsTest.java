@@ -9,11 +9,8 @@ import testdata.DataProvider;
 import java.io.IOException;
 import java.util.Objects;
 
-import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.open;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
 
 public class PromotionsTest extends DataProvider {
 
@@ -43,8 +40,8 @@ public class PromotionsTest extends DataProvider {
         String promotionId = p.promotionIdVal().text();
         click( p.sideMenu("Promotions") );
         p.search(randomId);
-        assertEquals( p.getPromoParamVal("1", "Promotion ID"), promotionId,
-                "A just created promo isn't displayed on the list." );
+        p.getPromoParamVal("1", "Promotion ID").shouldHave(text(promotionId)
+                .because("A just created promo isn't displayed on the list."));
 
     }
 
@@ -55,8 +52,8 @@ public class PromotionsTest extends DataProvider {
         p = open(adminUrl + "/promotions", PromotionsPage.class);
 
         p.search(promotionId);
-        assertEquals( p.getPromoParamVal("1", "Promotion ID"), promotionId,
-                "Promotion isn't displayed on the list." );
+        p.getPromoParamVal("1", "Promotion ID").shouldHave(text(promotionId)
+                .because("Promotion isn't displayed on the list."));
 
     }
 
@@ -69,8 +66,8 @@ public class PromotionsTest extends DataProvider {
         p.createNewPromo("Coupon", randomId);
         click( p.sideMenu("Promotions") );
         p.search(promotionId);
-        assertEquals( p.getPromoParamVal("1", "State"), "Active",
-                "State isn't automatically set to 'Active' for 'Coupon' apply type promotions." );
+        p.getPromoParamVal("1", "State").shouldHave(text("Active")
+                .because("State isn't automatically set to 'Active' for 'Coupon' apply type promotions."));
 
     }
 
@@ -85,12 +82,11 @@ public class PromotionsTest extends DataProvider {
 
         click( p.sideMenu("Promotions") );
         p.search(promotionId);
-        assertEquals( p.getPromoParamVal("1", "Name"), "Edited Promo Name",
-                "An old promo name is displayed on the list." );
+        p.getPromoParamVal("1", "Name").shouldHave(text("Edited Promo Name")
+                .because("An old promo name is displayed on the list."));
         click( p.promotion(promotionId) );
-        p.nameFld().shouldBe(visible);
-        assertEquals( p.nameFld().getValue(), "Edited Promo Name",
-                "New promotion name hasn't been saved - an old one is displayed on promo details page." );
+        p.nameFld().shouldHave(value("Edited Promo Name")
+                .because("New promotion name hasn't been saved - an old one is displayed on promo details page."));
 
     }
 
@@ -106,12 +102,11 @@ public class PromotionsTest extends DataProvider {
 
         click( p.sideMenu("Promotions") );
         p.search(promotionId);
-        assertEquals( p.getPromoParamVal("1", "Storefront Name"), "Edited Promo Storefront Name",
-                "An old promo storefront name is displayed on the list." );
+        p.getPromoParamVal("1", "Storefront Name").shouldHave(text("Edited Promo Storefront Name")
+                .because("An old promo storefront name is displayed on the list."));
         click( p.promotion(promotionId) );
-        p.storefrontNameFld().shouldBe(visible);
-        assertEquals( p.storefrontNameFld().text(), "Edited Promo Storefront Name",
-                "New promotion storefront name hasn't been saved - an old one is displayed on promo details page." );
+        p.storefrontNameFld().shouldHave(text("Edited Promo Storefront Name")
+                .because("New promotion storefront name hasn't been saved - an old one is displayed on promo details page."));
 
     }
 
@@ -128,9 +123,8 @@ public class PromotionsTest extends DataProvider {
         click( p.sideMenu("Promotions") );
         p.search(promotionId);
         click( p.promotion(promotionId) );
-        p.descriptionFld().shouldBe(visible);
-        assertEquals( p.descriptionFld().text(), "Edited Promo Description",
-                "New promotion Description hasn't been saved - an old one is displayed on promo details page." );
+        p.descriptionFld().shouldHave(text("Edited Promo Description")
+                .because("New promotion Description hasn't been saved - an old one is displayed on promo details page."));
 
     }
 
@@ -147,9 +141,8 @@ public class PromotionsTest extends DataProvider {
         click( p.sideMenu("Promotions") );
         p.search(promotionId);
         click( p.promotion(promotionId) );
-        p.detailsFld().shouldBe(visible);
-        assertEquals( p.detailsFld().text(), "Edited Promo Details",
-                "New promotion Details hasn't been saved - an old one is displayed on promo details page." );
+        p.detailsFld().shouldHave(text("Edited Promo Details")
+                .because("New promotion Details hasn't been saved - an old one is displayed on promo details page."));
 
     }
 
@@ -164,10 +157,11 @@ public class PromotionsTest extends DataProvider {
         p.clickSave();
         click( p.sideMenu("Promotions") );
         p.search(promotionId);
-        assertEquals( p.getPromoParamVal("1", "Apply Type"), "auto" );
+        p.getPromoParamVal("1", "Apply Type").shouldHave(text("auto"));
         click( p.promotion(promotionId) );
 
-        assertEquals( p.stateVal(), "Inactive", "State value isn't 'Inactive'." );
+        p.stateVal().shouldHave(text("Inactive")
+                .because("State value isn't 'Inactive'."));
 
     }
 
@@ -183,11 +177,11 @@ public class PromotionsTest extends DataProvider {
 
         click( p.sideMenu("Promotions") );
         p.search(promotionId);
-        assertEquals( p.getPromoParamVal("1", "State"), "Inactive",
-                "Incorrect promotion's 'State' value is displayed on the list.");
+        p.getPromoParamVal("1", "State").shouldHave(text("Inactive")
+                .because("Incorrect promotion's 'State' value is displayed on the list."));
         click( p.promotion(promotionId) );
-        p.stateDd().shouldBe(visible);
-        assertEquals( p.stateVal(), "Inactive", "Promotion's 'State' value isn't 'Inactive'." );
+        p.stateVal().shouldHave(text("Inactive")
+                .because("Promotion's 'State' value isn't 'Inactive'."));
 
     }
 
@@ -203,12 +197,11 @@ public class PromotionsTest extends DataProvider {
 
         click( p.sideMenu("Promotions") );
         p.search(promotionId);
-        assertEquals( p.getPromoParamVal("1", "State"), "Active",
-                "Incorrect promotion's 'State' value is displayed on the list.");
+        p.getPromoParamVal("1", "State").shouldHave(text("Active")
+                .because("Incorrect promotion's 'State' value is displayed on the list."));
         click( p.promotion(promotionId) );
-        p.stateDd().shouldBe(visible);
-        assertEquals( p.stateVal(), "Active",
-                "Promotion's 'State' value isn't 'Active' on promotion's details page." );
+        p.stateVal().shouldHave(text("Active")
+                .because("Promotion's 'State' value isn't 'Active' on promotion's details page."));
 
     }
 
@@ -223,8 +216,8 @@ public class PromotionsTest extends DataProvider {
         click( p.sideMenu("Promotions") );
         p.search(promotionId);
         click( p.promotion(promotionId) );
-        p.addTagBtn().shouldBe(visible);
-        assertTrue( p.tag("test promo").is(visible), "A just added tag isn't displayed on promotion details page." );
+        p.tag("test promo").shouldBe(visible
+                .because("A just added tag isn't displayed on promotion details page."));
 
     }
 
@@ -236,7 +229,8 @@ public class PromotionsTest extends DataProvider {
 
         p.addTag("test promo");
         p.addTag("test promo");
-        assertEquals( p.getTagsAmount(), 1, "Tag is duplicated." );
+        p.allTags().shouldHaveSize(1);
+//            "Tag is duplicated."
 
     }
 
