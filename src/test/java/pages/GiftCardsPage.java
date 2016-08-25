@@ -34,8 +34,8 @@ public class GiftCardsPage extends BasePage {
         return $(xpath("//div[text()='Current State']/following-sibling::*/div/div[2]/button"));
     }
 
-    public String stateVal() {
-        return $(xpath("//div[text()='Current State']/following-sibling::*/div/div[2]/div")).text();
+    public SelenideElement stateVal() {
+        return $(xpath("//div[text()='Current State']/following-sibling::*/div/div[2]/div"));
     }
 
     public SelenideElement qtyIncrBtn() {
@@ -46,13 +46,8 @@ public class GiftCardsPage extends BasePage {
         return $(xpath("//span[text()='Issue Gift Card']/.."));
     }
 
-    public SelenideElement availableBalance() {
+    public SelenideElement availableBalanceVal() {
         return $(xpath("//div[text()='Available Balance']/following-sibling::*/span"));
-    }
-
-    public String availableBalanceVal() {
-        String availableBalVal = availableBalance().text();
-        return availableBalVal.substring( 1, availableBalVal.length() );
     }
 
     public SelenideElement presetValue(String val) {
@@ -106,35 +101,32 @@ public class GiftCardsPage extends BasePage {
     //------------------------------ HELPERS ---------------------------------//
 
     @Step("Get '{1}' parameter value of {0}th gift card on the list")
-    public String getGCParamVal(String gcIndex, String paramName) {
+    public SelenideElement getGCParamVal(String gcIndex, String paramName) {
 
-        String gcParamVal = "";
+        SelenideElement gcParamVal = null;
         waitForDataToLoad();
 
         switch (paramName) {
             case "Gift Card Number":
-                gcParamVal = $(xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + gcIndex + "]/td[2]")).getText();
+                gcParamVal = $(xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + gcIndex + "]/td[2]"));
                 break;
             case "Type":
-                gcParamVal = $(xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + gcIndex + "]/td[3]/div/div")).getText();
+                gcParamVal = $(xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + gcIndex + "]/td[3]/div/div"));
                 break;
             case "Original Balance":
-                String originalBalance = $(xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + gcIndex + "]/td[4]/td/span")).getText();
-                gcParamVal = originalBalance.substring(1, originalBalance.length());
+                gcParamVal = $(xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + gcIndex + "]/td[4]/td/span"));
                 break;
             case "Current Balance":
-                String currentBalance = $(xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + gcIndex + "]/td[5]")).getText();
-                gcParamVal = currentBalance.substring(1, currentBalance.length());
+                gcParamVal = $(xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + gcIndex + "]/td[5]"));
                 break;
             case "Available Balance":
-                String availableBalance = $(xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + gcIndex + "]/td[6]")).getText();
-                gcParamVal = availableBalance.substring(1, availableBalance.length());
+                gcParamVal = $(xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + gcIndex + "]/td[6]"));
                 break;
             case "State":
-                gcParamVal = $(xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + gcIndex + "]/td[7]/span")).getText();
+                gcParamVal = $(xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + gcIndex + "]/td[7]/span"));
                 break;
             case "Date/Time Created":
-                gcParamVal = $(xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + gcIndex + "]/td[8]/time")).getText();
+                gcParamVal = $(xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + gcIndex + "]/td[8]/time"));
                 break;
         }
 
@@ -155,7 +147,7 @@ public class GiftCardsPage extends BasePage {
         setDdVal( typeDd(), "Appeasement" );
         setFieldVal( valueFld(), gcVal );
         click( issueGCBtn() );
-        availableBalance().shouldBe(visible);
+        availableBalanceVal().shouldBe(visible);
         assertEquals( availableBalanceVal(), gcVal,
                 "Incorrect available balance value.");
     }

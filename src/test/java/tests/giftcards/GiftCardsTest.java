@@ -10,12 +10,8 @@ import testdata.DataProvider;
 import java.io.IOException;
 import java.util.Objects;
 
-import static com.codeborne.selenide.Condition.exist;
-import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
 
 public class GiftCardsTest extends DataProvider {
 
@@ -41,9 +37,8 @@ public class GiftCardsTest extends DataProvider {
         setDdVal( p.typeDd(), "Appeasement" );
         setFieldVal( p.valueFld(), "123.78" );
         click( p.issueGCBtn() );
-        p.availableBalance().shouldBe(visible);
-        assertEquals( p.availableBalanceVal(), "123.78",
-                "Incorrect available balance value.");
+        p.availableBalanceVal().shouldHave(text("$123.78")
+                .because("Incorrect available balance value."));
 
     }
 
@@ -56,9 +51,8 @@ public class GiftCardsTest extends DataProvider {
         setDdVal( p.typeDd(), "Appeasement" );
         click( p.presetValue("50") );
         click( p.issueGCBtn() );
-        p.availableBalance().shouldBe(visible);
-        assertEquals( p.availableBalance().text(), "$50.00",
-                "Incorrect available balance value.");
+        p.availableBalanceVal().shouldHave(text("$50.00")
+                .because("Incorrect available balance value."));
 
     }
 
@@ -71,12 +65,12 @@ public class GiftCardsTest extends DataProvider {
         setDdVal( p.typeDd(), "Appeasement" );
         setFieldVal( p.valueFld(), "123.78" );
         click( p.issueGCBtn() );
-        p.availableBalance().shouldBe(visible);
+        p.availableBalanceVal().shouldBe(visible);
         String gcNumber = getUrl().substring(46, 62);
         click( p.sideMenu("Gift Cards") );
         p.search(gcNumber);
-        assertEquals( p.getGCParamVal("1", "Gift Card Number"), gcNumber,
-                "Search failed to find a just created GC.");
+        p.getGCParamVal("1", "Gift Card Number").shouldHave(text(gcNumber)
+                .because("Search failed to find a just created GC."));
 
     }
 
@@ -89,15 +83,14 @@ public class GiftCardsTest extends DataProvider {
         setDdVal( p.typeDd(), "Appeasement" );
         setFieldVal( p.valueFld(), "123.78" );
         click( p.issueGCBtn() );
-        p.availableBalance().shouldBe(visible);
-        assertEquals( p.stateVal(), "Active",
-                "Incorrect 'State' value is displayed on GC details page.");
+        p.stateVal().shouldHave(text("Active")
+                .because("Incorrect 'State' value is displayed on GC details page."));
 
         String gcNumber = getUrl().substring(46, 62);
         click( p.sideMenu("Gift Cards") );
         p.search(gcNumber);
-        assertEquals( p.getGCParamVal("1", "State"), "Active",
-                "A just created gift card isn't in 'Active state'.");
+        p.getGCParamVal("1", "State").shouldHave(text("Active")
+                .because("A just created gift card isn't in 'Active state'."));
 
     }
 
@@ -110,11 +103,11 @@ public class GiftCardsTest extends DataProvider {
         setDdVal( p.stateDd(), "Hold" );
         click( p.yesBtn() );
         p.yesBtn().shouldNotBe(visible);
-        assertEquals( p.stateVal(), "On Hold",
-                "Failed to edit GC state - incorrect state value is displayed.");
+        p.stateVal().shouldHave(text("On Hold")
+                .because("Failed to edit GC state - incorrect state value is displayed."));
         refresh();
-        assertEquals( p.stateVal(), "On Hold",
-                "Failed to edit GC state - incorrect state value is displayed.");
+        p.stateVal().shouldHave(text("On Hold")
+                .because("Failed to edit GC state - incorrect state value is displayed."));
 
     }
 
@@ -130,9 +123,10 @@ public class GiftCardsTest extends DataProvider {
         p.yesBtn().shouldNotBe(visible);
         sleep(1000);
         refresh();
-        assertEquals( $(By.xpath("//span[@class='fc-model-state']")).text(), "Canceled",
-                "GC is not in 'Canceled' state.");
-        assertTrue( !p.stateDd().is(exist), "'State' dropdown is displayed.");
+        $(By.xpath("//span[@class='fc-model-state']")).shouldHave(text("Canceled")
+                .because("GC is not in 'Canceled' state."));
+        p.stateDd().shouldNot(exist
+                .because("'State' dropdown is displayed."));
 
     }
 
@@ -143,8 +137,8 @@ public class GiftCardsTest extends DataProvider {
         p = open(adminUrl + "/gift-cards/" + gcCode, GiftCardsPage.class);
 
         click( p.stateDd() );
-        assertTrue( !$(By.xpath("//div[text()='Cancel Gift Card']")).is(exist),
-                "'Cancel Gift Card' option is available for select for used GC.");
+        $(By.xpath("//div[text()='Cancel Gift Card']")).shouldNot(exist
+                .because("'Cancel Gift Card' option is available for select for used GC."));
 
     }
 
@@ -159,7 +153,8 @@ public class GiftCardsTest extends DataProvider {
         p.yesBtn().shouldNotBe(visible);
         click( p.sideMenu("Gift Cards") );
         p.search(gcCode);
-        assertEquals( p.getGCParamVal("1", "State"), "On Hold" );
+        p.getGCParamVal("1", "State").shouldHave(text("On Hold")
+                .because("Failed to set GC's state to 'On Hold'."));
 
     }
 
@@ -172,10 +167,12 @@ public class GiftCardsTest extends DataProvider {
         setDdVal( p.stateDd(), "Activate" );
         click( p.yesBtn() );
         refresh();
-        assertEquals( p.stateVal(), "Active", "Failed to set GC 'State' to 'Active'.");
+        p.stateVal().shouldHave(text("Active")
+                .because("Failed to set GC 'State' to 'Active'."));
         click( p.sideMenu("Gift Cards") );
         p.search(gcCode);
-        assertEquals( p.getGCParamVal("1", "State"), "Active", "Incorrect 'State' value is displayed on the list.");
+        p.getGCParamVal("1", "State").shouldHave(text("Active")
+                .because("Incorrect 'State' value is displayed on the list."));
 
     }
 
@@ -188,8 +185,8 @@ public class GiftCardsTest extends DataProvider {
         setDdVal( p.stateDd(), "Hold" );
         click( p.cancelBtn() );
         p.yesBtn().shouldNotBe(visible);
-        assertEquals( p.stateVal(), "Active",
-                "'Current state dd value isn't reset to actual GC 'State' value after canceling state change.");
+        p.stateVal().shouldHave(text("Active")
+                .because("'Current state dd value isn't reset to actual GC 'State' value after canceling state change."));
 
     }
 
@@ -199,9 +196,8 @@ public class GiftCardsTest extends DataProvider {
         provideTestData("used gift card");
         p = open(adminUrl + "/gift-cards/" + gcCode, GiftCardsPage.class);
 
-        p.availableBalance().shouldBe(visible);
-        assertEquals( p.availableBalanceVal(), "162.73",
-                "Incorrect available balance value after placing order with GC as a payment method.");
+        p.availableBalanceVal().shouldHave(text("$162.73")
+                .because("Incorrect available balance value after placing order with GC as a payment method."));
 
     }
 
