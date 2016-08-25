@@ -10,10 +10,10 @@ import java.io.IOException;
 import java.util.Objects;
 
 import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Condition.value;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.Selenide.refresh;
-import static org.testng.Assert.assertEquals;
 
 public class SkusTests extends DataProvider {
 
@@ -45,8 +45,8 @@ public class SkusTests extends DataProvider {
         p.waitForDataToLoad();
 
         p.search(randomId);
-        assertEquals( p.getSKUParamVal("1", "Code"), "SKU-" + randomId,
-                "A just created SKU isn't displayed on the list." );
+        p.getSKUParamVal("1", "Code").shouldHave(text("SKU-" + randomId)
+                .because("A just created SKU isn't displayed on the list."));
 
     }
 
@@ -61,8 +61,8 @@ public class SkusTests extends DataProvider {
         p.clickSave();
         refresh();
 
-        p.customTextFld("text fld").shouldBe(visible);
-        assertEquals( p.customTextFld("text fld").getValue(), "test val", "Customer property isn't saved." );
+        p.customTextFld("text fld").shouldHave(value("test val")
+                .because("Customer property isn't saved."));
 
     }
 
@@ -77,7 +77,8 @@ public class SkusTests extends DataProvider {
         p.clickSave();
         refresh();
 
-        assertEquals( p.customRichTextFld().text(), "test val", "Customer property isn't saved." );
+        p.customRichTextFld().shouldHave(text("test val")
+                .because("Customer property isn't saved.");
 
     }
 
@@ -92,13 +93,12 @@ public class SkusTests extends DataProvider {
         click( p.sideMenu("SKUs") );
 
         p.search( sku.substring(4, sku.length()) );
-        assertEquals( p.getSKUParamVal("1", "Title"), "Edited SKU Title",
-                "SKU title isn't updated on the list." );
+        p.getSKUParamVal("1", "Title").shouldHave(text("Edited SKU Title")
+                .because("SKU title isn't updated on the list."));
         p.openSKU(sku);
 
-        p.descriptionFld().shouldBe(visible);
-        assertEquals( p.titleFld().getValue(), "Edited SKU Title",
-                "Failed to edit SKU title." );
+        p.titleFld().shouldHave(value("Edited SKU Title")
+                .because("Failed to edit SKU title."));
 
     }
 
@@ -114,9 +114,8 @@ public class SkusTests extends DataProvider {
         p.search( sku.substring(4, sku.length()) );
         p.openSKU(sku);
 
-        p.descriptionFld().shouldBe(visible);
-        assertEquals( p.upcFld().getValue(), "Edited UPC",
-                "Failed to edit UPC field." );
+        p.upcFld().shouldHave(value("Edited UPC")
+                .because("Failed to edit UPC field."));
 
     }
 
@@ -133,9 +132,8 @@ public class SkusTests extends DataProvider {
         p.search( sku.substring(4, sku.length()) );
         p.openSKU(sku);
 
-        p.descriptionFld().shouldBe(visible);
-        assertEquals( p.descriptionFld().text(), "Edited description",
-                "Failed to edit description." );
+        p.descriptionFld().shouldHave(text("Edited description")
+                .because("Failed to edit description."));
 
     }
 
@@ -149,13 +147,12 @@ public class SkusTests extends DataProvider {
         p.clickSave();
         click( p.sideMenu("SKUs") );
         p.search( sku.substring(4, sku.length()) );
-        assertEquals( p.getSKUParamVal("1", "Retail Price"), "70.00",
-                "Retail price isn't updated on the list.");
+        p.getSKUParamVal("1", "Retail Price").shouldHave(text("70.00")
+                .because("Retail price isn't updated on the list."));
         p.openSKU(sku);
 
-        p.retailPriceFld().shouldBe(visible);
-        assertEquals( p.retailPriceFld().getValue(), "70.00",
-                "Failed to edit retail price." );
+        p.retailPriceFld().shouldHave(value("70.00")
+                .because("Failed to edit retail price."));
 
     }
 
@@ -169,13 +166,12 @@ public class SkusTests extends DataProvider {
         p.clickSave();
         click( p.sideMenu("SKUs") );
         p.search( sku.substring(4, sku.length()) );
-        assertEquals( p.getSKUParamVal("1", "Sale Price"), "70.00",
-                "Sale price isn't updated on the list.");
+        p.getSKUParamVal("1", "Sale Price").shouldHave(text("70.00")
+                .because("Sale price isn't updated on the list."));
         p.openSKU(sku);
 
-        p.salePriceFld().shouldBe(visible);
-        assertEquals( p.salePriceFld().getValue(), "70.00",
-                "Failed to edit sale price." );
+        p.salePriceFld().shouldHave(value("70.00")
+                .because("Failed to edit sale price." ));
 
     }
 
@@ -191,9 +187,8 @@ public class SkusTests extends DataProvider {
         p.search( sku.substring(4, sku.length()) );
         p.openSKU(sku);
 
-        p.skuFld().shouldBe(visible);
-        assertEquals( p.stateVal(), "Inactive",
-                "Failed to edit SKU state." );
+        p.stateVal().shouldHave(text("Inactive")
+                .because("Failed to edit SKU state."));
 
     }
 
@@ -203,8 +198,8 @@ public class SkusTests extends DataProvider {
         provideTestData("active product, has tag, active SKU");
         p = open(adminUrl + "/skus/" + sku, SkusPage.class);
 
-        p.titleFld().shouldBe(visible);
-        assertEquals( p.titleFld().text(), "SKU Test Title");
+        p.titleFld().shouldHave(text("SKU Test Title")
+                .because("SKU Title has been wiped after a product with this SKU was created."));
 
     }
 

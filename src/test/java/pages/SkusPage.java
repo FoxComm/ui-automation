@@ -61,9 +61,8 @@ public class SkusPage extends BasePage {
         return $(By.xpath("//li[text()='" + state + "']"));
     }
 
-    public String stateVal() {
-        SelenideElement stateVal = $(By.xpath("//div[text()='State']/../following-sibling::*[1]/div[2]/div"));
-        return stateVal.text();
+    public SelenideElement stateVal() {
+        return $(By.xpath("//div[text()='State']/../following-sibling::*[1]/div[2]/div"));
     }
 
     public SelenideElement skuCodeVal() {
@@ -155,27 +154,29 @@ public class SkusPage extends BasePage {
     }
 
     @Step("Get '{1}' parameter value of {0}th SKU on the list")
-    public String getSKUParamVal(String skuIndex, String paramName) {
-        String skuParamVal = "";
+    public SelenideElement getSKUParamVal(String skuIndex, String paramName) {
+
+        SelenideElement skuParamVal = null;
         waitForDataToLoad();
+
         switch (paramName) {
             case "Code":
-                skuParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + skuIndex + "]/td[2]")).getText();
+                skuParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + skuIndex + "]/td[2]"));
                 break;
             case "Title":
-                skuParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + skuIndex + "]/td[3]")).getText();
+                skuParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + skuIndex + "]/td[3]"));
                 break;
             case "Sale Price":
-                String salePrice = $(By.xpath("//tbody[@class='fc-table-body']/a[" + skuIndex + "]/td[4]/span")).text();
-                skuParamVal = salePrice.substring(1, salePrice.length());
+                skuParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + skuIndex + "]/td[4]/span"));
                 break;
             case "Retail Price":
-                String retailPrice = $(By.xpath("//tbody[@class='fc-table-body']/a[" + skuIndex + "]/td[5]/span")).text();
-                skuParamVal = retailPrice.substring(1, retailPrice.length());
+                skuParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + skuIndex + "]/td[5]/span"));
                 break;
 
         }
+
         return skuParamVal;
+
     }
 
     @Step("Open SKU with code <{0}>.")
