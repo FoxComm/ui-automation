@@ -252,7 +252,7 @@ public class CreateProductsTest extends DataProvider {
         p.addFilter("Product : Name", randomId);
         p.getProductParamVal("1", "Name").shouldHave(text("Test Product " + randomId)
                 .because("Queried product is not found - either search doesn't work or product wasn't created."));
-        p.openProduct( productTitle );
+        click( p.product(productTitle) );
         p.assertSKUApplied();
 
     }
@@ -273,7 +273,7 @@ public class CreateProductsTest extends DataProvider {
         p.addFilter("Product : Name", randomId);
         p.getProductParamVal("1", "Name").shouldHave(text("Test Product " + randomId)
                 .because("Queried product is not found - either search doesn't work or product wasn't created."));
-        p.openProduct( productTitle );
+        click( p.product(productTitle) );
         p.assertSKUApplied();
 
     }
@@ -291,7 +291,7 @@ public class CreateProductsTest extends DataProvider {
         click( p.sideMenu("Products") );
         p.waitForDataToLoad();
         p.addFilter("Product : Name", randomId);
-        p.openProduct( productTitle );
+        click( p.product(productTitle) );
         p.assertSKUApplied();
 
     }
@@ -312,7 +312,7 @@ public class CreateProductsTest extends DataProvider {
         p.addFilter("Product : Name", randomId);
         p.getProductParamVal("1", "Name").shouldHave(text("Test Product " + randomId)
                 .because("Queried product is not found - either search doesn't work or product wasn't created."));
-        p.openProduct( productTitle );
+        click( p.product(productTitle) );
         p.assertSKUApplied();
 
     }

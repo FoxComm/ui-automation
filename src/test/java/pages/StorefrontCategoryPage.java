@@ -5,12 +5,8 @@ import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.By;
 import ru.yandex.qatools.allure.annotations.Step;
 
-import java.util.List;
-
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.$$;
-import static org.testng.Assert.assertTrue;
 
 public class StorefrontCategoryPage extends BasePage {
 
@@ -66,33 +62,6 @@ public class StorefrontCategoryPage extends BasePage {
         click( searchBtn() );
         setFieldVal( searchFld(), productName );
         searchFld().pressEnter();
-    }
-
-    @Step("Open product with name <{0}>.")
-    public void openProduct(String productName) {
-        click( findProductOnList(productName) );
-    }
-
-    @Step("Find on the list a product with name <{0}>")
-    private SelenideElement findProductOnList(String productName) {
-
-        waitForDataToLoad_sf();
-        List<SelenideElement> productsList = $$(By.xpath("//div[@class='_products_item_list_item__name']"));
-        SelenideElement productToClick = null;
-        printSEList(productsList);
-
-        for(SelenideElement product : productsList) {
-
-            String listProductName = product.getText();
-            if (listProductName.equals(productName)) {
-                productToClick = product;
-            }
-
-        }
-
-        assertTrue( productToClick != null, "Couldn't find a requested product.");
-        return productToClick;
-
     }
 
 }

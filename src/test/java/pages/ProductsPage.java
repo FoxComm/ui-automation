@@ -7,9 +7,9 @@ import ru.yandex.qatools.allure.annotations.Step;
 import java.util.List;
 
 import static com.codeborne.selenide.Condition.*;
-import static com.codeborne.selenide.Selenide.*;
+import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.$$;
 import static org.openqa.selenium.By.xpath;
-import static org.testng.Assert.assertTrue;
 
 public class ProductsPage extends BasePage {
 
@@ -18,6 +18,10 @@ public class ProductsPage extends BasePage {
 
     public SelenideElement addNewProduct() {
         return $(xpath("//span[text()='Product']/.."));
+    }
+
+    public SelenideElement product(String nameOrId) {
+        return $(xpath("//tbody[@class='fc-table-body']/a/td[text()='" + nameOrId + "']"));
     }
 
     //-------------------------- NEW PRODUCT
@@ -114,40 +118,13 @@ public class ProductsPage extends BasePage {
 
     }
 
-    @Step("Open product with name <{0}>.")
-    public void openProduct(String productName) {
-        click( findProductOnList(productName) );
-    }
-
-    @Step("Find on the list a product with name <{0}>")
-    private SelenideElement findProductOnList(String productName) {
-
-        waitForDataToLoad();
-        List<SelenideElement> productsList = $$(xpath("//tbody[@class='fc-table-body']/a/td[4]"));
-        SelenideElement productToClick = null;
-        printSEList(productsList);
-
-        for(SelenideElement product : productsList) {
-
-            String listProductName = product.text();
-            if (listProductName.equals(productName)) {
-                productToClick = product;
-            }
-
-        }
-
-        assertTrue( productToClick != null, "Requested product isn't displayed on the list.");
-        return productToClick;
-
-    }
-
     @Step("Clear all tags from product")
     public void clearTags() {
         List<SelenideElement> tags = $$(xpath("//div[@class='_tags_tags__tags']/div/button"));
         System.out.println(tags.size());
         for(int i = 0; i < tags.size(); i++) {
             click( removeTagBtn("1") );
-            sleep(200);
+            removeTagBtn("1").shouldNot(exist);
         }
     }
 
