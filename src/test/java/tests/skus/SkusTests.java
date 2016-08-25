@@ -11,7 +11,6 @@ import java.util.Objects;
 
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.value;
-import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.Selenide.refresh;
 
@@ -78,7 +77,7 @@ public class SkusTests extends DataProvider {
         refresh();
 
         p.customRichTextFld().shouldHave(text("test val")
-                .because("Customer property isn't saved.");
+                .because("Customer property isn't saved."));
 
     }
 
