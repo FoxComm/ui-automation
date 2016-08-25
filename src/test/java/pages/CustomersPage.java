@@ -1,18 +1,18 @@
 package pages;
 
 import base.BasePage;
+import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.By;
 import ru.yandex.qatools.allure.annotations.Step;
 
 import java.util.List;
-import java.util.Objects;
 
+import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
+import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
 import static org.openqa.selenium.By.xpath;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
 
 public class CustomersPage extends BasePage {
 
@@ -117,33 +117,27 @@ public class CustomersPage extends BasePage {
         return $(By.xpath("//ul[contains(@class, 'addresses-list')]/li[" + addressIndex + "]div/label/div/input"));
     }
 
-    public int addressBookSize() {
-        List<SelenideElement> addresses = $$(By.xpath("//li[@class='fc-card-container fc-address']"));
-        return addresses.size();
+    public ElementsCollection addressBook() {
+        return $$(By.xpath("//li[@class='fc-card-container fc-address']"));
     }
 
-    public String nameFldVal(String addressIndex) {
-        SelenideElement name = $(By.xpath("//ul[contains(@class, 'addresses-list')]/li[" + addressIndex + "]/div[3]/div/ul/li[1]"));
-        return name.getText();
+    public SelenideElement nameFldVal(String addressIndex) {
+        return $(By.xpath("//ul[contains(@class, 'addresses-list')]/li[" + addressIndex + "]/div[3]/div/ul/li[1]"));
     }
 
-    public String address1FldVal(String addressIndex) {
-        SelenideElement address1 = $(By.xpath("//ul[contains(@class, 'addresses-list')]/li[" + addressIndex + "]/div[3]/div/ul/li[2]"));
-        return address1.getText();
+    public SelenideElement address1FldVal(String addressIndex) {
+        return $(By.xpath("//ul[contains(@class, 'addresses-list')]/li[" + addressIndex + "]/div[3]/div/ul/li[2]"));
     }
 
-    public String address2FldVal(String addressIndex) {
-        SelenideElement address2 = $(By.xpath("//ul[contains(@class, 'addresses-list')]/li[" + addressIndex + "]/div[3]/div/ul/li[3]"));
-        return address2.getText();
+    public SelenideElement address2FldVal(String addressIndex) {
+         return $(By.xpath("//ul[contains(@class, 'addresses-list')]/li[" + addressIndex + "]/div[3]/div/ul/li[3]"));
     }
 
-    public String cityFldVal(String addressIndex) {
-        SelenideElement cityFld = $(By.xpath("//ul[contains(@class, 'addresses-list')]/li[" + addressIndex + "]/div[3]/div/ul/li[4]"));
-        String cityFldVal = cityFld.getText();
-        return cityFldVal.substring(0, cityFldVal.indexOf(","));
+    public SelenideElement cityFldVal(String addressIndex) {
+        return $(By.xpath("//ul[contains(@class, 'addresses-list')]/li[" + addressIndex + "]/div[3]/div/ul/li[4]"));
     }
 
-    public SelenideElement stateDdVal(String addressIndex) {
+    public SelenideElement stateVal(String addressIndex) {
         return $(By.xpath("//ul[contains(@class, 'addresses-list')]/li[" + addressIndex + "]/div[3]/div/ul/li[4]/span[1]"));
     }
 
@@ -207,6 +201,7 @@ public class CustomersPage extends BasePage {
     @Step("Add new address to customer's address book.")
     public void addNewAddress(String name, String streetAddress1, String streetAddress2, String city, String state, String zipCode, String phoneNumber) {
 
+        int initialAddressBookSize = addressBook().size();
         click(addNewAddressBtn());
         setFieldVal(nameFld(), name);
         setFieldVal(address1Fld(), streetAddress1);
@@ -217,9 +212,9 @@ public class CustomersPage extends BasePage {
         setFieldVal_delayed(phoneNumberFld(), phoneNumber);
         assertStateIsntReset();
         click(saveBtn_addressForm());
-        assertTrue(!phoneNumbErrorMsg().is(visible),
-                "Failed to specify a full phone number (there might be a rendering issue).");
-        sleep(2000);
+        phoneNumbErrorMsg().shouldNotBe(visible
+                .because("Failed to specify a full phone number (there might be a rendering issue)."));
+        addressBook().shouldHave(sizeGreaterThan(initialAddressBookSize));
 
     }
 
@@ -231,8 +226,8 @@ public class CustomersPage extends BasePage {
 
     @Step("Assert that 'State' dropdown value isn't reset to default.")
     public void assertStateIsntReset() {
-        assertTrue(!Objects.equals(stateDd().getText(), "- Select -"),
-                "'State' is reset to default value");
+        stateDd().shouldNotHave(text("- Select -")
+                .because("'State' is reset to default value"));
     }
 
     @Step("Confirm item deletion")
@@ -261,9 +256,8 @@ public class CustomersPage extends BasePage {
         return $(By.xpath("//div[text()='Credit Cards']/following-sibling::*/button"));
     }
 
-    private String billName() {
-        SelenideElement name = $(By.xpath("//label[contains(@class, 'credit-card')]/following-sibling::*/li[1]"));
-        return name.getText();
+    private SelenideElement billName() {
+        return $(By.xpath("//label[contains(@class, 'credit-card')]/following-sibling::*/li[1]"));
     }
 
     public SelenideElement editCreditCardBtn(String ccIndex) {
@@ -356,12 +350,11 @@ public class CustomersPage extends BasePage {
         click(newBillAddressBtn());
         addNewAddress(name, streetAddress1, streetAddress2, city, state, zipCode, phoneNumber);
         click(saveBtn());
-        sleep(2000);
-        assertEquals( addressBookSize(), 1,
-                  "Failed to create a new address." );
+        addressBook().shouldHaveSize(1);
+//                  "Failed to create a new address."
         click( chooseBtn("1") );
-        assertTrue(billName().equals(name),
-                "Incorrect address seems to be set as a billing address; expected name: <" + name + ">, actual: <" + billName() + ">.");
+        billName().shouldHave(text(name)
+                .because("Incorrect address seems to be set as a billing address; expected name: <" + name + ">, actual: <" + billName() + ">."));
 
     }
 

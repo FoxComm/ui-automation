@@ -9,11 +9,10 @@ import testdata.DataProvider;
 import java.io.IOException;
 import java.util.Objects;
 
+import static com.codeborne.selenide.CollectionCondition.sizeLessThan;
+import static com.codeborne.selenide.Condition.matchesText;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.open;
-import static com.codeborne.selenide.Selenide.sleep;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
 
 public class AddressBookTest extends DataProvider {
 
@@ -37,8 +36,8 @@ public class AddressBookTest extends DataProvider {
 
         p.addNewAddress(customerName, "2101 Green Valley", "Suite 300", "Seattle", "Washington", "98101", "9879879876");
 
-        assertEquals( p.addressBookSize(), 1,
-                "Failed to add new address to address book.");
+        p.addressBook().shouldHaveSize(1);
+//                "Failed to add new address to address book."
 
     }
 
@@ -52,8 +51,8 @@ public class AddressBookTest extends DataProvider {
         setFieldVal( p.nameFld(), "John Doe" );
         p.assertStateIsntReset();
         click( p.saveBtn() );
-        assertTrue( p.nameFldVal("1").equals("John Doe"),
-                "Failed to edit name field; expected: <John Doe>, actual: <" + p.nameFldVal("1") + ">.");
+        p.nameFldVal("1").shouldHave(text("John Doe")
+                .because("Failed to edit name field; expected: <John Doe>, actual: <" + p.nameFldVal("1") + ">."));
 
     }
 
@@ -67,8 +66,8 @@ public class AddressBookTest extends DataProvider {
         setFieldVal( p.address1Fld(), "2525 Narrow Ave" );
         p.assertStateIsntReset();
         click( p.saveBtn() );
-        assertTrue( p.address1FldVal("1").equals("2525 Narrow Ave"),
-                "Failed to edit address1 field; expected: <2525 Narrow Ave>, actual: <" + p.address1FldVal("1") + ">.");
+        p.address1FldVal("1").shouldHave(text("2525 Narrow Ave")
+                .because("Failed to edit address1 field; expected: <2525 Narrow Ave>, actual: <" + p.address1FldVal("1") + ">."));
 
     }
 
@@ -82,8 +81,8 @@ public class AddressBookTest extends DataProvider {
         setFieldVal( p.address2Fld(), "Suite 300" );
         p.assertStateIsntReset();
         click( p.saveBtn() );
-        assertTrue( p.address2FldVal("1").equals("Suite 300"),
-                "Failed to edit address1 field; expected: <Suite 300>, actual: <" + p.address2FldVal("1") + ">.");
+        p.address2FldVal("1").shouldHave(text("Suite 300")
+                .because("Failed to edit address1 field; expected: <Suite 300>, actual: <" + p.address2FldVal("1") + ">."));
 
     }
 
@@ -97,8 +96,8 @@ public class AddressBookTest extends DataProvider {
         setFieldVal( p.cityFld(), "New York" );
         p.assertStateIsntReset();
         click( p.saveBtn() );
-        assertTrue( p.cityFldVal("1").equals("New York"),
-                "Failed to edit city field; expected: <New York>, actual: <" + p.cityFldVal("1") + ">.");
+        p.cityFldVal("1").should(matchesText("New York")
+                .because("Failed to edit city field; expected: <New York>, actual: <" + p.cityFldVal("1") + ">."));
 
     }
 
@@ -112,8 +111,8 @@ public class AddressBookTest extends DataProvider {
         p.setState("New York");
         p.assertStateIsntReset();
         click( p.saveBtn() );
-        p.stateDdVal("1").shouldHave(text("New York")
-                .because("Failed to edit state dd value; expected: <New York>, actual: " + p.stateDdVal("1") + ">."));
+        p.stateVal("1").shouldHave(text("New York")
+                .because("Failed to edit state dd value; expected: <New York>, actual: " + p.stateVal("1") + ">."));
 
     }
 
@@ -144,7 +143,6 @@ public class AddressBookTest extends DataProvider {
         setFieldVal_delayed( p.phoneNumberFld(), "5551237575" );
         p.assertStateIsntReset();
         click( p.saveBtn() );
-        sleep(4000);
 
         p.phoneNumberFldVal("1").shouldHave(text("(555) 123-7575")
                 .because("Failed to edit phone number in existing address at address book."));
@@ -158,13 +156,10 @@ public class AddressBookTest extends DataProvider {
         p = open(adminUrl + "/customers/" + customerId, CustomersPage.class);
 
         elementIsVisible( p.deleteAddressBtn("1") );
-        int expectedResult = p.addressBookSize() - 1;
+        int initialAddressBookSize = p.addressBook().size();
         click( p.deleteAddressBtn("1") );
         p.confirmDeletion();
-        int actualResult = p.addressBookSize();
-
-        assertTrue(actualResult == expectedResult,
-                "Address haven't been deleted; expected address book size: <" + expectedResult + ">, actual: <" + actualResult + ">.");
+        p.addressBook().shouldHave(sizeLessThan(initialAddressBookSize));
 
     }
 
