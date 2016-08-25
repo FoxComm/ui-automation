@@ -66,8 +66,6 @@ public class BasePage extends ConciseAPI {
     public void login(String email, String password) {
         emailField().val(email);
         passwordField().val(password).submit();
-        userMenuBtn().shouldBe(visible
-                .because("Log in has failed."));
     }
 
     @Step("Log out.")

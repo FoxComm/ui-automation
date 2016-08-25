@@ -29,6 +29,8 @@ public class LoginTest extends BaseTest {
     @Test(priority = 2)
     public void login_logout_test() {
         p.login("admin@admin.com", "password");
+        p.userMenuBtn().shouldBe(visible
+                .because("Log in has failed."));
         p.logout();
     }
 
