@@ -1,12 +1,12 @@
 package tests.generalcontrols.login;
 
 import base.BaseTest;
-import com.codeborne.selenide.Condition;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import pages.LoginPage;
 
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.Selenide.refresh;
 
@@ -22,7 +22,8 @@ public class LoginTest extends BaseTest {
     @Test(priority = 1)
     public void incorrect_credentials_test() {
         p.login("wrong@email.com", "wrongpassword");
-        p.loginErrorMsg().shouldBe(Condition.visible);
+        p.loginErrorMsg().shouldBe(visible
+                .because("'Incorrect credentials' error msg isn't shown."));
     }
 
     @Test(priority = 2)

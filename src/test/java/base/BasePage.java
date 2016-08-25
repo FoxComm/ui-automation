@@ -1,11 +1,9 @@
 package base;
 
-import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
-import org.testng.Assert;
 import ru.yandex.qatools.allure.annotations.Step;
 
 import java.util.List;
@@ -68,14 +66,16 @@ public class BasePage extends ConciseAPI {
     public void login(String email, String password) {
         emailField().val(email);
         passwordField().val(password).submit();
-        sleep(3000);
+        userMenuBtn().shouldBe(visible
+                .because("Log in has failed."));
     }
 
     @Step("Log out.")
     public void logout() {
         click( userMenuBtn() );
         click( logoutBtn() );
-        logoutSuccessMsg().shouldBe(Condition.visible);
+        logoutSuccessMsg().shouldBe(visible
+                .because("Failed to log out."));
     }
 
     //---------------------------- GENERAL FORM SPECIFIC----------------------------//
@@ -172,7 +172,7 @@ public class BasePage extends ConciseAPI {
         sleep(200);
     }
 //----
-    private SelenideElement noSearchResults() {
+    private SelenideElement noSearchResultsMsg() {
         return $(By.xpath("//div[@class='fc-content-box__empty-row']"));
     }
 
@@ -251,31 +251,6 @@ public class BasePage extends ConciseAPI {
         $(xpath("//h1")).click();
     }
 
-    @Step("Open coupon with name <{0}>.")
-    public void openItem(String paramVal) {
-        click( findItemOnList(paramVal) );
-    }
-
-    @Step("Find coupon with name <{0}> on the list of coupons.")
-    public SelenideElement findItemOnList(String paramVal) {
-
-        List<SelenideElement> itemsList = $$(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a/td"));
-        SelenideElement itemToClick = null;
-
-        for(SelenideElement item : itemsList) {
-
-            String listCouponName = item.text();
-            if (listCouponName.equals(paramVal)) {
-                itemToClick = item;
-            }
-
-        }
-
-//        assertTrue( itemToClick!= null, "Item with requested param value isn't displayed on the list.");
-        return itemToClick;
-
-    }
-
     public SelenideElement itemOnList(String itemParam) {
         return $(xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a/td[text()='" + itemParam + "']"));
     }
@@ -309,8 +284,8 @@ public class BasePage extends ConciseAPI {
 
     @Step
     public void assertNoSearchResults() {
-        Assert.assertTrue(noSearchResults().is(visible),
-                "Search query output isn't empty");
+        noSearchResultsMsg().shouldNotBe(visible
+                .because("Search query output isn't empty"));
     }
 
 }
