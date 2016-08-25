@@ -9,9 +9,9 @@ import testdata.DataProvider;
 import java.io.IOException;
 import java.util.Objects;
 
+import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
-import static org.testng.Assert.assertEquals;
 
 public class StoreCreditsTest extends DataProvider {
 
@@ -39,10 +39,9 @@ public class StoreCreditsTest extends DataProvider {
         p.selectType("Csr Appeasement");
         setFieldVal( p.valueFld(), "50" );
         click( p.submitBtn() );
-        sleep(1000);
 
-        assertEquals( p.availableBalanceVal(), 50.00,
-                "Current available balance value is incorrect.");
+        p.availableBalanceVal().shouldHave(text("$50.00")
+                .because("Current available balance value is incorrect."));
 
     }
 
@@ -57,11 +56,11 @@ public class StoreCreditsTest extends DataProvider {
         p.selectType("Gift Card Transfer");
         setFieldVal( p.gcNumberFld(), gcCode);
         sleep(2000);
-        assertEquals( p.gcAvailableBalanceVal(), 125.00,
-                "GC available balance isn't displayed.");
+        p.availableBalanceVal().shouldHave(text("$125.00")
+                .because("GC available balance isn't displayed."));
         click( p.submitBtn() );
-        assertEquals( p.availableBalanceVal(), 125.00,
-                "Current available balance value is incorrect.");
+        p.availableBalanceVal().shouldHave(text("$125.00")
+                .because("Current available balance value is incorrect."));
 
     }
 
@@ -80,10 +79,9 @@ public class StoreCreditsTest extends DataProvider {
         refresh();                          //bug workaround
         waitForDataToLoad();
 
-        assertEquals( p.amountOfSCs(), 1,
-                "A just issued SC isn't displayed on the list.");
-        assertEquals( p.getSCParamVal("1", "State"), "Active",
-                "A just issued SC isn't in 'Active' state.");
+        p.storeCreditsOnList().shouldHaveSize(1);
+//                "A just issued SC isn't displayed on the list."
+        p.getSCParamVal("1", "State").shouldHave(text("Active").because("A just issued SC isn't in 'Active' state."));
 
     }
 
@@ -99,13 +97,13 @@ public class StoreCreditsTest extends DataProvider {
         click( p.presetValue("100") );
         click( p.submitBtn() );
         sleep(2000);
-        assertEquals( p.availableBalanceVal(), 100.00,
-                "Current available balance value is incorrect.");
+        p.availableBalanceVal().shouldHave(text("$100.00")
+                .because("Current available balance value is incorrect."));
 
-        assertEquals( p.amountOfSCs(), 1,
-                "A just issued SC isn't displayed on the list.");
-        assertEquals( p.getSCParamVal("1", "Original Balance"), "$100.00",
-                "A just issued SC's Original Balance value is incorrect.");
+        p.storeCreditsOnList().shouldHaveSize(1);
+//                "A just issued SC isn't displayed on the list."
+        p.getSCParamVal("1", "Original Balance").shouldHave(text("$100.00")
+                .because("A just issued SC's Original Balance value is incorrect."));
 
     }
 
@@ -119,8 +117,8 @@ public class StoreCreditsTest extends DataProvider {
         waitForDataToLoad();
         p.setState("1", "On Hold");
 
-        assertEquals( p.getSCParamVal("1", "State"), "On Hold",
-                "Failed to change SC state.");
+        p.getSCParamVal("1", "State").shouldHave(text("On Hold")
+                .because("Failed to change SC state."));
 
     }
 
@@ -134,8 +132,8 @@ public class StoreCreditsTest extends DataProvider {
         waitForDataToLoad();
         p.setState("1", "Cancel Store Credit");
 
-        assertEquals( p.getSCParamVal("1", "State"), "Canceled",
-                "Failed to change SC state.");
+        p.getSCParamVal("1", "State").shouldHave(text("Canceled")
+                .because("Failed to change SC state."));
 
     }
 
@@ -148,10 +146,10 @@ public class StoreCreditsTest extends DataProvider {
         click( p.storeCreditTab() );
         click( p.transactionTab() );
         waitForDataToLoad();
-        assertEquals( p.getTransactionParamVal("1", "Amount"), "-$37.27",
-                "Incorrect amount of funds was applied to order as a payment.");
-        assertEquals( p.getTransactionParamVal("1", "Transaction"), "CSR Appeasement",
-                "Incorrect transaction type.");
+        p.getTransactionParamVal("1", "Amount").shouldHave(text("-$37.27")
+                .because("Incorrect amount of funds was applied to order as a payment."));
+        p.getTransactionParamVal("1", "Transaction").shouldHave(text("CSR Appeasement")
+                .because("Incorrect transaction type."));
 
     }
 
@@ -164,10 +162,10 @@ public class StoreCreditsTest extends DataProvider {
         click( p.storeCreditTab() );
         click( p.transactionTab() );
         waitForDataToLoad();
-        assertEquals( p.getTransactionParamVal("1", "Amount"), "-$37.27",
-                "Incorrect amount of funds was applied to order as a payment.");
-        assertEquals( p.getTransactionParamVal("1", "Transaction"), "Gift Card Transfer",
-                "Incorrect transaction type.");
+        p.getTransactionParamVal("1", "Amount").shouldHave(text("-$37.27")
+                .because("Incorrect amount of funds was applied to order as a payment."));
+        p.getTransactionParamVal("1", "Transaction").shouldHave(text("Gift Card Transfer")
+                .because("Incorrect transaction type."));
 
     }
 

@@ -6,12 +6,11 @@ import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.By;
 import ru.yandex.qatools.allure.annotations.Step;
 
-import java.util.List;
-
 import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selenide.*;
+import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.$$;
 import static org.openqa.selenium.By.xpath;
 
 public class CustomersPage extends BasePage {
@@ -234,14 +233,12 @@ public class CustomersPage extends BasePage {
     public void confirmDeletion() {
         confirmDeletionBtn().click();
         confirmDeletionBtn().shouldNot(visible);
-        sleep(2000);
     }
 
     @Step("Cancel item deletion")
     public void cancelDeletion() {
         cancelDeletionBtn().click();
         cancelDeletionBtn().shouldNot(visible);
-        sleep(2000);
     }
 
 
@@ -583,15 +580,14 @@ public class CustomersPage extends BasePage {
         return $(By.xpath("//button[@type='submit']"));
     }
 
-    public double availableBalanceVal() {
-        SelenideElement availableBalance = $(By.xpath("//div[text()='Total Available Balance']/following-sibling::*/div/span"));
-        String availBalanceVal = availableBalance.getText();
-        return Double.valueOf( availBalanceVal.substring(1, availBalanceVal.length()) );
+    public SelenideElement availableBalanceVal() {
+         return $(By.xpath("//div[text()='Total Available Balance']/following-sibling::*/div/span"));
+//        String availBalanceVal = availableBalance.getText();
+//        return Double.valueOf( availBalanceVal.substring(1, availBalanceVal.length()) );
     }
 
-    public int amountOfSCs() {
-        List <SelenideElement> issuedSCs = $$(By.xpath("//tbody/tr[@class='fc-table-tr']"));
-        return issuedSCs.size();
+    public ElementsCollection storeCreditsOnList() {
+        return  $$(By.xpath("//tbody/tr[@class='fc-table-tr']"));
     }
 
     private SelenideElement scStateDd(String scIndex) {
@@ -625,41 +621,40 @@ public class CustomersPage extends BasePage {
 
     @Step("Set SC type to {0}")
     public void selectType(String typeName) {
-        sleep(1000);
         click( scTypeDd() );
         click( scTypeListItem(typeName) );
     }
 
     @Step("Get {1} parameter value of {0}-th store credit on the list.")
-    public String getSCParamVal(String scIndex, String paramName) {
+    public SelenideElement getSCParamVal(String scIndex, String paramName) {
 
-        String scParamVal = "";
+        SelenideElement scParamVal = null;
         waitForDataToLoad();
 
         switch (paramName) {
             case "Date/Time Issued":
-                scParamVal = $(By.xpath("//tbody[@class='fc-table-body']/tr[" + scIndex + "]/td[2]/time")).getText();
+                scParamVal = $(By.xpath("//tbody[@class='fc-table-body']/tr[" + scIndex + "]/td[2]/time"));
                 break;
             case "Store Credit Id":
-                scParamVal = $(By.xpath("//tbody/tr[" + scIndex + "]/td[3]")).getText();
+                scParamVal = $(By.xpath("//tbody/tr[" + scIndex + "]/td[3]"));
                 break;
             case "Type":
-                scParamVal = $(By.xpath("//tbody/tr[" + scIndex + "]/td[4]/div/div")).getText();
+                scParamVal = $(By.xpath("//tbody/tr[" + scIndex + "]/td[4]/div/div"));
                 break;
             case "Issued By":
-                scParamVal = $(By.xpath("//tbody/tr[" + scIndex + "]/td[5]/div/div")).getText();
+                scParamVal = $(By.xpath("//tbody/tr[" + scIndex + "]/td[5]/div/div"));
                 break;
             case "Original Balance":
-                scParamVal = $(By.xpath("//tbody/tr[" + scIndex + "]/td[6]/span")).getText();
+                scParamVal = $(By.xpath("//tbody/tr[" + scIndex + "]/td[6]/span"));
                 break;
             case "Current Balance":
-                scParamVal = $(By.xpath("//tbody/tr[" + scIndex + "]/td[7]/span")).getText();
+                scParamVal = $(By.xpath("//tbody/tr[" + scIndex + "]/td[7]/span"));
                 break;
             case "Available Balance":
-                scParamVal = $(By.xpath("//tbody/tr[" + scIndex + "]/td[8]/span")).getText();
+                scParamVal = $(By.xpath("//tbody/tr[" + scIndex + "]/td[8]/span"));
                 break;
             case "State":
-                scParamVal = $(By.xpath("//tbody/tr[" + scIndex + "]/td[9]/div/div[2]/div/span")).getText();
+                scParamVal = $(By.xpath("//tbody/tr[" + scIndex + "]/td[9]/div/div[2]/div/span"));
                 break;
         }
 
@@ -682,26 +677,26 @@ public class CustomersPage extends BasePage {
     }
 
     @Step("Get {1} parameter value of {0}-th SC transaction on the list.")
-    public String getTransactionParamVal(String transactionIndex, String paramName) {
+    public SelenideElement getTransactionParamVal(String transactionIndex, String paramName) {
 
-        String transactionParamVal = "";
+        SelenideElement transactionParamVal = null;
         waitForDataToLoad();
 
         switch (paramName) {
             case "Date/Time":
-                transactionParamVal = $(By.xpath("//tbody[@class='fc-table-body']/tr[" + transactionIndex + "]/td[2]/time")).getText();
+                transactionParamVal = $(By.xpath("//tbody[@class='fc-table-body']/tr[" + transactionIndex + "]/td[2]/time"));
                 break;
             case "Transaction":
-                transactionParamVal = $(By.xpath("//tbody[@class='fc-table-body']/tr[" + transactionIndex + "]/td[3]/div/div")).getText();
+                transactionParamVal = $(By.xpath("//tbody[@class='fc-table-body']/tr[" + transactionIndex + "]/td[3]/div/div"));
                 break;
             case "Amount":
-                transactionParamVal = $(By.xpath("//tbody[@class='fc-table-body']/tr[" + transactionIndex + "]/td[4]/span")).getText();
+                transactionParamVal = $(By.xpath("//tbody[@class='fc-table-body']/tr[" + transactionIndex + "]/td[4]/span"));
                 break;
             case "Payment State":
-                transactionParamVal = $(By.xpath("//tbody[@class='fc-table-body']/tr[" + transactionIndex + "]/td[5]/span")).getText();
+                transactionParamVal = $(By.xpath("//tbody[@class='fc-table-body']/tr[" + transactionIndex + "]/td[5]/span"));
                 break;
             case "Total Available Balance":
-                transactionParamVal = $(By.xpath("//tbody[@class='fc-table-body']/tr[" + transactionIndex + "]/td[6]/span")).getText();
+                transactionParamVal = $(By.xpath("//tbody[@class='fc-table-body']/tr[" + transactionIndex + "]/td[6]/span"));
                 break;
         }
 
