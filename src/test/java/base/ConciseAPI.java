@@ -78,7 +78,7 @@ public class ConciseAPI extends Configuration {
         elementIsVisible(element);
         for(int i = 0; i < value.length(); i++) {
             element.sendKeys(String.valueOf(value.charAt(i)));
-            sleep(100);
+            sleep(50);
         }
     }
 

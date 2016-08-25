@@ -1,65 +1,65 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="Admin UI Tests" verbose="1" >
-    <!--<test name="General UI Tests" >-->
-        <!--<classes>-->
-            <!--<class name="tests.generalcontrols.login.LoginTest" />-->
-            <!--<class name="tests.generalcontrols.search.SearchControlsTest" />-->
-            <!--<class name="tests.generalcontrols.search.SharedSearchTest" />-->
-            <!--<class name="tests.generalcontrols.search.CustomersSearchTest" />-->
-            <!--<class name="tests.generalcontrols.search.ProductsSearchTest" />-->
-            <!--<class name="tests.generalcontrols.search.SKUTest" />-->
-        <!--</classes>-->
-    <!--</test>-->
-    <!--<test name="Cart Tests" >-->
-        <!--<classes>-->
-            <!--<class name="tests.cart.ItemsTest" />-->
-            <!--<class name="tests.cart.ShippingAddressTest" />-->
-            <!--<class name="tests.cart.ShippingMethodTest" />-->
-            <!--<class name="tests.cart.PaymentMethodTest" />-->
-            <!--<class name="tests.cart.OrderCouponsTest" />-->
-            <!--<class name="tests.cart.PlaceOrderTest" />-->
-        <!--</classes>-->
-    <!--</test>-->
-    <!--<test name="Orders Tests" >-->
-        <!--<classes>-->
-            <!--<class name="tests.orders.SearchTest" />-->
-            <!--<class name="tests.orders.OrderStateTest" />-->
-        <!--</classes>-->
-    <!--</test>-->
-    <test name="Customers Tests" >
+    <test name="General UI Tests" >
         <classes>
-            <!--<class name="tests.customers.details.AddressBookTest" />-->
-            <!--<class name="tests.customers.details.CreditCardsTest" />-->
-            <class name="tests.customers.details.ContactInformationTest" />
-            <!--<class name="tests.customers.orders.OrdersListTest" />-->
-            <!--<class name="tests.customers.storecredits.StoreCreditsTest" />-->
+            <class name="tests.generalcontrols.login.LoginTest" />
+            <class name="tests.generalcontrols.search.SearchControlsTest" />
+            <class name="tests.generalcontrols.search.SharedSearchTest" />
+            <class name="tests.generalcontrols.search.CustomersSearchTest" />
+            <class name="tests.generalcontrols.search.ProductsSearchTest" />
+            <class name="tests.generalcontrols.search.SKUTest" />
         </classes>
     </test>
-    <!--<test name="SKUs Tests">-->
-        <!--<classes>-->
-            <!--<class name="tests.skus.SkusTests" />-->
-        <!--</classes>-->
-    <!--</test>-->
-    <!--<test name="Products Tests">-->
-        <!--<classes>-->
-            <!--<class name="tests.products.CreateProductsTest" />-->
-            <!--<class name="tests.products.EditProductTest" />-->
-        <!--</classes>-->
-    <!--</test>-->
-    <!--<test name="Promotions Tests">-->
-        <!--<classes>-->
-            <!--&lt;!&ndash;<class name="tests.promotions.PromotionsTest" />&ndash;&gt;-->
-            <!--<class name="tests.promotions.PromotionsTest_NoAPI" />-->
-        <!--</classes>-->
-    <!--</test>-->
-    <!--<test name="Coupons Tests" >-->
-        <!--<classes>-->
-            <!--<class name="tests.coupons.CouponsTest" />-->
-        <!--</classes>-->
-    <!--</test>-->
-    <!--<test name="Gift Cards Tests">-->
-        <!--<classes>-->
-            <!--<class name="tests.giftcards.GiftCardsTest" />-->
-        <!--</classes>-->
-    <!--</test>-->
+    <test name="Cart Tests" >
+        <classes>
+            <class name="tests.cart.ItemsTest" />
+            <class name="tests.cart.ShippingAddressTest" />
+            <class name="tests.cart.ShippingMethodTest" />
+            <class name="tests.cart.PaymentMethodTest" />
+            <class name="tests.cart.OrderCouponsTest" />
+            <class name="tests.cart.PlaceOrderTest" />
+        </classes>
+    </test>
+    <test name="Orders Tests" >
+        <classes>
+            <class name="tests.orders.SearchTest" />
+            <class name="tests.orders.OrderStateTest" />
+        </classes>
+    </test>
+    <test name="Customers Tests" >
+        <classes>
+            <class name="tests.customers.details.AddressBookTest" />
+            <class name="tests.customers.details.CreditCardsTest" />
+            <class name="tests.customers.details.ContactInformationTest" />
+            <class name="tests.customers.orders.OrdersListTest" />
+            <class name="tests.customers.storecredits.StoreCreditsTest" />
+        </classes>
+    </test>
+    <test name="SKUs Tests">
+        <classes>
+            <class name="tests.skus.SkusTests" />
+        </classes>
+    </test>
+    <test name="Products Tests">
+        <classes>
+            <class name="tests.products.CreateProductsTest" />
+            <class name="tests.products.EditProductTest" />
+        </classes>
+    </test>
+    <test name="Promotions Tests">
+        <classes>
+            <!--<class name="tests.promotions.PromotionsTest" />-->
+            <class name="tests.promotions.PromotionsTest_NoAPI" />
+        </classes>
+    </test>
+    <test name="Coupons Tests" >
+        <classes>
+            <class name="tests.coupons.CouponsTest" />
+        </classes>
+    </test>
+    <test name="Gift Cards Tests">
+        <classes>
+            <class name="tests.giftcards.GiftCardsTest" />
+        </classes>
+    </test>
 </suite>
