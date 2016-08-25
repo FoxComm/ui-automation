@@ -275,7 +275,7 @@ public class CartPage extends BasePage {
             applyChangesToItems();
         }
 
-        return $(xpath(".//table[@class='fc-table']/tbody/tr[" + itemIndex + "]/td[5]")).getText();
+        return $(xpath("//table[@class='fc-table']/tbody/tr[" + itemIndex + "]/td[5]")).getText();
     }
 
     @Step

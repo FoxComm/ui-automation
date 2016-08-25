@@ -9,6 +9,7 @@ import testdata.DataProvider;
 import java.io.IOException;
 import java.util.Objects;
 
+import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.Selenide.refresh;
@@ -38,7 +39,8 @@ public class SkusTests extends DataProvider {
         click( p.addNewSKUBtn() );
         p.createNewSKU(randomId, "Active");
         p.clickSave();
-        assertEquals( p.skuCodeVal(), "SKU-" + randomId, "Failed to create new SKU.");
+        p.skuCodeVal().shouldHave(text("SKU-" + randomId)
+                .because("Failed to create new SKU."));
         click( p.sideMenu("SKUs") );
         p.waitForDataToLoad();
 

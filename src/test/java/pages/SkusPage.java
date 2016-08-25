@@ -66,9 +66,8 @@ public class SkusPage extends BasePage {
         return stateVal.text();
     }
 
-    public String skuCodeVal() {
-        SelenideElement skuCode = $(By.xpath("//div[@class='fc-breadcrumbs']/ul/li[5]/a"));
-        return skuCode.text();
+    public SelenideElement skuCodeVal() {
+        return $(By.xpath("//div[@class='fc-breadcrumbs']/ul/li[5]/a"));
     }
 
     private SelenideElement addCustomPropBtn() {

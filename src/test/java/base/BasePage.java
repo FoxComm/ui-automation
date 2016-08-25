@@ -42,7 +42,7 @@ public class BasePage extends ConciseAPI {
     //----------------------------------- NAVIGATION MENU ------------------------------------//
 
     public SelenideElement sideMenu(String sectionName) {
-        return $(xpath("//span[text()='" + sectionName + "']"));
+        return $(xpath("//span[text()='" + sectionName + "']/.."));
     }
 
     //------------------------------------ LOGIN SCREEN --------------------------------------//
