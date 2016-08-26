@@ -1,17 +1,15 @@
 package pages;
 
 import base.BasePage;
+import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
-import org.testng.Assert;
 import ru.yandex.qatools.allure.annotations.Step;
 
 import java.util.List;
-import java.util.Objects;
 
-import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
 import static org.openqa.selenium.By.xpath;
-import static org.testng.Assert.assertTrue;
 
 public class CartPage extends BasePage {
 
@@ -55,19 +53,19 @@ public class CartPage extends BasePage {
     }
 
     public SelenideElement cartWarn() {
-        return $(xpath("//div[@class='fc-order-messages']/div[1]"));
+        return $(xpath("//div[@class='fc-order-messages']/div[text()='Cart is empty.']"));
     }
 
     public SelenideElement shipAddressWarn() {
-        return $(xpath("//div[@class='fc-order-messages']/div[2]"));
+        return $(xpath("//div[@class='fc-order-messages']/div[text()='No shipping address applied.']"));
     }
 
     public SelenideElement shipMethodWarn() {
-        return $(xpath("//div[@class='fc-order-messages']/div[3]"));
+        return $(xpath("//div[@class='fc-order-messages']/div[text()='No shipping method applied.']"));
     }
 
     public SelenideElement fundsWarn() {
-        return $(xpath("//div[@class='fc-order-messages']/div[4]"));
+        return $(xpath("//div[@class='fc-order-messages']/div[text()='Insufficient funds.']"));
     }
 
     public SelenideElement orderOverviewPanel() {
@@ -94,22 +92,25 @@ public class CartPage extends BasePage {
 
         @Step("Assert that 'Cart is empty' warning isn't displayed")
         public void assertNoCartWarn() {
-            assertTrue( !cartWarn().is(visible), "'Cart is empty' warning is displayed." );
+            cartWarn().shouldNotBe(visible
+                    .because("'Cart is empty' warning is displayed."));
         }
 
         @Step("Assert that 'No shipping address' warning isn't displayed")
         public void assertNoShipAddressWarn() {
-            assertTrue( !shipAddressWarn().is(visible), "'No shipping address' warning is displayed." );
+            shipAddressWarn().shouldNotBe(visible
+                    .because("'No shipping address' warning is displayed."));
         }
 
         @Step("Assert that 'No shipping method' warning isn't displayed")
         public void assertNoShipMethod() {
-            assertTrue( !shipMethodWarn().is(visible), "'No shipping method' warning is displayed." );
+            shipMethodWarn().shouldNotBe(visible.because("'No shipping method' warning is displayed."));
         }
 
         @Step("Assert that 'Insufficient funds' warning isn't displayed")
         public void assertNoFundsWarn() {
-            assertTrue( !fundsWarn().is(visible), "'Insufficient funds' warning is displayed." );
+            fundsWarn().shouldNotBe(visible
+                    .because("'Insufficient funds' warning is displayed." ));
         }
 
     //------------------------ I T E M S    B L O C K ------------------------//
@@ -118,6 +119,15 @@ public class CartPage extends BasePage {
 
     private SelenideElement editBtn_items() {
         return $(xpath("//div[@class='fc-content-box fc-editable-content-box fc-line-items']/header/div[2]/button"));
+    }
+
+    public SelenideElement itemQty(String itemIndex) {
+
+//        if (isItemsInEditMode()) {
+//            clickDoneBtn_items();
+//        }
+
+        return $(xpath("//table[@class='fc-table']/tbody/tr[" + itemIndex + "]/td[5]"));
     }
 
     private SelenideElement lineItemSearchFld() {
@@ -160,7 +170,7 @@ public class CartPage extends BasePage {
         return $(xpath("//tbody[@class='fc-table-body']/tr/td[text()='" + itemName + "']"));
     }
 
-    public List<SelenideElement> cart() {
+    public ElementsCollection cart() {
             return $$(xpath("//table[@class='fc-table']/tbody/tr/td[6]"));
     }
 
@@ -176,14 +186,12 @@ public class CartPage extends BasePage {
     //------------------------------- HELPERS --------------------------------//
 
     public void clickEditBtn_items() {
-
         click( editBtn_items() );
         elementIsVisible( doneBtn_items() );
-
     }
 
     @Step("Apply changes to 'Items' block")
-    public void applyChangesToItems() {
+    public void clickDoneBtn_items() {
         click( doneBtn_items() );
         doneBtn_items().shouldNot(visible);
     }
@@ -203,7 +211,7 @@ public class CartPage extends BasePage {
         lineItemSearchView_byName(searchQuery).click();
         lineItem_byName(searchQuery).shouldBe(visible
                 .because("Failed to find line item using query: <" + searchQuery + ">"));
-        applyChangesToItems();
+        clickDoneBtn_items();
         lineItem_byName(searchQuery).shouldBe(visible
                 .because("Line item isn't displayed after clicking 'Done' btn."));
 
@@ -212,15 +220,15 @@ public class CartPage extends BasePage {
     @Step("Confirm item deletion")
     public void confirmDeletion() {
         confirmDeletionBtn().click();
-        confirmDeletionBtn().shouldNot(visible);
-        sleep(2000);
+        confirmDeletionBtn().shouldNotBe(visible);
+//        sleep(2000);
     }
 
     @Step("Cancel item deletion")
     public void cancelDeletion() {
         cancelDeletionBtn().click();
-        cancelDeletionBtn().shouldNot(visible);
-        sleep(2000);
+        cancelDeletionBtn().shouldNotBe(visible);
+//        sleep(2000);
     }
 
     @Step
@@ -254,7 +262,7 @@ public class CartPage extends BasePage {
             deleteItem(itemIndex);
         }
 
-        applyChangesToItems();
+        clickDoneBtn_items();
 
     }
 
@@ -269,25 +277,19 @@ public class CartPage extends BasePage {
     }
 
     @Step
-    public String getItemQty(String itemIndex) {
-
-        if (isItemsInEditMode()) {
-            applyChangesToItems();
-        }
-
-        return $(xpath("//table[@class='fc-table']/tbody/tr[" + itemIndex + "]/td[5]")).getText();
-    }
-
-    @Step
     public void increaseItemQty(String itemIndex, int increaseBy) {
 
-        if ( !(doneBtn_items().is(visible)) ) {
-            clickEditBtn_items();
-        }
+//        if ( !(doneBtn_items().is(visible)) ) {
+//            clickEditBtn_items();
+//        }
 
+        int initialQty = Integer.valueOf(itemQtyInputFld(itemIndex).getValue());
         for (int i = 0; i < increaseBy; i++) {
+            String expectedValue = String.valueOf(initialQty + 1);
             increaseItemQtyBtn(itemIndex).click();
-            sleep(1000);
+            sleep(750);
+            itemQtyInputFld(itemIndex).shouldHave(attribute("value", expectedValue));
+            initialQty += 1;
         }
 
     }
@@ -295,13 +297,23 @@ public class CartPage extends BasePage {
     @Step
     public void decreaseItemQty(String itemIndex, int decreaseBy) {
 
-        if ( !(doneBtn_items().is(visible)) ) {
-            clickEditBtn_items();
-        }
+//        if ( !(doneBtn_items().is(visible)) ) {
+//            clickEditBtn_items();
+//        }
 
+        int initialQty = Integer.valueOf(itemQtyInputFld(itemIndex).getValue());
         for (int i = 0; i < decreaseBy; i++) {
+            String expectedValue = String.valueOf(initialQty - 1);
             decreaseItemQtyBtn(itemIndex).click();
-            sleep(1000);
+            sleep(750);
+            if (Integer.valueOf(expectedValue) == 0) {
+                confirmDeletionBtn().shouldBe(visible
+                        .because("'Confirm deletion' modal window doesn't appear after item quantity is decreased to '0'."));
+            } else {
+                itemQtyInputFld(itemIndex).shouldHave(attribute("value", expectedValue));
+                initialQty -= 1;
+            }
+
         }
 
     }
@@ -309,7 +321,8 @@ public class CartPage extends BasePage {
     @Step
     public void decreaseItemQtyBelowZero(String itemIndex) {
 
-        int decreaseBy =  Integer.valueOf(getItemQty("1"));
+        int decreaseBy =  Integer.valueOf(itemQtyInputFld("1").getValue());
+        System.out.println("decreaseBy" + decreaseBy);
 
         decreaseItemQty(itemIndex, decreaseBy);
         confirmDeletionBtn().shouldBe(visible);
@@ -324,7 +337,7 @@ public class CartPage extends BasePage {
         }
 
         itemQtyInputFld(itemIndex).setValue(newQuantity);
-        applyChangesToItems();
+        clickDoneBtn_items();
 
     }
 
@@ -374,16 +387,16 @@ public class CartPage extends BasePage {
         return $(xpath("//div[text()='Address Book']"));
     }
 
-    private List<SelenideElement> chooseAddressBtns() {
+    private ElementsCollection chooseAddressBtns() {
         return $$(xpath("//span[text()='Choose']/.."));
     }
 
-    private List<SelenideElement> listOfNamesInAddressBook() {
+    private ElementsCollection namesInAddressBook() {
         return $$(xpath("//li[@class='name']"));
     }
 
-    public String getNameFromAddressBook(int addressIndex) {
-        return listOfNamesInAddressBook().get(addressIndex - 1).getText();
+    public SelenideElement nameOnAddressCard(int addressIndex) {
+        return namesInAddressBook().get(addressIndex - 1);
     }
 
     public SelenideElement defaultShipAddressChkbox(String addressIndex) {
@@ -438,11 +451,15 @@ public class CartPage extends BasePage {
         return $(xpath("//a[text()='Cancel']"));
     }
 
+    public SelenideElement addressDetails() {
+        return $(xpath("//ul[@class='fc-address-details']"));
+    }
+
 
     //------------------------------- HELPERS --------------------------------//
 
-    public String getCustomerName_chosenShipAddress() {
-        return $(xpath(".//ul[@class='fc-addresses-list']/li/div[3]/div/ul/li[1]")).getText();
+    public SelenideElement customerName_chosenShipAddress() {
+        return $(xpath(".//ul[@class='fc-addresses-list']/li/div[3]/div/ul/li[1]"));
     }
 
     @Step
@@ -460,12 +477,11 @@ public class CartPage extends BasePage {
     @Step
     public void chooseShipAddress(int addressIndex) {
 
-        String expectedResult = getNameFromAddressBook(addressIndex);
+        String expectedResult = nameOnAddressCard(addressIndex).text();
         click( chooseAddressBtns(), 1 );
-        elementIsVisible( chosenAddress() );
 
-        String actualResult = getCustomerName_chosenShipAddress();
-        Assert.assertEquals(expectedResult, actualResult, "Chosen address isn't displayed.");
+        customerName_chosenShipAddress().shouldHave(text(expectedResult)
+                .because("Failed to choose shipping address from address book."));
 
     }
 
@@ -489,8 +505,8 @@ public class CartPage extends BasePage {
     }
 
     private void assertStateIsntReset() {
-        assertTrue( !Objects.equals(stateDd().getText(), "- Select -"),
-                "'State' is reset to default value");
+        stateDd().shouldNotHave(text("- Select -")
+                .because("'State' is reset to default value"));
     }
 
     // Will deprecate once we'll switch from custom to normal dropdowns.
@@ -543,7 +559,8 @@ public class CartPage extends BasePage {
         for (int i = 0; i < addressesAmount; i++) {
             click( deleteBtn_inAddressBook("1") );
             click( confirmDeletionBtn() );
-            sleep(750);
+//            sleep(750);
+            confirmDeletionBtn().shouldNotBe(visible);
         }
 
     }
@@ -747,8 +764,8 @@ public class CartPage extends BasePage {
     public void assertCardAdded() {
 
         editBtn_payment().shouldBe(visible);
-        assertTrue($(xpath("//strong[contains(text(), 'xxxx xxxx xxxx')]")).is(visible),
-                "Failed to add credit card to order as a payment method.");
+        $(xpath("//strong[contains(text(), 'xxxx xxxx xxxx')]")).shouldBe(visible
+                .because("Failed to add credit card to order as a payment method."));
 
     }
 

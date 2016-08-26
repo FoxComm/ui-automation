@@ -61,7 +61,7 @@ public class OrderDetailsPage extends CartPage {
             Objects.equals( expectedState, "Manual Hold" ) ||
             Objects.equals( expectedState, "Fraud Hold" )) {
 
-            $(By.xpath("//div[text()='" + expectedState + "']")).is(visible
+            $(By.xpath("//div[text()='" + expectedState + "']")).shouldBe(visible
                     .because("Order is not on " + expectedState + "."));
 
         } else if (Objects.equals( expectedState, "Fulfillment Started" ) ||

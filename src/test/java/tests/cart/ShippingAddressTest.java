@@ -9,11 +9,9 @@ import testdata.DataProvider;
 import java.io.IOException;
 import java.util.Objects;
 
-import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.Selenide.sleep;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
 
 public class ShippingAddressTest extends DataProvider {
 
@@ -41,14 +39,13 @@ public class ShippingAddressTest extends DataProvider {
         p.clearAddressBook();
         p.addNewAddress("John Doe", "2101 Green Valley #320", "Suite 300", "Seattle", "Washington", "98101", "9879879876");
 
-        assertTrue(p.addressBookHeader().is(visible),
-                "A just added address isn't displayed in address book.");
-        assertTrue(p.chosenAddress().is(visible),
-                "A just added address isn't set as a chosen shipping address.");
+        p.addressBookHeader().shouldBe(visible
+                .because("A just added address isn't displayed in address book."));
+        p.chosenAddress().shouldBe(visible
+                .because("A just added address isn't set as a chosen shipping address."));
 
     }
 
-    // atm test fails because of bug with input fields rendering
     @Test(priority = 2)
     public void addNewAddress_nonEmptyAddressBook() throws IOException {
 
@@ -74,10 +71,15 @@ public class ShippingAddressTest extends DataProvider {
 
         p.clickEditBtn_shipAddress();
         p.chooseShipAddress(1);
+        p.chosenAddress().shouldBe(visible
+                .because("A chosen address isn't displayed as a chosen shipping address."));
         click( p.doneBtn_shipAddress() );
 
-        p.chosenAddress().shouldBe(visible
-                .because("A chosen address isn't displayed as a choosen shipping address."));
+        p.addressDetails().shouldBe(visible
+                .because("A chosen address isn't displayed as a chosen shipping address."));
+        p.shipAddressWarn().shouldNotBe(visible
+                .because("'No shipping address' warning is displayed."));
+
 
     }
 
@@ -89,8 +91,8 @@ public class ShippingAddressTest extends DataProvider {
         setFieldVal( p.nameFld(), "Edited Customer Name" );
         p.applyChangesToAddress();
 
-        assertEquals(p.getCustomerName_chosenShipAddress(), "Edited Customer Name",
-                "Chosen address has failed to get updated.");
+        p.customerName_chosenShipAddress().shouldHave(text("Edited Customer Name")
+                .because("Chosen address has failed to get updated."));
 
     }
 
@@ -104,7 +106,8 @@ public class ShippingAddressTest extends DataProvider {
         click( p.deleteBtn_chosenAddress() );
         click( p.confirmDeletionBtn() );
 
-        elementNotVisible( p.chosenAddress() );
+        p.chosenAddress().shouldNotBe(visible
+                .because("Failed to delete chosen shipping address."));
 
     }
 
@@ -117,8 +120,8 @@ public class ShippingAddressTest extends DataProvider {
         p.clickEditBtn_shipAddress();
         click( p.defaultShipAddressChkbox("1") );
         sleep(750);
-        assertTrue( p.defaultShipAddressChkbox_input("1").isSelected(),
-                "Failed to set address in address book as default shipping address." );
+        p.defaultShipAddressChkbox_input("1").shouldBe(selected
+                .because("Failed to set address in address book as default shipping address."));
 
     }
 
@@ -131,16 +134,9 @@ public class ShippingAddressTest extends DataProvider {
         p.clickEditBtn_shipAddress();
         click( p.defaultShipAddressChkbox("1") );
         sleep(750);
-        assertTrue( p.defaultShipAddressChkbox_input("1").isSelected(),
-                "Failed to set different address as default shipping address." );
+        p.defaultShipAddressChkbox_input("1").shouldBe(selected
+                .because("Failed to set different address as default shipping address."));
 
     }
-
-    // If tests in here doesn't fail because of garbage from previous tests - then delete @AfterMethod
-    // And delete restorePageDefaultState() from CartPage.class
-//    @AfterMethod
-//    public void cleanUp() {
-//        p.restorePageDefaultState();
-//    }
 
 }

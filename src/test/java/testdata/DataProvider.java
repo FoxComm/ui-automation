@@ -1823,6 +1823,13 @@ public class DataProvider extends BaseTest {
                 updSKULineItems(cartId, "SKU-TRL", 1);
                 break;
 
+            case "cart with 2 items":
+                createNewCustomer();
+                createCart(customerId);
+                updSKULineItems(cartId, "SKU-TRL", 1);
+                updSKULineItems(cartId, "SKU-TRL", 3);
+                break;
+
             case "cart with 3 items":
                 createNewCustomer();
                 createCart(customerId);

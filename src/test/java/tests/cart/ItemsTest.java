@@ -9,10 +9,9 @@ import testdata.DataProvider;
 import java.io.IOException;
 import java.util.Objects;
 
+import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.open;
-import static com.codeborne.selenide.Selenide.sleep;
-import static org.testng.Assert.assertEquals;
 
 public class ItemsTest extends DataProvider {
 
@@ -42,52 +41,45 @@ public class ItemsTest extends DataProvider {
     }
 
     @Test (priority = 2)
-    public void increaseItemQuantity_arrowBtn() throws IOException {
+    public void editItemQuantity_arrowBtn() throws IOException {
 
         provideTestData("cart with 1 item");
         p = open(adminUrl + "/carts/" + cartId, CartPage.class);
-        sleep(750);
+        p.itemQty("1").shouldBe(visible);
+        String expectedResult = addToString(p.itemQty("1").text(), 2);
 
-        String expectedResult = addToString(p.getItemQty("1"), 2);
-
+        p.clickEditBtn_items();
         p.increaseItemQty("1", 2);
-        assertEquals(p.getItemQty("1"), expectedResult);
+        p.clickDoneBtn_items();
+        p.itemQty("1").shouldHave(text(expectedResult)
+                .because("Line item with index <1> has incorrect quantity value."));
+
+        p.clickEditBtn_items();
+        p.decreaseItemQty("2", 1);
+        p.clickDoneBtn_items();
+        p.itemQty("2").shouldHave(text(expectedResult)
+                .because("Line item with index <1> has incorrect quantity value."));
 
     }
 
     @Test (priority = 3)
-    public void decreaseItemQuantity_arrowBtn() throws IOException {
-
-        provideTestData("cart with 1 item, qty: 3");
-        p = open(adminUrl + "/carts/" + cartId, CartPage.class);
-        sleep(750);
-
-        String expectedResult = subtractFromString(p.getItemQty("1"), 1);
-
-        p.decreaseItemQty("1", 1);
-        assertEquals(p.getItemQty("1"), expectedResult);
-
-    }
-
-    @Test (priority = 4)
     public void decreaseItemQuantityBelowZero() throws IOException {
 
         provideTestData("cart with 3 items");
         p = open(adminUrl + "/carts/" + cartId, CartPage.class);
-        sleep(750);
-
+        p.itemQty("1").shouldBe(visible);
         int expectedResult = p.itemsInCartAmount() - 1;
 
+        p.clickEditBtn_items();
         p.decreaseItemQtyBelowZero("1");
         p.confirmDeletion();
-        p.applyChangesToItems();
+        p.clickDoneBtn_items();
 
-        int actualResult = p.itemsInCartAmount();
-        assertEquals(actualResult, expectedResult);
+        p.cart().shouldHaveSize(expectedResult);
 
     }
 
-    @Test (priority = 5)
+    @Test (priority = 4)
     public void editItemQuantity_directInput() throws IOException {
 
         provideTestData("cart with 1 item");
@@ -95,66 +87,62 @@ public class ItemsTest extends DataProvider {
 
         // increase value
         p.editItemQty("1", "3");
-        assertEquals(p.getItemQty("1"), "3");
-        sleep(750);
+        p.itemQty("1").shouldHave(text("3")
+                .because("Line item with index <1> has incorrect quantity value."));
 
         // decrease value
         p.editItemQty("1", "1");
-        assertEquals(p.getItemQty("1"), "1"); // <-- fails here
+        p.itemQty("1").shouldHave(text("1")
+                .because("Line item with index <1> has incorrect quantity value."));
 
     }
 
-    @Test (priority = 6)
+    @Test (priority = 5)
     public void deletionCancel_deleteBtn() throws IOException {
 
         provideTestData("cart with 1 item, qty: 3");
         p = open(adminUrl + "/carts/" + cartId, CartPage.class);
-        sleep(750);
-
+        p.itemQty("1").shouldBe(visible);
         int expectedResult = p.itemsInCartAmount();
 
         p.clickEditBtn_items();
         click( p.deleteBtn_item("1") );
         p.cancelDeletion();
 
-        int actualResult = p.itemsInCartAmount();
-        assertEquals(actualResult, expectedResult);
+        p.cart().shouldHaveSize(expectedResult);
 
     }
 
-    @Test (priority = 7)
+    @Test (priority = 6)
     public void deletionCancel_qtyBelowZero() throws IOException {
 
         provideTestData("cart with 3 items");
         p = open(adminUrl + "/carts/" + cartId, CartPage.class);
-        sleep(750);
-
+        p.itemQty("1").shouldBe(visible);
         int expectedResult = p.itemsInCartAmount();
 
+        p.clickEditBtn_items();
         p.decreaseItemQtyBelowZero("1");
         p.cancelDeletion();
-        p.applyChangesToItems();
+        p.clickDoneBtn_items();
 
-        int actualResult = p.itemsInCartAmount();
-        assertEquals(actualResult, expectedResult);
+        p.cart().shouldHaveSize(expectedResult);
 
     }
 
-    @Test (priority = 8)
+    @Test (priority = 7)
     public void deleteItem_deleteBtn() throws IOException {
 
         provideTestData("cart with 3 items");
         p = open(adminUrl + "/carts/" + cartId, CartPage.class);
-        sleep(750);
-
+        p.itemQty("1").shouldBe(visible);
         int expectedItemsAmount = p.cart().size() - 1;
 
         p.clickEditBtn_items();
         click( p.deleteBtn_item("1") );
         p.confirmDeletion();
 
-        int actualProductName = p.cart().size();
-        assertEquals(actualProductName, expectedItemsAmount);
+        p.cart().shouldHaveSize(expectedItemsAmount);
 
     }
 
