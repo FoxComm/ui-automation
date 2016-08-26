@@ -5,9 +5,9 @@
             <class name="tests.generalcontrols.login.LoginTest" />
             <class name="tests.generalcontrols.search.SearchControlsTest" />
             <class name="tests.generalcontrols.search.SharedSearchTest" />
-            <!--<class name="tests.generalcontrols.search.CustomersSearchTest" />-->
-            <!--<class name="tests.generalcontrols.search.ProductsSearchTest" />-->
-            <!--<class name="tests.generalcontrols.search.SKUTest" />-->
+            <class name="tests.generalcontrols.search.CustomersSearchTest" />
+            <class name="tests.generalcontrols.search.ProductsSearchTest" />
+            <class name="tests.generalcontrols.search.SKUTest" />
         </classes>
     </test>
     <test name="Cart Tests" >
@@ -57,9 +57,9 @@
             <class name="tests.coupons.CouponsTest" />
         </classes>
     </test>
-    <!--<test name="Gift Cards Tests">-->
-        <!--<classes>-->
-            <!--<class name="tests.giftcards.GiftCardsTest" />-->
-        <!--</classes>-->
-    <!--</test>-->
+    <test name="Gift Cards Tests">
+        <classes>
+            <class name="tests.giftcards.GiftCardsTest" />
+        </classes>
+    </test>
 </suite>

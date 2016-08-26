@@ -9,6 +9,7 @@ import testdata.DataProvider;
 import java.io.IOException;
 import java.util.Objects;
 
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.open;
 
 public class OrderStateTest extends DataProvider {
@@ -22,6 +23,7 @@ public class OrderStateTest extends DataProvider {
         if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
             LoginPage loginPage = open(adminUrl + "/login", LoginPage.class);
             loginPage.login("admin@admin.com", "password");
+            loginPage.userMenuBtn().shouldBe(visible);
         }
 
     }

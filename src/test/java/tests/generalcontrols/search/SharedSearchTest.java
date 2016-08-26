@@ -25,6 +25,7 @@ public class SharedSearchTest extends DataProvider {
         if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
             LoginPage loginPage = open(adminUrl + "/login", LoginPage.class);
             loginPage.login("admin@admin.com", "password");
+            loginPage.userMenuBtn().shouldBe(visible);
         }
 
     }

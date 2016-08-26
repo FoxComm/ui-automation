@@ -12,6 +12,7 @@ import java.util.Objects;
 import static com.codeborne.selenide.CollectionCondition.sizeLessThan;
 import static com.codeborne.selenide.Condition.matchesText;
 import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.open;
 
 public class AddressBookTest extends DataProvider {
@@ -25,6 +26,7 @@ public class AddressBookTest extends DataProvider {
         if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
             LoginPage loginPage = open(adminUrl + "/login", LoginPage.class);
             loginPage.login("admin@admin.com", "password");
+            loginPage.userMenuBtn().shouldBe(visible);
         }
 }
 
