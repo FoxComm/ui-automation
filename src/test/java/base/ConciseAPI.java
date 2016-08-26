@@ -30,7 +30,6 @@ public class ConciseAPI extends Configuration {
     @Step("Click {0}.")
     public void click(SelenideElement element) {
         elementIsVisible(element);
-        sleep(250);
         element.click();
     }
 
@@ -38,7 +37,6 @@ public class ConciseAPI extends Configuration {
     protected void click(List<SelenideElement> listOfElements, int index) {
         SelenideElement element = listOfElements.get(index - 1);
         elementIsVisible(element);
-        sleep(250);
         element.click();
     }
 
@@ -67,7 +65,6 @@ public class ConciseAPI extends Configuration {
 
     @Step("Set {0} field value to {1}")
     protected void setFieldVal(SelenideElement element, String value) {
-        sleep(250);
         elementIsVisible(element);
         element.setValue(value);
     }
@@ -78,7 +75,6 @@ public class ConciseAPI extends Configuration {
         elementIsVisible(element);
         for(int i = 0; i < value.length(); i++) {
             element.sendKeys(String.valueOf(value.charAt(i)));
-            sleep(50);
         }
     }
 
@@ -163,7 +159,6 @@ public class ConciseAPI extends Configuration {
     @Step("Wait for data on the list to be loaded.")
     public void waitForDataToLoad() {
 //        itemsOnList().should(exist.because("There's no content on the list."));
-        sleep(1000);
         loadingSpinner().shouldNotBe(visible
                 .because("Data loading either took too long or it was interrupted by an error."));
     }
