@@ -9,9 +9,7 @@ import testdata.DataProvider;
 import java.io.IOException;
 import java.util.Objects;
 
-import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Condition.value;
-import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.Selenide.refresh;
 
@@ -193,7 +191,7 @@ public class SkusTests extends DataProvider {
 
     }
 
-    @Test(priority = 99)
+    @Test(priority = 10)
     public void titleReset_regressionTest() throws IOException {
 
         provideTestData("active product, has tag, active SKU");
@@ -203,5 +201,37 @@ public class SkusTests extends DataProvider {
                 .because("SKU Title has been wiped after a product with this SKU was created."));
 
     }
+
+    @Test(priority = 10)
+    public void useExistingSKUCode_regressionTest() throws IOException {
+
+        provideTestData("active SKU");
+        p = open(adminUrl + "/skus/new", SkusPage.class);
+
+        click( p.addNewSKUBtn() );
+        setFieldVal( p.skuFld(), sku );
+        setFieldVal( p.titleFld(), "Test Title" );
+        setFieldVal( p.upcFld(), "Test UPC" );
+        p.descriptionFld().val("Just another test SKU.");
+        setFieldVal( p.retailPriceFld(), "50.00" );
+        setFieldVal( p.salePriceFld(), "32.00" );
+        setFieldVal( p.unitCostFld(), "32.00" );
+        p.clickSave();
+
+        p.skuFld().shouldNotBe(empty
+                .because("'SKU' field is empty - probably form has been blanked."));
+        p.titleFld().shouldNotBe(empty
+                .because("'Title' field is empty - probably form has been blanked."));
+        p.upcFld().shouldNotBe(empty
+                .because("'UPC' field is empty - probably form has been blanked."));
+        p.retailPriceFld().shouldNotBe(empty
+                .because("'Retail Price' field is empty - probably form has been blanked."));
+        p.salePriceFld().shouldNotBe(empty
+                .because("'Sale Price' field is empty - probably form has been blanked."));
+        p.unitCostFld().shouldNotBe(empty
+                .because("'Unit Price' field is empty - probably form has been blanked."));
+
+    }
+
 
 }
