@@ -8,7 +8,6 @@ import java.util.Objects;
 
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
-import static org.testng.Assert.assertTrue;
 
 public class OrderDetailsPage extends CartPage {
 
@@ -24,26 +23,11 @@ public class OrderDetailsPage extends CartPage {
         return $(By.xpath("//button[@class='fc-btn fc-remorse-timer-extend']"));
     }
 
-    public String timerValue() {
-        SelenideElement timer = $(By.xpath("//div[@class='fc-countdown']"));
-        return timer.getText();
+    public SelenideElement timer() {
+        return $(By.xpath("//div[@class='fc-countdown']"));
     }
 
     //------------------------------- HELPERS --------------------------------//
-
-    @Step("Check if remorse hold time has been increased.")
-    public void assertTimerValue(int expectedHoursVal, int expectedMinutesVal) {
-
-        int actualMinutesVal = Integer.valueOf(timerValue().substring(3, 5));
-        int actualHoursVal = Integer.valueOf(timerValue().substring(0, 2));
-
-        System.out.println("actualMinutesVal: " + actualMinutesVal);
-        System.out.println("actualHoursVal: " + actualHoursVal);
-
-        assertTrue( (expectedHoursVal == actualHoursVal) && (expectedMinutesVal - actualMinutesVal <= 1),
-                "Actual 'Remorse Hold' timer value differs from expected one." );
-
-    }
 
     @Step("Set order state to {0}.")
     public void setOrderState(String state) {

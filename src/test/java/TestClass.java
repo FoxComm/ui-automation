@@ -51,8 +51,9 @@ public class TestClass extends BaseTest {
     private static String singleCouponCode;
     private static List<String> bulkCodes = new ArrayList<>();
 
-    private static String sku;              // stored from createSKU();
-    protected static String productId;                 // stored from createProduct_<..>() methods
+    private static String sku;                      // stored from createSKU();
+    protected static int skuId_inventory;                     // stored from viewSKU();
+    protected static String productId;              // stored from createProduct_<..>() methods
     protected static String productName;            // stored from createProduct_<..>() methods
 
     private static int searchId;                    // stored from createSharedSearch() methods
@@ -1168,6 +1169,39 @@ public class TestClass extends BaseTest {
 
     }
 
+    private static void viewSKU_inventory(String skuCode) throws IOException {
+
+        System.out.println("Viewing SKU with code <" + skuCode + ">...");
+
+        OkHttpClient client = new OkHttpClient();
+
+        Request request = new Request.Builder()
+                .url("http://admin.stage.foxcommerce.com/api/v1/inventory/summary/" + skuCode)
+                .get()
+                .addHeader("content-type", "application/json")
+                .addHeader("accept", "application/json")
+                .addHeader("cache-control", "no-cache")
+                .addHeader("JWT", jwt)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+        int responseCode = response.code();
+        String responseMsg = response.message();
+
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+            JSONObject jsonData = new JSONObject(responseBody);
+            JSONObject obj = jsonData.getJSONArray("summary").getJSONObject(0);
+            skuId_inventory = obj.getJSONObject("stockItem").getInt("id");
+            System.out.println("SKU ID: <" + skuId_inventory + ">");
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
+
+    }
+
 //    @Test
 //    public void testTest() {
 //
@@ -1201,7 +1235,7 @@ public class TestClass extends BaseTest {
 //        setPayment_giftCard(orderId, gcCode, 10000);
 //        checkoutOrder("BR11183");
 
-        createProduct_active("SKU-TST", "sunglasses");
+//        createProduct_active("SKU-TST", "sunglasses");
 //        createSharedSearch_oneFilter();
 //        shareSearch(searchCode, "Such Root");
 //        getAllSavedSearches();
@@ -1221,6 +1255,7 @@ public class TestClass extends BaseTest {
 
 //        createCoupon("198");
 //        bulkGenerateCodes(couponId, "BLKNWCPN" + couponId + "-", 4, 5);
+        viewSKU_inventory("SKU-HDG");
 
     }
 

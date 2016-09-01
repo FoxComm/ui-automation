@@ -38,6 +38,7 @@ public class DataProvider extends BaseTest {
 
     protected static String sku;                    // stored from createSKU_active();
     protected static String skuTitle;               // stored from createSKU_active();
+    protected static int skuId_inventory;                     // stored from viewSKU();
     protected static String productName;            // stored from createProduct_<..>() methods
     protected static String productId;                 // stored from createProduct_<..>() methods
 
@@ -1728,6 +1729,72 @@ public class DataProvider extends BaseTest {
 
     }
 
+    private static void viewSKU_inventory(String skuCode) throws IOException {
+
+        System.out.println("Viewing SKU with code <" + skuCode + ">...");
+
+        OkHttpClient client = new OkHttpClient();
+
+        Request request = new Request.Builder()
+                .url("http://admin.stage.foxcommerce.com/api/v1/inventory/summary/" + skuCode)
+                .get()
+                .addHeader("content-type", "application/json")
+                .addHeader("accept", "application/json")
+                .addHeader("cache-control", "no-cache")
+                .addHeader("JWT", jwt)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+        int responseCode = response.code();
+        String responseMsg = response.message();
+
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+            JSONObject jsonData = new JSONObject(responseBody);
+            JSONObject obj = jsonData.getJSONArray("summary").getJSONObject(0);
+            skuId_inventory = obj.getJSONObject("stockItem").getInt("id");
+            System.out.println("SKU ID: <" + skuId_inventory + ">");
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
+
+    }
+
+    private static void increaseSellableAmount(String skuCode, Integer qty) throws IOException {
+
+        viewSKU_inventory(skuCode);
+
+        System.out.println("Increase amount of sellable items by <" + qty + "> for SKU <" + skuCode + ">, ID: <" + skuId_inventory + ">...");
+
+        OkHttpClient client = new OkHttpClient();
+
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{\"qty\":" + qty + ",\"type\":\"Sellable\",\"status\":\"onHand\"}");
+        Request request = new Request.Builder()
+                .url("http://admin.stage.foxcommerce.com/api/v1/inventory/stock-items/" + skuId_inventory + "/increment")
+                .patch(body)
+                .addHeader("content-type", "application/json")
+                .addHeader("accept", "application/json")
+                .addHeader("cache-control", "no-cache")
+                .addHeader("JWT", jwt)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+        int responseCode = response.code();
+        String responseMsg = response.message();
+
+        if (responseCode == 204) {
+            System.out.println(responseCode + " " + responseMsg);
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
+
+    }
+
     private static void createSKU_search() throws IOException {
 
         System.out.println("Creating a new SKU, options: ACTIVE state...");
@@ -2024,6 +2091,7 @@ public class DataProvider extends BaseTest {
             case "order in remorse hold":
                 createNewCustomer();
                 createCart(customerId);
+                increaseSellableAmount("SKU-YAX", 1);
                 updSKULineItems(cartId, "SKU-YAX", 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(cartId);
