@@ -245,6 +245,7 @@ public class BasePage extends ConciseAPI {
         waitForDataToLoad();
         searchFld().val( searchQuery ).pressEnter();
         itemsOnList().shouldBe(visible.because("Search request returned no results."));
+        $(xpath("//div[@class='fc-menu']/ul")).shouldBe(visible);
         $(xpath("//h1")).click();
     }
 

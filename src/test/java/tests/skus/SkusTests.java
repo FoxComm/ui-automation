@@ -206,7 +206,7 @@ public class SkusTests extends DataProvider {
     public void useExistingSKUCode_regressionTest() throws IOException {
 
         provideTestData("active SKU");
-        p = open(adminUrl + "/skus/new", SkusPage.class);
+        p = open(adminUrl + "/skus", SkusPage.class);
 
         click( p.addNewSKUBtn() );
         setFieldVal( p.skuFld(), sku );

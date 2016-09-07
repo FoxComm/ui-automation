@@ -55,9 +55,9 @@ public class ItemsTest extends DataProvider {
                 .because("Line item with index <1> has incorrect quantity value."));
 
         p.clickEditBtn_items();
-        p.decreaseItemQty("2", 1);
+        p.decreaseItemQty("1", 1);
         p.clickDoneBtn_items();
-        p.itemQty("2").shouldHave(text(expectedResult)
+        p.itemQty("1").shouldHave(text(expectedResult)
                 .because("Line item with index <1> has incorrect quantity value."));
 
     }

@@ -10,10 +10,8 @@ import testdata.DataProvider;
 import java.io.IOException;
 import java.util.Objects;
 
-import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
 
 public class EditProductTest extends DataProvider {
 
@@ -44,8 +42,8 @@ public class EditProductTest extends DataProvider {
         p.clickSave();
         refresh();
 
-        assertEquals( p.titleFld().getValue(), "Edited Product " + uid,
-                "Failed to edit product title - incorrect product title is displayed on PDP in admin." );
+        p.titleFld().shouldHave(text("Edited Product " + uid)
+                .because("Failed to edit product title - incorrect product title is displayed on PDP in admin." ));
 
     }
 
@@ -63,8 +61,8 @@ public class EditProductTest extends DataProvider {
         click( p.sideMenu("Products") );
         p.search(uid);
 
-        assertEquals( p.getProductParamVal("1", "Name"), "Edited Product " + uid,
-                "Failed to edit product name - incorrect product title is displayed on the list in admin.");
+        p.getProductParamVal("1", "Name").shouldHave(text("Edited Product " + uid)
+                .because("Failed to edit product name - incorrect product title is displayed on the list in admin."));
 
     }
 
@@ -80,8 +78,8 @@ public class EditProductTest extends DataProvider {
         p.clickSave();
 
         sf = open(storefrontUrl + "/products/" + productId, StorefrontCategoryPage.class);
-        assertEquals( sf.titleVal(), "Edited Product " + uid,
-                "Failed to edit product title - incorrect product title is displayed on storefront PDP." );
+        sf.titleVal().shouldHave(text("Edited Product " + uid)
+                .because("Failed to edit product title - incorrect product title is displayed on storefront PDP." ));
 
     }
 
@@ -114,8 +112,8 @@ public class EditProductTest extends DataProvider {
         p.clickSave();
         refresh();
 
-        assertEquals( p.descriptionFld().text(), "Edited Description",
-                "Failed to edit description - incorrect description is displayed on admin PDP.");
+        p.descriptionFld().shouldHave(text("Edited Description")
+                .because("Failed to edit description - incorrect description is displayed on admin PDP."));
 
     }
 
@@ -130,8 +128,8 @@ public class EditProductTest extends DataProvider {
         p.clickSave();
 
         sf = open(storefrontUrl + "/products/" + productId, StorefrontCategoryPage.class);
-        assertEquals( sf.descriptionVal(), "Edited Description",
-                "Failed to edit description - incorrect description is displayed on storefront PDP.");
+        sf.descriptionVal().shouldHave(text("Edited Description")
+                .because("Failed to edit description - incorrect description is displayed on storefront PDP."));
 
     }
 
@@ -147,8 +145,8 @@ public class EditProductTest extends DataProvider {
         refresh();
         p.stateDd().shouldBe(visible);
 
-        assertEquals( p.stateVal(), "Inactive",
-                "Failed to edit product state - incorrect product state is displayed on product details page in admin.");
+        p.stateVal().shouldHave(text("Inactive")
+                .because("Failed to edit product state - incorrect product state is displayed on product details page in admin."));
 
     }
 
@@ -165,8 +163,8 @@ public class EditProductTest extends DataProvider {
         click( p.sideMenu("Products") );
         p.search(uid);
 
-        assertEquals( p.getProductParamVal("1", "State"), "Inactive",
-                "Failed to edit product state - incorrect state value is displayed on the list in admin.");
+        p.getProductParamVal("1", "State").shouldHave(text("Inactive")
+                .because("Failed to edit product state - incorrect state value is displayed on the list in admin."));
 
 
     }
@@ -197,9 +195,9 @@ public class EditProductTest extends DataProvider {
         p.clickSave();
         refresh();
         p.retailPriceFld().shouldBe(visible);
-        sleep(1000);
-        assertEquals( p.retailPriceFld().getValue(), "35.18",
-                "Failed to edit retail price.");
+
+        p.retailPriceFld().shouldHave(attribute("value", "35.18")
+                .because("Failed to edit retail price."));
 
     }
 
@@ -212,8 +210,8 @@ public class EditProductTest extends DataProvider {
         setFieldVal( p.salePriceFld(), "35.18" );
         p.clickSave();
         refresh();
-        assertEquals( p.salePriceFld().getValue(), "35.18",
-                "Failed to edit sale price.");
+        p.salePriceFld().shouldHave(attribute("value", "35.18")
+                .because("Failed to edit sale price."));
 
     }
 
@@ -227,8 +225,8 @@ public class EditProductTest extends DataProvider {
         p.clickSave();
 
         sf = open(storefrontUrl + "/products/" + productId, StorefrontCategoryPage.class);
-        assertEquals( sf.priceVal(), "35.18",
-                "Failed to edit sale price.");
+        sf.priceVal().shouldHave(text("35.18")
+                .because("Failed to edit sale price."));
 
     }
 
@@ -243,12 +241,11 @@ public class EditProductTest extends DataProvider {
         p.clickSave();
         refresh();
         p.addTagBtn().shouldBe(visible);
-        sleep(1000);
 
-        assertTrue( p.tag("eyeglasses").is(visible),
-                "A new tag isn't displayed.");
-        assertTrue( !p.tag("sunglasses").is(visible),
-                "Removed tag is displayed.");
+        p.tag("eyeglasses").shouldBe(visible
+                .because("A new tag isn't displayed."));
+        p.tag("sunglasses").shouldNotBe(visible
+                .because("Removed tag is displayed."));
 
     }
 
@@ -279,8 +276,8 @@ public class EditProductTest extends DataProvider {
         p.clickSave();
         refresh();
         p.addTagBtn().shouldBe(visible);
-        assertTrue( !p.tag("eyeglasses").is(visible),
-                "A just removed tag is displayed.");
+        p.tag("eyeglasses").shouldNotBe(visible
+                .because("A just removed tag is displayed."));
 
     }
 

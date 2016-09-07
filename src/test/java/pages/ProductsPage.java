@@ -57,9 +57,8 @@ public class ProductsPage extends BasePage {
         return $(xpath("//li[text()='" + state + "']"));
     }
 
-    public String stateVal() {
-        SelenideElement state = $(xpath("//div[@class='fc-product-state']/div[2]/div[2]/div"));
-        return state.getText();
+    public SelenideElement stateVal() {
+        return $(xpath("//div[@class='fc-product-state']/div[2]/div[2]/div"));
     }
 
     private SelenideElement removeStartDateBtn() {
