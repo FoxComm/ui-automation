@@ -15,3 +15,7 @@ libraryDependencies ++= Seq(
   "ru.yandex.qatools.allure" % "allure-testng-adaptor" % "1.4.23",
   "org.scalatest" %% "scalatest" % "3.0.0" % "test"
 )
+
+javacOptions ++= Seq(
+  "-encoding", "UTF-8"
+)
