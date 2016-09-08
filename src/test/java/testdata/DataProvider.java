@@ -2133,6 +2133,7 @@ public class DataProvider extends BaseTest {
 
                 createNewCustomer();
                 createCart(customerId);
+                increaseSellableAmount("SKU-YAX", 1);
                 updSKULineItems(cartId, "SKU-YAX", 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(cartId);
@@ -2157,6 +2158,7 @@ public class DataProvider extends BaseTest {
 
                 createNewCustomer();
                 createCart(customerId);
+                increaseSellableAmount("SKU-YAX", 1);
                 updSKULineItems(cartId, "SKU-YAX", 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(cartId);
@@ -2167,6 +2169,7 @@ public class DataProvider extends BaseTest {
                 checkoutOrder(cartId);
 
                 createCart(customerId);
+                increaseSellableAmount("SKU-BRO", 2);
                 updSKULineItems(cartId, "SKU-BRO", 2);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(cartId);
