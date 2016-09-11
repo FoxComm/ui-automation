@@ -13,5 +13,6 @@ libraryDependencies ++= Seq(
   "org.testng" % "testng" % "6.9.10",
   "org.aspectj" % "aspectjweaver" % "1.8.6",
   "ru.yandex.qatools.allure" % "allure-testng-adaptor" % "1.4.23",
+  "org.apache.maven.plugins" % "maven-surefire-plugin" % "2.19.1",
   "org.scalatest" %% "scalatest" % "3.0.0" % "test"
 )
