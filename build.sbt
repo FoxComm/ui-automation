@@ -16,3 +16,7 @@ libraryDependencies ++= Seq(
   "org.apache.maven.plugins" % "maven-surefire-plugin" % "2.19.1",
   "org.scalatest" %% "scalatest" % "3.0.0" % "test"
 )
+
+javacOptions ++= Seq(
+  "-encoding", "UTF-8"
+)
