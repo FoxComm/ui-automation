@@ -18,7 +18,8 @@ public class BaseTest extends ConciseAPI {
 
         System.setProperty("webdriver.chrome.driver", "bin/chromedriver");
         Configuration.browser = "chrome";
-        Configuration.timeout = 10000;
+        Configuration.timeout = 4000;
+        Configuration.reportsFolder = "/home/cosmic/IdeaProjects/FC/ui-tests/.idea/modules/target/allure-results";
 
     }
 

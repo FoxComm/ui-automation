@@ -15,3 +15,4 @@
 /src/test/java/tests/generalcontrols/search/GiftCardsSearchTest.java
 /bin
 /build
+/allure-report

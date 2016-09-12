@@ -8,6 +8,7 @@ import java.util.Objects;
 
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
+import static org.testng.Assert.assertTrue;
 
 public class OrderDetailsPage extends CartPage {
 
@@ -34,6 +35,20 @@ public class OrderDetailsPage extends CartPage {
         click( orderStateDd() );
         click( $(By.xpath("//li[text()='" + state + "']")) );
         click( $(By.xpath("//span[text()='Yes, Change']/..")) );
+    }
+
+    @Step("Check if remorse hold time has been increased.")
+    public void assertTimerValue(int expectedHoursVal, int expectedMinutesVal) {
+
+        int actualMinutesVal = Integer.valueOf(timer().val().substring(3, 5));
+        int actualHoursVal = Integer.valueOf(timer().val().substring(0, 2));
+
+        System.out.println("actualMinutesVal: " + actualMinutesVal);
+        System.out.println("actualHoursVal: " + actualHoursVal);
+
+        assertTrue( (expectedHoursVal == actualHoursVal) && (expectedMinutesVal - actualMinutesVal <= 1),
+                "Actual 'Remorse Hold' timer value differs from expected one." );
+
     }
 
     @Step("Assert that order's state is '{0}'.")
