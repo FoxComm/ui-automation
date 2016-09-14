@@ -74,7 +74,7 @@ public class CreateProductsTest extends DataProvider {
         click( sf.product(productName) );
         sf.titleVal().shouldHave(text(productName)
                 .because("Incorrect product title is displayed on PDP."));
-        sf.priceVal().shouldHave(text("27.18")
+        sf.priceVal().shouldHave(text("$50.00")
                 .because("Incorrect product price is displayed on PDP."));
         sf.descriptionVal().shouldHave(text("The best thing to buy in 2016!")
                 .because("Incorrect product description is displayed on PDP."));

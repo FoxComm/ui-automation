@@ -42,7 +42,7 @@ public class EditProductTest extends DataProvider {
         p.clickSave();
         refresh();
 
-        p.titleFld().shouldHave(text("Edited Product " + uid)
+        p.titleFld().shouldHave(attribute("value", "Edited Product " + uid)
                 .because("Failed to edit product title - incorrect product title is displayed on PDP in admin." ));
 
     }

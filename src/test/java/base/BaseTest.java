@@ -1,8 +1,9 @@
 package base;
 
-import java.util.Optional;
 import com.codeborne.selenide.Configuration;
 import org.testng.annotations.BeforeSuite;
+
+import java.util.Optional;
 
 import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 
@@ -20,6 +21,5 @@ public class BaseTest extends ConciseAPI {
         System.setProperty("webdriver.chrome.driver", driverPath);
         Configuration.browser = "chrome";
         Configuration.timeout = 10000;
-        Configuration.reportsFolder = "/home/cosmic/IdeaProjects/FC/ui-tests/.idea/modules/target/allure-results";
     }
 }

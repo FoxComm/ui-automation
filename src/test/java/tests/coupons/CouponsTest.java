@@ -48,6 +48,7 @@ public class CouponsTest extends DataProvider {
         click( p.sideMenu("Coupons") );
         p.waitForDataToLoad();
 
+        p.search("test coupon " + randomId);
         p.getCouponParamVal("1", "Name").shouldHave(text("test coupon " + randomId)
                 .because("A just created coupon isn't displayed on the list."));
 

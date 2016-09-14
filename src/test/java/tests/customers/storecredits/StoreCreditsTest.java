@@ -41,7 +41,7 @@ public class StoreCreditsTest extends DataProvider {
         setFieldVal( p.valueFld(), "50" );
         click( p.submitBtn() );
 
-        p.availableBalanceVal().shouldHave(text("$50.00")
+        p.totalAvailableBalance().shouldHave(text("$50.00")
                 .because("Current available balance value is incorrect."));
 
     }
@@ -147,7 +147,7 @@ public class StoreCreditsTest extends DataProvider {
         click( p.storeCreditTab() );
         click( p.transactionTab() );
         waitForDataToLoad();
-        p.getTransactionParamVal("1", "Amount").shouldHave(text("-$37.27")
+        p.getTransactionParamVal("1", "Amount").shouldHave(text("-$36.00")
                 .because("Incorrect amount of funds was applied to order as a payment."));
         p.getTransactionParamVal("1", "Transaction").shouldHave(text("CSR Appeasement")
                 .because("Incorrect transaction type."));
@@ -163,7 +163,7 @@ public class StoreCreditsTest extends DataProvider {
         click( p.storeCreditTab() );
         click( p.transactionTab() );
         waitForDataToLoad();
-        p.getTransactionParamVal("1", "Amount").shouldHave(text("-$37.27")
+        p.getTransactionParamVal("1", "Amount").shouldHave(text("-$36.00")
                 .because("Incorrect amount of funds was applied to order as a payment."));
         p.getTransactionParamVal("1", "Transaction").shouldHave(text("Gift Card Transfer")
                 .because("Incorrect transaction type."));

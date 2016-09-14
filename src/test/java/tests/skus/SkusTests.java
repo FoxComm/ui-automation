@@ -194,10 +194,10 @@ public class SkusTests extends DataProvider {
     @Test(priority = 10)
     public void titleReset_regressionTest() throws IOException {
 
-        provideTestData("active product, has tag, active SKU");
+        provideTestData("active SKU");
         p = open(adminUrl + "/skus/" + sku, SkusPage.class);
 
-        p.titleFld().shouldHave(text("SKU Test Title")
+        p.titleFld().shouldHave(attribute("value", skuTitle)
                 .because("SKU Title has been wiped after a product with this SKU was created."));
 
     }

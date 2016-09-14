@@ -8,6 +8,7 @@ import org.openqa.selenium.By;
 import org.testng.annotations.Test;
 import pages.LoginPage;
 import pages.OrderDetailsPage;
+import pages.SkusPage;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,8 +17,10 @@ import java.util.Objects;
 
 import static com.codeborne.selenide.Condition.attribute;
 import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
+import static com.codeborne.selenide.Selenide.sleep;
 import static org.testng.Assert.assertEquals;
 
 public class TestClass extends BaseTest {
@@ -29,7 +32,7 @@ public class TestClass extends BaseTest {
 //
 //    }
 
-    private OrderDetailsPage p;
+    private SkusPage p;
 
     private static int customerId;
     private static String orderId;
@@ -40,6 +43,7 @@ public class TestClass extends BaseTest {
     private static String customerEmail;    // stored from viewCustomer()
     private static int addressId1;          // stored from listCustomerAddresses()
     private static int addressId2;          // stored from listCustomerAddresses()
+    private static String addressPayload;   // stored from listCustomerAddresses()
     private static String gcCode;         // stored from issueGiftCard()
     private static int scId;                // stored from issueStoreCredit()
     private static int shipMethodId;        // stored from listShipMethods()
@@ -328,17 +332,20 @@ public class TestClass extends BaseTest {
                 .build();
 
         Response response = client.newCall(request).execute();
-
         String responseBody = response.body().string();
-        addressId1 = Integer.valueOf(responseBody.substring(7, 11));
-//        addressId2 = Integer.valueOf(addresses.substring(216, 220));
-//        addressId3 = Integer.valueOf(addresses.substring(415, 419));
+        int responseCode = response.code();
+        String responseMsg = response.message();
 
-        System.out.println(response);
-        System.out.println("Address 1: <" + addressId1 + ">");
-//        System.out.println("Address 2: <" + addressId2 + ">");
-//        System.out.println("Addres 3: <" + addressId3 + ">");
-        System.out.println("--------");
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+            JSONArray jsonData = new JSONArray(responseBody);
+            addressId1 = jsonData.getJSONObject(0).getInt("id");
+//            addressId1 = Integer.valueOf(responseBody.substring(7, responseBody.indexOf(",", 7)));
+            System.out.println("Address 1: <" + addressId1 + ">");
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
 
     }
 
@@ -396,21 +403,73 @@ public class TestClass extends BaseTest {
 
     }
 
-    private static void createCreditCard(String holderName, String cardNumber,String cvv, int expMonth, int expYear, int addressId) throws IOException {
+    private static void getCustomerAddress(int customerId, int addressId) throws IOException {
+
+        System.out.println("Getting address with ID <" + addressId + "> of customer <" + customerId + ">...");
+        OkHttpClient client = new OkHttpClient();
+
+        Request request = new Request.Builder()
+                .url("http://admin.stage.foxcommerce.com/api/v1/customers/" + customerId + "/addresses/" + addressId)
+                .get()
+                .addHeader("content-type", "application/json")
+                .addHeader("accept", "application/json")
+                .addHeader("cache-control", "no-cache")
+                .addHeader("JWT", jwt)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+        int responseCode = response.code();
+        String responseMsg = response.message();
+
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+//            addressId1 = Integer.valueOf(responseBody.substring(7, responseBody.indexOf(",", 7)));
+            addressPayload = responseBody;
+            System.out.println("Address 1: <" + addressId1 + ">");
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
+
+    }
+
+
+
+    private static void createCreditCard(String holderName, String lastFour, int expMonth, int expYear, String brand) throws IOException {
 
         System.out.println("Create a new credit card for customer <" + customerId + ">...");
+        JSONObject jsonObj = new JSONObject(addressPayload);
+        JSONObject region = jsonObj.getJSONObject("region");
+
+//        System.out.println("{" +
+//                "\n  \"token\":\"tok_18t2CWAVdiXyWQ8c4PnlJZAJ\"," +
+//                "\n  \"holderName\":\"" + holderName + "\"," +
+//                "\n  \"lastFour\":\"" + lastFour + "\"," +
+//                "\n  \"expMonth\":" + expMonth + "," +
+//                "\n  \"expYear\":" + expYear + "," +
+//                "\n  \"brand\":\"" + brand + "\"," +
+//                "\n  \"addressIsNew\":false," +
+//                "\n  \"billingAddress\":" + addressPayload.substring(0, addressPayload.length() - 1) + "," +
+//                "\n  \"regionId\":" + region.getInt("id") + "," +
+//                "\n  \"state\":\"" + region.getString("name") + "\"," +
+//                "\n  \"country\":\"United States\"}}");
 
         OkHttpClient client = new OkHttpClient();
 
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{" +
-                "\n  \"holderName\": \"" + holderName + "\"," +
-                "\n  \"cardNumber\": \"" + cardNumber + "\"," +
-                "\n  \"cvv\": \"" + cvv + "\"," +
-                "\n  \"expMonth\": " + expMonth + "," +
-                "\n  \"expYear\": " + expYear + "," +
-                "\n  \"addressId\": " + addressId + "," +
-                "\n  \"isDefault\": false\n}");
+                "\n  \"token\":\"tok_18t2CWAVdiXyWQ8c4PnlJZAJ\"," +
+                "\n  \"holderName\":\"" + holderName + "\"," +
+                "\n  \"lastFour\":\"" + lastFour + "\"," +
+                "\n  \"expMonth\":" + expMonth + "," +
+                "\n  \"expYear\":" + expYear + "," +
+                "\n  \"brand\":\"" + brand + "\"," +
+                "\n  \"addressIsNew\":false," +
+                "\n  \"billingAddress\":" + addressPayload.substring(0, addressPayload.length() - 1) + "," +
+                "\n  \"regionId\":" + region.getInt("id") + "," +
+                "\n  \"state\":\"" + region.getString("name") + "\"," +
+                "\n  \"country\":\"United States\"}}");
         Request request = new Request.Builder()
                 .url(adminUrl + "/api/v1/customers/" + customerId + "/payment-methods/credit-cards")
                 .post(body)
@@ -422,13 +481,18 @@ public class TestClass extends BaseTest {
 
         Response response = client.newCall(request).execute();
         String responseBody = response.body().string();
+        int responseCode = response.code();
+        String responseMsg = response.message();
 
-        System.out.println(response);
-//        System.out.println(responseBody);
-        creditCardId = Integer.valueOf(responseBody.substring(6, 10));
-        System.out.println("Credit Card ID: <" + responseBody.substring(6, 10) + ">");
-        System.out.println("--------");
-
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+            org.json.JSONObject jsonData = new org.json.JSONObject(responseBody);
+            creditCardId = jsonData.getInt("id");
+            System.out.println("Credit Card ID: <" + creditCardId + ">");
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
     }
 
     private static void setPayment_creditCard(String orderId, int creditCardId) throws IOException {
@@ -1249,14 +1313,16 @@ public class TestClass extends BaseTest {
 //        if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
 //            LoginPage loginPage = open(adminUrl + "/login", LoginPage.class);
 //            loginPage.login("admin@admin.com", "password");
+//            loginPage.userMenuBtn().shouldBe(visible);
 //        }
 //
-//        p = open("http://admin.stage.foxcommerce.com/carts/BR10066", OrderDetailsPage.class);
 //
-//        click(p.editBtn_shipAddress());
-//        click( p.addNewAddressBtn() );
-//        setFieldVal_delayed( $(By.name("name")), "Hello World!" );
-//        $(By.name("name")).shouldHave(attribute("value", "Hello World!").because("Input has failed"));
+//        sleep(12000);
+//
+//        p = open("http://admin.stage.foxcommerce.com/skus/SKU-ZYA", SkusPage.class);
+//
+//        p.sideMenu("SKUs").click();
+//        p.addNewSKUBtn().shouldBe(visible);
 //
 //    }
 
@@ -1264,40 +1330,11 @@ public class TestClass extends BaseTest {
     public static void main(String[] args) throws IOException {
 
         loginAsAdmin();
-//        issueGiftCard(20000, 1);
-//        createNewCustomer();
-//        createCart(customerId);
-//        updSKULineItems(orderId, "SKU-YAX", 1);
-//        setShipAddress(orderId, "John Doe", 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
-//        listShipMethods(orderId);
-//        setShipMethod(orderId, shipMethodId);
-//        listCustomerAddresses(customerId);
-//        setPayment_giftCard(orderId, gcCode, 10000);
-//        checkoutOrder("BR11183");
-
-//        createProduct_active("SKU-TST", "sunglasses");
-//        createSharedSearch_oneFilter();
-//        shareSearch(searchCode, "Such Root");
-//        getAllSavedSearches();
-
-//        createAddress(1020, "John Doe", 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
-//        createSKU_active();
-//        createProduct_active(sku, "sunglasses");
-//        createProduct_activeFromTo(sku, getDate(), getTomorrowDate());
-//        archiveProduct(productId);
-
-//        String today = getDate();
-//        String tomorrow = getTomorrowDate();
-//        System.out.println("Today: <" + today + ">");
-//        System.out.println("Tomorrow : <" + tomorrow + ">");
-
-//        createSKU_active();
-
-//        createCoupon("198");
-//        bulkGenerateCodes(couponId, "BLKNWCPN" + couponId + "-", 4, 5);
-//        viewSKU_inventory("SKU-HDG");
-        createSKU_active();
-        createProduct_active_noTag(sku);
+        createNewCustomer();
+        createAddress(customerId, "John Doe", 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
+        listCustomerAddresses(customerId);
+        getCustomerAddress(customerId, addressId1);
+        createCreditCard("John Doe", "4242", 5, 2020, "Visa");
 
     }
 

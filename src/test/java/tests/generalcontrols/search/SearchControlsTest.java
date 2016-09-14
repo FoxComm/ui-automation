@@ -20,7 +20,7 @@ public class SearchControlsTest extends DataProvider {
     private GeneralControlsPage p;
 
     @BeforeClass(alwaysRun = true)
-    public void setUp() {
+    public void setUp() throws IOException {
 
         open(adminUrl);
         if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
@@ -28,6 +28,7 @@ public class SearchControlsTest extends DataProvider {
             loginPage.login("admin@admin.com", "password");
             loginPage.userMenuBtn().shouldBe(visible);
         }
+        provideTestData("order in remorse hold payed with SC");
 
     }
 
@@ -147,6 +148,7 @@ public class SearchControlsTest extends DataProvider {
 
     @AfterMethod(alwaysRun = true)
     public void cleanUp() throws IOException {
+        refresh();
         p.ordersCounter().click();
         if (p.tabs().size() > 1) {
             p.deleteAllSearchTabs();

@@ -46,18 +46,17 @@ public class ItemsTest extends DataProvider {
         provideTestData("cart with 1 item");
         p = open(adminUrl + "/carts/" + cartId, CartPage.class);
         p.itemQty("1").shouldBe(visible);
-        String expectedResult = addToString(p.itemQty("1").text(), 2);
 
         p.clickEditBtn_items();
         p.increaseItemQty("1", 2);
         p.clickDoneBtn_items();
-        p.itemQty("1").shouldHave(text(expectedResult)
+        p.itemQty("1").shouldHave(text("3")
                 .because("Line item with index <1> has incorrect quantity value."));
 
         p.clickEditBtn_items();
         p.decreaseItemQty("1", 1);
         p.clickDoneBtn_items();
-        p.itemQty("1").shouldHave(text(expectedResult)
+        p.itemQty("1").shouldHave(text("2")
                 .because("Line item with index <1> has incorrect quantity value."));
 
     }

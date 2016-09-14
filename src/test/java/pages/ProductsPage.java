@@ -161,7 +161,7 @@ public class ProductsPage extends BasePage {
 //    }
 //
 //    @Step("Create a search filter {0} : {1} : {2}")
-//    public void addFilter(String firstStatement, String secondStatement, String thirdStatement) {
+//    public void addFilter_arrowKeys(String firstStatement, String secondStatement, String thirdStatement) {
 //
 //        searchFld().click();
 //

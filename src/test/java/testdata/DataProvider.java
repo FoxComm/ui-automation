@@ -24,6 +24,7 @@ public class DataProvider extends BaseTest {
     protected static String customerEmail;      // stored from viewCustomer()
     private static int addressId1;              // stored from listCustomerAddresses()
     private static int addressId2;              // stored from listCustomerAddresses()
+    private static String addressPayload;   // stored from listCustomerAddresses()
 
     protected static String gcCode;           // stored from issueGiftCard()
     private static int scId;                    // stored from issueStoreCredit()
@@ -368,6 +369,37 @@ public class DataProvider extends BaseTest {
 
     }
 
+    private static void getCustomerAddress(int customerId, int addressId) throws IOException {
+
+        System.out.println("Getting address with ID <" + addressId + "> of customer <" + customerId + ">...");
+        OkHttpClient client = new OkHttpClient();
+
+        Request request = new Request.Builder()
+                .url("http://admin.stage.foxcommerce.com/api/v1/customers/" + customerId + "/addresses/" + addressId)
+                .get()
+                .addHeader("content-type", "application/json")
+                .addHeader("accept", "application/json")
+                .addHeader("cache-control", "no-cache")
+                .addHeader("JWT", jwt)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+        int responseCode = response.code();
+        String responseMsg = response.message();
+
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+//            addressId1 = Integer.valueOf(responseBody.substring(7, responseBody.indexOf(",", 7)));
+            addressPayload = responseBody;
+            System.out.println("Address 1: <" + addressId1 + ">");
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
+
+    }
+
     private static void updateCustomerShipAddress(int customerId, int addressId1, String customerName, int regionId, String address1, String address2, String city, String zip, String phoneNumber) throws IOException {
 
         System.out.println("Updating shipping address ID:<" + addressId1 + "> for customer <" + customerId + ">...");
@@ -473,21 +505,27 @@ public class DataProvider extends BaseTest {
 
     }
 
-    private static void createCreditCard(String holderName, String cardNumber,String cvv, int expMonth, int expYear, int addressId) throws IOException {
+    private static void createCreditCard(String holderName, String lastFour, int expMonth, int expYear, String brand) throws IOException {
 
         System.out.println("Create a new credit card for customer <" + customerId + ">...");
+        JSONObject jsonObj = new JSONObject(addressPayload);
+        JSONObject region = jsonObj.getJSONObject("region");
 
         OkHttpClient client = new OkHttpClient();
 
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{" +
-                "\n  \"holderName\": \"" + holderName + "\"," +
-                "\n  \"cardNumber\": \"" + cardNumber + "\"," +
-                "\n  \"cvv\": \"" + cvv + "\"," +
-                "\n  \"expMonth\": " + expMonth + "," +
-                "\n  \"expYear\": " + expYear + "," +
-                "\n  \"addressId\": " + addressId + "," +
-                "\n  \"isDefault\": false\n}");
+                "\n  \"token\":\"tok_18t2CWAVdiXyWQ8c4PnlJZAJ\"," +
+                "\n  \"holderName\":\"" + holderName + "\"," +
+                "\n  \"lastFour\":\"" + lastFour + "\"," +
+                "\n  \"expMonth\":" + expMonth + "," +
+                "\n  \"expYear\":" + expYear + "," +
+                "\n  \"brand\":\"" + brand + "\"," +
+                "\n  \"addressIsNew\":false," +
+                "\n  \"billingAddress\":" + addressPayload.substring(0, addressPayload.length() - 1) + "," +
+                "\n  \"regionId\":" + region.getInt("id") + "," +
+                "\n  \"state\":\"" + region.getString("name") + "\"," +
+                "\n  \"country\":\"United States\"}}");
         Request request = new Request.Builder()
                 .url(adminUrl + "/api/v1/customers/" + customerId + "/payment-methods/credit-cards")
                 .post(body)
@@ -504,15 +542,13 @@ public class DataProvider extends BaseTest {
 
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
-            JSONObject jsonData = new JSONObject(responseBody);
+            org.json.JSONObject jsonData = new org.json.JSONObject(responseBody);
             creditCardId = jsonData.getInt("id");
-//            creditCardId = Integer.valueOf(responseBody.substring(6, responseBody.indexOf(",", 6)));
             System.out.println("Credit Card ID: <" + creditCardId + ">");
             System.out.println("---- ---- ---- ----");
         } else {
             failTest(responseBody, responseCode, responseMsg);
         }
-
     }
 
     private static void setPayment_creditCard(String cartId, int creditCardId) throws IOException {
@@ -1336,7 +1372,6 @@ public class DataProvider extends BaseTest {
         OkHttpClient client = new OkHttpClient();
 
         MediaType mediaType = MediaType.parse("application/json");
-//        RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"metaDescription\":{\"t\":\"string\",\"v\":null},\"metaTitle\":{\"t\":\"string\",\"v\":null},\"url\":{\"t\":\"string\",\"v\":null},\"description\":{\"t\":\"richText\",\"v\":\"The best thing to buy in 2016!\"},\"title\":{\"t\":\"string\",\"v\":\"" + productName_local + "\"},\"tags\":{\"t\":\"tags\",\"v\":[\"" + tag + "\"]},\"activeFrom\": {\"t\": \"date\",\"v\": \"2016-07-26T14:48:12.493Z\"},\"activeTo\":{\"v\":null,\"t\":\"datetime\"}},\"skus\":[{\"feCode\":\"1PZ1Z6FEB42BFOCYJH5MI\",\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"" + sku + "\"},\"title\":{\"t\":\"string\",\"v\":\"\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"2718\"}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"2718\"}}}}]}");
         RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"productId\":null,\"attributes\":{\"metaDescription\":{\"t\":\"string\",\"v\":null},\"metaTitle\":{\"t\":\"string\",\"v\":null},\"url\":{\"t\":\"string\",\"v\":null},\"description\":{\"t\":\"richText\",\"v\":\"The best thing to buy in 2016!\"},\"title\":{\"t\":\"string\",\"v\":\"" + productName_local + "\"},\"activeFrom\":{\"v\":\"2016-09-01T18:06:29.890Z\",\"t\":\"datetime\"},\"activeTo\":{\"v\":null,\"t\":\"datetime\"},\"tags\":{\"t\":\"tags\",\"v\":[\"" + tag + "\"]}},\"skus\":[{\"feCode\":\"FCA7PEP20CNLWDISH5MI\",\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"" + sku + "\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":5000}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":5000}},\"title\":{\"v\":\"THATS A TITLE\"},\"context\":{\"v\":\"default\"}}}],\"context\":{\"name\":\"default\"}}");
         Request request = new Request.Builder()
                 .url(adminUrl + "/api/v1/products/default")
@@ -2010,7 +2045,8 @@ public class DataProvider extends BaseTest {
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
                 listCustomerAddresses(customerId);
-                createCreditCard(customerName, "5555555555554444", "777", 3, 2020, addressId1);
+                getCustomerAddress(customerId, addressId1);
+                createCreditCard(customerName, "4444", 3, 2020, "MasterCard");
                 setPayment_creditCard(cartId, creditCardId);
                 break;
 
@@ -2042,7 +2078,8 @@ public class DataProvider extends BaseTest {
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
                 listCustomerAddresses(customerId);
-                createCreditCard(customerName, "5555555555554444", "777", 3, 2020, addressId1);
+                getCustomerAddress(customerId, addressId1);
+                createCreditCard(customerName, "4444", 3, 2020, "MasterCard");
                 setPayment_creditCard(cartId, creditCardId);
                 issueStoreCredit(customerId, 50000);
                 break;
@@ -2055,7 +2092,8 @@ public class DataProvider extends BaseTest {
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
                 listCustomerAddresses(customerId);
-                createCreditCard(customerName, "5555555555554444", "777", 3, 2020, addressId1);
+                getCustomerAddress(customerId, addressId1);
+                createCreditCard(customerName, "4444", 3, 2020, "MasterCard");
                 setPayment_creditCard(cartId, creditCardId);
                 issueGiftCard(50000, 1);
                 break;
@@ -2098,8 +2136,22 @@ public class DataProvider extends BaseTest {
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
                 listCustomerAddresses(customerId);
-                createCreditCard(customerName, "5555555555554444", "777", 3, 2020, addressId1);
+                getCustomerAddress(customerId, addressId1);
+                createCreditCard(customerName, "4444", 3, 2020, "MasterCard");
                 setPayment_creditCard(cartId, creditCardId);
+                checkoutOrder(cartId);
+                break;
+
+            case "order in remorse hold payed with SC":
+                createNewCustomer();
+                createCart(customerId);
+                increaseSellableAmount("SKU-YAX", 1);
+                updSKULineItems(cartId, "SKU-YAX", 1);
+                setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
+                listShipMethods(cartId);
+                setShipMethod(cartId, shipMethodId);
+                issueStoreCredit(customerId, 30000);
+                setPayment_storeCredit(cartId, 10000);
                 checkoutOrder(cartId);
                 break;
 
@@ -2116,7 +2168,8 @@ public class DataProvider extends BaseTest {
                 createNewCustomer();
                 createAddress(customerId, customerName, 4177, 234, "Washington", "2101 Green Valley", "Suite 300", "Seattle", "98101", "9879879876", false);
                 listCustomerAddresses(customerId);
-                createCreditCard("John Doe", "5555555555554444", "999", 4, 2020, addressId1);
+                getCustomerAddress(customerId, addressId1);
+                createCreditCard("John Doe", "4444", 3, 2020, "MasterCard");
                 break;
 
             case "customer with a credit card and 2 addresses":
@@ -2124,7 +2177,8 @@ public class DataProvider extends BaseTest {
                 createAddress(customerId, customerName, 4164, 234, "New York", "545 Narrow Ave", "Suite 15", "New Jersey", "10201", "5551118888", false);
                 createAddress(customerId, customerName, 4177, 234, "Washington", "2101 Green Valley", "Suite 300", "Seattle", "98101", "9879879876", false);
                 listCustomerAddresses(customerId);
-                createCreditCard("John Doe", "5555555555554444", "999", 4, 2020, addressId1);
+                getCustomerAddress(customerId, addressId1);
+                createCreditCard("John Doe", "4444", 3, 2020, "MasterCard");
                 break;
 
             //----------------------------------- CUSTOMER'S ORDERS -----------------------------------//
@@ -2139,7 +2193,8 @@ public class DataProvider extends BaseTest {
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
                 listCustomerAddresses(customerId);
-                createCreditCard(customerName, "5555555555554444", "777", 3, 2020, addressId1);
+                getCustomerAddress(customerId, addressId1);
+                createCreditCard(customerName, "4444", 3, 2020, "MasterCard");
                 setPayment_creditCard(cartId, creditCardId);
                 checkoutOrder(cartId);
 
@@ -2164,7 +2219,8 @@ public class DataProvider extends BaseTest {
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
                 listCustomerAddresses(customerId);
-                createCreditCard(customerName, "5555555555554444", "777", 3, 2020, addressId1);
+                getCustomerAddress(customerId, addressId1);
+                createCreditCard(customerName, "4444", 3, 2020, "MasterCard");
                 setPayment_creditCard(cartId, creditCardId);
                 checkoutOrder(cartId);
 
@@ -2261,7 +2317,8 @@ public class DataProvider extends BaseTest {
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
                 listCustomerAddresses(customerId);
-                createCreditCard(customerName, "5555555555554444", "777", 3, 2020, addressId1);
+                getCustomerAddress(customerId, addressId1);
+                createCreditCard(customerName, "4444", 3, 2020, "MasterCard");
                 setPayment_creditCard(cartId, creditCardId);
                 applyCouponCode(cartId, singleCouponCode);
                 checkoutOrder(cartId);
@@ -2388,7 +2445,8 @@ public class DataProvider extends BaseTest {
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
                 listCustomerAddresses(customerId);
-                createCreditCard(customerName, "5555555555554444", "777", 3, 2020, addressId1);
+                getCustomerAddress(customerId, addressId1);
+                createCreditCard(customerName, "4444", 3, 2020, "MasterCard");
                 setPayment_creditCard(cartId, creditCardId);
                 checkoutOrder(cartId);
                 break;
@@ -2401,7 +2459,8 @@ public class DataProvider extends BaseTest {
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
                 listCustomerAddresses(customerId);
-                createCreditCard(customerName, "5555555555554444", "777", 3, 2020, addressId1);
+                getCustomerAddress(customerId, addressId1);
+                createCreditCard(customerName, "4444", 3, 2020, "MasterCard");
                 setPayment_creditCard(cartId, creditCardId);
                 checkoutOrder(cartId);
                 changeOrderState(orderId, "manualHold");
@@ -2415,7 +2474,8 @@ public class DataProvider extends BaseTest {
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
                 listCustomerAddresses(customerId);
-                createCreditCard(customerName, "5555555555554444", "777", 3, 2020, addressId1);
+                getCustomerAddress(customerId, addressId1);
+                createCreditCard(customerName, "4444", 3, 2020, "MasterCard");
                 setPayment_creditCard(cartId, creditCardId);
                 checkoutOrder(cartId);
                 changeOrderState(orderId, "fraudHold");
@@ -2429,7 +2489,8 @@ public class DataProvider extends BaseTest {
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
                 listCustomerAddresses(customerId);
-                createCreditCard(customerName, "5555555555554444", "777", 3, 2020, addressId1);
+                getCustomerAddress(customerId, addressId1);
+                createCreditCard(customerName, "4444", 3, 2020, "MasterCard");
                 setPayment_creditCard(cartId, creditCardId);
                 checkoutOrder(cartId);
                 changeOrderState(orderId, "fulfilmentStarted");
@@ -2443,7 +2504,8 @@ public class DataProvider extends BaseTest {
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
                 listCustomerAddresses(customerId);
-                createCreditCard(customerName, "5555555555554444", "777", 3, 2020, addressId1);
+                getCustomerAddress(customerId, addressId1);
+                createCreditCard(customerName, "4444", 3, 2020, "MasterCard");
                 setPayment_creditCard(cartId, creditCardId);
                 checkoutOrder(cartId);
                 changeOrderState(orderId, "shipped");
@@ -2457,7 +2519,8 @@ public class DataProvider extends BaseTest {
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
                 listCustomerAddresses(customerId);
-                createCreditCard(customerName, "5555555555554444", "777", 3, 2020, addressId1);
+                getCustomerAddress(customerId, addressId1);
+                createCreditCard(customerName, "4444", 3, 2020, "MasterCard");
                 setPayment_creditCard(cartId, creditCardId);
                 checkoutOrder(cartId);
                 changeOrderState(orderId, "partiallyShipped");
@@ -2471,7 +2534,8 @@ public class DataProvider extends BaseTest {
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
                 listCustomerAddresses(customerId);
-                createCreditCard(customerName, "5555555555554444", "777", 3, 2020, addressId1);
+                getCustomerAddress(customerId, addressId1);
+                createCreditCard(customerName, "4444", 3, 2020, "MasterCard");
                 setPayment_creditCard(cartId, creditCardId);
                 checkoutOrder(cartId);
                 changeOrderState(orderId, "canceled");
@@ -2481,7 +2545,8 @@ public class DataProvider extends BaseTest {
                 createNewCustomer();
                 createAddress(customerId, customerName, 4164, 234, "Oregon", "2101 Green Valley", "Suite 777", "Portland", "07097", "5557778686", false);
                 listCustomerAddresses(customerId);
-                createCreditCard("John Doe", "5555555555554444", "999", 4, 2020, addressId1);
+                getCustomerAddress(customerId, addressId1);
+                createCreditCard(customerName, "4444", 3, 2020, "MasterCard");
                 updateCustomerShipAddress(customerId, addressId1, customerName, 4177, "4020 Green Valley", "Suite 4020", "Seattle", "98101", "9879879876");
                 break;
 

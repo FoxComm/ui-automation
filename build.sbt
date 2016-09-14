@@ -20,3 +20,7 @@ libraryDependencies ++= Seq(
 javacOptions ++= Seq(
   "-encoding", "UTF-8"
 )
+
+libraryDependencies ~= { _.map(_.exclude("org.slf4j", "slf4j-jdk14")) }
+libraryDependencies ~= { _.map(_.exclude("org.slf4j", "jcr-over-slf4j")) }
+libraryDependencies ~= { _.map(_.exclude("org.slf4j", "slf4j-nop")) }

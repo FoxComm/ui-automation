@@ -482,7 +482,7 @@ public class CustomersPage extends BasePage {
 //    }
 //
 //    @Step("Create a search filter {0} : {1} : {2}")
-//    public void addFilter(String firstStatement, String secondStatement, String thirdStatement) {
+//    public void addFilter_arrowKeys(String firstStatement, String secondStatement, String thirdStatement) {
 //
 //        searchFld().click();
 //
@@ -581,9 +581,13 @@ public class CustomersPage extends BasePage {
     }
 
     public SelenideElement availableBalanceVal() {
-         return $(By.xpath("//div[text()='Total Available Balance']/following-sibling::*/div/span"));
+         return $(By.xpath("//label[text()='Gift card’s available balance to transfer:']/../following-sibling::*/span"));
 //        String availBalanceVal = availableBalance.getText();
 //        return Double.valueOf( availBalanceVal.substring(1, availBalanceVal.length()) );
+    }
+
+    public SelenideElement totalAvailableBalance() {
+        return $(By.xpath("//div[@class='fc-store-credits-summary-balance']/span"));
     }
 
     public ElementsCollection storeCreditsOnList() {

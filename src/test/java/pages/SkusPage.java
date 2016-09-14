@@ -34,7 +34,8 @@ public class SkusPage extends BasePage {
     }
 
     public SelenideElement descriptionFld() {
-        return $(By.xpath("//div[@id='foxcom']/div/div[1]/main/div/div[3]/div/div/div[1]/div[1]/div/div/div[4]/div/div[3]/div/div/div"));
+//        return $(By.xpath("//div[@id='foxcom']/div/div[1]/main/div/div[3]/div/div/div[1]/div[1]/div/div/div[4]/div/div[3]/div/div/div"));
+        return $(By.xpath("//div[@role='textbox']/div"));
     }
 
     public SelenideElement retailPriceFld() {

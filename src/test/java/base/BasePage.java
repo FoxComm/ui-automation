@@ -39,8 +39,9 @@ public class BasePage extends ConciseAPI {
 
     //----------------------------------- NAVIGATION MENU ------------------------------------//
 
+    @Step("Go to {0} section")
     public SelenideElement sideMenu(String sectionName) {
-        return $(xpath("//span[text()='" + sectionName + "']/.."));
+        return $(xpath("//span[text()='" + sectionName + "']"));
     }
 
     //------------------------------------ LOGIN SCREEN --------------------------------------//
@@ -221,6 +222,23 @@ public class BasePage extends ConciseAPI {
 
     }
 
+    // used with date pickers
+    @Step("Create a search filter {0} : {1} : {2} : {3}")
+    public void addFilter(String firstCriteria, String secondCriteria, String thirdCriteria, SelenideElement date) {
+
+        String secondCriteriaVal = firstCriteria + " : " + secondCriteria;
+        String thirdCriteriaVal = secondCriteriaVal + " : " + thirdCriteria;
+
+        click( searchFld() );
+        click( firstCriteria(firstCriteria) );
+        click( secondCriteria(secondCriteriaVal) );
+        click( thirdCriteria(thirdCriteriaVal) );
+        click( date );
+        waitForDataToLoad();
+        $(xpath("//h1")).click();
+
+    }
+
     //used with filters like 'Order : Total : > : $1'
     @Step("Create a search filter {0} : {1} : {2} : {3}")
     public void addFilter(String firstCriteria, String secondCriteria, String thirdCriteria, String fourthCriteria) {
@@ -246,6 +264,7 @@ public class BasePage extends ConciseAPI {
         searchFld().val( searchQuery ).pressEnter();
         itemsOnList().shouldBe(visible.because("Search request returned no results."));
         $(xpath("//div[@class='fc-menu']/ul")).shouldBe(visible);
+        searchFld().click();
         $(xpath("//h1")).click();
     }
 

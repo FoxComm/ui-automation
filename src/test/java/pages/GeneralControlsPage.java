@@ -1,16 +1,13 @@
 package pages;
 
 import base.BasePage;
+import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.Keys;
 import ru.yandex.qatools.allure.annotations.Step;
 
-import java.util.List;
-
 import static com.codeborne.selenide.Condition.enabled;
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.$$;
-import static com.codeborne.selenide.Selenide.sleep;
+import static com.codeborne.selenide.Selenide.*;
 import static org.openqa.selenium.By.xpath;
 
 public class GeneralControlsPage extends BasePage {
@@ -45,7 +42,7 @@ public class GeneralControlsPage extends BasePage {
         return $(xpath("//span[@class='fc-section-title__subtitle fc-light']"));
     }
 
-    public List<SelenideElement> tabs() {
+    public ElementsCollection tabs() {
         return $$(xpath("//ul[@class='fc-tab-list__current-tabs']/div"));
     }
 
@@ -78,7 +75,9 @@ public class GeneralControlsPage extends BasePage {
         click( searchContextMenuBtn() );
         click( $(xpath("//li[text()='" + option + "']")) );
         waitForDataToLoad();
+        waitForDataToLoad();
         if (option.equals("Save New Search")) {
+            tabTitleFld().pressEnter();
             ordersCounter().click();
         }
     }
@@ -89,6 +88,7 @@ public class GeneralControlsPage extends BasePage {
             click(tabs().get(1));
             searchContextMenu("Delete Search");
             waitForDataToLoad();
+            tabs().get(0).shouldBe(enabled);
         }
     }
 
@@ -97,6 +97,12 @@ public class GeneralControlsPage extends BasePage {
         tab(tabTitle).shouldBe(enabled);
         click( tab(tabTitle) );
         waitForDataToLoad();
+        tab(tabTitle).shouldBe(enabled);
+    }
+
+    @Step("Remove filter {0}")
+    public void removeFilter(String filterTitle) {
+        removeFilterBtn(filterTitle).click();
     }
 
     //-------------------- SEARCH FIELD --------------------//
@@ -118,7 +124,7 @@ public class GeneralControlsPage extends BasePage {
     }
 
     @Step("Create a search filter {0} : {1} : {2}")
-    public void addFilter(String firstStatement, String secondStatement, String thirdStatement) {
+    public void addFilter_arrowKeys(String firstStatement, String secondStatement, String thirdStatement) {
 
         searchFld().click();
 
@@ -219,7 +225,7 @@ public class GeneralControlsPage extends BasePage {
     }
 
     @Step("Create a search filter {0} : {1} : {2} : {3}")
-    public void addFilter(String firstStatement, String secondStatement, String thirdStatement, String fourthStatement) {
+    public void addFilter_arrowKeys(String firstStatement, String secondStatement, String thirdStatement, String fourthStatement) {
 
         searchFld().click();
 
