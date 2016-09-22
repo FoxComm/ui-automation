@@ -1,3 +1,5 @@
+import java.io.File
+
 name := "ui-tests"
 
 version := "1.0"
@@ -26,3 +28,10 @@ libraryDependencies ~= { _.map(_.exclude("org.slf4j", "jcr-over-slf4j")) }
 libraryDependencies ~= { _.map(_.exclude("org.slf4j", "slf4j-nop")) }
 
 AspectJWeaver.settings
+
+val cleanAllure = TaskKey[Unit]("Delete allure results and reports")
+
+cleanAllure <<= Def.task().apply { task ⇒
+  IO.delete(Seq(new File("target/allure-results"), new File("allure-report")))
+  task
+}.runBefore(test in Test)
