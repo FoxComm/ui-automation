@@ -11,7 +11,7 @@ libraryDependencies ++= Seq(
   "org.apache.httpcomponents" % "httpclient" % "4.5.2",
   "com.squareup.okhttp" % "okhttp" % "2.7.5",
   "org.testng" % "testng" % "6.9.10",
-  "org.aspectj" % "aspectjweaver" % "1.8.6",
+  "org.aspectj" % "aspectjweaver" % "1.8.9" % AspectJWeaver.cfg,
   "ru.yandex.qatools.allure" % "allure-testng-adaptor" % "1.4.23",
   "org.apache.maven.plugins" % "maven-surefire-plugin" % "2.19.1",
   "org.scalatest" %% "scalatest" % "3.0.0" % "test"
@@ -24,3 +24,5 @@ javacOptions ++= Seq(
 libraryDependencies ~= { _.map(_.exclude("org.slf4j", "slf4j-jdk14")) }
 libraryDependencies ~= { _.map(_.exclude("org.slf4j", "jcr-over-slf4j")) }
 libraryDependencies ~= { _.map(_.exclude("org.slf4j", "slf4j-nop")) }
+
+AspectJWeaver.settings
