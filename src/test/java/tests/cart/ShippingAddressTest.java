@@ -24,7 +24,7 @@ public class ShippingAddressTest extends DataProvider {
         if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
             LoginPage loginPage = open(adminUrl + "/login", LoginPage.class);
             loginPage.login("admin@admin.com", "password");
-            loginPage.userMenuBtn().shouldBe(visible);
+            shouldBeVisible(loginPage.userMenuBtn(), "Failed to log in");
         }
 
     }
@@ -73,13 +73,12 @@ public class ShippingAddressTest extends DataProvider {
         p.chooseShipAddress(1);
         p.chosenAddress().shouldBe(visible
                 .because("A chosen address isn't displayed as a chosen shipping address."));
-        click( p.doneBtn_shipAddress() );
+        p.clickDoneBtn_shipAddress();
 
         p.addressDetails().shouldBe(visible
                 .because("A chosen address isn't displayed as a chosen shipping address."));
         p.shipAddressWarn().shouldNotBe(visible
                 .because("'No shipping address' warning is displayed."));
-
 
     }
 
@@ -87,9 +86,10 @@ public class ShippingAddressTest extends DataProvider {
     public void editChosenShippingAddress() {
 
         p.clickEditBtn_shipAddress();
-        click( p.editBtn_chosenAddress() );
-        setFieldVal( p.nameFld(), "Edited Customer Name" );
-        p.applyChangesToAddress();
+        p.clickEditBtn_chosenAddress();
+        p.setName("Edited Customer Name");
+        p.clickSave();
+        shouldNotBeVisible(p.nameFld(), "'New Address' form isn't closed after clicking 'Save'");
 
         p.customerName_chosenShipAddress().shouldHave(text("Edited Customer Name")
                 .because("Chosen address has failed to get updated."));
@@ -102,9 +102,8 @@ public class ShippingAddressTest extends DataProvider {
         provideTestData("cart with chosen shipping address");
         p = open(adminUrl + "/carts/" + cartId, CartPage.class);
 
-        click( p.editBtn_shipAddress() );
-        click( p.deleteBtn_chosenAddress() );
-        click( p.confirmDeletionBtn() );
+        p.clickEditBtn_chosenAddress();
+        p.removeChosenAddress();
 
         p.chosenAddress().shouldNotBe(visible
                 .because("Failed to delete chosen shipping address."));
@@ -118,7 +117,7 @@ public class ShippingAddressTest extends DataProvider {
         p = open(adminUrl + "/carts/" + cartId, CartPage.class);
 
         p.clickEditBtn_shipAddress();
-        click( p.defaultShipAddressChkbox("1") );
+        p.setAddressAsDefault("1");
         sleep(750);
         p.defaultShipAddressChkbox_input("1").shouldBe(selected
                 .because("Failed to set address in address book as default shipping address."));
@@ -132,7 +131,7 @@ public class ShippingAddressTest extends DataProvider {
         p = open(adminUrl + "/carts/" + cartId, CartPage.class);
 
         p.clickEditBtn_shipAddress();
-        click( p.defaultShipAddressChkbox("1") );
+        p.setAddressAsDefault("1");
         sleep(750);
         p.defaultShipAddressChkbox_input("1").shouldBe(selected
                 .because("Failed to set different address as default shipping address."));

@@ -4,11 +4,9 @@ import base.BasePage;
 import com.codeborne.selenide.SelenideElement;
 import ru.yandex.qatools.allure.annotations.Step;
 
-import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.sleep;
 import static org.openqa.selenium.By.xpath;
-import static org.testng.Assert.assertEquals;
 
 public class GiftCardsPage extends BasePage {
 
@@ -46,7 +44,7 @@ public class GiftCardsPage extends BasePage {
         return $(xpath("//span[text()='Issue Gift Card']/.."));
     }
 
-    public SelenideElement availableBalanceVal() {
+    public SelenideElement availableBalance() {
         return $(xpath("//div[text()='Available Balance']/following-sibling::*/span"));
     }
 
@@ -95,17 +93,102 @@ public class GiftCardsPage extends BasePage {
     }
 
 
-
-//li[@class='fc-choose-customers__entry']
-
     //------------------------------ HELPERS ---------------------------------//
 
-    @Step("Get '{1}' parameter value of {0}th gift card on the list")
-    public SelenideElement getGCParamVal(String gcIndex, String paramName) {
+    public String getGCNumber(String url, String adminUrl) {
+        return url.substring((adminUrl.length() + 11), (adminUrl.length() + 27));
+    }
 
+    @Step("Click \"Add New GC\" btn")
+    public void clickAddMewGCBtn() {
+        click(addNewGCBtn());
+    }
+
+    @Step("Issue new GC with value <{0}>")
+    public void issueGC(String gcVal) {
+        setType("Appeasement");
+        setValue(gcVal);
+        clickIssueGCBtn();
+        shouldBeVisible(availableBalance(), "Waiting for \"Available Balance\" to become visible has failed");
+    }
+
+        @Step("Set \"Type\" dd val to <{0}>")
+        public void setType(String type) {
+            setDdVal(typeDd(), type);
+        }
+
+        @Step("Set \"Value\" fld val to <{0}>")
+        public void setValue(String value) {
+            setFieldVal(valueFld(), value);
+        }
+
+        @Step("Click \"Issue Gift Card\" btn")
+        public void clickIssueGCBtn() {
+            click(issueGCBtn());
+        }
+
+        @Step("Select preset value, <amount:{0}>")
+        public void setPresetValue(String value) {
+            click(presetValue(value));
+        }
+
+    @Step("Set amount of GCs to issue to <QTY:{0}+1(default amount)>")
+    public void increaseQtyBy(int increaseBy) {
+        for(int i = 0; i < increaseBy; i++){
+            click(qtyIncrBtn());
+        }
+    }
+
+    @Step("Set (GC's) \"State\" dd val to <{0}>")
+    public void setState(String state) {
+        setDdVal(stateDd(), state);
+    }
+
+    @Step("Select cancellation reason <{0}>")
+    public void setCancelReason(String reason) {
+        setDdVal(cancelReasonDd(), reason);
+    }
+
+    @Step("Issue GC to customer <{0}>")
+    public void issueGCToCustomer(String customerName, String message) {
+        clickCheckbox();
+        setCustomerName(customerName);
+        selectCustomer(customerName);
+        clickAddCustomerBtn();
+        shouldBeVisible(chosenCustomer(customerName), "Customer is not selected");
+        addMsgToCustomer(message);
+    }
+
+        @Step("Check \"Send gift card(s) to customer(s)\" checkbox")
+        private void clickCheckbox() {
+            jsClick(gcToCustomerChbx());
+        }
+
+        @Step("Set \"Choose Customers\" fld val to <{0}>")
+        public void setCustomerName(String name) {
+            setFieldVal(chooseCustomerFld(), name);
+        }
+
+        @Step("Select on the list a customer with name <{0}>")
+        public void selectCustomer(String customerQuery) {
+            jsClick(selectCustomerChbx(customerQuery));
+            sleep(1500);
+        }
+
+        @Step("Click \"Add Customer\" btn")
+        private void clickAddCustomerBtn() {
+            click(addCustomerBtn());
+        }
+
+        @Step("Specify message for a customer in according text area")
+        private void addMsgToCustomer(String message) {
+            setFieldVal(messageFld(), message);
+        }
+
+    @Step("Get <{1}> parameter value of <{0}th> gift card on the list")
+    public SelenideElement getGCParamVal(String gcIndex, String paramName) {
         SelenideElement gcParamVal = null;
         waitForDataToLoad();
-
         switch (paramName) {
             case "Gift Card Number":
                 gcParamVal = $(xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + gcIndex + "]/td[2]"));
@@ -129,27 +212,7 @@ public class GiftCardsPage extends BasePage {
                 gcParamVal = $(xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + gcIndex + "]/td[8]/time"));
                 break;
         }
-
         return gcParamVal;
-
-    }
-
-    @Step("Select on the list a customer with name <{0}>.")
-    public void selectCustomer(String customerQuery) {
-
-        jsClick( selectCustomerChbx(customerQuery) );
-        sleep(1500);
-
-    }
-
-    @Step("Issue new GC with value <{0}>")
-    public void issueGC(String gcVal) {
-        setDdVal( typeDd(), "Appeasement" );
-        setFieldVal( valueFld(), gcVal );
-        click( issueGCBtn() );
-        availableBalanceVal().shouldBe(visible);
-        assertEquals( availableBalanceVal(), gcVal,
-                "Incorrect available balance value.");
     }
 
 }

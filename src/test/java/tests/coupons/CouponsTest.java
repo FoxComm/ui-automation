@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.util.Objects;
 
 import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.open;
 
 public class CouponsTest extends DataProvider {
@@ -19,14 +18,12 @@ public class CouponsTest extends DataProvider {
 
     @BeforeClass(alwaysRun = true)
     public void setUp() {
-
         open(adminUrl);
         if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
             LoginPage loginPage = open(adminUrl + "/login", LoginPage.class);
             loginPage.login("admin@admin.com", "password");
-            loginPage.userMenuBtn().shouldBe(visible);
+            shouldBeVisible(loginPage.userMenuBtn(), "Failed to log in");
         }
-
     }
 
     @Test(priority = 1)
@@ -36,16 +33,15 @@ public class CouponsTest extends DataProvider {
         p = open(adminUrl + "/coupons/", CouponsPage.class);
         String randomId = generateRandomID();
 
-        click( p.addNewCoupon() );
-        setFieldVal( p.nameFld(), "test coupon " + randomId );
-        setFieldVal( p.storefrontNameFld(), "that's a storefront name" );
-        setFieldVal( p.descriptionFld(), "that's nothing but another test coupon." );
-        setFieldVal( p.detailsFld(), "get 10% off for any order" );
+        p.clickAddNewCouponBtn();
+        p.setCouponName("test coupon " + randomId);
+        p.setStorefrontName("that's a storefront name");
+        p.setDescription("that's nothing but another test coupon");
+        p.setDetails("get 10% off for any order");
         p.setPromotion(promotionId);
-        jsClick( p.singleCodeRbtn() );
-        setFieldVal( p.singleCodeFld(), "NWCPN-" + randomId );
-        click( p.saveBtn() );
-        click( p.sideMenu("Coupons") );
+        p.generateCodes_single("NWCPN-" + randomId);
+        p.clickSave();
+        p.navigateTo("Coupons");
         p.waitForDataToLoad();
 
         p.search("test coupon " + randomId);
@@ -61,20 +57,18 @@ public class CouponsTest extends DataProvider {
         p = open(adminUrl + "/coupons/", CouponsPage.class);
         String randomId = generateRandomID();
 
-        click( p.addNewCoupon() );
-        setFieldVal( p.nameFld(), "test coupon " + randomId );
-        setFieldVal( p.storefrontNameFld(), "that's a storefront name" );
-        setFieldVal( p.descriptionFld(), "that's nothing but another test coupon." );
-        setFieldVal( p.detailsFld(), "get 10% off for any order" );
+        p.clickAddNewCouponBtn();
+        p.setCouponName("test coupon " + randomId);
+        p.setStorefrontName("that's a storefront name");
+        p.setDescription("that's nothing but another test coupon");
+        p.setDetails("get 10% off for any order");
         p.setPromotion(promotionId);
-        jsClick( p.bulkGenerateCodesBrtn() );
-        p.bulkGenerateCodes(4, "BULKCPN_" + randomId + "-", 5);
+        p.generateCodes_bulk(4, "BULKCPN_" + randomId + "-", 5);
         p.setState("Active");
-        p.couponIdVal().shouldNotHave(text("new")
-                .because("Failed to create a new coupon."));
+        shouldNotHaveText(p.couponIdVal(), "new", "Failed to create a new coupon");
+        p.clickSave();
 
-        click( p.saveBtn() );
-        click( p.sideMenu("Coupons") );
+        p.navigateTo("Coupons");
         p.waitForDataToLoad();
         p.getCouponParamVal("1", "Name").shouldHave(text("test coupon " + randomId)
                 .because("A just created coupon isn't displayed on the list."));
@@ -108,9 +102,9 @@ public class CouponsTest extends DataProvider {
         p = open(adminUrl + "/coupons/" + couponId, CouponsPage.class);
         String randomId = generateRandomID();
 
-        setFieldVal( p.nameFld(), "edited coupon " + randomId );
+        p.setCouponName("edited coupon " + randomId);
         p.clickSave();
-        click( p.sideMenu("Coupons") );
+        p.navigateTo("Coupons");
         p.search(couponId);
 
         p.getCouponParamVal("1", "Name").shouldHave(text("edited coupon " + randomId)
@@ -125,9 +119,9 @@ public class CouponsTest extends DataProvider {
         p = open(adminUrl + "/coupons/" + couponId, CouponsPage.class);
 
         clearField( p.storefrontNameFld() );
-        setFieldVal( p.storefrontNameFld(), "edited SF name" );
+        p.setStorefrontName("edited SF name");
         p.clickSave();
-        click( p.sideMenu("Coupons") );
+        p.navigateTo("Coupons");
         p.search(couponId);
 
         p.getCouponParamVal("1", "Storefront Name").shouldHave(text("<p>edited SF name</p>")
@@ -141,13 +135,13 @@ public class CouponsTest extends DataProvider {
         provideTestData("coupon with single code");
         p = open(adminUrl + "/coupons/" + couponId, CouponsPage.class);
 
-        clearField( p.descriptionFld() );
-        setFieldVal( p.descriptionFld(), "edited description" );
+        clearField(p.descriptionFld());
+        p.setDescription("edited description");
         p.clickSave();
-        click( p.sideMenu("Coupons") );
+        p.navigateTo("Coupons");
         p.search(couponId);
-        System.out.println("Coupon name: <" + couponName + ">");
-        click( p.coupon(couponName) );
+//        System.out.println("Coupon name: <" + couponName + ">");
+        p.openCoupon(couponName);
 
         p.descriptionFld().shouldHave(text("edited description")
                 .because("Failed to edit 'Description'."));
@@ -160,12 +154,12 @@ public class CouponsTest extends DataProvider {
         provideTestData("coupon with single code");
         p = open(adminUrl + "/coupons/" + couponId, CouponsPage.class);
 
-        clearField( p.detailsFld() );
-        setFieldVal( p.detailsFld(), "edited details" );
+        clearField(p.detailsFld());
+        p.setDetails("edited details");
         p.clickSave();
-        click( p.sideMenu("Coupons") );
+        p.navigateTo("Coupons");
         p.search(couponId);
-        click( p.coupon(couponName) );
+        p.openCoupon(couponName);
 
         p.detailsFld().shouldHave(text("edited details")
                 .because("Failed to edit 'Details'."));
@@ -180,7 +174,7 @@ public class CouponsTest extends DataProvider {
 
         p.setState("Inactive");
         p.clickSave();
-        click( p.sideMenu("Coupons") );
+        p.navigateTo("Coupons");
         p.search(couponId);
 
         p.getCouponParamVal("1", "State").shouldHave(text("Inactive")

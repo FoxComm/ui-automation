@@ -37,8 +37,8 @@ public class EditProductTest extends DataProvider {
         p = open(adminUrl + "/products/default/" + productId, ProductsPage.class);
         String uid = productName.substring(13, 20);
 
-        clearField( p.titleFld() );
-        setFieldVal( p.titleFld(), "Edited Product " + uid );
+        clearField(p.titleFld());
+        p.setTitle("Edited Product " + uid);
         p.clickSave();
         refresh();
 
@@ -54,11 +54,11 @@ public class EditProductTest extends DataProvider {
         p = open(adminUrl + "/products/default/" + productId, ProductsPage.class);
         String uid = productName.substring(13, 20);
 
-        clearField( p.titleFld() );
-        setFieldVal( p.titleFld(), "Edited Product " + uid );
+        clearField(p.titleFld());
+        p.setTitle("Edited Product " + uid);
         p.clickSave();
         sleep(1000);
-        click( p.sideMenu("Products") );
+        p.sideMenu("Products");
         p.search(uid);
 
         p.getProductParamVal("1", "Name").shouldHave(text("Edited Product " + uid)
@@ -73,8 +73,8 @@ public class EditProductTest extends DataProvider {
         p = open(adminUrl + "/products/default/" + productId, ProductsPage.class);
         String uid = productName.substring(13, 20);
 
-        clearField( p.titleFld() );
-        setFieldVal( p.titleFld(), "Edited Product " + uid );
+        clearField(p.titleFld());
+        p.setTitle("Edited Product " + uid);
         p.clickSave();
 
         sf = open(storefrontUrl + "/products/" + productId, StorefrontCategoryPage.class);
@@ -90,8 +90,8 @@ public class EditProductTest extends DataProvider {
         p = open(adminUrl + "/products/default/" + productId, ProductsPage.class);
         String uid = productName.substring(13, 20);
 
-        clearField( p.titleFld() );
-        setFieldVal( p.titleFld(), "Edited Product " + uid );
+        clearField(p.titleFld());
+        p.setTitle("Edited Product " + uid);
         p.clickSave();
 
         sf = open(storefrontUrl + "/sunglasses?type=men", StorefrontCategoryPage.class);
@@ -107,8 +107,8 @@ public class EditProductTest extends DataProvider {
         provideTestData("product in active state");
         p = open(adminUrl + "/products/default/" + productId, ProductsPage.class);
 
-        clearField( p.descriptionFld() );
-        setFieldVal( p.descriptionFld(), "Edited Description" );
+        clearField(p.descriptionFld());
+        p.setDescription("Edited Description");
         p.clickSave();
         refresh();
 
@@ -123,8 +123,8 @@ public class EditProductTest extends DataProvider {
         provideTestData("product in active state");
         p = open(adminUrl + "/products/default/" + productId, ProductsPage.class);
 
-        clearField( p.descriptionFld() );
-        setFieldVal( p.descriptionFld(), "Edited Description" );
+        clearField(p.descriptionFld());
+        p.setDescription("Edited Description");
         p.clickSave();
 
         sf = open(storefrontUrl + "/products/" + productId, StorefrontCategoryPage.class);
@@ -139,11 +139,12 @@ public class EditProductTest extends DataProvider {
         provideTestData("product in active state");
         p = open(adminUrl + "/products/default/" + productId, ProductsPage.class);
 
-        p.setState( "Inactive" );
+        p.setState("Inactive");
         p.clickSave();
         sleep(1000);
         refresh();
-        p.stateDd().shouldBe(visible);
+        shouldBeVisible(p.stateDd(),
+                "Waiting for \"State\" dd to become visible after refreshing the page has failed");
 
         p.stateVal().shouldHave(text("Inactive")
                 .because("Failed to edit product state - incorrect product state is displayed on product details page in admin."));
@@ -160,7 +161,7 @@ public class EditProductTest extends DataProvider {
         p.setState( "Inactive" );
         p.clickSave();
         sleep(1000);
-        click( p.sideMenu("Products") );
+        p.sideMenu("Products");
         p.search(uid);
 
         p.getProductParamVal("1", "State").shouldHave(text("Inactive")
@@ -175,7 +176,7 @@ public class EditProductTest extends DataProvider {
         provideTestData("product in inactive state");
         p = open(adminUrl + "/products/default/" + productId, ProductsPage.class);
 
-        p.setState( "Active" );
+        p.setState("Active");
         p.clickSave();
 
         sf = open(storefrontUrl + "/sunglasses?type=men", StorefrontCategoryPage.class);
@@ -191,10 +192,11 @@ public class EditProductTest extends DataProvider {
         provideTestData("product in active state");
         p = open(adminUrl + "/products/default/" + productId, ProductsPage.class);
 
-        setFieldVal( p.retailPriceFld(), "35.18" );
+        p.setRetailPrice("35.18");
         p.clickSave();
         refresh();
-        p.retailPriceFld().shouldBe(visible);
+        shouldBeVisible(p.retailPriceFld(),
+                "Waiting for \"Retail Price\" fld to become visible after refreshing the page has failed");
 
         p.retailPriceFld().shouldHave(attribute("value", "35.18")
                 .because("Failed to edit retail price."));
@@ -207,7 +209,7 @@ public class EditProductTest extends DataProvider {
         provideTestData("product in active state");
         p = open(adminUrl + "/products/default/" + productId, ProductsPage.class);
 
-        setFieldVal( p.salePriceFld(), "35.18" );
+        p.setSalePrice("35.18");
         p.clickSave();
         refresh();
         p.salePriceFld().shouldHave(attribute("value", "35.18")
@@ -221,7 +223,7 @@ public class EditProductTest extends DataProvider {
         provideTestData("product in active state");
         p = open(adminUrl + "/products/default/" + productId, ProductsPage.class);
 
-        setFieldVal( p.salePriceFld(), "35.18" );
+        p.setSalePrice("35.18");
         p.clickSave();
 
         sf = open(storefrontUrl + "/products/" + productId, StorefrontCategoryPage.class);
@@ -230,17 +232,22 @@ public class EditProductTest extends DataProvider {
 
     }
 
+    /*
+     * softAssert is needed
+     */
     @Test(priority = 13)
     public void editTag_admin() throws IOException {
 
         provideTestData("product in active state");
         p = open(adminUrl + "/products/default/" + productId, ProductsPage.class);
 
-        click( p.removeTagBtn("1") );
+        p.removeTag("1");
         p.addTag("eyeglasses");
         p.clickSave();
         refresh();
         p.addTagBtn().shouldBe(visible);
+        shouldBeVisible(p.addTagBtn(),
+                "Waiting for \"Add Tag\" btn to become visible after refreshing the page has failed");
 
         p.tag("eyeglasses").shouldBe(visible
                 .because("A new tag isn't displayed."));
@@ -255,7 +262,7 @@ public class EditProductTest extends DataProvider {
         provideTestData("product in active state");
         p = open(adminUrl + "/products/default/" + productId, ProductsPage.class);
 
-        click( p.removeTagBtn("1") );
+        p.removeTag("1");
         p.addTag("eyeglasses");
         p.clickSave();
 
@@ -272,10 +279,12 @@ public class EditProductTest extends DataProvider {
         provideTestData("product in active state");
         p = open(adminUrl + "/products/default/" + productId, ProductsPage.class);
 
-        click( p.removeTagBtn("1") );
+        p.removeTag("1");
         p.clickSave();
         refresh();
-        p.addTagBtn().shouldBe(visible);
+        shouldBeVisible(p.addTagBtn(),
+                "Waiting for \"Add Tag\" btn to become visible after refreshing the page has failed");
+
         p.tag("eyeglasses").shouldNotBe(visible
                 .because("A just removed tag is displayed."));
 
@@ -287,7 +296,7 @@ public class EditProductTest extends DataProvider {
         provideTestData("product in active state");
         p = open(adminUrl + "/products/default/" + productId, ProductsPage.class);
 
-        click( p.removeTagBtn("1") );
+        p.removeTag("1");
         p.clickSave();
 
         sf = open(storefrontUrl + "/eyeglasses?type=men", StorefrontCategoryPage.class);

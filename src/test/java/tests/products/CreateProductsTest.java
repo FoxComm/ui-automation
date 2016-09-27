@@ -13,7 +13,6 @@ import java.util.Objects;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.open;
-import static com.codeborne.selenide.Selenide.sleep;
 
 public class CreateProductsTest extends DataProvider {
 
@@ -22,14 +21,12 @@ public class CreateProductsTest extends DataProvider {
 
     @BeforeClass(alwaysRun = true)
     public void setUp() {
-
         open(adminUrl);
         if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
             LoginPage loginPage = open(adminUrl + "/login", LoginPage.class);
             loginPage.login("admin@admin.com", "password");
-            loginPage.userMenuBtn().shouldBe(visible);
+            shouldBeVisible(loginPage.userMenuBtn(), "Failed to log in");
         }
-
     }
 
     @Test(priority = 1)
@@ -40,8 +37,9 @@ public class CreateProductsTest extends DataProvider {
         String randomId = generateRandomID();
         String productName = "Test Product " + randomId;
 
-        p.fillOutProductForm( productName, sku, "27.18", "27.18", "sunglasses", "Active");
-        click( p.sideMenu("Products") );
+        p.clickAddNewProduct();
+        p.createProduct(productName, sku, "27.18", "27.18", "sunglasses", "Active");
+        p.sideMenu("Products");
         p.waitForDataToLoad();
         p.addFilter("Product : Name", randomId);
         p.getProductParamVal("1", "Name").shouldHave(text(productName)
@@ -54,7 +52,8 @@ public class CreateProductsTest extends DataProvider {
 
         provideTestData("active product, has tag, active SKU");
         p = open(adminUrl + "/products/default/" + productId, ProductsPage.class);
-        p.assertSKUApplied();
+        p.skuName().shouldBe(visible
+                .because("'No SKUs.' msg is displayed - SKU wasn't applied, product won't be displayed on storefront."));
 
     }
 
@@ -63,15 +62,14 @@ public class CreateProductsTest extends DataProvider {
 
         provideTestData("active product, has tag, active SKU");
         p = open(adminUrl + "/products/default/" + productId, ProductsPage.class);
-        sleep(1500);
+//        sleep(1500);      // test might fail if to somment this
         p.assertSKUApplied();
 
         sf = open(storefrontUrl + "/sunglasses?type=men", StorefrontCategoryPage.class);
         sf.waitForDataToLoad_sf();
 
-        sf.product(productName).shouldBe(visible
-                .because("Product isn't displayed on the category page on sf."));
-        click( sf.product(productName) );
+        shouldBeVisible(sf.product(productName), "Product isn't displayed on the category page on sf.");
+        sf.openProduct(productName);
         sf.titleVal().shouldHave(text(productName)
                 .because("Incorrect product title is displayed on PDP."));
         sf.priceVal().shouldHave(text("$50.00")
@@ -100,7 +98,7 @@ public class CreateProductsTest extends DataProvider {
 
         provideTestData("active product, no tag, active SKU");
         p = open(adminUrl + "/products/default/" + productId, ProductsPage.class);
-        sleep(1500);
+//        sleep(1500);
         p.assertSKUApplied();
 
         sf = open(storefrontUrl + "/sunglasses?type=men", StorefrontCategoryPage.class);
@@ -116,7 +114,7 @@ public class CreateProductsTest extends DataProvider {
 
         provideTestData("inactive product, has tag, active SKU");
         p = open(adminUrl + "/products/default/" + productId, ProductsPage.class);
-        sleep(1500);
+//        sleep(1500);
         p.assertSKUApplied();
 
         sf = open(storefrontUrl + "/sunglasses?type=men", StorefrontCategoryPage.class);
@@ -131,7 +129,7 @@ public class CreateProductsTest extends DataProvider {
 
         provideTestData("inactive product, has tag, active SKU");
         p = open(adminUrl + "/products/default/" + productId, ProductsPage.class);
-        sleep(1500);
+//        sleep(1500);
         p.assertSKUApplied();
 
         sf = open(storefrontUrl + "/sunglasses?type=men", StorefrontCategoryPage.class);
@@ -147,7 +145,7 @@ public class CreateProductsTest extends DataProvider {
 
         provideTestData("inactive product, no tag, active SKU");
         p = open(adminUrl + "/products/default/" + productId, ProductsPage.class);
-        sleep(1500);
+//        sleep(1500);
         p.assertSKUApplied();
 
         sf = open(storefrontUrl + "/sunglasses?type=men", StorefrontCategoryPage.class);
@@ -162,7 +160,7 @@ public class CreateProductsTest extends DataProvider {
 
         provideTestData("inactive product, no tag, active SKU");
         p = open(adminUrl + "/products/default/" + productId, ProductsPage.class);
-        sleep(1500);
+//        sleep(1500);
         p.assertSKUApplied();
 
         sf = open(storefrontUrl + "/sunglasses?type=men", StorefrontCategoryPage.class);
@@ -178,7 +176,7 @@ public class CreateProductsTest extends DataProvider {
 
         provideTestData("inactive product, no tag, active SKU");
         p = open(adminUrl + "/products/default/" + productId, ProductsPage.class);
-        sleep(1500);
+//        sleep(1500);
         p.assertSKUApplied();
 
         sf = open(storefrontUrl + "/sunglasses?type=men", StorefrontCategoryPage.class);
@@ -193,7 +191,7 @@ public class CreateProductsTest extends DataProvider {
 
         provideTestData("inactive product, no tag, active SKU");
         p = open(adminUrl + "/products/default/" + productId, ProductsPage.class);
-        sleep(1500);
+//        sleep(1500);
         p.assertSKUApplied();
 
         sf = open(storefrontUrl + "/sunglasses?type=men", StorefrontCategoryPage.class);
@@ -209,7 +207,7 @@ public class CreateProductsTest extends DataProvider {
 
         provideTestData("inactive product, no tag, active SKU");
         p = open(adminUrl + "/products/default/" + productId, ProductsPage.class);
-        sleep(1500);
+//        sleep(1500);
         p.assertSKUApplied();
 
         sf = open(storefrontUrl + "/sunglasses?type=men", StorefrontCategoryPage.class);
@@ -224,7 +222,7 @@ public class CreateProductsTest extends DataProvider {
 
         provideTestData("inactive product, no tag, active SKU");
         p = open(adminUrl + "/products/default/" + productId, ProductsPage.class);
-        sleep(1500);
+//        sleep(1500);
         p.assertSKUApplied();
 
         sf = open(storefrontUrl + "/sunglasses?type=men", StorefrontCategoryPage.class);
@@ -245,15 +243,15 @@ public class CreateProductsTest extends DataProvider {
         String randomId = generateRandomID();
         String productTitle = "Test Product " + randomId;
 
-        p.fillOutProductForm(productTitle, sku, "27.18", "27.18", "sunglasses", "Active");
-        click( p.saveDraftBtn() );
-        click( p.sideMenu("Products") );
+        p.createProduct(productTitle, sku, "27.18", "27.18", "sunglasses", "Active");
+        p.clickSave();
+        click(p.sideMenu("Products"));
         p.waitForDataToLoad();
 
         p.addFilter("Product : Name", randomId);
-        p.getProductParamVal("1", "Name").shouldHave(text("Test Product " + randomId)
-                .because("Queried product is not found - either search doesn't work or product wasn't created."));
-        click( p.product(productTitle) );
+        shouldHaveText(p.getProductParamVal("1", "Name"), "Test Product " + randomId,
+                "Queried product is not found - either search doesn't work or product wasn't created.");
+        p.openProduct(productTitle);
         p.assertSKUApplied();
 
     }
@@ -266,15 +264,15 @@ public class CreateProductsTest extends DataProvider {
         String randomId = generateRandomID();
         String productTitle = "Test Product " + randomId;
 
-        p.fillOutProductForm(productTitle, sku, "27.18", "27.18", "sunglasses", "Active");
-        click(p.saveDraftBtn());
-        click( p.sideMenu("Products") );
+        p.createProduct(productTitle, sku, "27.18", "27.18", "sunglasses", "Active");
+        p.clickSave();
+        p.sideMenu("Products");
         p.waitForDataToLoad();
 
         p.addFilter("Product : Name", randomId);
         p.getProductParamVal("1", "Name").shouldHave(text("Test Product " + randomId)
                 .because("Queried product is not found - either search doesn't work or product wasn't created."));
-        click( p.product(productTitle) );
+        p.openProduct(productTitle);
         p.assertSKUApplied();
 
     }
@@ -287,12 +285,13 @@ public class CreateProductsTest extends DataProvider {
         String randomId = generateRandomID();
         String productTitle = "Test Product " + randomId;
 
-        p.fillOutProductForm(productTitle, sku, "27.18", "27.18", "sunglasses", "Active");
-        click(p.saveDraftBtn());
+        p.createProduct(productTitle, sku, "27.18", "27.18", "sunglasses", "Active");
+        p.clickSave();
         click( p.sideMenu("Products") );
+        p.sideMenu("Products");
         p.waitForDataToLoad();
         p.addFilter("Product : Name", randomId);
-        click( p.product(productTitle) );
+        p.openProduct(productTitle);
         p.assertSKUApplied();
 
     }
@@ -305,15 +304,15 @@ public class CreateProductsTest extends DataProvider {
         String randomId = generateRandomID();
         String productTitle = "Test Product " + randomId;
 
-        p.fillOutProductForm(productTitle, sku, "27.18", "27.18", "sunglasses", "Active");
-        click(p.saveDraftBtn());
-        click( p.sideMenu("Products") );
+        p.createProduct(productTitle, sku, "27.18", "27.18", "sunglasses", "Active");
+        p.clickSave();
+        p.sideMenu("Products");
         p.waitForDataToLoad();
 
         p.addFilter("Product : Name", randomId);
-        p.getProductParamVal("1", "Name").shouldHave(text("Test Product " + randomId)
-                .because("Queried product is not found - either search doesn't work or product wasn't created."));
-        click( p.product(productTitle) );
+        shouldHaveText(p.getProductParamVal("1", "Name"), "Test Product " + randomId,
+                "Queried product is not found - either search doesn't work correctly or product wasn't created");
+        p.openProduct(productTitle);
         p.assertSKUApplied();
 
     }

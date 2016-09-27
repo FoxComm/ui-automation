@@ -10,7 +10,6 @@ import testdata.DataProvider;
 import java.io.IOException;
 import java.util.Objects;
 
-import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.open;
 
 public class SearchTest extends DataProvider {
@@ -24,7 +23,7 @@ public class SearchTest extends DataProvider {
         if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
             LoginPage loginPage = open(adminUrl + "/login", LoginPage.class);
             loginPage.login("admin@admin.com", "password");
-            loginPage.userMenuBtn().shouldBe(visible);
+            shouldBeVisible(loginPage.userMenuBtn(), "Failed to log in");
         }
         p = open(adminUrl + "/orders", OrdersPage.class);
     }
@@ -34,8 +33,8 @@ public class SearchTest extends DataProvider {
 
         provideTestData("order in remorse hold");
 
-        p.addFilter("Order", "Total", ">", "1");
-        p.removeFilter("1");
+        p.addFilter_arrowKeys("Order", "Total", ">", "1");
+        p.removeSearchFilter("Order : Total : > : 1");
 
     }
 
@@ -44,7 +43,7 @@ public class SearchTest extends DataProvider {
 
         provideTestData("order in remorse hold");
 
-        p.addFilter("Order", "State", "Remorse Hold");
+        p.addFilter_arrowKeys("Order", "State", "Remorse Hold");
         p.assertOrderParameter(1, "Order State", "Remorse Hold");
 
     }
@@ -54,7 +53,7 @@ public class SearchTest extends DataProvider {
 
         provideTestData("order in remorse hold");
 
-        p.addFilter("Customer", "Name", customerName);
+        p.addFilter_arrowKeys("Customer", "Name", customerName);
         p.assertOrderParameter(1, "Customer Name", customerName);
 
     }
@@ -64,7 +63,7 @@ public class SearchTest extends DataProvider {
 
         provideTestData("order in remorse hold");
 
-        p.addFilter("Customer", "Email", customerEmail);
+        p.addFilter_arrowKeys("Customer", "Email", customerEmail);
         p.assertOrderParameter(1, "Customer Email", customerEmail);
 
     }
@@ -72,7 +71,7 @@ public class SearchTest extends DataProvider {
     @Test (priority = 5)
     public void orderTotal_filter() {
 
-        p.addFilter("Order", "Total", ">=", "$50");
+        p.addFilter_arrowKeys("Order", "Total", ">=", "$50");
         p.sortListBy(7);
         p.assertOrderParameter(1, "Total", ">=", 50);
 
@@ -81,7 +80,7 @@ public class SearchTest extends DataProvider {
     @Test (priority = 6)
     public void noSearchResults_email() {
 
-        p.addFilter("Customer", "Email", "find.nothing@withthis.com");
+        p.addFilter_arrowKeys("Customer", "Email", "find.nothing@withthis.com");
         p.assertNoSearchResults();
 
     }
@@ -89,7 +88,7 @@ public class SearchTest extends DataProvider {
     @Test (priority = 7)
     public void noSearchResults_SKU() {
 
-        p.addFilter("Items", "Product SKU", "SKU-NONE");
+        p.addFilter_arrowKeys("Items", "Product SKU", "SKU-NONE");
         p.assertNoSearchResults();
 
     }

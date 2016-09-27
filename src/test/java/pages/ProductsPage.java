@@ -1,12 +1,11 @@
 package pages;
 
 import base.BasePage;
+import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import ru.yandex.qatools.allure.annotations.Step;
 
-import java.util.List;
-
-import static com.codeborne.selenide.Condition.*;
+import static com.codeborne.selenide.Condition.exist;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 import static org.openqa.selenium.By.xpath;
@@ -78,11 +77,11 @@ public class ProductsPage extends BasePage {
         return $(xpath("//div[text()='No SKUs.']"));
     }
 
-    public SelenideElement productId() {
+    private SelenideElement productId() {
         return $(xpath("//header/div/ul/li[5]"));
     }
 
-    private SelenideElement skuName() {
+    public SelenideElement skuName() {
         return $(xpath("//tr[@class='fc-table-tr']/td[2]/div"));
     }
 
@@ -93,33 +92,32 @@ public class ProductsPage extends BasePage {
 //    @Step("Remove all filters from the search field")
 //    public void clearSearchFld() {
 //        waitForDataToLoad();
-//        List<SelenideElement> searchFiltersList = $$(By.xpath("//a[@class='fc-pilled-input__pill-close']"));
+//        ElementsCollection searchFiltersList = $$(By.xpath("//a[@class='fc-pilled-input__pill-close']"));
 //        for(SelenideElement filterCloseBtn : searchFiltersList) {
 //            click( filterCloseBtn );
 //        }
 //    }
 
+    @Step("Open product by its ID/Name: <{0}>")
+    public void openProduct(String idOrName){
+        click(product(idOrName));
+    }
+
     @Step("Set product state to '{0}'")
     public void setState(String state) {
-
         switch (state) {
-
             case "Inactive":
-                click( removeStartDateBtn() );
+                click(removeStartDateBtn());
                 break;
-
             case "Active":
-                click( stateDd() );
-                click( stateListVal(state) );
+                setDdVal(stateDd(), state);
                 break;
-
         }
-
     }
 
     @Step("Clear all tags from product")
     public void clearTags() {
-        List<SelenideElement> tags = $$(xpath("//div[@class='_tags_tags__tags']/div/button"));
+        ElementsCollection tags = $$(xpath("//div[@class='_tags_tags__tags']/div/button"));
         System.out.println(tags.size());
         for(int i = 0; i < tags.size(); i++) {
             click( removeTagBtn("1") );
@@ -129,10 +127,8 @@ public class ProductsPage extends BasePage {
 
     @Step("Get '{1}' parameter value of {0}th product on the list")
     public SelenideElement getProductParamVal(String productIndex, String paramName) {
-
         SelenideElement productParamVal = null;
         waitForDataToLoad();
-
         switch (paramName) {
             case "Product ID":
                 productParamVal = $(xpath("//tbody[@class='fc-table-body']/a[" + productIndex + "]/td[2]"));
@@ -148,9 +144,7 @@ public class ProductsPage extends BasePage {
                 break;
 
         }
-
         return productParamVal;
-
     }
 
 //    private void selectLine(int index) {
@@ -200,30 +194,54 @@ public class ProductsPage extends BasePage {
 //        sleep(500);
 //    }
 
-    @Step("Fill out the 'New Product' form - Title: <{0}>, SKU: <{1}>, Retail Price: <{2}>, Sale Price: <{3}>, State: <{4}>")
-    public void fillOutProductForm(String productTitle, String SKU, String retailPrice, String salePrice, String tagVal, String state) {
-
-        click( addNewProduct() );
-        setFieldVal( titleFld(), productTitle );
-        setFieldVal( descriptionFld(), "The best thing to buy in 2016!" );
-        setFieldVal( sku(), SKU );
-        click( skuSearchView(SKU) );
-        setFieldVal( retailPriceFld(), retailPrice );
-        setFieldVal( salePriceFld(), salePrice );
-        setState( state );
-        addTag( tagVal );
-        click( saveDraftBtn() );
-        saveDraftBtn().shouldBe(enabled);
-        productId().shouldNotHave(text("new"));
-
+    @Step("Click \"Add New Product\" btn")
+    public void clickAddNewProduct(){
+        click(addNewProduct());
     }
+
+    @Step("Fill out the 'New Product' form - Title: <{0}>, SKU: <{1}>, Retail Price: <{2}>, Sale Price: <{3}>, State: <{4}>")
+    public void createProduct(String title, String SKU, String retailPrice, String salePrice, String tagVal, String state) {
+        setTitle(title);
+        setFieldVal( descriptionFld(), "The best thing to buy in 2016!" );
+        addSKU(SKU, retailPrice, salePrice);
+        setState(state);
+        addTag(tagVal);
+        clickSave();
+        shouldBeEnabled(saveBtn(), "\"Save\" btn isn't re-enabled after it was clicked to create a new product");
+        shouldNotHaveText(productId(), "new", "Failed to create a new product - rout is displayed as `/new`");
+    }
+
+        @Step("Set \"Title\" fld val to <{0}>")
+        public void setTitle(String title) {
+            setFieldVal(titleFld(), title);
+        }
+
+        @Step("Set \"Description\" val to <{0}>")
+        public void setDescription(String description) {
+            setFieldVal( descriptionFld(), description );
+        }
+
+        @Step("Add SKU to a product: <{0}>, <salePr:{1}>, <retailPr:{2}>")
+        private void addSKU(String SKU, String retailPrice, String salePrice) {
+            click(skuSearchView(SKU));
+            click(skuSearchView(SKU));
+            setFieldVal(retailPriceFld(), retailPrice);
+            setFieldVal(salePriceFld(), salePrice);
+        }
+
+        @Step("Set \"Retail Price\" fld val to <{0}>")
+        public void setRetailPrice(String price) {
+            setFieldVal(retailPriceFld(), price);
+        }
+
+        @Step("Set \"Retail Price\" fld val to <{0}>")
+        public void setSalePrice(String price) {
+            setFieldVal(salePriceFld(), price);
+        }
 
     @Step("Assert that SKU is applied to the product")
     public void assertSKUApplied() {
-
-        skuName().shouldBe(visible
-                .because("'No SKUs.' msg is displayed - SKU wasn't applied, product won't be displayed on storefront."));
-
+        shouldBeVisible(skuName(), "\"No SKUs.\" msg is displayed - SKU wasn't applied, product won't be displayed on storefront.");
     }
 
 }

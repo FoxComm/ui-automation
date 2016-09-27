@@ -5,7 +5,6 @@ import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
-import org.testng.Assert;
 import ru.yandex.qatools.allure.annotations.Step;
 
 import static com.codeborne.selenide.Condition.visible;
@@ -119,20 +118,20 @@ public class OrdersPage extends BasePage {
                         "Search results aren't relevant to a given search criteria");
                 break;
             case ">":
-                Assert.assertTrue(actualParamValue > expectedParamValue,
+                assertTrue(actualParamValue > expectedParamValue,
                         "Search results aren't relevant to a given search criteria");
                 break;
             case ">=":
                 System.out.println(actualParamValue >= expectedParamValue);
-                Assert.assertTrue( (actualParamValue >= expectedParamValue),
+                assertTrue( (actualParamValue >= expectedParamValue),
                         "Search results aren't relevant to a given search criteria");
                 break;
             case "<":
-                Assert.assertTrue(actualParamValue < expectedParamValue,
+                assertTrue(actualParamValue < expectedParamValue,
                         "Search results aren't relevant to a given search criteria");
                 break;
             case "<=":
-                Assert.assertTrue(actualParamValue <= expectedParamValue,
+                assertTrue(actualParamValue <= expectedParamValue,
                         "Search results aren't relevant to a given search criteria");
                 break;
         }
@@ -150,7 +149,7 @@ public class OrdersPage extends BasePage {
     }
 
     @Step("Create a search filter {0} : {1} : {2}")
-    public void addFilter(String firstStatement, String secondStatement, String thirdStatement) {
+    public void addFilter_arrowKeys(String firstStatement, String secondStatement, String thirdStatement) {
 
         searchFld().click();
 
@@ -251,7 +250,7 @@ public class OrdersPage extends BasePage {
     }
 
     @Step("Create a search filter {0} : {1} : {2} : {3}")
-    public void addFilter(String firstStatement, String secondStatement, String thirdStatement, String fourthStatement) {
+    public void addFilter_arrowKeys(String firstStatement, String secondStatement, String thirdStatement, String fourthStatement) {
 
         searchFld().click();
 
@@ -332,10 +331,6 @@ public class OrdersPage extends BasePage {
 
 
 
-//    @Step
-//    public void removeFilter(String index) {
-//        $(By.xpath("//div[@class='fc-pilled-input__pill'][" + index + "]/a")).click();
-//    }
 //
 //    @Step
 //    public void cleanSearchField() {

@@ -3,7 +3,6 @@ package tests.cart;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import pages.CartPage;
-import pages.GiftCardsPage;
 import pages.LoginPage;
 import testdata.DataProvider;
 
@@ -13,12 +12,11 @@ import java.util.Objects;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.open;
-import static com.codeborne.selenide.Selenide.refresh;
 
 public class PaymentMethodTest extends DataProvider {
 
     private CartPage p;
-    private GiftCardsPage gcp;
+//    private GiftCardsPage gcp;
 
     @BeforeClass(alwaysRun = true)
     public void setUp() {
@@ -27,7 +25,7 @@ public class PaymentMethodTest extends DataProvider {
         if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
             LoginPage loginPage = open(adminUrl + "/login", LoginPage.class);
             loginPage.login("admin@admin.com", "password");
-            loginPage.userMenuBtn().shouldBe(visible);
+            shouldBeVisible(loginPage.userMenuBtn(), "Failed to log in");
         }
 
     }
@@ -38,14 +36,15 @@ public class PaymentMethodTest extends DataProvider {
         provideTestData("cart with 1 item and chosen shipping address");
         p = open(adminUrl + "/carts/" + cartId, CartPage.class);
 
-        click( p.editBtn_payment() );
-        click( p.newPaymentBtn() );
+        p.clickEditBtn_payment();
+        p.clickNewPayMethodBtn();
         p.selectPaymentType("Credit Card");
         p.addNewCreditCard("John Doe", "5555555555554444", "777", "2", "2020");
-        click( p.doneBtn_payment() );
+        p.clickDoneBtn_payment();
 
         p.assertCardAdded();
-        p.assertNoFundsWarn();
+        p.fundsWarn().shouldNotBe(visible
+                .because("'Insufficient funds' warning is displayed."));
 
     }
 
@@ -56,22 +55,20 @@ public class PaymentMethodTest extends DataProvider {
         provideTestData("cart with 1 item && customer with GC");
         p = open(adminUrl + "/carts/" + cartId, CartPage.class);
 
-        click( p.editBtn_payment() );
-        click( p.newPaymentBtn() );
+        p.clickEditBtn_payment();
+        p.clickNewPayMethodBtn();
         p.selectPaymentType("Gift Card");
-        setFieldVal( p.gcNumberFld(), gcCode );
-        clearField(p.amountToUseFld());
-        setFieldVal( p.amountToUseFld(), String.valueOf(p.grandTotal()) );
-        click( p.doneBtn_payment() );
-        System.out.println(p.gcAvailableBalance());
+        p.setGCNumber(gcCode);
+        p.setAmountToUse(String.valueOf(p.grandTotalVal()));
+        p.clickDoneBtn_payment();
 
         double expectedVal = cutDecimal( p.gcAvailableBalanceVal() - p.grandTotalVal() );
-        System.out.println(expectedVal);
         p.gcNewAvailableBalance().shouldHave(text("$" + expectedVal)
                 .because("New available balance calculations are incorrect."));
 
-        click( p.addPaymentBtn() );
-        p.assertNoFundsWarn();
+        p.clickAddPayMethodBtn();
+        p.fundsWarn().shouldNotBe(visible
+                .because("'Insufficient funds' warning is displayed."));
 
     }
 
@@ -79,23 +76,24 @@ public class PaymentMethodTest extends DataProvider {
     public void addPaymentMethod_storeCredit() throws IOException {
 
         provideTestData("cart with 1 item && customer with SC");
-        refresh();
+        // workaround for possible bug with data sync
+//        refresh();
         p = open(adminUrl + "/carts/" + cartId, CartPage.class);
 
-        click( p.editBtn_payment() );
-        click( p.newPaymentBtn() );
+        p.clickEditBtn_payment();
+        p.clickNewPayMethodBtn();
         p.selectPaymentType("Store Credit");
-        clearField(p.amountToUseFld());
-        setFieldVal( p.amountToUseFld(), String.valueOf(p.grandTotal()) );
-        click( p.doneBtn_payment() );
+        p.setAmountToUse(String.valueOf(p.grandTotalVal()));
+        p.clickDoneBtn_payment();
 
         double expectedVal = cutDecimal( p.gcAvailableBalanceVal() - p.grandTotalVal() );
         System.out.println("GC New available balance should be: <$" + expectedVal + ">");
         p.gcNewAvailableBalance().shouldHave(text("$" + expectedVal)
                 .because("New available balance calculations are incorrect."));
 
-        click( p.addPaymentBtn() );
-        p.assertNoFundsWarn();
+        p.clickAddPayMethodBtn();
+        p.fundsWarn().shouldNotBe(visible
+                .because("'Insufficient funds' warning is displayed."));
 
     }
 
@@ -103,13 +101,14 @@ public class PaymentMethodTest extends DataProvider {
     public void addStoreCredit_exceedsTotal() throws IOException {
 
         provideTestData("cart with 1 item && customer with SC");
-        refresh();
+        // workaround for possible bug with data sync
+//        refresh();
         p = open(adminUrl + "/carts/" + cartId, CartPage.class);
 
-        p.cartSummary().shouldBe(visible);
+        shouldBeVisible(p.cartSummary(), "Failed to open the cart page");
         double amountToUse = p.grandTotalVal() + 10.00;
         p.addPaymentMethod_SC( String.valueOf(amountToUse) );
-        click( p.doneBtn_payment() );
+        p.clickDoneBtn_payment();
 
         p.appliedAmount().shouldHave(text(p.grandTotal().text())
                 .because("Amount of funds to be applied as a payment isn't auto-adjusted."));
@@ -120,13 +119,14 @@ public class PaymentMethodTest extends DataProvider {
     public void addGiftCard_exceedsTotal() throws IOException {
 
         provideTestData("cart with 1 item && customer with GC");
-        refresh();
+        // workaround for possible bug with data sync
+//        refresh();
         p = open(adminUrl + "/carts/" + cartId, CartPage.class);
 
-        p.cartSummary().shouldBe(visible);
+        shouldBeVisible(p.cartSummary(), "Failed to open the cart page");
         double amountToUse = p.grandTotalVal() + 10.00;
         p.addPaymentMethod_GC(gcCode, String.valueOf(amountToUse));
-        click( p.doneBtn_payment() );
+        p.clickDoneBtn_payment();
 
         p.appliedAmount().shouldHave(text(p.grandTotal().text())
                 .because("Amount of funds to be applied as a payment isn't auto-adjusted."));
@@ -137,14 +137,15 @@ public class PaymentMethodTest extends DataProvider {
     public void addSC_onHoldState() throws IOException {
 
         provideTestData("cart with 1 item && SC onHold");
-        refresh();
+        // workaround for possible bug with data sync
+//        refresh();
         p = open(adminUrl + "/carts/" + cartId, CartPage.class);
 
-        click( p.editBtn_payment() );
-        click( p.newPaymentBtn() );
+        p.clickEditBtn_payment();
+        p.clickNewPayMethodBtn();
         p.selectPaymentType("Store Credit");
-        setFieldVal( p.amountToUseFld(), String.valueOf(p.grandTotal()) );
-        click( p.doneBtn_payment() );
+        p.setAmountToUse(String.valueOf(p.grandTotal()));
+        p.clickDoneBtn_payment();
 
         p.gcAvailableBalance().shouldHave(text("$0.00")
                 .because("A store credit with 'onHold' state can be used as a payment method."));
@@ -155,14 +156,16 @@ public class PaymentMethodTest extends DataProvider {
     public void addSC_canceledState() throws IOException {
 
         provideTestData("cart with 1 item && SC canceled");
-        refresh();
+        // workaround for possible bug with data sync
+//        refresh();
         p = open(adminUrl + "/carts/" + cartId, CartPage.class);
 
         click( p.editBtn_payment() );
         click( p.newPaymentBtn() );
         p.selectPaymentType("Store Credit");
         setFieldVal( p.amountToUseFld(), String.valueOf(p.grandTotal()) );
-        click( p.doneBtn_payment() );
+        p.setAmountToUse(String.valueOf(p.grandTotal()));
+        p.clickDoneBtn_payment();
 
         p.gcAvailableBalance().shouldHave(text("$0.00")
                 .because("A store credit with 'canceled' state can be used as a payment method."));

@@ -26,7 +26,7 @@ public class SearchControlsTest extends DataProvider {
         if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
             LoginPage loginPage = open(adminUrl + "/login", LoginPage.class);
             loginPage.login("admin@admin.com", "password");
-            loginPage.userMenuBtn().shouldBe(visible);
+            shouldBeVisible(loginPage.userMenuBtn(), "Failed to log in");
         }
         provideTestData("order in remorse hold payed with SC");
 
@@ -48,7 +48,7 @@ public class SearchControlsTest extends DataProvider {
         p = open(adminUrl, GeneralControlsPage.class);
 
         p.addFilter("Order", "Total", ">", "1");
-        click( p.removeFilterBtn("Order : Total : > : $1") );
+        p.removeSearchFilter("Order : Total : > : $1");
         p.filter("Order : Total : > : $1").shouldNot(exist.because("Search filter wasn't removed"));
 
     }
@@ -73,8 +73,7 @@ public class SearchControlsTest extends DataProvider {
 
         p.addFilter("Order", "Total", ">", "1");
         p.searchContextMenu("Save New Search");
-        p.tab("All - Copy").shouldBe(visible
-                .because("A just saved search isn't put into a separate tab."));
+        shouldBeVisible(p.tab("All - Copy"), "A just saved search isn't put into a separate tab.");
         refresh();
         p.switchToTab("All - Copy");
         p.filter("Order : Total : > : $1").shouldBe(visible
@@ -90,7 +89,7 @@ public class SearchControlsTest extends DataProvider {
 
         p.switchToTab("Search " + searchRandomId);
         p.searchContextMenu("Edit Search Name");
-        p.tabTitleFld().setValue("Edited Name").pressEnter();
+        p.setTabTitle("Edited Name");
         refresh();
         p.tab("Search " + searchRandomId).shouldNotBe(visible
                 .because("A saved search tab with an old name is visible."));
@@ -106,7 +105,7 @@ public class SearchControlsTest extends DataProvider {
         p = open(adminUrl, GeneralControlsPage.class);
 
         p.switchToTab("Search " + searchRandomId);
-        click( p.removeFilterBtn("Order : State : Remorse Hold") );
+        p.removeSearchFilter("Order : State : Remorse Hold");
         waitForDataToLoad();
         p.dirtySearchIndicator().shouldBe(visible
                 .because("A yellow dot indicator above the saved search tab title isn't displayed."));
@@ -120,7 +119,7 @@ public class SearchControlsTest extends DataProvider {
         p = open(adminUrl, GeneralControlsPage.class);
 
         p.switchToTab("Search " + searchRandomId);
-        click( p.removeFilterBtn("Order : Total : > : $1") );
+        p.removeSearchFilter("Order : Total : > : $1");
         waitForDataToLoad();
         p.searchContextMenu("Update Search");
         refresh();

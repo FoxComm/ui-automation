@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.util.Objects;
 
 import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.open;
 
 public class ItemsTest extends DataProvider {
@@ -24,7 +23,7 @@ public class ItemsTest extends DataProvider {
         if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
             LoginPage loginPage = open(adminUrl + "/login", LoginPage.class);
             loginPage.login("admin@admin.com", "password");
-            loginPage.userMenuBtn().shouldBe(visible);
+            shouldBeVisible(loginPage.userMenuBtn(), "Failed to log in");
         }
 
     }
@@ -45,7 +44,7 @@ public class ItemsTest extends DataProvider {
 
         provideTestData("cart with 1 item");
         p = open(adminUrl + "/carts/" + cartId, CartPage.class);
-        p.itemQty("1").shouldBe(visible);
+        shouldBeVisible(p.itemQty("1"), "Failed to open cart page");
 
         p.clickEditBtn_items();
         p.increaseItemQty("1", 2);
@@ -66,7 +65,7 @@ public class ItemsTest extends DataProvider {
 
         provideTestData("cart with 3 items");
         p = open(adminUrl + "/carts/" + cartId, CartPage.class);
-        p.itemQty("1").shouldBe(visible);
+        shouldBeVisible(p.itemQty("1"), "Failed to open cart page");
         int expectedResult = p.itemsInCartAmount() - 1;
 
         p.clickEditBtn_items();
@@ -101,11 +100,11 @@ public class ItemsTest extends DataProvider {
 
         provideTestData("cart with 1 item, qty: 3");
         p = open(adminUrl + "/carts/" + cartId, CartPage.class);
-        p.itemQty("1").shouldBe(visible);
+        shouldBeVisible(p.itemQty("1"), "Failed to open cart page");
         int expectedResult = p.itemsInCartAmount();
 
         p.clickEditBtn_items();
-        click( p.deleteBtn_item("1") );
+        click(p.deleteBtn_item("1"));
         p.cancelDeletion();
 
         p.cart().shouldHaveSize(expectedResult);
@@ -117,7 +116,7 @@ public class ItemsTest extends DataProvider {
 
         provideTestData("cart with 3 items");
         p = open(adminUrl + "/carts/" + cartId, CartPage.class);
-        p.itemQty("1").shouldBe(visible);
+        shouldBeVisible(p.itemQty("1"), "Failed to open cart page");
         int expectedResult = p.itemsInCartAmount();
 
         p.clickEditBtn_items();
@@ -134,7 +133,7 @@ public class ItemsTest extends DataProvider {
 
         provideTestData("cart with 3 items");
         p = open(adminUrl + "/carts/" + cartId, CartPage.class);
-        p.itemQty("1").shouldBe(visible);
+        shouldBeVisible(p.itemQty("1"), "Failed to open cart page");
         int expectedItemsAmount = p.cart().size() - 1;
 
         p.clickEditBtn_items();

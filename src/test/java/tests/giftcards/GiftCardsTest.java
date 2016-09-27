@@ -5,6 +5,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import pages.GiftCardsPage;
 import pages.LoginPage;
+import ru.yandex.qatools.allure.annotations.Description;
 import testdata.DataProvider;
 
 import java.io.IOException;
@@ -19,42 +20,38 @@ public class GiftCardsTest extends DataProvider {
 
     @BeforeClass(alwaysRun = true)
     public void setUp() {
-
         open(adminUrl);
         if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
             LoginPage loginPage = open(adminUrl + "/login", LoginPage.class);
             loginPage.login("admin@admin.com", "password");
-            loginPage.userMenuBtn().shouldBe(visible);
+            shouldBeVisible(loginPage.userMenuBtn(), "Failed to log in");
         }
-
     }
 
     @Test(priority = 1)
     public void addGiftCard() {
-
         p = open(adminUrl + "/gift-cards", GiftCardsPage.class);
 
-        click( p.addNewGCBtn() );
-        setDdVal( p.typeDd(), "Appeasement" );
-        setFieldVal( p.valueFld(), "123.78" );
-        click( p.issueGCBtn() );
-        p.availableBalanceVal().shouldHave(text("$123.78")
-                .because("Incorrect available balance value."));
+        p.clickAddMewGCBtn();
+        p.setType("Appeasement");
+        p.setValue("123.78");
+        p.clickIssueGCBtn();
 
+        p.availableBalance().shouldHave(text("$123.78")
+                .because("Incorrect available balance value."));
     }
 
     @Test(priority = 2)
     public void addGiftCard_presetValues() {
-
         p = open(adminUrl + "/gift-cards", GiftCardsPage.class);
 
-        click( p.addNewGCBtn() );
-        setDdVal( p.typeDd(), "Appeasement" );
-        click( p.presetValue("50") );
-        click( p.issueGCBtn() );
-        p.availableBalanceVal().shouldHave(text("$50.00")
-                .because("Incorrect available balance value."));
+        p.clickAddMewGCBtn();
+        p.setType("Appeasement");
+        p.setPresetValue("50");
+        p.clickIssueGCBtn();
 
+        p.availableBalance().shouldHave(text("$50.00")
+                .because("Incorrect available balance value."));
     }
 
     @Test(priority = 3)
@@ -62,13 +59,14 @@ public class GiftCardsTest extends DataProvider {
 
         p = open(adminUrl + "/gift-cards", GiftCardsPage.class);
 
-        click( p.addNewGCBtn() );
-        setDdVal( p.typeDd(), "Appeasement" );
-        setFieldVal( p.valueFld(), "123.78" );
-        click( p.issueGCBtn() );
-        p.availableBalanceVal().shouldBe(visible);
-        String gcNumber = getUrl().substring(46, 62);
-        click( p.sideMenu("Gift Cards") );
+        p.clickAddMewGCBtn();
+        p.setType("Appeasement");
+        p.setValue("123.78");
+        p.clickIssueGCBtn();
+        shouldBeVisible(p.availableBalance(), "Waiting for \"Available Balance\" to become visible has failed");
+        String gcNumber = p.getGCNumber(getUrl(), adminUrl);
+
+        p.navigateTo("Gift Cards");
         p.search(gcNumber);
         p.getGCParamVal("1", "Gift Card Number").shouldHave(text(gcNumber)
                 .because("Search failed to find a just created GC."));
@@ -80,15 +78,15 @@ public class GiftCardsTest extends DataProvider {
 
         p = open(adminUrl + "/gift-cards", GiftCardsPage.class);
 
-        click( p.addNewGCBtn() );
-        setDdVal( p.typeDd(), "Appeasement" );
-        setFieldVal( p.valueFld(), "123.78" );
-        click( p.issueGCBtn() );
-        p.stateVal().shouldHave(text("Active")
-                .because("Incorrect 'State' value is displayed on GC details page."));
+        p.clickAddMewGCBtn();
+        p.setType("Appeasement");
+        p.setValue("123.78");
+        p.clickIssueGCBtn();
+        shouldHaveText(p.stateVal(), "Active",
+                "Incorrect 'State' value is displayed on GC details page");
 
-        String gcNumber = getUrl().substring(46, 62);
-        click( p.sideMenu("Gift Cards") );
+        String gcNumber = p.getGCNumber(getUrl(), adminUrl);
+        p.navigateTo("Gift Cards");
         p.search(gcNumber);
         p.getGCParamVal("1", "State").shouldHave(text("Active")
                 .because("A just created gift card isn't in 'Active state'."));
@@ -101,11 +99,11 @@ public class GiftCardsTest extends DataProvider {
         provideTestData("gift card");
         p = open(adminUrl + "/gift-cards/" + gcCode, GiftCardsPage.class);
 
-        setDdVal( p.stateDd(), "Hold" );
-        click( p.yesBtn() );
-        p.yesBtn().shouldNotBe(visible);
-        p.stateVal().shouldHave(text("On Hold")
-                .because("Failed to edit GC state - incorrect state value is displayed."));
+        p.setState("Hold");
+        p.clickYes();
+        shouldNotBeVisible(p.yesBtn(), "Failed to wait untill yesBtn won't be visible");
+        shouldHaveText(p.stateDd(), "On Hold",
+                "Failed to edit GC state - incorrect state value is displayed.");
         refresh();
         p.stateVal().shouldHave(text("On Hold")
                 .because("Failed to edit GC state - incorrect state value is displayed."));
@@ -118,19 +116,20 @@ public class GiftCardsTest extends DataProvider {
         provideTestData("gift card");
         p = open(adminUrl + "/gift-cards/" + gcCode, GiftCardsPage.class);
 
-        setDdVal( p.stateDd(), "Cancel Gift Card" );
-        setDdVal( p.cancelReasonDd(), "Other cancellation reason" );
-        click( p.yesBtn() );
-        p.yesBtn().shouldNotBe(visible);
+        p.setState("Cancel Gift Card");
+        p.setCancelReason("Other cancellation reason");
+        p.clickYes();
+        shouldNotBeVisible(p.yesBtn(), "Failed to wait untill yesBtn won't be visible");
         sleep(1000);
         refresh();
-        $(By.xpath("//span[@class='fc-model-state']")).shouldHave(text("Canceled")
-                .because("GC is not in 'Canceled' state."));
+        shouldHaveText($(By.xpath("//span[@class='fc-model-state']")), "Canceled",
+                "GC is not in 'Canceled' state." );
         p.stateDd().shouldNot(exist
-                .because("'State' dropdown is displayed."));
+                .because("\"State\" dropdown is displayed"));
 
     }
 
+    @Description("Can't cancel used GC -- \"Cancel Gift Card\" option shouldn't be displayed in \"State\" dd")
     @Test(priority = 7)
     public void cantCancelUsedGC() throws IOException {
 
@@ -149,10 +148,11 @@ public class GiftCardsTest extends DataProvider {
         provideTestData("gift card");
         p = open(adminUrl + "/gift-cards/" + gcCode, GiftCardsPage.class);
 
-        setDdVal( p.stateDd(), "Hold" );
-        click( p.yesBtn() );
+        p.setState("Hold");
+        p.clickYes();
         p.yesBtn().shouldNotBe(visible);
-        click( p.sideMenu("Gift Cards") );
+        shouldNotBeVisible(p.yesBtn(), "Failed to wait untill yesBtn won't be visible");
+        p.navigateTo("Gift Cards");
         p.search(gcCode);
         p.getGCParamVal("1", "State").shouldHave(text("On Hold")
                 .because("Failed to set GC's state to 'On Hold'."));
@@ -165,12 +165,11 @@ public class GiftCardsTest extends DataProvider {
         provideTestData("gift card on hold");
         p = open(adminUrl + "/gift-cards/" + gcCode, GiftCardsPage.class);
 
-        setDdVal( p.stateDd(), "Activate" );
-        click( p.yesBtn() );
+        p.setState("Active");
+        p.clickYes();
         refresh();
-        p.stateVal().shouldHave(text("Active")
-                .because("Failed to set GC 'State' to 'Active'."));
-        click( p.sideMenu("Gift Cards") );
+        shouldHaveText(p.stateVal(), "Active", "Failed to set GC \"State\" to \"Active\"");
+        p.navigateTo("Gift Cards");
         p.search(gcCode);
         p.getGCParamVal("1", "State").shouldHave(text("Active")
                 .because("Incorrect 'State' value is displayed on the list."));
@@ -183,21 +182,23 @@ public class GiftCardsTest extends DataProvider {
         provideTestData("gift card");
         p = open(adminUrl + "/gift-cards/" + gcCode, GiftCardsPage.class);
 
-        setDdVal( p.stateDd(), "Hold" );
-        click( p.cancelBtn() );
-        p.yesBtn().shouldNotBe(visible);
+        p.setState("Hold");
+        p.clickYes();
+        refresh();
+        shouldHaveText(p.stateVal(), "Active", "Failed to set GC \"State\" to \"Active\"");
         p.stateVal().shouldHave(text("Active")
                 .because("'Current state dd value isn't reset to actual GC 'State' value after canceling state change."));
 
     }
 
+    @Description("\"Amount to use\" should be cut down to order's grand total when applying GC as the only payment method with amount to use that exceeds order's GT")
     @Test(priority = 11)
     public void gcAsPaymentMethod_availableBalance() throws IOException {
 
         provideTestData("used gift card");
         p = open(adminUrl + "/gift-cards/" + gcCode, GiftCardsPage.class);
 
-        p.availableBalanceVal().shouldHave(text("$162.73")
+        p.availableBalance().shouldHave(text("$162.73")
                 .because("Incorrect available balance value after placing order with GC as a payment method."));
 
     }
@@ -208,15 +209,10 @@ public class GiftCardsTest extends DataProvider {
         provideTestData("a customer");
         p = open(adminUrl + "/gift-cards", GiftCardsPage.class);
 
-        click( p.addNewGCBtn() );
-        setDdVal( p.typeDd(), "Appeasement" );
-        setFieldVal( p.valueFld(), "123.78" );
-        jsClick( p.gcToCustomerChbx() );
-        setFieldVal( p.chooseCustomerFld(), customerName );
-        p.selectCustomer(customerName);
-        click( p.addCustomerBtn() );
-        p.chosenCustomer(customerName).shouldBe(visible.because("Customer is not selected."));
-        setFieldVal( p.messageFld(), "Test message for customer" );
+        p.clickAddMewGCBtn();
+        p.setType("Appeasement");
+        p.setValue("123.78");
+        p.issueGCToCustomer(customerName, "Test message for customer");
         click( p.issueGCBtn() );
 
         p.gcAvailableBalance().shouldHave(text("$123.78")
@@ -231,11 +227,11 @@ public class GiftCardsTest extends DataProvider {
 
         String expectedResult = addToString(p.counter().text(), 2);
         p.waitForDataToLoad();
-        click( p.addNewGCBtn() );
-        setDdVal( p.typeDd(), "Appeasement" );
-        setFieldVal( p.valueFld(), "123.78" );
-        click( p.qtyIncrBtn() );
-        click( p.issueGCBtn() );
+        p.clickAddMewGCBtn();
+        p.setType("Appeasement");
+        p.setValue("123.78");
+        p.increaseQtyBy(1);
+        p.clickIssueGCBtn();
         p.waitForDataToLoad();
         p.counter().shouldHave(text(expectedResult)
                 .because("Incorrect GCs amount counter - either GCs creation has failed or counter value isn't updated."));

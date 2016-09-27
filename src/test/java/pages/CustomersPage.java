@@ -6,11 +6,11 @@ import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.By;
 import ru.yandex.qatools.allure.annotations.Step;
 
-import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
+import static com.codeborne.selenide.Selenide.sleep;
 import static org.openqa.selenium.By.xpath;
 
 public class CustomersPage extends BasePage {
@@ -22,7 +22,7 @@ public class CustomersPage extends BasePage {
 
     //------------------------------- HELPERS ---------------------------------//
 
-    @Step("Get {1} parameter value of {0}-th customer on the list.")
+    @Step("Get <{1}> parameter value of <{0}th> customer on the list")
     public String getCustomerParamVal(int customerIndex, String paramName) {
 
         String customerParamVal = "";
@@ -178,16 +178,12 @@ public class CustomersPage extends BasePage {
         return $(By.xpath("//li[text()='" + stateName + "']"));
     }
 
-    public SelenideElement zipFld() {
+    public SelenideElement zipCodeFld() {
         return $(By.xpath("//input[@name='zip']"));
     }
 
     public SelenideElement phoneNumberFld() {
         return $(By.xpath("//input[@name='phoneNumber']"));
-    }
-
-    private SelenideElement saveBtn_addressForm() {
-        return $(By.xpath("//span[text()='Save']/.."));
     }
 
     private SelenideElement cancelBtn_addressForm() {
@@ -197,48 +193,89 @@ public class CustomersPage extends BasePage {
 
     //------------------------------ HELPERS --------------------------------//
 
-    @Step("Add new address to customer's address book.")
+    @Step("Click \"Edit\" next to <{0}th> address in the address book")
+    public void clickEditAddressBtn(String index) {
+        click( editAddressBtn("1") );
+    }
+
+    @Step("Add new address to customer's address book")
     public void addNewAddress(String name, String streetAddress1, String streetAddress2, String city, String state, String zipCode, String phoneNumber) {
 
-        int initialAddressBookSize = addressBook().size();
-        click(addNewAddressBtn());
-        setFieldVal(nameFld(), name);
-        setFieldVal(address1Fld(), streetAddress1);
-        setFieldVal(address2Fld(), streetAddress2);
-        setFieldVal(cityFld(), city);
+        clickNewAddressBtn();
+        setName(name);
+        setAddress1(streetAddress1);
+        setAddress2(streetAddress2);
+        setFieldVal( cityFld(), city );
+        setCity(city);
         setState(state);
-        setFieldVal(zipFld(), zipCode);
-        setFieldVal_delayed(phoneNumberFld(), phoneNumber);
-        assertStateIsntReset();
-        click(saveBtn_addressForm());
-        phoneNumbErrorMsg().shouldNotBe(visible
-                .because("Failed to specify a full phone number (there might be a rendering issue)."));
-        addressBook().shouldHave(sizeGreaterThan(initialAddressBookSize));
+        setZip(zipCode);
+        setPhoneNumber(phoneNumber);
+        assertStateIsntReset();         // regression assertion
+        clickSave();
 
     }
 
-    @Step("Set <{0}> as a 'State'.")
-    public void setState(String state) {
-        click(stateDd());
-        click(stateDdValue(state));
-    }
+        @Step("Click \"New Address\" button")
+        public void clickNewAddressBtn() {
+            click( addNewAddressBtn() );
+        }
 
-    @Step("Assert that 'State' dropdown value isn't reset to default.")
-    public void assertStateIsntReset() {
-        stateDd().shouldNotHave(text("- Select -")
-                .because("'State' is reset to default value"));
+        @Step("Set \"Name\" fld val to <{0}>")
+        public void setName(String name) {
+            setFieldVal( nameFld(), name );
+        }
+
+        @Step("Set '\"ddress 1\" fld val to <{0}>")
+        public void setAddress1(String streetAddress1) {
+            setFieldVal( address1Fld(), streetAddress1 );
+        }
+
+        @Step("Set \"Address 2\" fld val to <{0}>")
+        public void setAddress2(String streetAddress2) {
+            setFieldVal( address2Fld(), streetAddress2 );
+        }
+
+        @Step("Set \"City\" fld val to <{0}>")
+        public void setCity(String city) {
+            setFieldVal( cityFld(), city );
+        }
+
+        @Step("Set shipping \"State\" to <{0}>")
+        public void setState(String state) {
+            setDdVal(stateDd(), state);
+        }
+
+        @Step("Set \"Zip Code\" fld val to <{0}>")
+        public void setZip(String zipCode) {
+            setFieldVal( zipCodeFld(), zipCode );
+        }
+
+        @Step("Set \"Phone Number\" fld val to <{0}>")
+        public void setPhoneNumber(String phoneNumber) {
+            setFieldVal_delayed( phoneNumberFld(), phoneNumber );
+        }
+
+        @Step("Assert that \"State\" dd val isn't reset")
+        public void assertStateIsntReset() {
+            stateDd().shouldNotHave(text("- Select -")
+                    .because("'State' is reset to default value"));
+        }
+
+    @Step("Remove <{0}th> shipping address from address book")
+    public void deleteAddress(String index) {
+        click(deleteAddressBtn(index));
     }
 
     @Step("Confirm item deletion")
     public void confirmDeletion() {
-        confirmDeletionBtn().click();
-        confirmDeletionBtn().shouldNot(visible);
+        click(confirmDeletionBtn());
+        shouldNotBeVisible(confirmDeletionBtn(), "Confirm deletion modal window is displayed after clicking \"Confirm\"");
     }
 
     @Step("Cancel item deletion")
     public void cancelDeletion() {
-        cancelDeletionBtn().click();
-        cancelDeletionBtn().shouldNot(visible);
+        click(cancelDeletionBtn());
+        shouldNotBeVisible(cancelDeletionBtn(), "Confirm deletion modal window is displayed after clicking \"Cancel\"");
     }
 
 
@@ -323,39 +360,72 @@ public class CustomersPage extends BasePage {
 
     //------------------------------ HELPERS --------------------------------//
 
+    @Step("Click \"Add New CC\" btn")
+    public void clickAddNewCCBtn() {
+        click( addNewCreditCardBtn() );
+    }
+
+    @Step("Click \"Edit\" btn next to <{0}th> credit card")
+    public void clickEditCCBtn(String index) {
+        click( editCreditCardBtn("1") );
+    }
+
+    @Step("Click \"Change\" next to billing address")
+    public void clickChangeBillAddressBtn() {
+        click( changeBillAddressBtn() );
+    }
+
     @Step("Add new credit card")
     public void fillOutNewCCForm(String holderName, String cardNumber, String cvv, String month, String year) {
-
-        setFieldVal(holderNameFld(), holderName);
-        setFieldVal_delayed(cardNumberFld(), cardNumber);
-        setFieldVal(cvvFld(), cvv);
+        setHolderName(holderName);
+        setCardNumber(cardNumber);
+        setCVV(cvv);
         setExpirationDate(month, year);
-
     }
 
-    @Step("Set expiration date: {0}/{1}")
-    public void setExpirationDate(String month, String year) {
-        click(monthDd());
-        click(monthVal(month));
-        click(yearDd());
-        click(yearVal(year));
-    }
+        @Step("Set \"Holder Name\" fld val to <{0}>")
+        public void setHolderName(String holderName) {
+            setFieldVal(holderNameFld(), holderName);
+        }
+
+        @Step("Set \"Card Number\" fld val to <{0}>")
+        private void setCardNumber(String cardNumber) {
+            setFieldVal_delayed(cardNumberFld(), cardNumber);
+        }
+
+        @Step("Set \"CVV\" fld val to <{0}>")
+        private void setCVV(String cvv) {
+            setFieldVal(cvvFld(), cvv);
+        }
+
+        @Step("Set expiration date to <{0}/{1}>")
+        public void setExpirationDate(String month, String year) {
+            setDdVal(monthDd(), month);
+            setDdVal(yearDd(), year);
+        }
 
     @Step("Add new billing address")
     public void addNewBillAddress(String name, String streetAddress1, String streetAddress2, String city, String state, String zipCode, String phoneNumber) {
-
-        click(newBillAddressBtn());
+        clickNewBillAddressBtn();
         addNewAddress(name, streetAddress1, streetAddress2, city, state, zipCode, phoneNumber);
-        click(saveBtn());
-        addressBook().shouldHaveSize(1);
-//                  "Failed to create a new address."
-        click( chooseBtn("1") );
+        clickSave();
+        shouldHaveSize(addressBook(), 1, "Failed to create a new address.");
+        chooseAddress("1");
         billName().shouldHave(text(name)
                 .because("Incorrect address seems to be set as a billing address; expected name: <" + name + ">, actual: <" + billName() + ">."));
-
     }
 
-    @Step
+        @Step("Click \"Add New Billing Address\" btn")
+        private void clickNewBillAddressBtn() {
+            click(newBillAddressBtn());
+        }
+
+        @Step("Choose <{0}th> address from the address book to set it as a billing address")
+        public void chooseAddress(String index) {
+            click(chooseBtn("1"));
+        }
+
+    @Step("Check if credit card is created")
     public void assertCardAdded(String customerName) {
         $(By.xpath("//dd[text()='" + customerName + "']")).shouldBe(visible
                 .because("Failed to create a new credit card."));
@@ -415,6 +485,28 @@ public class CustomersPage extends BasePage {
         return Double.valueOf(strVal.substring(1, strVal.length()));
     }
 
+    //--------------------------------- HELPERS -----------------------------//
+
+    @Step("Click 'Edit' btn next to \"Contact Info\"")
+    public void clickEditBtn_contactInfo() {
+        click( editBtn_contactInfo() );
+    }
+
+    @Step("Set contact info \"Phone Number\" fld val to <{0}>")
+    public void setPhoneNumber_contactInfo(String phoneNumber) {
+        setFieldVal( phoneNumberFld_contactInfo(), phoneNumber );
+    }
+
+    @Step("Set contact info \"Name\" fld val to <{0}>")
+    public void setName_contactInfo(String name) {
+        setFieldVal( nameFld_contactInfo(), name );
+    }
+
+    @Step("Set contact info \"Email\" fld val to <{0}>")
+    public void setEmail_contactInfo(String email) {
+        setFieldVal( emailFld_contactInfo(), email );
+    }
+
 
     //---------------------------- O R D E R S -------------------------------//
     //------------------------------ ELEMENTS --------------------------------//
@@ -429,12 +521,10 @@ public class CustomersPage extends BasePage {
 
     //------------------------------ HELPERS --------------------------------//
 
-    @Step("Get {1} parameter value of {0}-th order on the list.")
+    @Step("Get <{1}> parameter value of <{0}th> order on the list")
     public SelenideElement getOrderParamVal(int orderIndex, String paramName) {
-
         SelenideElement orderParamVal = null;
         waitForDataToLoad();
-
         switch (paramName) {
             case "Order":
                 orderParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + orderIndex + "]/td[2]"));
@@ -458,9 +548,7 @@ public class CustomersPage extends BasePage {
                 orderParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + orderIndex + "]/td[8]/span"));
                 break;
         }
-
         return orderParamVal;
-
     }
 
     @Step("Order list of orders by {0}")
@@ -610,10 +698,6 @@ public class CustomersPage extends BasePage {
         return $(By.xpath("//li[contains(@class, 'balances')]/div[text()='" + scVal + "']"));
     }
 
-    private SelenideElement yesBtn() {
-        return $(By.xpath("//span[contains(text(), 'Yes')]/.."));
-    }
-
     public SelenideElement transactionTab() {
         return $(By.xpath("//a[text()='Transaction']"));
     }
@@ -623,18 +707,47 @@ public class CustomersPage extends BasePage {
 
     //------------------------------ HELPERS --------------------------------//
 
-    @Step("Set SC type to {0}")
-    public void selectType(String typeName) {
-        click( scTypeDd() );
-        click( scTypeListItem(typeName) );
+    @Step("Navigate to \"Store Credits\" tab")
+    public void navToSCTab() {
+        click( storeCreditTab() );
     }
 
-    @Step("Get {1} parameter value of {0}-th store credit on the list.")
-    public SelenideElement getSCParamVal(String scIndex, String paramName) {
+    @Step("Navigate to \"Transactions\" tab")
+    public void navToTransactionTab() {
+        click( transactionTab() );
+    }
 
+    @Step("Click \"Issue Store Credit\" btn")
+    public void clickNewSCBtn() {
+        click( newSCBtn() );
+    }
+
+    @Step("Set \"Value\" fld val to <{0}>")
+    public void setValue(String value) {
+        setFieldVal( valueFld(), value );
+    }
+
+    @Step("Click \"Submit\"")
+    public void clickIssueSCButton() {
+        click( submitBtn() );
+        sleep(2000);
+    }
+
+    @Step("Set SC type to {0}")
+    public void selectType(String type) {
+        setDdVal(scTypeDd(), type);
+    }
+
+    @Step("Set \"Gift Card Number\" fld val to <{0}>")
+    public void setGCNumber(String gcCode) {
+        setFieldVal( gcNumberFld(), gcCode);
+        sleep(2000);
+    }
+
+    @Step("Get <{1}> parameter value of <{0}th> store credit on the list")
+    public SelenideElement getSCParamVal(String scIndex, String paramName) {
         SelenideElement scParamVal = null;
         waitForDataToLoad();
-
         switch (paramName) {
             case "Date/Time Issued":
                 scParamVal = $(By.xpath("//tbody[@class='fc-table-body']/tr[" + scIndex + "]/td[2]/time"));
@@ -661,31 +774,36 @@ public class CustomersPage extends BasePage {
                 scParamVal = $(By.xpath("//tbody/tr[" + scIndex + "]/td[9]/div/div[2]/div/span"));
                 break;
         }
-
         return scParamVal;
-
     }
 
-    @Step("Change 'State' of {0}th SC on the list to '{1}'")
-    public void setState(String scIndex, String state) {
-        click( scStateDd(scIndex) );
-        click( scStateListVal(state) );
-        click( yesBtn() );
+    @Step("Change \"State\" of {0}th SC on the list to <{1}>")
+    public void changeSet(String scIndex, String state) {
+        setState(scIndex, state);
+        clickYes();
     }
 
-    public void setState(String scIndex, String state,String reason) {
-        click( scStateDd(scIndex) );
-        click( scStateListVal(state) );
-        click( cancellationReason(reason) );
-        click( yesBtn() );
+        @Step("Set \"State\" dd val of <{0}th> SC on the list to <{1}>")
+        public void setState(String scIndex, String state) {
+            setDdVal(scStateDd(scIndex), state);
+        }
+
+    @Step("Change \"State\" of {0}th SC on the list to <{1}>")
+    public void changeSet(String scIndex, String state,String reason) {
+        setState(scIndex, state);
+        setCancellationReason(reason);
+        clickYes();
     }
 
-    @Step("Get {1} parameter value of {0}-th SC transaction on the list.")
+        @Step("Set cancellation reason to <{0}>")
+        public void setCancellationReason(String reason) {
+            click( cancellationReason(reason) );
+        }
+
+    @Step("Get <{1}> parameter value of <{0}th> SC transaction on the list")
     public SelenideElement getTransactionParamVal(String transactionIndex, String paramName) {
-
         SelenideElement transactionParamVal = null;
         waitForDataToLoad();
-
         switch (paramName) {
             case "Date/Time":
                 transactionParamVal = $(By.xpath("//tbody[@class='fc-table-body']/tr[" + transactionIndex + "]/td[2]/time"));
@@ -703,11 +821,6 @@ public class CustomersPage extends BasePage {
                 transactionParamVal = $(By.xpath("//tbody[@class='fc-table-body']/tr[" + transactionIndex + "]/td[6]/span"));
                 break;
         }
-
         return transactionParamVal;
-
     }
-
-
-
 }

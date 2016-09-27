@@ -6,7 +6,6 @@ import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.Keys;
 import ru.yandex.qatools.allure.annotations.Step;
 
-import static com.codeborne.selenide.Condition.enabled;
 import static com.codeborne.selenide.Selenide.*;
 import static org.openqa.selenium.By.xpath;
 
@@ -17,10 +16,6 @@ public class GeneralControlsPage extends BasePage {
 
     public SelenideElement filter(String filterTitle) {
         return $(xpath("//div[@title='" + filterTitle + "']"));
-    }
-
-    public SelenideElement removeFilterBtn(String filterTitle) {
-        return $(xpath("//div[@title='" + filterTitle + "']/a"));
     }
 
     private SelenideElement searchContextMenuBtn() {
@@ -68,41 +63,63 @@ public class GeneralControlsPage extends BasePage {
 
     //------------------------------ HELPERS ---------------------------------//
 
-    @Step("Select <{0}> option in search context menu.")
+    @Step("Set tab title to <{0}>")
+    public void setTabTitle(String title) {
+        tabTitleFld().setValue("Edited Name").pressEnter();
+    }
+
+    @Step("Select <{0}> in search context menu")
     public void searchContextMenu(String option) {
         sleep(3000);
-        searchContextMenuBtn().shouldBe(enabled);
-        click( searchContextMenuBtn() );
-        click( $(xpath("//li[text()='" + option + "']")) );
-        waitForDataToLoad();
+        shouldBeEnabled(searchContextMenuBtn(), "Failed to wait until searchContextMenuBtn() will become <enabled>");
+        click(searchContextMenuBtn());
+        click($(xpath("//li[text()='" + option + "']")));
         waitForDataToLoad();
         if (option.equals("Save New Search")) {
             tabTitleFld().pressEnter();
-            ordersCounter().click();
+            click(ordersCounter());
         }
     }
 
     @Step("Delete all search tabs")
     public void deleteAllSearchTabs() {
         for (int i = 0; i < tabs().size() - 1; i++) {
-            click(tabs().get(1));
+            openSecondSearchTab();
             searchContextMenu("Delete Search");
             waitForDataToLoad();
-            tabs().get(0).shouldBe(enabled);
+            shouldBeEnabled(tabs().get(0), "Failed to remove extra search tabs -- something went wrong");
         }
     }
 
+        @Step("Open 2nd search tab")
+        private void openSecondSearchTab() {
+            click(tabs().get(1));
+        }
+
     @Step("Switch to <{0}> search tab")
-    public void switchToTab(String tabTitle) {
-        tab(tabTitle).shouldBe(enabled);
-        click( tab(tabTitle) );
+    public void switchToTab(String title) {
+        shouldBeEnabled(tab(title), "Tab with <" + title + "> isn't enabled");
+        click(tab(title));
         waitForDataToLoad();
-        tab(tabTitle).shouldBe(enabled);
+        shouldBeEnabled(tab(title), "Tab with <" + title + "> isn't enabled");
     }
 
-    @Step("Remove filter {0}")
-    public void removeFilter(String filterTitle) {
-        removeFilterBtn(filterTitle).click();
+    @Step("Add <{0}> admin user to \"Shared With\" list")
+    public void shareSearchWith(String adminName) {
+        setFieldVal(inviteUsersFld(), adminName);
+        click(userName(adminName));
+        shouldBeEnabled(shareBtn(), "\"Share\" btn isn't re-enabled after it was clicked");
+    }
+
+    @Step("Remove <{0}> admin user from \"Shared With\" list")
+    public void unshareSearchWith(String adminName) {
+        click(removeAdminBtn(adminName));
+        shouldBeVisible(successIcon(), "\"Success\" msg isn't displayed.");
+    }
+
+    @Step("Click \"Share\"")
+    public void clickShare() {
+        click( shareBtn() );
     }
 
     //-------------------- SEARCH FIELD --------------------//

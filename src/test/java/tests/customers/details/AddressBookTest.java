@@ -12,7 +12,6 @@ import java.util.Objects;
 import static com.codeborne.selenide.CollectionCondition.sizeLessThan;
 import static com.codeborne.selenide.Condition.matchesText;
 import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.open;
 
 public class AddressBookTest extends DataProvider {
@@ -26,7 +25,7 @@ public class AddressBookTest extends DataProvider {
         if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
             LoginPage loginPage = open(adminUrl + "/login", LoginPage.class);
             loginPage.login("admin@admin.com", "password");
-            loginPage.userMenuBtn().shouldBe(visible);
+            shouldBeVisible(loginPage.userMenuBtn(), "Failed to log in");
         }
 }
 
@@ -49,10 +48,11 @@ public class AddressBookTest extends DataProvider {
         provideTestData("customer with a shipping address");
         p = open(adminUrl + "/customers/" + customerId, CustomersPage.class);
 
-        click( p.editAddressBtn("1") );
-        setFieldVal( p.nameFld(), "John Doe" );
+        p.clickEditAddressBtn("1");
+        p.setName("John Doe");
         p.assertStateIsntReset();
-        click( p.saveBtn() );
+        p.clickSave();
+
         p.nameFldVal("1").shouldHave(text("John Doe")
                 .because("Failed to edit name field; expected: <John Doe>, actual: <" + p.nameFldVal("1") + ">."));
 
@@ -64,10 +64,11 @@ public class AddressBookTest extends DataProvider {
         provideTestData("customer with a shipping address");
         p = open(adminUrl + "/customers/" + customerId, CustomersPage.class);
 
-        click( p.editAddressBtn("1") );
-        setFieldVal( p.address1Fld(), "2525 Narrow Ave" );
+        p.clickEditAddressBtn("1");
+        p.setAddress1("2525 Narrow Ave");
         p.assertStateIsntReset();
-        click( p.saveBtn() );
+        p.clickSave();
+
         p.address1FldVal("1").shouldHave(text("2525 Narrow Ave")
                 .because("Failed to edit address1 field; expected: <2525 Narrow Ave>, actual: <" + p.address1FldVal("1") + ">."));
 
@@ -79,10 +80,11 @@ public class AddressBookTest extends DataProvider {
         provideTestData("customer with a shipping address");
         p = open(adminUrl + "/customers/" + customerId, CustomersPage.class);
 
-        click( p.editAddressBtn("1") );
-        setFieldVal( p.address2Fld(), "Suite 300" );
+        p.clickEditAddressBtn("1");
+        p.setAddress2("Suite 300");
         p.assertStateIsntReset();
-        click( p.saveBtn() );
+        p.clickSave();
+
         p.address2FldVal("1").shouldHave(text("Suite 300")
                 .because("Failed to edit address1 field; expected: <Suite 300>, actual: <" + p.address2FldVal("1") + ">."));
 
@@ -94,10 +96,11 @@ public class AddressBookTest extends DataProvider {
         provideTestData("customer with a shipping address");
         p = open(adminUrl + "/customers/" + customerId, CustomersPage.class);
 
-        click( p.editAddressBtn("1") );
-        setFieldVal( p.cityFld(), "New York" );
+        p.clickEditAddressBtn("1");
+        p.setCity("New York");
         p.assertStateIsntReset();
-        click( p.saveBtn() );
+        p.clickSave();
+
         p.cityFldVal("1").should(matchesText("New York")
                 .because("Failed to edit city field; expected: <New York>, actual: <" + p.cityFldVal("1") + ">."));
 
@@ -109,10 +112,11 @@ public class AddressBookTest extends DataProvider {
         provideTestData("customer with a shipping address");
         p = open(adminUrl + "/customers/" + customerId, CustomersPage.class);
 
-        click( p.editAddressBtn("1") );
+        p.clickEditAddressBtn("1");
         p.setState("New York");
         p.assertStateIsntReset();
-        click( p.saveBtn() );
+        p.clickSave();
+
         p.stateVal("1").shouldHave(text("New York")
                 .because("Failed to edit state dd value; expected: <New York>, actual: " + p.stateVal("1") + ">."));
 
@@ -124,13 +128,13 @@ public class AddressBookTest extends DataProvider {
         provideTestData("customer with a shipping address");
         p = open(adminUrl + "/customers/" + customerId, CustomersPage.class);
 
-        click( p.editAddressBtn("1") );
-        setFieldVal( p.zipFld(), "10001" );
+        p.clickEditAddressBtn("1");
+        p.setZip("10001");
         p.assertStateIsntReset();
-        click( p.saveBtn() );
+        p.clickSave();
 
         p.zipFldVal("1").shouldHave(text("10001")
-                .because("Failed to edit zip field; expected: <10001>, actual: <" + p.zipFldVal("1") + ">."));
+                .because("Failed to edit zip field; expected: <10001>, actual: <" + p.zipFldVal("1").text() + ">."));
 
     }
 
@@ -140,11 +144,11 @@ public class AddressBookTest extends DataProvider {
         provideTestData("customer with a shipping address");
         p = open(adminUrl + "/customers/" + customerId, CustomersPage.class);
 
-        click( p.editAddressBtn("1") );
+        p.clickEditAddressBtn("1");
         clearField( p.phoneNumberFld() );
-        setFieldVal_delayed( p.phoneNumberFld(), "5551237575" );
+        p.setPhoneNumber("5551237575");
         p.assertStateIsntReset();
-        click( p.saveBtn() );
+        p.clickSave();
 
         p.phoneNumberFldVal("1").shouldHave(text("(555) 123-7575")
                 .because("Failed to edit phone number in existing address at address book."));
@@ -156,12 +160,13 @@ public class AddressBookTest extends DataProvider {
 
         provideTestData("customer with a shipping address");
         p = open(adminUrl + "/customers/" + customerId, CustomersPage.class);
+        shouldBeVisible( p.deleteAddressBtn("1"), "Address book seems to be empty" );
+        int initAddressBookSize = p.addressBook().size();
 
-        elementIsVisible( p.deleteAddressBtn("1") );
-        int initialAddressBookSize = p.addressBook().size();
-        click( p.deleteAddressBtn("1") );
+        p.deleteAddress("1");
         p.confirmDeletion();
-        p.addressBook().shouldHave(sizeLessThan(initialAddressBookSize));
+
+        p.addressBook().shouldHave(sizeLessThan(initAddressBookSize));
 
     }
 

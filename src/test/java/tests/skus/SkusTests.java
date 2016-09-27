@@ -19,14 +19,12 @@ public class SkusTests extends DataProvider {
 
     @BeforeClass(alwaysRun = true)
     public void setUp() {
-
         open(adminUrl);
         if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
             LoginPage loginPage = open(adminUrl + "/login", LoginPage.class);
             loginPage.login("admin@admin.com", "password");
-            loginPage.userMenuBtn().shouldBe(visible);
+            shouldBeVisible(loginPage.userMenuBtn(), "Failed to log in");
         }
-
     }
 
     @Test(priority = 1)
@@ -35,12 +33,11 @@ public class SkusTests extends DataProvider {
         p = open(adminUrl + "/skus", SkusPage.class);
         String randomId = generateRandomID();
 
-        click( p.addNewSKUBtn() );
+        p.clickAddNewSKU();
         p.createNewSKU(randomId, "Active");
         p.clickSave();
-        p.skuCodeVal().shouldHave(text("SKU-" + randomId)
-                .because("Failed to create new SKU."));
-        click( p.sideMenu("SKUs") );
+        shouldHaveText(p.skuCodeVal(), "SKU-" + randomId, "Failed to create new SKU");
+        p.sideMenu("SKUs");
         p.waitForDataToLoad();
 
         p.search(randomId);
@@ -56,7 +53,7 @@ public class SkusTests extends DataProvider {
         p = open(adminUrl + "/skus/" + sku, SkusPage.class);
 
         p.addCustomProp("Text", "text fld");
-        setFieldVal( p.customTextFld("text fld"), "test val" );
+        p.setCustomProp_text("text fld", "test val");
         p.clickSave();
         refresh();
 
@@ -72,11 +69,11 @@ public class SkusTests extends DataProvider {
         p = open(adminUrl + "/skus/" + sku, SkusPage.class);
 
         p.addCustomProp("Rich Text", "richText fld");
-        p.customRichTextFld().val("test val");
+        p.setCustomProp_richText("richText fld", "test val");
         p.clickSave();
         refresh();
 
-        p.customRichTextFld().shouldHave(text("test val")
+        p.customRichTextFld("richText fld").shouldHave(text("test val")
                 .because("Customer property isn't saved."));
 
     }
@@ -87,13 +84,14 @@ public class SkusTests extends DataProvider {
         provideTestData("active SKU");
         p = open(adminUrl + "/skus/" + sku, SkusPage.class);
 
-        setFieldVal( p.titleFld(), "Edited SKU Title" );
+        p.setTitle("Edited SKU Title");
         p.clickSave();
-        click( p.sideMenu("SKUs") );
+        p.sideMenu("SKUs");
 
+        // seraches for SKU by its uid
         p.search( sku.substring(4, sku.length()) );
-        p.getSKUParamVal("1", "Title").shouldHave(text("Edited SKU Title")
-                .because("SKU title isn't updated on the list."));
+        shouldHaveText(p.getSKUParamVal("1", "Title"), "Edited SKU Title",
+                "SKU title isn't updated on the list.");
         p.openSKU(sku);
 
         p.titleFld().shouldHave(value("Edited SKU Title")
@@ -107,9 +105,9 @@ public class SkusTests extends DataProvider {
         provideTestData("active SKU");
         p = open(adminUrl + "/skus/" + sku, SkusPage.class);
 
-        setFieldVal( p.upcFld(), "Edited UPC" );
+        p.setUpc("Edited UPC");
         p.clickSave();
-        click( p.sideMenu("SKUs") );
+        p.sideMenu("SKUs");
         p.search( sku.substring(4, sku.length()) );
         p.openSKU(sku);
 
@@ -125,9 +123,9 @@ public class SkusTests extends DataProvider {
         p = open(adminUrl + "/skus/" + sku, SkusPage.class);
 
         clearField( p.descriptionFld() );
-        setFieldVal( p.descriptionFld(), "Edited description" );
+        p.setDescription("Edited description");
         p.clickSave();
-        click( p.sideMenu("SKUs") );
+        p.sideMenu("SKUs");
         p.search( sku.substring(4, sku.length()) );
         p.openSKU(sku);
 
@@ -136,15 +134,18 @@ public class SkusTests extends DataProvider {
 
     }
 
+    /*
+     * Split test into 2: PDP and category checks
+     */
     @Test(priority = 7)
     public void editRetailPrice() throws IOException {
 
         provideTestData("active SKU");
         p = open(adminUrl + "/skus/" + sku, SkusPage.class);
 
-        setFieldVal( p.retailPriceFld(), "70.00" );
+        p.setRetailPrice("70.00");
         p.clickSave();
-        click( p.sideMenu("SKUs") );
+        p.sideMenu("SKUs");
         p.search( sku.substring(4, sku.length()) );
         p.getSKUParamVal("1", "Retail Price").shouldHave(text("70.00")
                 .because("Retail price isn't updated on the list."));
@@ -161,12 +162,11 @@ public class SkusTests extends DataProvider {
         provideTestData("active SKU");
         p = open(adminUrl + "/skus/" + sku, SkusPage.class);
 
-        setFieldVal( p.salePriceFld(), "70.00" );
+        p.setSalePrice("70.00");
         p.clickSave();
-        click( p.sideMenu("SKUs") );
+        p.sideMenu("SKUs");
         p.search( sku.substring(4, sku.length()) );
-        p.getSKUParamVal("1", "Sale Price").shouldHave(text("70.00")
-                .because("Sale price isn't updated on the list."));
+        shouldHaveText(p.getSKUParamVal("1", "Sale Price"), "70.00", "Sale price isn't updated on the list.");
         p.openSKU(sku);
 
         p.salePriceFld().shouldHave(value("70.00")
@@ -183,6 +183,7 @@ public class SkusTests extends DataProvider {
         p.setState("Inactive");
         p.clickSave();
         click( p.sideMenu("SKUs") );
+        p.sideMenu("SKUs");
         p.search( sku.substring(4, sku.length()) );
         p.openSKU(sku);
 
@@ -209,13 +210,13 @@ public class SkusTests extends DataProvider {
         p = open(adminUrl + "/skus", SkusPage.class);
 
         click( p.addNewSKUBtn() );
-        setFieldVal( p.skuFld(), sku );
-        setFieldVal( p.titleFld(), "Test Title" );
-        setFieldVal( p.upcFld(), "Test UPC" );
-        p.descriptionFld().val("Just another test SKU.");
-        setFieldVal( p.retailPriceFld(), "50.00" );
-        setFieldVal( p.salePriceFld(), "32.00" );
-        setFieldVal( p.unitCostFld(), "32.00" );
+        p.setSKUCode( sku );
+        p.setTitle("Test Title");
+        p.setUpc("Test UPC");
+        p.setDescription("Just another test SKU.");
+        p.setRetailPrice("50.00");
+        p.setSalePrice("32.00");
+        p.setUnitCost("32.00");
         p.clickSave();
 
         p.skuFld().shouldNotBe(empty
@@ -232,6 +233,4 @@ public class SkusTests extends DataProvider {
                 .because("'Unit Price' field is empty - probably form has been blanked."));
 
     }
-
-
 }

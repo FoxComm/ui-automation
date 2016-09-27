@@ -5,10 +5,11 @@ import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.By;
 import ru.yandex.qatools.allure.annotations.Step;
 
-import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 
 public class StorefrontCategoryPage extends BasePage {
+
+    //------------------------------ ELEMENTS --------------------------------//
 
     private SelenideElement itemsOnList_s() {
         return $(By.xpath("//div[contains(@class, 'list-item')]"));
@@ -48,19 +49,27 @@ public class StorefrontCategoryPage extends BasePage {
         return $(By.xpath("//div[text()='No products found.']"));
     }
 
+
+    //------------------------------- HELPERS --------------------------------//
+
+    @Step("Open product with title <{0}> on the category list")
+    public void openProduct(String prodTitle) {
+        click(product(prodTitle));
+    }
+
     @Step("Wait for search output ot load.")
     public void waitForSearchResultsToLoad() {
-        searchResult().shouldBe(visible.because("Search gave no results."));
+        shouldBeVisible(searchResult(), "Search gave no results");
     }
 
     @Step("Wait for data on the list to be loaded.")
     public void waitForDataToLoad_sf() {
-        itemsOnList_s().shouldBe(visible.because("'No products found.' message is displayed."));
+        shouldBeVisible(itemsOnList_s(), "\"No products found.\" message is displayed.");
     }
 
     public void search(String productName) {
-        click( searchBtn() );
-        setFieldVal( searchFld(), productName );
+        click(searchBtn());
+        setFieldVal(searchFld(), productName);
         searchFld().pressEnter();
     }
 
