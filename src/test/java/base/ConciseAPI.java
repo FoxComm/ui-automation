@@ -4,6 +4,9 @@ import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.ex.ElementNotFound;
+import com.codeborne.selenide.ex.ElementShould;
+import com.codeborne.selenide.ex.ElementShouldNot;
+import com.codeborne.selenide.ex.ListSizeMismatch;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
@@ -112,7 +115,11 @@ public class ConciseAPI extends Configuration {
     protected void shouldBeVisible(SelenideElement element, String errorMsg) {
         try {
             element.shouldBe(visible);
-        } catch (ElementNotFound e) {
+        } catch (ElementNotFound enf) {
+            System.err.println(enf.getStackTrace());
+            enf.printStackTrace();
+            throw new RuntimeException(errorMsg);
+        } catch (ElementShouldNot e) {
             System.err.println(e.getStackTrace());
             e.printStackTrace();
             throw new RuntimeException(errorMsg);
@@ -122,7 +129,11 @@ public class ConciseAPI extends Configuration {
     protected void shouldNotBeVisible(SelenideElement element, String errorMsg) {
         try {
             element.shouldNotBe(visible);
-        } catch (ElementNotFound e) {
+        } catch (ElementNotFound enf) {
+            System.err.println(enf.getStackTrace());
+            enf.printStackTrace();
+            throw new RuntimeException(errorMsg);
+        } catch (ElementShouldNot e) {
             System.err.println(e.getStackTrace());
             e.printStackTrace();
             throw new RuntimeException(errorMsg);
@@ -132,7 +143,11 @@ public class ConciseAPI extends Configuration {
     protected void shouldBeEnabled(SelenideElement element, String errorMsg) {
         try {
             element.shouldBe(enabled);
-        } catch (ElementNotFound e) {
+        } catch (ElementNotFound enf) {
+            System.err.println(enf.getStackTrace());
+            enf.printStackTrace();
+            throw new RuntimeException(errorMsg);
+        } catch (ElementShould e) {
             System.err.println(e.getStackTrace());
             e.printStackTrace();
             throw new RuntimeException(errorMsg);
@@ -142,7 +157,11 @@ public class ConciseAPI extends Configuration {
     protected void shouldNotExist(SelenideElement element, String errorMsg) {
         try {
             element.shouldNot(exist);
-        } catch (ElementNotFound e) {
+        } catch (ElementNotFound enf) {
+            System.err.println(enf.getStackTrace());
+            enf.printStackTrace();
+            throw new RuntimeException(errorMsg);
+        } catch (ElementShouldNot e) {
             System.err.println(e.getStackTrace());
             e.printStackTrace();
             throw new RuntimeException(errorMsg);
@@ -153,12 +172,15 @@ public class ConciseAPI extends Configuration {
         try {
             actualValue = element.getValue();
             element.shouldHave(attribute("value", expValue));
-        // must be different exception
-        } catch (ElementNotFound e) {
-            System.err.println(e.getStackTrace());
-            e.printStackTrace();
+        } catch (ElementNotFound enf) {
+            System.err.println(enf.getStackTrace());
+            enf.printStackTrace();
             throw new RuntimeException(errorMsg +
                     "\nExpected: [" + expValue + "], Actual: [" + actualValue + "].");
+        } catch (ElementShould e) {
+            System.err.println(e.getStackTrace());
+            e.printStackTrace();
+            throw new RuntimeException(errorMsg);
         }
     }
 
@@ -166,12 +188,15 @@ public class ConciseAPI extends Configuration {
         try {
             actualValue = element.getText();
             element.shouldHave(text(expValue));
-            // must be different exception
-        } catch (ElementNotFound e) {
-            System.err.println(e.getStackTrace());
-            e.printStackTrace();
+        } catch (ElementNotFound enf) {
+            System.err.println(enf.getStackTrace());
+            enf.printStackTrace();
             throw new RuntimeException(errorMsg +
                     "\nExpected: [" + expValue + "], Actual: [" + actualValue + "].");
+        } catch (ElementShould es) {
+            System.err.println(es.getStackTrace());
+            es.printStackTrace();
+            throw new RuntimeException(errorMsg);
         }
     }
 
@@ -180,11 +205,15 @@ public class ConciseAPI extends Configuration {
             actualValue = element.getText();
             element.shouldNotHave(text(expValue));
             // must be different exception
-        } catch (ElementNotFound e) {
-            System.err.println(e.getStackTrace());
-            e.printStackTrace();
+        } catch (ElementNotFound enf) {
+            System.err.println(enf.getStackTrace());
+            enf.printStackTrace();
             throw new RuntimeException(errorMsg +
                     "\nExpected: [" + expValue + "], Actual: [" + actualValue + "].");
+        } catch (ElementShouldNot e) {
+            System.err.println(e.getStackTrace());
+            e.printStackTrace();
+            throw new RuntimeException(errorMsg);
         }
     }
 
@@ -193,7 +222,12 @@ public class ConciseAPI extends Configuration {
             actualSize = collection.size();
             collection.shouldHaveSize(expValue);
             // must be different exception
-        } catch (ElementNotFound e) {
+        } catch (ElementNotFound enf) {
+            System.err.println(enf.getStackTrace());
+            enf.printStackTrace();
+            throw new RuntimeException(errorMsg +
+                    "\nExpected: [" + expValue + "], Actual: [" + actualSize + "].");
+        } catch (ListSizeMismatch e) {
             System.err.println(e.getStackTrace());
             e.printStackTrace();
             throw new RuntimeException(errorMsg +
