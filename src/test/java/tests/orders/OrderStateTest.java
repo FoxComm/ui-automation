@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.util.Objects;
 
 import static com.codeborne.selenide.Condition.matchesText;
-import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.open;
 
 public class OrderStateTest extends DataProvider {
@@ -24,7 +23,7 @@ public class OrderStateTest extends DataProvider {
         if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
             LoginPage loginPage = open(adminUrl + "/login", LoginPage.class);
             loginPage.login("admin@admin.com", "password");
-            loginPage.userMenuBtn().shouldBe(visible);
+            shouldBeVisible(loginPage.userMenuBtn(), "Failed to log in");
         }
 
     }
@@ -92,10 +91,8 @@ public class OrderStateTest extends DataProvider {
 
         click( p.addTimeBtn() );
         p.setOrderState("Manual Hold");
-        p.assertOrderState("Manual Hold");
         p.setOrderState("Remorse Hold");
 
-        p.assertOrderState("Remorse Hold");
         p.assertTimerValue(0, 29);
 
     }

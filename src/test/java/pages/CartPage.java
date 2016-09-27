@@ -5,15 +5,15 @@ import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import ru.yandex.qatools.allure.annotations.Step;
 
-import java.util.List;
-
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
 import static org.openqa.selenium.By.xpath;
 
 public class CartPage extends BasePage {
 
-    //--------------------------------------- ELEMENTS ---------------------------------------//
+    //------------------------ G E N E R A L    C O N T R O L S ------------------------//
+    //----------------------------------------------------------------------------------//
+    //----------------------------------- ELEMENTS -------------------------------------//
 
     public SelenideElement cartSummary() {
         return $(xpath("//div[text()='Cart Summary']"));
@@ -80,37 +80,37 @@ public class CartPage extends BasePage {
 
     //---------------------------------------- HELPERS ----------------------------------------//
 
-    @Step("Assert that order doesn't have any warnings.")
-    public void assertNoWarnings() {
-
-        assertNoShipAddressWarn();
-        assertNoShipMethod();
-        assertNoFundsWarn();
-        assertNoFundsWarn();
-
+    @Step("Click \"Place Order\" btn")
+    public void clickPlaceOderBtn() {
+        click( placeOrderBtn() );
     }
 
-        @Step("Assert that 'Cart is empty' warning isn't displayed")
-        public void assertNoCartWarn() {
-            cartWarn().shouldNotBe(visible
-                    .because("'Cart is empty' warning is displayed."));
+    @Step("Assert that order doesn't have any warnings.")
+    public void assertNoWarnings() {
+        assertNoCartWarn();
+        assertNoShipAddressWarn();
+        assertNoShipMethodWarn();
+        assertNoFundsWarn();
+    }
+
+        @Step("Assert that \"Cart is empty\" warning isn't displayed")
+        private void assertNoCartWarn() {
+            shouldNotBeVisible(cartWarn(), "'Cart is empty' warning is displayed.");
         }
 
-        @Step("Assert that 'No shipping address' warning isn't displayed")
-        public void assertNoShipAddressWarn() {
-            shipAddressWarn().shouldNotBe(visible
-                    .because("'No shipping address' warning is displayed."));
+        @Step("Assert that \"No shipping address\" warning isn't displayed")
+        private void assertNoShipAddressWarn() {
+            shouldNotBeVisible(shipAddressWarn(), "'No shipping address' warning is displayed.");
         }
 
-        @Step("Assert that 'No shipping method' warning isn't displayed")
-        public void assertNoShipMethod() {
-            shipMethodWarn().shouldNotBe(visible.because("'No shipping method' warning is displayed."));
+        @Step("Assert that \"No shipping method\" warning isn't displayed")
+        private void assertNoShipMethodWarn() {
+            shouldNotBeVisible(shipMethodWarn(), "'No shipping method' warning is displayed.");
         }
 
-        @Step("Assert that 'Insufficient funds' warning isn't displayed")
-        public void assertNoFundsWarn() {
-            fundsWarn().shouldNotBe(visible
-                    .because("'Insufficient funds' warning is displayed." ));
+        @Step("Assert that \"Insufficient funds\" warning isn't displayed")
+        private void assertNoFundsWarn() {
+            shouldNotBeVisible(fundsWarn(), "'Insufficient funds' warning is displayed.");
         }
 
     //------------------------ I T E M S    B L O C K ------------------------//
@@ -123,7 +123,7 @@ public class CartPage extends BasePage {
 
     public SelenideElement itemQty(String itemIndex) {
 
-//        if (isItemsInEditMode()) {
+//        if (itemsInEditMode()) {
 //            clickDoneBtn_items();
 //        }
 
@@ -184,50 +184,64 @@ public class CartPage extends BasePage {
 
 
     //------------------------------- HELPERS --------------------------------//
+    //------------------------------------------------------------------------//
+    //-------------------------------- ITEMS ---------------------------------//
 
+    @Step("Click \"Edit\" at \"Items\" block")
     public void clickEditBtn_items() {
         click( editBtn_items() );
-        elementIsVisible( doneBtn_items() );
+        shouldBeVisible( doneBtn_items(), "Items 'Done' btn isn't visible - failed to enter editing mode." );
     }
 
-    @Step("Apply changes to 'Items' block")
+    @Step("Click \"Done\" at \"Items\" block")
     public void clickDoneBtn_items() {
         click( doneBtn_items() );
-        doneBtn_items().shouldNot(visible);
+        shouldNotBeVisible(doneBtn_items(), "'Done' btn is visible (it shouldn't)");
     }
 
-    @Step("Add item to cart, searchQuary: {0}")
+    @Step("Add item to cart, searchQuery: {0}")
     public void addItemToCart(String searchQuery) {
 
-        if ( !(isItemsInEditMode()) ) {
+        if ( !(itemsInEditMode()) ) {
             clickEditBtn_items();
         }
-        lineItemSearchFld().shouldBe(visible);
+        shouldBeVisible(lineItemSearchFld(),
+                "Failed to enter 'Edit' mode for line items");
         // itemIndex - index of a to be added item
         // it makes this test less dependent on initial itemsInCartAmount value when it comes to 1st assertion in this method
         String itemIndex = String.valueOf(itemsInCartAmount() + 1);
 
-        lineItemSearchFld().setValue(searchQuery);
-        lineItemSearchView_byName(searchQuery).click();
+        searchForItem(searchQuery);
+        addFoundItem(searchQuery);
         lineItem_byName(searchQuery).shouldBe(visible
-                .because("Failed to find line item using query: <" + searchQuery + ">"));
+                .because("Failed to add line, used search query: <" + searchQuery + ">"));
         clickDoneBtn_items();
         lineItem_byName(searchQuery).shouldBe(visible
                 .because("Line item isn't displayed after clicking 'Done' btn."));
 
     }
 
+    @Step("Set \"Search\" field val to <{0}>")
+    private void searchForItem(String searchQuery) {
+        setFieldVal(lineItemSearchFld(), searchQuery);
+    }
+
+    @Step("Click <{0}> in search view")
+    private void addFoundItem(String searchQuery) {
+        click(lineItemSearchView_byName(searchQuery));
+    }
+
     @Step("Confirm item deletion")
     public void confirmDeletion() {
-        confirmDeletionBtn().click();
-        confirmDeletionBtn().shouldNotBe(visible);
+        click(confirmDeletionBtn());
+        shouldNotBeVisible(confirmDeletionBtn(), "Confirmation modal window isn't auto-hidden");
 //        sleep(2000);
     }
 
     @Step("Cancel item deletion")
     public void cancelDeletion() {
-        cancelDeletionBtn().click();
-        cancelDeletionBtn().shouldNotBe(visible);
+        click(cancelDeletionBtn());
+        shouldNotBeVisible(cancelDeletionBtn(), "Confirmation modal window isn't auto-hidden");
 //        sleep(2000);
     }
 
@@ -236,7 +250,7 @@ public class CartPage extends BasePage {
         int expectedItemsAmount = cart().size() - 1;
         System.out.println("Deleting items... expectedItemsAmount: " + expectedItemsAmount);
 
-        if ( !(isItemsInEditMode()) ) {
+        if ( !(itemsInEditMode()) ) {
             clickEditBtn_items();
         }
 
@@ -251,7 +265,7 @@ public class CartPage extends BasePage {
     @Step("Remove all items from cart")
     public void clearCart() {
 
-        if ( !(isItemsInEditMode()) ) {
+        if ( !(itemsInEditMode()) ) {
             clickEditBtn_items();
         }
 
@@ -266,86 +280,92 @@ public class CartPage extends BasePage {
 
     }
 
-    @Step
     public String getItemName(String index) {
         return lineItem_byName(index).getText();
     }
 
-    @Step
-    private boolean isItemsInEditMode() {
+    private boolean itemsInEditMode() {
         return doneBtn_items().isDisplayed();
     }
 
-    @Step
+    @Step("Increase {0}th item in cart qty by {1}")
     public void increaseItemQty(String itemIndex, int increaseBy) {
-
 //        if ( !(doneBtn_items().is(visible)) ) {
 //            clickEditBtn_items();
 //        }
-
         int initialQty = Integer.valueOf(itemQtyInputFld(itemIndex).getValue());
         for (int i = 0; i < increaseBy; i++) {
             String expectedValue = String.valueOf(initialQty + 1);
-            increaseItemQtyBtn(itemIndex).click();
+            clickIncreaseQty(itemIndex);
             sleep(750);
-            itemQtyInputFld(itemIndex).shouldHave(attribute("value", expectedValue));
+            shouldHaveValue(itemQtyInputFld(itemIndex), expectedValue,
+                    "Item QTY input field has incorrect value");
             initialQty += 1;
         }
-
     }
 
-    @Step
-    public void decreaseItemQty(String itemIndex, int decreaseBy) {
+    @Step("Click increase quantity btn")
+    private void clickIncreaseQty(String itemIndex) {
+        click(increaseItemQtyBtn(itemIndex));
+    }
 
+    @Step("Decrease <{0}th> line item QTY by <{1}>")
+    public void decreaseItemQty(String itemIndex, int decreaseBy) {
 //        if ( !(doneBtn_items().is(visible)) ) {
 //            clickEditBtn_items();
 //        }
-
         int initialQty = Integer.valueOf(itemQtyInputFld(itemIndex).getValue());
         for (int i = 0; i < decreaseBy; i++) {
             String expectedValue = String.valueOf(initialQty - 1);
-            decreaseItemQtyBtn(itemIndex).click();
+            clickDecreaseQty(itemIndex);
             sleep(750);
             if (Integer.valueOf(expectedValue) == 0) {
                 confirmDeletionBtn().shouldBe(visible
                         .because("'Confirm deletion' modal window doesn't appear after item quantity is decreased to '0'."));
             } else {
-                itemQtyInputFld(itemIndex).shouldHave(attribute("value", expectedValue));
+                shouldHaveValue(itemQtyInputFld(itemIndex), expectedValue,
+                        "Item QTY input field has incorrect value");
                 initialQty -= 1;
             }
-
         }
-
     }
 
-    @Step
-    public void decreaseItemQtyBelowZero(String itemIndex) {
+    @Step("Click \"Decrease Quantity\" btn")
+    private void clickDecreaseQty(String itemIndex) {
+        click(decreaseItemQtyBtn(itemIndex));
+    }
 
+    public void decreaseItemQtyBelowZero(String itemIndex) {
         int decreaseBy =  Integer.valueOf(itemQtyInputFld("1").getValue());
         System.out.println("decreaseBy" + decreaseBy);
 
         decreaseItemQty(itemIndex, decreaseBy);
-        confirmDeletionBtn().shouldBe(visible);
-
+        shouldBeVisible(confirmDeletionBtn(), "'Confirm' modal window isn't displayed");
     }
 
-    @Step
+    @Step("Edit QTY of <{0}th> line item using input fld; <newQTY:{1}>")
     public void editItemQty(String itemIndex, String newQuantity) {
-
-        if ( !(isItemsInEditMode()) ) {
+        if ( !(itemsInEditMode()) ) {
             clickEditBtn_items();
         }
-
-        itemQtyInputFld(itemIndex).setValue(newQuantity);
+        setLineItemQty(itemIndex, newQuantity);
         clickDoneBtn_items();
-
     }
+
+        @Step("Set line item QTY to <{0}> using direct input")
+        public void setLineItemQty(String index, String qty) {
+            setFieldVal(itemQtyInputFld(index), qty);
+        }
 
 
 
     //------------------- S H I P P I N G    A D D R E S S -------------------//
     //------------------------------------------------------------------------//
     //------------------------------ ELEMENTS --------------------------------//
+
+    public SelenideElement customerName_chosenShipAddress() {
+        return $(xpath(".//ul[@class='fc-addresses-list']/li/div[3]/div/ul/li[1]"));
+    }
 
     public SelenideElement editBtn_shipAddress() {
         return $(xpath("//div[contains(@class, 'shipping-address')]/header/div[2]/button"));
@@ -443,10 +463,6 @@ public class CartPage extends BasePage {
         return $(xpath("//input[@name='phoneNumber']"));
     }
 
-    private SelenideElement saveBtn_addressForm() {
-        return $(xpath("//span[text()='Save']/.."));
-    }
-
     private SelenideElement cancelBtn_addressForm() {
         return $(xpath("//a[text()='Cancel']"));
     }
@@ -458,23 +474,25 @@ public class CartPage extends BasePage {
 
     //------------------------------- HELPERS --------------------------------//
 
-    public SelenideElement customerName_chosenShipAddress() {
-        return $(xpath(".//ul[@class='fc-addresses-list']/li/div[3]/div/ul/li[1]"));
-    }
-
-    @Step
+    @Step("Click \"Edit\" btn at chosen shipping address")
     public void clickEditBtn_chosenAddress() {
-        deleteBtn_chosenAddress().click();       // ?????
-        nameFld().shouldBe(visible);
+        click(deleteBtn_chosenAddress());
     }
 
-    @Step
-    public void applyChangesToAddress() {
-        click( saveBtn_addressForm() );
-        elementNotVisible( nameFld() );
+    @Step("Click \"Delete\" btn at chosen shipping address")
+    public void removeChosenAddress() {
+        click( deleteBtn_chosenAddress() );
+        click( confirmDeletionBtn() );
     }
 
-    @Step
+    @Step("Click \"Done\" at 'Shipping Address' block")
+    public void clickDoneBtn_shipAddress() {
+        click( doneBtn_shipAddress() );
+        shouldNotBeVisible(nameFld(),
+                "'New Address' form isn't closed after clicking 'Save'");
+    }
+
+    @Step("Choose existing shipping address")
     public void chooseShipAddress(int addressIndex) {
 
         String expectedResult = nameOnAddressCard(addressIndex).text();
@@ -485,45 +503,84 @@ public class CartPage extends BasePage {
 
     }
 
-    @Step
-    public void addNewAddress(String name, String streetAddress, String streetAddress2, String city, String state, String zipCode, String phoneNumber) {
+    @Step("Set <{0}th> shipping address as default")
+    public void setAddressAsDefault(String addressIndex) {
+        click( defaultShipAddressChkbox(addressIndex) );
+    }
 
-        click( addNewAddressBtn() );
-        setFieldVal( nameFld(), name );
-        setFieldVal( address1Fld(), streetAddress );
-        setFieldVal( address2Fld(), streetAddress2 );
+    @Step("Add new shipping address")
+    public void addNewAddress(String name, String streetAddress1, String streetAddress2, String city, String state, String zipCode, String phoneNumber) {
+
+        clickNewAddressBtn();
+        setName(name);
+        setAddress1(streetAddress1);
+        setAddress2(streetAddress2);
         setFieldVal( cityFld(), city );
+        setCity(city);
         setState(state);
-        setFieldVal( zipCodeFld(), zipCode );
-        setFieldVal_delayed( phoneNumberFld(), phoneNumber );
+        setZip(zipCode);
+        setPhoneNumber(phoneNumber);
         // assertion for a known bug
         assertStateIsntReset();
-        click( saveBtn_addressForm() );
+        clickSave();
         // wait till changes in address book will be displayed - customer name on any address should be visible
-        elementIsVisible( $(xpath("//li[@class='name']")).shouldBe(visible) );
+        shouldBeVisible( $(xpath("//li[@class='name']")),
+                "'New shipping address' form isn't closed after clicking 'Save'" );
 
     }
 
-    private void assertStateIsntReset() {
-        stateDd().shouldNotHave(text("- Select -")
-                .because("'State' is reset to default value"));
-    }
+        @Step("Click \"Add New Address\" button")
+        private void clickNewAddressBtn() {
+            click( addNewAddressBtn() );
+        }
 
-    // Will deprecate once we'll switch from custom to normal dropdowns.
-    @Step
-    private void setState(String state) {
-        click( stateDd() );
-        click( stateDdValue(state) );
-    }
+        @Step("Set \"Name\" fld vla to <{0}>")
+        public void setName(String name) {
+            setFieldVal( nameFld(), name );
+        }
 
-    @Step
+        @Step("Set \"Address 1\" fld val to <{0}>")
+        private void setAddress1(String streetAddress1) {
+            setFieldVal( address1Fld(), streetAddress1 );
+        }
+
+        @Step("Set \"Address\" fld val to <{0}>")
+        private void setAddress2(String streetAddress2) {
+            setFieldVal( address2Fld(), streetAddress2 );
+        }
+
+        @Step("Set \"City\" fld val to <{0}>")
+        private void setCity(String city) {
+            setFieldVal( cityFld(), city );
+        }
+
+        @Step("Set shipping state to <{0}>")
+        private void setState(String state) {
+            setDdVal(stateDd(), state);
+        }
+
+        @Step("Set \"Zip Code\" fld val to <{0}>")
+        private void setZip(String zipCode) {
+            setFieldVal( zipCodeFld(), zipCode );
+        }
+
+        @Step("Set \"Phone Number\" fld val to <{0}>")
+        private void setPhoneNumber(String phoneNumber) {
+            setFieldVal_delayed( phoneNumberFld(), phoneNumber );
+        }
+
+        @Step("Assert that \"State\" dd val isn't reset")
+        private void assertStateIsntReset() {
+            stateDd().shouldNotHave(text("- Select -")
+                    .because("'State' is reset to default value"));
+        }
+
+    @Step("Click \"Edit\" btn at \"Shipping Address\" block")
     public void clickEditBtn_shipAddress() {
-
         if ( !(addNewAddressBtn().is(visible)) ) {
             click( editBtn_shipAddress() );
         }
-        elementIsVisible( doneBtn_shipAddress() );
-
+        shouldBeVisible( doneBtn_shipAddress(), "Items 'Done' btn isn't visible - failed to enter editing mode." );
     }
 
     private boolean isAddressInEditMode() {
@@ -549,10 +606,10 @@ public class CartPage extends BasePage {
 //
 //    }
 
-    @Step
+    @Step("Remove all addresses from address book")
     public void clearAddressBook() {
 
-        List<SelenideElement> addressBook = $$(xpath("//div[@class='fc-tile-selector__items']/div/li/div[2]/div/button[1]"));
+        ElementsCollection addressBook = $$(xpath("//div[@class='fc-tile-selector__items']/div/li/div[2]/div/button[1]"));
         int addressesAmount = addressBook.size();
         System.out.println("Addresses in AB: " + addressesAmount);
 
@@ -560,7 +617,7 @@ public class CartPage extends BasePage {
             click( deleteBtn_inAddressBook("1") );
             click( confirmDeletionBtn() );
 //            sleep(750);
-            confirmDeletionBtn().shouldNotBe(visible);
+            shouldNotBeVisible(confirmDeletionBtn(), "Confirmation modal window isn't auto-hidden");
         }
 
     }
@@ -585,8 +642,8 @@ public class CartPage extends BasePage {
     }
 
     // should be clicked with 'jsClick(element)'
-    public SelenideElement shipMethodRdbtn() {
-        return $(xpath("//table[@class='fc-table']/tbody/tr[1]//input"));
+    public SelenideElement shipMethodRdbtn(String index) {
+        return $(xpath("//table[@class='fc-table']/tbody/tr[" + index + "]//input"));
     }
 
     public SelenideElement doneBtn_shipMethod() {
@@ -608,7 +665,7 @@ public class CartPage extends BasePage {
 
     //------------------------------- HELPERS --------------------------------//
 
-    @Step("Check if 'Shipping Method' is defined")
+    @Step("Check if \"Shipping Method\" is defined")
     public void assertShipMethodDefined() {
         successIcon_shipMethod().shouldBe(visible
                 .because("Success icon isn't deisplayed next to 'Shipping Method' block"));
@@ -619,10 +676,29 @@ public class CartPage extends BasePage {
     @Step("Set shipping method")
     public void setShipMethod() {
         click( editBtn_shipMethod() );
-        jsClick( shipMethodRdbtn() );
+        clickEditBtn_shipMethod();
+        selectShipMethod("1");
         click( doneBtn_shipMethod() );
         assertShipMethodDefined();
     }
+
+    @Step("Click \"Edit\" at \"Shipping Method\" block")
+    public void clickEditBtn_shipMethod() {
+        click( editBtn_shipMethod() );
+    }
+
+    @Step("Select <{0}th> shipping method")
+    public void selectShipMethod(String methodIndex) {
+        jsClick( shipMethodRdbtn(methodIndex) );
+    }
+
+    @Step("Click \"Done\" at 'Shipping Method' block")
+    public void clickDoneBtn_shipMethod() {
+        click( doneBtn_shipMethod() );
+    }
+
+
+
 
 
 
@@ -733,76 +809,131 @@ public class CartPage extends BasePage {
 
     //------------------------------- HELPERS --------------------------------//
 
+    @Step("Click \"Edit\" at \"Payment Method\" block")
+    public void clickEditBtn_payment() {
+        click(editBtn_payment());
+        shouldBeVisible( doneBtn_payment(), "Payment method's 'Done' btn isn't visible - failed to enter editing mode." );
+    }
+
+    @Step("Click \"Add New Payment Method\" button")
+    public void clickNewPayMethodBtn() {
+        click(newPaymentBtn());
+        shouldBeVisible(paymentTypeDd(), "Payment Type' dd isn't visible");
+    }
+
     @Step("Add new credit card")
     public void addNewCreditCard(String holderName, String cardNumber, String cvv, String month, String year) {
 
-        click( newCreditCardBtn() );
-        setFieldVal( holderNameFld(), holderName );
-        setFieldVal_delayed( cardNumberFld(), cardNumber );
-        setFieldVal( cvvFld(), cvv );
+        clickNewCCBtn();
+        clickNewCCBtn();
+        setHolderName(holderName);
+        setCardNumber(cardNumber);
+        setCVV(cvv);
         setExpirationDate(month, year);
-        click( chooseBtn() );
-        click( addPaymentBtn() );
+        clickChooseBtn();
+        clickAddPayMethodBtn();
 
     }
 
-    @Step("Select payment type: {0}")
-    public void selectPaymentType(String paymentType) {
-        click( paymentTypeDd() );
-        click( paymentTypeVal(paymentType) );
-    }
+        @Step("Click \"Add New Credit Card\" btn")
+        private void clickNewCCBtn() {
+            click(newCreditCardBtn());
+            shouldBeVisible( holderNameFld(), "New credit card form isn't displayed" );
+        }
 
-    @Step("Set expiration date: {0}/{1}")
-    private void setExpirationDate(String month, String year) {
-        click( monthDd() );
-        click( monthVal(month) );
-        click( yearDd() );
-        click( yearVal(year) );
-    }
+        @Step("Select payment type: <{0}>")
+        public void selectPaymentType(String paymentType) {
+            setDdVal(paymentTypeDd(), paymentType);
+        }
+
+        @Step("Set \"Holder Name\" value to <{0}>")
+        private void setHolderName(String holderName) {
+            setFieldVal( holderNameFld(), holderName );
+        }
+
+        @Step("Set \"Card Number\" value to <{0}>'")
+        private void setCardNumber(String cardNumber) {
+            setFieldVal_delayed( cardNumberFld(), cardNumber );
+        }
+
+        @Step("Set \"CVV\" value to <{0}>")
+        private void setCVV(String cvv) {
+            setFieldVal( cvvFld(), cvv );
+        }
+
+        @Step("Set expiration date: <{0}/{1}>")
+        private void setExpirationDate(String month, String year) {
+            click( monthDd() );
+            click( monthVal(month) );
+            click( yearDd() );
+            click( yearVal(year) );
+        }
+
+        @Step("Click \"Choose\" at existing shipping address")
+        private void clickChooseBtn() {
+            click( chooseBtn() );
+        }
+
+        @Step("Click 'Add Payment Method' btn")
+        public void clickAddPayMethodBtn() {
+            click( addPaymentBtn() );
+        }
 
     @Step("Assert that credit card is added")
     public void assertCardAdded() {
-
-        editBtn_payment().shouldBe(visible);
-        $(xpath("//strong[contains(text(), 'xxxx xxxx xxxx')]")).shouldBe(visible
-                .because("Failed to add credit card to order as a payment method."));
-
+//        editBtn_payment().shouldBe(visible);
+        shouldBeVisible($(xpath("//strong[contains(text(), 'xxxx xxxx xxxx')]")),
+                "Failed to add credit card to order as a payment method.");
     }
 
-    @Step("Add credit card as a payment method.")
-    public void addPaymentMethod_CC(String holderName, String cardNumber, String cvv, String month, String year) {
+    @Step("Set \"Gift Card Number\" field value to <{0}>")
+    public void setGCNumber(String gcCode){
+        setFieldVal( gcNumberFld(), gcCode );
+    }
 
+    @Step("Set \"Amount To Use\" value to '<{0}>")
+    public void setAmountToUse(String amount) {
+        clearField( amountToUseFld() );
+        setFieldVal( amountToUseFld(), amount );
+    }
+
+    @Step("Click \"Done\" at 'Payment Method' block")
+    public void clickDoneBtn_payment() {
+        click( doneBtn_payment() );
+        shouldNotBeVisible(doneBtn_payment(), "'Done' button is visible at 'Payment Method' block (it shouldn't)");
+    }
+
+    @Step("Add credit card as a payment method")
+    public void addPaymentMethod_CC(String holderName, String cardNumber, String cvv, String month, String year) {
         click( editBtn_payment() );
         click( newPaymentBtn() );
         selectPaymentType("Credit Card");
         addNewCreditCard(holderName, cardNumber, cvv, month, year);
 
+        //remove this assert - call it directly in tests after adding credit card
         assertCardAdded();
-
     }
 
-    @Step("Add gift card as a payment method.")
+    @Step("Add gift card as a payment method")
     public void addPaymentMethod_GC(String gcNumber, String amountToUse) {
-
-        click( editBtn_payment() );
-        click( newPaymentBtn() );
+        clickEditBtn_payment();
+        clickNewPayMethodBtn();
         selectPaymentType("Gift Card");
-        setFieldVal( gcNumberFld(), gcNumber );
-        clearField(amountToUseFld());
-        setFieldVal( amountToUseFld(), amountToUse );
-        click( addPaymentBtn() );
-
+        setGCNumber(gcNumber);
+        setAmountToUse(amountToUse);
+        clickAddPayMethodBtn();
     }
 
-    @Step("Add store credit as a payment method.")
+    @Step("Add store credit as a payment method")
     public void addPaymentMethod_SC(String amountToUse) {
 
-        click( editBtn_payment() );
-        click( newPaymentBtn() );
+        clickEditBtn_payment();
+        clickNewPayMethodBtn();
         selectPaymentType("Store Credit");
         clearField(amountToUseFld());
         setFieldVal( amountToUseFld(), amountToUse );
-        click( addPaymentBtn() );
+        setAmountToUse(amountToUse);
+        clickAddPayMethodBtn();
 
     }
 

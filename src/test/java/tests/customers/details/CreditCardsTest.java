@@ -11,7 +11,6 @@ import java.util.Objects;
 
 import static com.codeborne.selenide.Condition.matchText;
 import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.open;
 
 public class CreditCardsTest extends DataProvider {
@@ -25,7 +24,7 @@ public class CreditCardsTest extends DataProvider {
         if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
             LoginPage loginPage = open(adminUrl + "/login", LoginPage.class);
             loginPage.login("admin@admin.com", "password");
-            loginPage.userMenuBtn().shouldBe(visible);
+            shouldBeVisible(loginPage.userMenuBtn(), "Failed to log in");
         }
 
     }
@@ -36,10 +35,10 @@ public class CreditCardsTest extends DataProvider {
         provideTestData("a customer");
         p = open(adminUrl + "/customers/" + customerId, CustomersPage.class);
 
-        click( p.addNewCreditCardBtn() );
+        p.clickAddNewCCBtn();
         p.fillOutNewCCForm(customerName, "5555555555554444", "777", "2", "2020");
         p.addNewBillAddress(customerName, "2101 Green Valley", "Suite 300", "Seattle", "Washington", "98101", "9879879876");
-        click( p.saveBtn() );
+        p.clickSave();
         p.assertCardAdded(customerName);
 
     }
@@ -50,10 +49,10 @@ public class CreditCardsTest extends DataProvider {
         provideTestData("customer with a shipping address");
         p = open(adminUrl + "/customers/" + customerId, CustomersPage.class);
 
-        click( p.addNewCreditCardBtn() );
+        p.clickAddNewCCBtn();
         p.fillOutNewCCForm(customerName, "5555555555554444", "777", "2", "2020");
-        click( p.chooseBtn("1") );
-        click( p.saveBtn() );
+        p.chooseAddress("1");
+        p.clickSave();
         p.assertCardAdded(customerName);
 
     }
@@ -64,10 +63,10 @@ public class CreditCardsTest extends DataProvider {
         provideTestData("customer with a credit card");
         p = open(adminUrl + "/customers/" + customerId, CustomersPage.class);
 
-        click( p.editCreditCardBtn("1") );
+        p.clickEditCCBtn("1");
         p.clearField( p.holderNameFld() );
-        setFieldVal( p.holderNameFld(), "John Doe" );
-        click( p.saveBtn() );
+        p.setHolderName("John Doe");
+        p.clickSave();
         p.holderNameFldVal("1").shouldHave(text("John Doe")
                 .because("Failed to edit holderName field; expected: <John Doe>, actual: <" + p.holderNameFldVal("1") + ">."));
 
@@ -79,9 +78,9 @@ public class CreditCardsTest extends DataProvider {
         provideTestData("customer with a credit card");
         p = open(adminUrl + "/customers/" + customerId, CustomersPage.class);
 
-        click( p.editCreditCardBtn("1") );
+        p.clickEditCCBtn("1");
         p.setExpirationDate("12", "2030");
-        click( p.saveBtn() );
+        p.clickSave();
         p.expirationDateVal("1").shouldHave(text("12/2030")
                 .because("Failed to edit expiration date; expected: <12/2030>, actual: <" + p.expirationDateVal("1") + ">."));
 
@@ -93,10 +92,10 @@ public class CreditCardsTest extends DataProvider {
         provideTestData("customer with a credit card and 2 addresses");
         p = open(adminUrl + "/customers/" + customerId, CustomersPage.class);
 
-        click( p.editCreditCardBtn("1") );
-        click( p.changeBillAddressBtn() );
-        click( p.chooseBtn("2") );
-        click( p.saveBtn() );
+        p.clickEditCCBtn("1");
+        p.clickChangeBillAddressBtn();
+        p.chooseAddress("2");
+        p.clickSave();
         p.billCityVal("1").should(matchText("New Jersey")
                 .because("Failed to choose different billing address; expected city: <New Jersey>, actual: <" + p.billCityVal("1") + ">."));
 
@@ -108,9 +107,9 @@ public class CreditCardsTest extends DataProvider {
         provideTestData("customer with a credit card");
         p = open(adminUrl + "/customers/" + customerId, CustomersPage.class);
 
-        click (p.editAddressBtn("1"));
-        setFieldVal( p.nameFld(), "John Doe" );
-        click( p.saveBtn() );
+        p.clickEditAddressBtn("1");
+        p.setName("John Doe");
+        p.clickSave();
         p.nameFldVal_billAddress("1").shouldHave(text(customerName)
                 .because("Billing address has been modified (should be unchangeable once it's set)."));
 

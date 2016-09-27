@@ -16,11 +16,11 @@ public class CouponsPage extends BasePage {
 
     //--------------------------------- ELEMENTS -----------------------------//
 
-    public SelenideElement coupon(String nameOrId) {
+    private SelenideElement coupon(String nameOrId) {
         return $(xpath("//tbody[@class='fc-table-body']/a[1]/td[text()='" + nameOrId + "']"));
     }
 
-    public SelenideElement addNewCoupon() {
+    private SelenideElement addNewCouponBtn() {
         return $(xpath("//span[text()='Coupon']/.."));
     }
 
@@ -49,15 +49,11 @@ public class CouponsPage extends BasePage {
         return $(xpath("//span[text()='" + promotionId + "']/.."));
     }
 
-    public SelenideElement singleCodeRbtn() {
-        return $(xpath("//input[@id='singleCouponCodeRadio']"));
+    private SelenideElement generateCodesRadio(String type) {
+        return $(xpath("//input[@id='" + type + "CouponCodeRadio']"));
     }
 
-    public SelenideElement bulkGenerateCodesBrtn() {
-        return $(xpath("//input[@id='bulkCouponCodeRadio']"));
-    }
-
-    public SelenideElement singleCodeFld() {
+    private SelenideElement singleCodeFld() {
         return $(xpath("//input[@name='singleCode']"));
     }
 
@@ -120,52 +116,101 @@ public class CouponsPage extends BasePage {
 
     //--------------------------------- HELPERS -----------------------------//
 
+    @Step("Set \"Name\" fld val to <{0}>")
+    public void setCouponName(String name) {
+        setFieldVal(nameFld(), name);
+    }
+
+    @Step("Click \"Create New Promotion\" btn")
+    public void clickAddNewCouponBtn() {
+        click(addNewCouponBtn());
+    }
+
+    @Step("Set \"Storefront Name\" fld val to <{0}>")
+    public void setStorefrontName(String name) {
+        setFieldVal(storefrontNameFld(), name);
+    }
+
+    @Step("Set \"Description\" rich text fld val to <{0}>")
+    public void setDescription(String description) {
+        setFieldVal(descriptionFld(), description);
+    }
+
+    @Step("Set \"Details\" rich text fld val to <{0}>")
+    public void setDetails(String details) {
+        setFieldVal(detailsFld(), details);
+    }
+
     @Step("Select promotion with id <{0}>")
     public void setPromotion(String promotionId) {
-        click( promotionDd() );
-        click( promotionListVal(promotionId) );
+        setDdVal(promotionDd(), promotionId);
     }
 
-    @Step("Set coupon state to '{0}'")
+    @Step("Set \"Code\" fld val to <{0}>")
+    public void setCode(String code) {
+        setFieldVal(singleCodeFld(), code);
+    }
+
+    @Step("Set coupon state to <{0}>")
     public void setState(String state) {
-
         switch (state) {
-
             case "Inactive":
-                click( deleteStartDateBtn() );
+                click(deleteStartDateBtn());
                 break;
-
             case "Active":
-                click( stateDd() );
-                click( stateListVal(state) );
+                setDdVal(stateDd(), state);
                 break;
-
         }
-
     }
 
-    @Step("Bulk generate codes with params Qty: <{0}>, Code prefix: <{1}>, Code length: <{2}>.")
-    public void bulkGenerateCodes(int quantity, String codePrefix, int codeLength) {
+    @Step("Bulk generate codes with params <Code prefix:{1}>, <Code length:{2}>")
+    public void generateCodes_single(String code) {
+        selectCodeGenRadio("single");
+        setCode(code);
+    }
+
+    @Step("Bulk generate codes with params <QTY:{0}>, <Code prefix:{1}>, <Code length:{2}>")
+    public void generateCodes_bulk(int quantity, String prefix, int codeLength) {
+        selectCodeGenRadio("bulk");
         for (int i = 0; i < quantity; i++) {
-            click( qtyIncrBtn() );
+            click(qtyIncrBtn());
         }
-        setFieldVal( codePrefixFld(), codePrefix );
+        setPrefix(prefix);
         for (int i = 0; i < codeLength; i++) {
-            click( codeLengthIncrBtn() );
+            click(codeLengthIncrBtn());
         }
-        click( generateCodesBtn() );
-        click( submitBtn() );       // locator is not defined
-
+        clickGenerateCodesBtn();
+        clickSubmit();
     }
 
-    @Step("Assert that codes are displayed on the 'Coupon Codes' tab.")
+        @Step("Select <{0}> coupon code(s) generation radio")
+        private void selectCodeGenRadio(String type) {
+            jsClick(generateCodesRadio(type));
+        }
+
+        @Step("Set \"Prefix\" fld val to <{0}>")
+        private void setPrefix(String prefix) {
+            setFieldVal(codePrefixFld(), prefix);
+        }
+
+        @Step("Click \"Generate Codes\" btn")
+        private void clickGenerateCodesBtn() {
+            click(generateCodesBtn());
+        }
+
+        @Step("Click \"Submit\" btn")
+        private void clickSubmit() {
+            click(submitBtn());
+        }
+
+    @Step("Assert that codes are displayed on the \"Coupon Codes\" tab")
     public void assertCodesGenerated(int codesQty) {
 
         waitForDataToLoad();
         $(xpath("//div[text()='No coupon codes found.']")).shouldNotBe(visible
-                .because("No coupon codes is displayed on the list."));
+                .because("No coupon codes is displayed on the list"));
         listOfCodes().shouldHave(size(codesQty));
-        //.because("There are less codes on the list than it should.")
+        //.because("There are less codes on the list than it should")
 
     }
 
@@ -175,30 +220,22 @@ public class CouponsPage extends BasePage {
 
     @Step("Assert that all changes to coupon were saved")
     public void assertCouponIsEdited(String name, String storefrontName, String description, String details, String state) {
-
         nameFld().shouldHave(text(name)
                 .because("'Name' has failed to get edited."));
-
         storefrontNameFld().shouldHave(text(storefrontName)
                 .because("'Storefront Name' has failed to get edited."));
-
         descriptionFld().shouldHave(text(description)
                 .because("'Description' has failed to get edited."));
-
         detailsFld().shouldHave(text(details)
                 .because("'Details' has failed to get edited."));
-
         stateVal().shouldHave(text(state)
                 .because("'State' has failed to get edited."));
-
     }
 
-    @Step("Get '{1}' parameter value of {0}th coupon on the list")
+    @Step("Get <{1}> parameter value of <{0}th> coupon on the list")
     public SelenideElement getCouponParamVal(String couponIndex, String paramName) {
-
         SelenideElement couponParamVal = null;
         waitForDataToLoad();
-
         switch (paramName) {
             case "Name":
                 couponParamVal = $(xpath("//tbody[@class='fc-table-body']/a[" + couponIndex + "]/td[2]"));
@@ -221,11 +258,13 @@ public class CouponsPage extends BasePage {
             case "State":
                 couponParamVal = $(xpath("//tbody[@class='fc-table-body']/a[" + couponIndex + "]/td[8]/div/div"));
                 break;
-
         }
-
         return couponParamVal;
+    }
 
+    @Step("Click coupon with name or ID <{0}> on the list")
+    public void openCoupon(String couponName) {
+        click(coupon(couponName));
     }
 
 }

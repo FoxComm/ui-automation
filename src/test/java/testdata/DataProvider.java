@@ -4,6 +4,7 @@ import base.BaseTest;
 import com.squareup.okhttp.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import ru.yandex.qatools.allure.annotations.Step;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -52,9 +53,14 @@ public class DataProvider extends BaseTest {
         System.out.println("Response: " + responseCode + " " + responseMsg);
         System.out.println(responseBody);
         System.out.println("--------");
-        assertEquals(responseCode, 200, "API call failed to succeed.");
+        if (!(responseCode == 200)) {
+            throw new RuntimeException(responseBody +
+            "\nExpected:[200], Actual:[" + responseCode + "]");
+        }
+//        assertEquals(responseCode, 200, "API call failed to succeed.");
     }
 
+    @Step("Log in as admin")
     private static void loginAsAdmin() throws IOException {
 
         System.out.println("Authorizing as an admin...");
@@ -68,7 +74,7 @@ public class DataProvider extends BaseTest {
                 "\n    \"kind\": \"admin\"\n}");
 
         Request request = new Request.Builder()
-                .url(adminUrl + "/api/v1/public/login")
+                .url(apiUrl + "/api/v1/public/login")
                 .post(body)
                 .addHeader("accept", "application/json")
                 .addHeader("content-type", "application/json")
@@ -90,6 +96,7 @@ public class DataProvider extends BaseTest {
 
     }
 
+    @Step("Create new customer")
     private static void createNewCustomer() throws IOException {
 
         System.out.println("Creating a new customer...");
@@ -106,7 +113,7 @@ public class DataProvider extends BaseTest {
                 "\n    \"email\": \"" + customerEmail + "\"\n}");
 
         Request request = new Request.Builder()
-                .url(adminUrl + "/api/v1/customers")
+                .url(apiUrl + "/api/v1/customers")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -132,6 +139,7 @@ public class DataProvider extends BaseTest {
 
     }
 
+    @Step("Create cart for customer <{0}>")
     private static void createCart(int customerId) throws IOException {
 
         System.out.println("Creating a cart for customer " + customerId + "...");
@@ -141,7 +149,7 @@ public class DataProvider extends BaseTest {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{\n    \"customerId\": " + customerId + "\n}");
         Request request = new Request.Builder()
-                .url(adminUrl + "/api/v1/orders")
+                .url(apiUrl + "/api/v1/orders")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -174,7 +182,7 @@ public class DataProvider extends BaseTest {
 //        OkHttpClient client = new OkHttpClient();
 //
 //        Request request = new Request.Builder()
-//                .url(adminUrl + "/api/v1/orders/BR10116")
+//                .url(apiUrl + "/api/v1/orders/BR10116")
 //                .get()
 //                .addHeader("content-type", "application/json")
 //                .addHeader("accept", "application/json")
@@ -192,6 +200,7 @@ public class DataProvider extends BaseTest {
 //
 //    }
 
+    @Step("Add line item: <{1}>, <QTY:{2}> to cart: <{0}>")
     private static void updSKULineItems(String orderRefNum, String SKU, int quantity) throws IOException {
 
         System.out.println("Updating SKUs: setting '" + SKU + "' quantity to '" + quantity + "'...");
@@ -202,7 +211,7 @@ public class DataProvider extends BaseTest {
         RequestBody body = RequestBody.create(mediaType, "[{\n    \"sku\": \"" + SKU + "\"," +
                 "\n    \"quantity\": " + quantity + "\n}]");
         Request request = new Request.Builder()
-                .url(adminUrl + "/api/v1/orders/" + orderRefNum + "/line-items")
+                .url(apiUrl + "/api/v1/orders/" + orderRefNum + "/line-items")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -224,6 +233,7 @@ public class DataProvider extends BaseTest {
 
     }
 
+    @Step("View customer <{0}>")
     private static void viewCustomer(int customerId) throws IOException {
 
         System.out.println("Getting name and email of customer <" + customerId + ">...");
@@ -231,7 +241,7 @@ public class DataProvider extends BaseTest {
         OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
-                .url(adminUrl + "/api/v1/customers/" + customerId)
+                .url(apiUrl + "/api/v1/customers/" + customerId)
                 .get()
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -257,6 +267,7 @@ public class DataProvider extends BaseTest {
 
     }
 
+    @Step("Create new shipping address for customer <{0}>")
     private static void createAddress(int customerId, String name, int regionId, int countryId, String region_name, String address1, String address2, String city, String zip, String phoneNumber, boolean isDefault)
             throws IOException {
 
@@ -277,7 +288,7 @@ public class DataProvider extends BaseTest {
                 "\n    \"phoneNumber\": \"" + phoneNumber + "\"," +
                 "\n    \"isDefault\": " + isDefault + "\n}");
         Request request = new Request.Builder()
-                .url(adminUrl + "/api/v1/customers/" + customerId + "/addresses")
+                .url(apiUrl + "/api/v1/customers/" + customerId + "/addresses")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -299,6 +310,7 @@ public class DataProvider extends BaseTest {
 
     }
 
+    @Step("Add new shipping address and set it as a chosen for cart <{0}>")
     private static void setShipAddress(String cartId, String name, int regionId, int countryId, String region_name, String address1, String address2, String city, String zip, String phoneNumber, boolean isDefault) throws IOException {
 
         System.out.println("Adding new shipping address and setting it as a chosen for <" + cartId + "> order...");
@@ -315,7 +327,7 @@ public class DataProvider extends BaseTest {
                 "\n  \"isDefault\": " + isDefault + "," +
                 "\n  \"phoneNumber\": \"" + phoneNumber + "\"\n}");
         Request request = new Request.Builder()
-                .url(adminUrl + "/api/v1/orders/" + cartId + "/shipping-address")
+                .url(apiUrl + "/api/v1/orders/" + cartId + "/shipping-address")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -337,13 +349,14 @@ public class DataProvider extends BaseTest {
 
     }
 
+    @Step("List all shipping addresses of customer <{0}>")
     private static void listCustomerAddresses(int customerId) throws IOException {
 
         System.out.println("Listing all addresses of customer " + customerId + "...");
         OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
-                .url(adminUrl + "/api/v1/customers/" + customerId + "/addresses")
+                .url(apiUrl + "/api/v1/customers/" + customerId + "/addresses")
                 .get()
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -369,13 +382,14 @@ public class DataProvider extends BaseTest {
 
     }
 
+    @Step("View address details, customerID: <{0}>, addressID: <{1}>")
     private static void getCustomerAddress(int customerId, int addressId) throws IOException {
 
         System.out.println("Getting address with ID <" + addressId + "> of customer <" + customerId + ">...");
         OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
-                .url("http://admin.stage.foxcommerce.com/api/v1/customers/" + customerId + "/addresses/" + addressId)
+                .url(apiUrl + "/api/v1/customers/" + customerId + "/addresses/" + addressId)
                 .get()
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -400,6 +414,7 @@ public class DataProvider extends BaseTest {
 
     }
 
+    @Step("Update shipping address details. addressID: <{1}>, customerId: <{0}>")
     private static void updateCustomerShipAddress(int customerId, int addressId1, String customerName, int regionId, String address1, String address2, String city, String zip, String phoneNumber) throws IOException {
 
         System.out.println("Updating shipping address ID:<" + addressId1 + "> for customer <" + customerId + ">...");
@@ -417,7 +432,7 @@ public class DataProvider extends BaseTest {
                 "\n  \"isDefault\": false," +
                 "\n  \"phoneNumber\": \"" + phoneNumber + "\"\n}");
         Request request = new Request.Builder()
-                .url("http://admin.stage.foxcommerce.com/api/v1/customers/" + customerId + "/addresses/" + addressId1)
+                .url(apiUrl + "/api/v1/customers/" + customerId + "/addresses/" + addressId1)
                 .patch(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -439,6 +454,8 @@ public class DataProvider extends BaseTest {
 
     }
 
+
+    @Step("List possible shipping methods for cart <{0}>")
     private static void listShipMethods(String cartId) throws IOException {
 
         System.out.println("Getting possible shipping methods for order <" + cartId + ">...");
@@ -446,7 +463,7 @@ public class DataProvider extends BaseTest {
         OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
-                .url(adminUrl + "/api/v1/shipping-methods/" + cartId)
+                .url(apiUrl + "/api/v1/shipping-methods/" + cartId)
                 .get()
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -473,6 +490,7 @@ public class DataProvider extends BaseTest {
 
     }
 
+    @Step("Set shipping method <{1}> for cart <{1}>")
     private static void setShipMethod(String cartId, int shipMethodId) throws IOException {
 
         System.out.println("Setting shipping method for order <" + cartId + ">...");
@@ -483,7 +501,7 @@ public class DataProvider extends BaseTest {
         RequestBody body = RequestBody.create(mediaType, "{" +
                 "\n  \"shippingMethodId\": " + shipMethodId + "\n}");
         Request request = new Request.Builder()
-                .url(adminUrl + "/api/v1/orders/" + cartId + "/shipping-method")
+                .url(apiUrl + "/api/v1/orders/" + cartId + "/shipping-method")
                 .patch(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -505,6 +523,7 @@ public class DataProvider extends BaseTest {
 
     }
 
+    @Step("Create credit card")
     private static void createCreditCard(String holderName, String lastFour, int expMonth, int expYear, String brand) throws IOException {
 
         System.out.println("Create a new credit card for customer <" + customerId + ">...");
@@ -527,7 +546,7 @@ public class DataProvider extends BaseTest {
                 "\n  \"state\":\"" + region.getString("name") + "\"," +
                 "\n  \"country\":\"United States\"}}");
         Request request = new Request.Builder()
-                .url(adminUrl + "/api/v1/customers/" + customerId + "/payment-methods/credit-cards")
+                .url(apiUrl + "/api/v1/customers/" + customerId + "/payment-methods/credit-cards")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -551,6 +570,7 @@ public class DataProvider extends BaseTest {
         }
     }
 
+    @Step("Set credit card <{1}> as a payment method for cart <{0}>")
     private static void setPayment_creditCard(String cartId, int creditCardId) throws IOException {
 
         System.out.println("Setting credit card with id <" + creditCardId + "> as a payment method for order <" + cartId + ">...");
@@ -560,7 +580,7 @@ public class DataProvider extends BaseTest {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{\n  \"creditCardId\": " + creditCardId + "\n}");
         Request request = new Request.Builder()
-                .url(adminUrl + "/api/v1/orders/" + cartId + "/payment-methods/credit-cards")
+                .url(apiUrl + "/api/v1/orders/" + cartId + "/payment-methods/credit-cards")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -582,6 +602,7 @@ public class DataProvider extends BaseTest {
 
     }
 
+    @Step("Issue store credit in amount of <{1}> for customer <{0}>")
     private static void issueStoreCredit(int customerId, int amount) throws IOException {
 
         System.out.println("Issuing store credit for customer <" + customerId + ">...");
@@ -595,7 +616,7 @@ public class DataProvider extends BaseTest {
                 "\n  \"subReasonId\": 1," +
                 "\n  \"currency\": \"USD\"\n}");
         Request request = new Request.Builder()
-                .url(adminUrl + "/api/v1/customers/" + customerId + "/payment-methods/store-credit")
+                .url(apiUrl + "/api/v1/customers/" + customerId + "/payment-methods/store-credit")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -621,6 +642,7 @@ public class DataProvider extends BaseTest {
 
     }
 
+    @Step("Transfer GC <{1}> to store credits for customer <{0}>")
     private static void issueStoreCredit_gcTransfer(int customerId, String gcNumber) throws IOException {
 
         System.out.println("Transferring GC <" + gcNumber + "to SC for customer <" + customerId + ">...");
@@ -633,7 +655,7 @@ public class DataProvider extends BaseTest {
                 "\n  \"code\":\"CF13858F49E16CE7\"," +
                 "\n  \"subReasonId\":null\n}");
         Request request = new Request.Builder()
-                .url(adminUrl + "/api/v1/gift-cards/" + gcNumber + "/convert/" + customerId)
+                .url(apiUrl + "/api/v1/gift-cards/" + gcNumber + "/convert/" + customerId)
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -660,6 +682,7 @@ public class DataProvider extends BaseTest {
 
     }
 
+    @Step("Set store credits <amount: {1}> as a payment method for cart <{0}>")
     protected static void setPayment_storeCredit(String cartId, int amount) throws IOException {
 
         System.out.println("Setting store credit in amount of <" + amount + "> as a payment for order <" + cartId + ">...");
@@ -669,7 +692,7 @@ public class DataProvider extends BaseTest {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{\n  \"amount\": " + amount + "\n}");
         Request request = new Request.Builder()
-                .url(adminUrl + "/api/v1/orders/" + cartId + "/payment-methods/store-credit")
+                .url(apiUrl + "/api/v1/orders/" + cartId + "/payment-methods/store-credit")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -691,6 +714,7 @@ public class DataProvider extends BaseTest {
 
     }
 
+    @Step("Issue GC <balance: {0}>, <QTY: {1}>")
     private static void issueGiftCard(int balance, int quantity) throws IOException {
 
         System.out.println("Creating new gift card...");
@@ -703,7 +727,7 @@ public class DataProvider extends BaseTest {
                 "\n  \"quantity\": " + quantity + "," +
                 "\n  \"reasonId\": 1\n}");
         Request request = new Request.Builder()
-                .url(adminUrl + "/api/v1/gift-cards")
+                .url(apiUrl + "/api/v1/gift-cards")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -730,6 +754,7 @@ public class DataProvider extends BaseTest {
 
     }
 
+    @Step("Put GC <{0}> on hold")
     protected static void putGCOnHold(String gcNumber) throws IOException {
 
         System.out.println("Puting <" + gcNumber + "> on hold..." );
@@ -739,7 +764,7 @@ public class DataProvider extends BaseTest {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{\n  \"state\": \"onHold\"\n}");
         Request request = new Request.Builder()
-                .url("http://admin.stage.foxcommerce.com/api/v1/gift-cards/" + gcNumber)
+                .url(apiUrl + "/api/v1/gift-cards/" + gcNumber)
                 .patch(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -761,6 +786,7 @@ public class DataProvider extends BaseTest {
 
     }
 
+    @Step("Set GC <gcNumber: {1}>, <amount: {2}> for cart <{0}>")
     protected static void setPayment_giftCard(String cartId, String gcNumber, int amount) throws IOException {
 
         System.out.println("Setting gict card <"+ gcNumber + "> in amount of <" + amount + "> as a payment for order <" + cartId + ">...");
@@ -772,7 +798,7 @@ public class DataProvider extends BaseTest {
                 "\n  \"code\": \"" + gcNumber + "\"," +
                 "\n  \"amount\": " + amount + "}");
         Request request = new Request.Builder()
-                .url(adminUrl + "/api/v1/orders/" + cartId + "/payment-methods/gift-cards")
+                .url(apiUrl + "/api/v1/orders/" + cartId + "/payment-methods/gift-cards")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -794,6 +820,7 @@ public class DataProvider extends BaseTest {
 
     }
 
+    @Step("Checkout cart <{0}>")
     private static void checkoutOrder(String cartId) throws IOException {
 
         System.out.println("Checking out order <" + cartId + ">...");
@@ -803,7 +830,7 @@ public class DataProvider extends BaseTest {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "");
         Request request = new Request.Builder()
-                .url(adminUrl + "/api/v1/orders/" + cartId + "/checkout")
+                .url(apiUrl + "/api/v1/orders/" + cartId + "/checkout")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -826,6 +853,7 @@ public class DataProvider extends BaseTest {
 
     }
 
+    @Step("Change order <{0}> state to <{1}>")
     private static void changeOrderState(String orderId, String newState) throws IOException {
 
         System.out.println("Change state of order <" + orderId + "> to <" + newState + ">...");
@@ -835,7 +863,7 @@ public class DataProvider extends BaseTest {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{\n  \"state\":\"" + newState + "\"\n}");
         Request request = new Request.Builder()
-                .url(adminUrl + "/api/v1/orders/" + orderId)
+                .url(apiUrl + "/api/v1/orders/" + orderId)
                 .patch(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -857,6 +885,7 @@ public class DataProvider extends BaseTest {
 
     }
 
+    @Step("Create promotion -- <Apply type: 'Coupon'>")
     private static void createPromotion_coupon() throws IOException {
 
         System.out.println("Creating a new promotion...");
@@ -866,7 +895,7 @@ public class DataProvider extends BaseTest {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{\"applyType\":\"coupon\",\"form\":{\"id\":248,\"attributes\":{\"eaa8440703\":\"new promo " + generateRandomID() + "\",\"25e24d5d0f\":\"<p>new promo</p>\"},\"discounts\":[{\"id\":249,\"attributes\":{\"bb0b82afad\":{\"orderAny\":{}},\"3db8e5c670\":{\"orderPercentOff\":{\"discount\":10}}},\"createdAt\":\"2016-06-27T22:27:43.938Z\"}],\"createdAt\":\"2016-06-27T22:27:43.915Z\"},\"shadow\":{\"id\":303,\"formId\":248,\"attributes\":{\"name\":{\"type\":\"string\",\"ref\":\"eaa8440703\"},\"storefrontName\":{\"type\":\"richText\",\"ref\":\"25e24d5d0f\"},\"description\":{\"type\":\"richText\",\"ref\":\"eaa8440703\"},\"details\":{\"type\":\"richText\",\"ref\":\"25e24d5d0f\"}},\"discounts\":[{\"id\":249,\"attributes\":{\"qualifier\":{\"type\":\"qualifier\",\"ref\":\"bb0b82afad\"},\"offer\":{\"type\":\"offer\",\"ref\":\"3db8e5c670\"}},\"createdAt\":\"2016-06-27T22:27:43.938Z\"}],\"createdAt\":\"2016-06-27T22:27:43.915Z\"}}");
         Request request = new Request.Builder()
-                .url(adminUrl + "/api/v1/promotions/default")
+                .url(apiUrl + "/api/v1/promotions/default")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -892,6 +921,7 @@ public class DataProvider extends BaseTest {
 
     }
 
+    @Step("Create promotion -- <Apply type: 'Auto'>, <State: 'Inactive'>")
     private static void createPromotion_auto_inactive() throws IOException {
 
         System.out.println("Creating a new promotion...");
@@ -901,7 +931,7 @@ public class DataProvider extends BaseTest {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{\"form\":{\"id\":null,\"createdAt\":null,\"attributes\":{\"name\":\"new promo " + generateRandomID() + "\",\"storefrontName\":\"<p>sf name</p>\",\"description\":\"<p>descr</p>\",\"details\":\"<p>details</p>\"},\"discounts\":[{\"id\":null,\"createdAt\":null,\"attributes\":{\"qualifier\":{\"orderAny\":{}},\"offer\":{\"orderPercentOff\":{\"discount\":10}}}}]},\"shadow\":{\"id\":null,\"createdAt\":null,\"attributes\":{\"name\":{\"type\":\"string\",\"ref\":\"name\"},\"storefrontName\":{\"type\":\"richText\",\"ref\":\"storefrontName\"},\"description\":{\"type\":\"richText\",\"ref\":\"description\"},\"details\":{\"type\":\"richText\",\"ref\":\"details\"}},\"discounts\":[{\"id\":null,\"createdAt\":null,\"attributes\":{\"qualifier\":{\"type\":\"qualifier\",\"ref\":\"qualifier\"},\"offer\":{\"type\":\"offer\",\"ref\":\"offer\"}}}]},\"applyType\":\"auto\"}");
         Request request = new Request.Builder()
-                .url("http://admin.stage.foxcommerce.com/api/v1/promotions/default")
+                .url(apiUrl + "/api/v1/promotions/default")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -927,6 +957,7 @@ public class DataProvider extends BaseTest {
 
     }
 
+    @Step("Create promotion -- <Apply type: 'Auto'>, <State: 'Active'>")
     private static void createPromotion_auto_active() throws IOException {
 
         System.out.println("Creating a new promotion...");
@@ -937,7 +968,7 @@ public class DataProvider extends BaseTest {
 //        RequestBody body = RequestBody.create(mediaType, "{\"applyType\":\"auto\",\"form\":{\"id\":269,\"attributes\":{\"249b17717d\":\"<p>descr</p>\",\"634a7cea77\":\"<p>details</p>\",\"70dfb3ce4a\":\"new promo " + generateRandomID() + "\",\"c88302035b\":\"<p>sf name</p>\",\"name\":\"new promo " + generateRandomID() + "\",\"details\":\"<p>details</p>\",\"description\":\"<p>descr</p>\",\"storefrontName\":\"<p>sf name</p>\",\"activeFrom\":{\"t\":\"datetime\",\"v\":\"2016-07-29T00:03:26.685Z\"},\"discounts\":[{\"id\":270,\"attributes\":{\"3db8e5c670\":{\"orderPercentOff\":{\"discount\":10}},\"bb0b82afad\":{\"orderAny\":{}},\"offer\":{\"orderPercentOff\":{\"discount\":10}},\"qualifier\":{\"orderAny\":{}}},\"createdAt\":\"2016-07-18T20:47:05.517Z\"}],\"createdAt\":\"2016-07-18T20:47:05.506Z\"},\"shadow\":{\"id\":295,\"formId\":269,\"attributes\":{\"name\":{\"type\":\"string\",\"ref\":\"name\"},\"details\":{\"ref\":\"details\",\"type\":\"richText\"},\"description\":{\"ref\":\"description\",\"type\":\"richText\"},\"storefrontName\":{\"ref\":\"storefrontName\",\"type\":\"richText\"},\"activeFrom\":{\"type\":\"2016-07-18T20:54:34.537+00:00\",\"ref\":\"activeFrom\"},\"activeTo\":{\"type\":null,\"ref\":\"activeTo\"}},\"discounts\":[{\"id\":270,\"attributes\":{\"offer\":{\"ref\":\"offer\",\"type\":\"offer\"},\"qualifier\":{\"ref\":\"qualifier\",\"type\":\"qualifier\"}},\"createdAt\":\"2016-07-18T20:47:05.517Z\"}],\"createdAt\":\"2016-07-18T20:47:05.506Z\"}}");
         RequestBody body = RequestBody.create(mediaType, "{\"form\":{\"id\":null,\"createdAt\":null,\"attributes\":{\"name\":\"new promo " + generateRandomID() + "\",\"storefrontName\":\"\",\"description\":\"<p>descr</p>\",\"details\":\"<p>details</p>\",\"storefront Name\":\"<p>sf name</p>\",\"activeFrom\":\"2016-07-30T18:12:27.938Z\",\"activeTo\":null},\"discounts\":[{\"id\":null,\"createdAt\":null,\"attributes\":{\"qualifier\":{\"orderAny\":{}},\"offer\":{\"orderPercentOff\":{\"discount\":10}}}}]},\"shadow\":{\"id\":null,\"createdAt\":null,\"attributes\":{\"name\":{\"type\":\"string\",\"ref\":\"name\"},\"storefrontName\":{\"type\":\"richText\",\"ref\":\"storefrontName\"},\"description\":{\"type\":\"richText\",\"ref\":\"description\"},\"details\":{\"type\":\"richText\",\"ref\":\"details\"},\"storefront Name\":{\"type\":\"richText\",\"ref\":\"storefront Name\"},\"activeFrom\":{\"type\":\"2016-07-30T18:12:27.938Z\",\"ref\":\"activeFrom\"},\"activeTo\":{\"type\":null,\"ref\":\"activeTo\"}},\"discounts\":[{\"id\":null,\"createdAt\":null,\"attributes\":{\"qualifier\":{\"type\":\"qualifier\",\"ref\":\"qualifier\"},\"offer\":{\"type\":\"offer\",\"ref\":\"offer\"}}}]},\"applyType\":\"auto\"}");
         Request request = new Request.Builder()
-                .url("http://admin.stage.foxcommerce.com/api/v1/promotions/default")
+                .url(apiUrl + "/api/v1/promotions/default")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -963,6 +994,7 @@ public class DataProvider extends BaseTest {
 
     }
 
+    @Step("Create coupon with promotion <ID:'{0}>'")
     private static void createCoupon(String promotionId) throws IOException {
 
         System.out.println("Creating a new coupon with promotion <" + promotionId + ">...");
@@ -973,7 +1005,7 @@ public class DataProvider extends BaseTest {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{\"form\":{\"id\":null,\"createdAt\":null,\"attributes\":{\"usageRules\":{\"isExclusive\":false,\"isUnlimitedPerCode\":false,\"usesPerCode\":1,\"isUnlimitedPerCustomer\":false,\"usesPerCustomer\":1},\"name\":\"test coupon " + randomId + "\",\"storefrontName\":\"storefront name " + randomId + "\",\"description\":\"<p>test description</p>\",\"details\":\"<p>test details</p>\",\"storefront Name\":\"<p>storefront name 77777</p>\",\"activeFrom\":\"2016-07-30T18:59:10.402Z\",\"activeTo\":null}},\"shadow\":{\"id\":null,\"createdAt\":null,\"attributes\":{\"usageRules\":{\"type\":\"usageRules\",\"ref\":\"usageRules\"},\"name\":{\"type\":\"string\",\"ref\":\"name\"},\"storefrontName\":{\"type\":\"richText\",\"ref\":\"storefrontName\"},\"description\":{\"type\":\"richText\",\"ref\":\"description\"},\"details\":{\"type\":\"richText\",\"ref\":\"details\"},\"storefront Name\":{\"type\":\"richText\",\"ref\":\"storefront Name\"},\"activeFrom\":{\"type\":\"2016-07-30T18:59:10.402Z\",\"ref\":\"activeFrom\"},\"activeTo\":{\"type\":null,\"ref\":\"activeTo\"}}},\"promotion\":" + promotionId + "}");
         Request request = new Request.Builder()
-                .url(adminUrl + "/api/v1/coupons/default")
+                .url(apiUrl + "/api/v1/coupons/default")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("cache-control", "no-cache")
@@ -999,6 +1031,7 @@ public class DataProvider extends BaseTest {
 
     }
 
+    @Step("Generate a single code for coupon <ID:'{0}>'")
     private static void generateSingleCode(String couponId) throws IOException {
 
         System.out.println("Generating a single code for coupon <" + couponId + ">...");
@@ -1008,7 +1041,7 @@ public class DataProvider extends BaseTest {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{}");
         Request request = new Request.Builder()
-                .url(adminUrl + "/api/v1/coupons/codes/generate/" + couponId + "/NWCPN-" + generateRandomID())
+                .url(apiUrl + "/api/v1/coupons/codes/generate/" + couponId + "/NWCPN-" + generateRandomID())
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -1032,6 +1065,7 @@ public class DataProvider extends BaseTest {
 
     }
 
+    @Step("Bulk generate codes for coupon <ID:'{0}'>; [prefix:'{1}', codeLength:'{2}', QTY:'{3}']")
     private static void bulkGenerateCodes(String couponId, String prefix, int codeLength, int quantity) throws IOException {
 
         int length = prefix.length() + codeLength;
@@ -1046,7 +1080,7 @@ public class DataProvider extends BaseTest {
                 "\n    \"length\":" + length + "," +
                 "\n    \"quantity\":" + quantity + "\n}");
         Request request = new Request.Builder()
-                .url(adminUrl + "/api/v1/coupons/codes/generate/" + couponId)
+                .url(apiUrl + "/api/v1/coupons/codes/generate/" + couponId)
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -1082,6 +1116,7 @@ public class DataProvider extends BaseTest {
 
     }
 
+    @Step("Apply coupon <ID:'{1}'> to cart <{0}>")
     private static void applyCouponCode(String cartId, String couponCode) throws IOException {
 
         System.out.println("Applying coupon code <" + couponCode + "> to order <" + cartId + ">...");
@@ -1091,7 +1126,7 @@ public class DataProvider extends BaseTest {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{}");
         Request request = new Request.Builder()
-                .url(adminUrl + "/api/v1/orders/" + cartId + "/coupon/" + couponCode)
+                .url(apiUrl + "/api/v1/orders/" + cartId + "/coupon/" + couponCode)
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -1113,6 +1148,7 @@ public class DataProvider extends BaseTest {
 
     }
 
+    @Step("Change store credit <ID:'{0}'> state to <{1}>")
     private static void updateSCState(int scId, String state) throws IOException {
 
         System.out.println("Updating state of store credit with Id <" + scId + ">...");
@@ -1124,7 +1160,7 @@ public class DataProvider extends BaseTest {
                 "\n  \"state\": \"" + state + "\"," +
                 "\n  \"reasonId\": 1\n}");
         Request request = new Request.Builder()
-                .url(adminUrl + "/api/v1/store-credits/" + scId)
+                .url(apiUrl + "/api/v1/store-credits/" + scId)
                 .patch(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -1147,6 +1183,7 @@ public class DataProvider extends BaseTest {
 
     }
 
+    @Step("Create SKU in <State:'Active'>")
     private static void createSKU_active() throws IOException {
 
         System.out.println("Creating a new SKU, options: ACTIVE state...");
@@ -1159,7 +1196,7 @@ public class DataProvider extends BaseTest {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"" + skuCode + "\"},\"title\":{\"t\":\"string\",\"v\":\"" + title + "\"},\"upc\":{\"t\":\"string\",\"v\":\"Test UPC\"},\"description\":{\"t\":\"richText\",\"v\":\"<p>Test description</p>\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"5000\"}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"5000\"}},\"unitCost\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"5000\"}},\"activeFrom\":{\"t\":\"datetime\",\"v\":\"" + getDate() + "T00:03:26.685Z\"},\"activeTo\":{\"t\":\"datetime\",\"v\":null}}}");
         Request request = new Request.Builder()
-                .url(adminUrl + "/api/v1/skus/default")
+                .url(apiUrl + "/api/v1/skus/default")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -1184,6 +1221,7 @@ public class DataProvider extends BaseTest {
 
     }
 
+    @Step("Create SKU in <State: 'Inactive'>")
     private static void createSKU_inactive() throws IOException {
 
         System.out.println("Creating a new SKU, options: INACTIVE state...");
@@ -1195,7 +1233,7 @@ public class DataProvider extends BaseTest {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"" + skuCode + "\"},\"title\":{\"t\":\"string\",\"v\":\"Test Product #" + randomId + "\"},\"upc\":{\"t\":\"string\",\"v\":\"Test UPC\"},\"description\":{\"t\":\"richText\",\"v\":\"<p>Just another test SKU.</p>\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"5000\"}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"5000\"}},\"unitCost\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"5000\"}}}}");
         Request request = new Request.Builder()
-                .url(adminUrl + "/api/v1/skus/default")
+                .url(apiUrl + "/api/v1/skus/default")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -1219,6 +1257,7 @@ public class DataProvider extends BaseTest {
 
     }
 
+    @Step("Create SKU with empty 'Title'")
     private static void createSKU_noTitle() throws IOException {
 
         System.out.println("Creating a new SKU, options: no title...");
@@ -1230,7 +1269,7 @@ public class DataProvider extends BaseTest {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"" + skuCode + "\"},\"title\":{\"t\":\"string\",\"v\":\"\"},\"upc\":{\"t\":\"string\",\"v\":\"Test UPC\"},\"description\":{\"t\":\"richText\",\"v\":\"<p>Just another test SKU.</p>\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"1215\"}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"1215\"}},\"unitCost\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"0\"}},\"activeFrom\":{\"t\":\"datetime\",\"v\":\"2016-07-29T00:03:26.685Z\"},\"activeTo\":{\"v\":null,\"t\":\"datetime\"}}}");
         Request request = new Request.Builder()
-                .url(adminUrl + "/api/v1/skus/default")
+                .url(apiUrl + "/api/v1/skus/default")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -1254,6 +1293,7 @@ public class DataProvider extends BaseTest {
 
     }
 
+    @Step("Create SKU with empty 'Description'")
     private static void createSKU_noDescription() throws IOException {
 
         System.out.println("Creating a new SKU, options: no description...");
@@ -1265,7 +1305,7 @@ public class DataProvider extends BaseTest {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"" + skuCode + "\"},\"title\":{\"t\":\"string\",\"v\":\"Test Product #" + randomId + "\"},\"upc\":{\"t\":\"string\",\"v\":\"Test UPC\"},\"description\":{\"t\":\"richText\",\"v\":\"\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"1215\"}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"1215\"}},\"unitCost\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"0\"}},\"activeFrom\":{\"t\":\"datetime\",\"v\":\"2016-07-29T00:03:26.685Z\"},\"activeTo\":{\"v\":null,\"t\":\"datetime\"}}}");
         Request request = new Request.Builder()
-                .url(adminUrl + "/api/v1/skus/default")
+                .url(apiUrl + "/api/v1/skus/default")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -1289,6 +1329,7 @@ public class DataProvider extends BaseTest {
 
     }
 
+    @Step("Create SKU without specifying the prices")
     private static void createSKU_noPrices() throws IOException {
 
         System.out.println("Creating a new SKU, options: all prices equals <0>...");
@@ -1300,7 +1341,7 @@ public class DataProvider extends BaseTest {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"" + skuCode + "\"},\"title\":{\"t\":\"string\",\"v\":\"Test Product #" + randomId + "\"},\"upc\":{\"t\":\"string\",\"v\":\"Test UPC\"},\"description\":{\"t\":\"richText\",\"v\":\"<p>Just another test SKU.</p>\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"0\"}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"0\"}},\"unitCost\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"0\"}},\"activeFrom\":{\"t\":\"datetime\",\"v\":\"2016-07-29T00:03:26.685Z\"},\"activeTo\":{\"v\":null,\"t\":\"datetime\"}}}");
         Request request = new Request.Builder()
-                .url(adminUrl + "/api/v1/skus/default")
+                .url(apiUrl + "/api/v1/skus/default")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -1324,6 +1365,7 @@ public class DataProvider extends BaseTest {
 
     }
 
+    @Step("Create product; <SKU: auto-created with product>, <State:'Active'>")
     private static void createProduct_noSKU_active() throws IOException {
 
         System.out.println("Creating a new product... No SKU code is provided, so a new one will be created.");
@@ -1335,7 +1377,7 @@ public class DataProvider extends BaseTest {
 //        RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"metaDescription\":{\"t\":\"string\",\"v\":null},\"metaTitle\":{\"t\":\"string\",\"v\":null},\"url\":{\"t\":\"string\",\"v\":null},\"description\":{\"t\":\"richText\",\"v\":\"The best thing to buy in 2016!\"},\"title\":{\"t\":\"string\",\"v\":\"" + productName_local + "\"},\"activeFrom\":{\"v\":\"2016-07-04T17:22:44.388+00:00\",\"t\":\"datetime\"},\"activeTo\":{\"v\":null,\"t\":\"datetime\"}},\"skus\":[{\"feCode\":\"F0QGTGBBINBQF5V53TYB9\",\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"SKU-TST\"},\"title\":{\"t\":\"string\",\"v\":\"\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"2718\"}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"2718\"}}}}]}");
         RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"metaDescription\":{\"t\":\"string\",\"v\":null},\"metaTitle\":{\"t\":\"string\",\"v\":null},\"url\":{\"t\":\"string\",\"v\":null},\"description\":{\"t\":\"richText\",\"v\":\"The best thing to buy in 2016!\"},\"title\":{\"t\":\"string\",\"v\":\"" + productName_local + "\"},\"activeFrom\":{\"v\":\"2016-07-27T23:47:27.518Z\",\"t\":\"datetime\"},\"activeTo\":{\"v\":null,\"t\":\"datetime\"},\"tags\":{\"t\":\"tags\",\"v\":[\"sunglasses\"]}},\"skus\":[{\"feCode\":\"ODB4UPHFJ11UK4HOLXR\",\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"SKU-TST\"},\"title\":{\"t\":\"string\",\"v\":\"\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":2718}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":2718}}}}]}");
         Request request = new Request.Builder()
-                .url(adminUrl + "/api/v1/products/default")
+                .url(apiUrl + "/api/v1/products/default")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -1363,7 +1405,7 @@ public class DataProvider extends BaseTest {
 
     }
 
-
+    @Step("Create product; <SKU:'{0}'>, <Tag:'{1}'>, <State:'Active'>")
     private static void createProduct_active(String sku, String tag) throws IOException {
 
         System.out.println("Creating a new product with SKU <" + sku + ">...");
@@ -1374,7 +1416,7 @@ public class DataProvider extends BaseTest {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"productId\":null,\"attributes\":{\"metaDescription\":{\"t\":\"string\",\"v\":null},\"metaTitle\":{\"t\":\"string\",\"v\":null},\"url\":{\"t\":\"string\",\"v\":null},\"description\":{\"t\":\"richText\",\"v\":\"The best thing to buy in 2016!\"},\"title\":{\"t\":\"string\",\"v\":\"" + productName_local + "\"},\"activeFrom\":{\"v\":\"2016-09-01T18:06:29.890Z\",\"t\":\"datetime\"},\"activeTo\":{\"v\":null,\"t\":\"datetime\"},\"tags\":{\"t\":\"tags\",\"v\":[\"" + tag + "\"]}},\"skus\":[{\"feCode\":\"FCA7PEP20CNLWDISH5MI\",\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"" + sku + "\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":5000}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":5000}},\"title\":{\"v\":\"THATS A TITLE\"},\"context\":{\"v\":\"default\"}}}],\"context\":{\"name\":\"default\"}}");
         Request request = new Request.Builder()
-                .url(adminUrl + "/api/v1/products/default")
+                .url(apiUrl + "/api/v1/products/default")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -1402,6 +1444,7 @@ public class DataProvider extends BaseTest {
 
     }
 
+    @Step("Create product; <SKU:'{0}'> <State:'Active'>, no tag")
     private static void createProduct_active_noTag(String sku) throws IOException {
 
         System.out.println("Creating a new product with SKU <" + sku + ">...");
@@ -1412,7 +1455,7 @@ public class DataProvider extends BaseTest {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"metaDescription\":{\"t\":\"string\",\"v\":null},\"metaTitle\":{\"t\":\"string\",\"v\":null},\"url\":{\"t\":\"string\",\"v\":null},\"description\":{\"t\":\"richText\",\"v\":\"The best thing to buy in 2016!\"},\"title\":{\"t\":\"string\",\"v\":\"" + productName_local + "\"},\"activeFrom\": {\"t\": \"date\",\"v\": \"2016-07-26T14:48:12.493Z\"},\"activeTo\":{\"v\":null,\"t\":\"datetime\"}},\"skus\":[{\"feCode\":\"F0QGTGBBINBQF5V53TYB9\",\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"" + sku + "\"},\"title\":{\"t\":\"string\",\"v\":\"\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"2718\"}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"2718\"}}}}]}");
         Request request = new Request.Builder()
-                .url(adminUrl + "/api/v1/products/default")
+                .url(apiUrl + "/api/v1/products/default")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -1440,6 +1483,7 @@ public class DataProvider extends BaseTest {
 
     }
 
+    @Step("Create product; <SKU:'{0}'>, <Tag:'{1}'>, <State:'Inactive'>")
     private static void createProduct_inactive(String sku, String tag) throws IOException {
 
         System.out.println("Creating a new product with SKU <" + sku + ">...");
@@ -1450,7 +1494,7 @@ public class DataProvider extends BaseTest {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"metaDescription\":{\"t\":\"string\",\"v\":null},\"metaTitle\":{\"t\":\"string\",\"v\":null},\"url\":{\"t\":\"string\",\"v\":null},\"description\":{\"t\":\"richText\",\"v\":\"The best thing to buy in 2016!\"},\"title\":{\"t\":\"string\",\"v\":\"" + productName_local + "\"},\"tags\":{\"t\":\"tags\",\"v\":[\"" + tag + "\"]}},\"skus\":[{\"feCode\":\"JBV96IF5QRNZM9KQ33DI\",\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"" + sku + "\"},\"title\":{\"t\":\"string\",\"v\":\"\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"2718\"}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"2718\"}}}}]}");
         Request request = new Request.Builder()
-                .url(adminUrl + "/api/v1/products/default")
+                .url(apiUrl + "/api/v1/products/default")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -1478,6 +1522,7 @@ public class DataProvider extends BaseTest {
 
     }
 
+    @Step("Create product; <SKU:'{0}'>, no tag, <State:'Inactive'>")
     private static void createProduct_inactive_noTag(String sku) throws IOException {
 
         System.out.println("Creating a new product with SKU <" + sku + ">...");
@@ -1488,7 +1533,7 @@ public class DataProvider extends BaseTest {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"metaDescription\":{\"t\":\"string\",\"v\":null},\"metaTitle\":{\"t\":\"string\",\"v\":null},\"url\":{\"t\":\"string\",\"v\":null},\"description\":{\"t\":\"richText\",\"v\":\"The best thing to buy in 2016!\"},\"title\":{\"t\":\"string\",\"v\":\"" + productName_local + "\"}},\"skus\":[{\"feCode\":\"KB0SOK5PSSBEPP5H4CXR\",\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"" + sku + "\"},\"title\":{\"t\":\"string\",\"v\":\"\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"2718\"}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"2718\"}}}}]}");
         Request request = new Request.Builder()
-                .url(adminUrl + "/api/v1/products/default")
+                .url(apiUrl + "/api/v1/products/default")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -1516,6 +1561,7 @@ public class DataProvider extends BaseTest {
 
     }
 
+    @Step("Create product; <SKU:'{0}'>, <Tag:'sunglasses'>, <Active From:'{1}'>, <Active To:'{2}'>")
     private static void createProduct_activeFromTo(String sku, String startDate, String endDate) throws IOException {
 
         System.out.println("Creating product with active from-to dates; SKU: <" + sku + ">...");
@@ -1526,7 +1572,7 @@ public class DataProvider extends BaseTest {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"productId\":null,\"attributes\":{\"metaDescription\":{\"t\":\"string\",\"v\":null},\"metaTitle\":{\"t\":\"string\",\"v\":null},\"url\":{\"t\":\"string\",\"v\":null},\"description\":{\"t\":\"richText\",\"v\":\"<p>The best thing to buy in 2016!</p>\"},\"title\":{\"t\":\"string\",\"v\":\"" + productName_local + "\"},\"activeFrom\":{\"t\":\"datetime\",\"v\":\"" + startDate + "T07:00:17.729Z\"},\"activeTo\":{\"t\":\"datetime\",\"v\":\"" + endDate + "T19:00:00.810Z\"},\"tags\":{\"t\":\"tags\",\"v\":[\"sunglasses\"]}},\"skus\":[{\"feCode\":\"CIEP39Z2WPQ1ETFVQUXR\",\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"" + sku + "\"},\"title\":{\"t\":\"string\",\"v\":\"\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":2718}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":2718}}}}],\"context\":\"\"}");
         Request request = new Request.Builder()
-        .url("http://admin.stage.foxcommerce.com/api/v1/products/default")
+        .url(apiUrl + "/api/v1/products/default")
         .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -1554,6 +1600,7 @@ public class DataProvider extends BaseTest {
 
     }
 
+    @Step("Archive product <ID:'{0}'>")
     private static void archiveProduct(String productId) throws IOException {
 
         System.out.println("Archiving product with ID <" + productId + ">...");
@@ -1561,7 +1608,7 @@ public class DataProvider extends BaseTest {
         OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
-                .url("http://admin.stage.foxcommerce.com/api/v1/products/default/" + productId)
+                .url(apiUrl + "/api/v1/products/default/" + productId)
                 .delete(null)
                 .addHeader("cache-control", "no-cache")
                 .addHeader("JWT", jwt)
@@ -1581,6 +1628,7 @@ public class DataProvider extends BaseTest {
 
     }
 
+    @Step("Create shared search with one search filter")
     private static void createSharedSearch_oneFilter() throws IOException {
 
         System.out.println("Creating a new shared search...");
@@ -1591,7 +1639,7 @@ public class DataProvider extends BaseTest {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{\"title\":\"Search " + searchRandomId + "\",\"query\":[{\"display\":\"Order : Total : > : $0\",\"term\":\"grandTotal\",\"operator\":\"gt\",\"value\":{\"type\":\"currency\",\"value\":\"000\"}}],\"scope\":\"ordersScope\",\"rawQuery\":{\"query\":{\"bool\":{\"filter\":[{\"range\":{\"grandTotal\":{\"gt\":\"000\"}}}]}}}}");
         Request request = new Request.Builder()
-                .url("http://admin.stage.foxcommerce.com/api/v1/shared-search")
+                .url(apiUrl + "/api/v1/shared-search")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -1620,6 +1668,7 @@ public class DataProvider extends BaseTest {
 
     }
 
+    @Step("Create shared search with two search filters")
     private static void createSharedSearch_twoFilters() throws IOException {
 
         System.out.println("Creating a new shared search...");
@@ -1630,7 +1679,7 @@ public class DataProvider extends BaseTest {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{\"title\":\"Search " + searchRandomId + "\",\"query\":[{\"display\":\"Order : State : Remorse Hold\",\"term\":\"state\",\"operator\":\"eq\",\"value\":{\"type\":\"enum\",\"value\":\"remorseHold\"}},{\"display\":\"Order : Total : > : $1\",\"term\":\"grandTotal\",\"operator\":\"gt\",\"value\":{\"type\":\"currency\",\"value\":\"100\"}}],\"scope\":\"ordersScope\",\"rawQuery\":{\"query\":{\"bool\":{\"filter\":[{\"term\":{\"state\":\"remorseHold\"}},{\"range\":{\"grandTotal\":{\"gt\":\"100\"}}}]}}}}");
         Request request = new Request.Builder()
-                .url("http://admin.stage.foxcommerce.com/api/v1/shared-search")
+                .url(apiUrl + "/api/v1/shared-search")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -1660,6 +1709,7 @@ public class DataProvider extends BaseTest {
 
     }
 
+    @Step("Share search <searchCode:'{0}'> with <{1}>")
     protected static void shareSearch(String searchCode, String adminName) throws IOException {
 
         getAdminId(adminName);
@@ -1671,7 +1721,7 @@ public class DataProvider extends BaseTest {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{\n    \"associates\": [" + adminId + "]\n}");
         Request request = new Request.Builder()
-                .url("http://admin.stage.foxcommerce.com/api/v1/shared-search/" + searchCode + "/associate")
+                .url(apiUrl + "/api/v1/shared-search/" + searchCode + "/associate")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -1702,7 +1752,7 @@ public class DataProvider extends BaseTest {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{\"query\":{\"bool\":{}},\"sort\":[{\"createdAt\":{\"order\":\"desc\"}}]}");
         Request request = new Request.Builder()
-                .url("http://admin.stage.foxcommerce.com/api/search/admin/store_admins_search_view/_search?size=50")
+                .url(apiUrl + "/api/search/admin/store_admins_search_view/_search?size=50")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -1736,6 +1786,7 @@ public class DataProvider extends BaseTest {
 
     }
 
+    @Step("Delete search <searchId:'{0}'>")
     protected static void deleteSearch(String searchId) throws IOException {
 
         System.out.println("Deleting saved search with id <" + searchId + ">.");
@@ -1743,7 +1794,7 @@ public class DataProvider extends BaseTest {
         OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
-                .url("http://admin.stage.foxcommerce.com/api/v1/shared-search/" + searchId)
+                .url(apiUrl + "/api/v1/shared-search/" + searchId)
                 .delete(null)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -1772,7 +1823,7 @@ public class DataProvider extends BaseTest {
         OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
-                .url("http://admin.stage.foxcommerce.com/api/v1/inventory/summary/" + skuCode)
+                .url(apiUrl + "/api/v1/inventory/summary/" + skuCode)
                 .get()
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -1798,6 +1849,7 @@ public class DataProvider extends BaseTest {
 
     }
 
+    @Step("Increase amount of sellable unites of <{0}> by <{1}>")
     private static void increaseSellableAmount(String skuCode, Integer qty) throws IOException {
 
         viewSKU_inventory(skuCode);
@@ -1809,7 +1861,7 @@ public class DataProvider extends BaseTest {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{\"qty\":" + qty + ",\"type\":\"Sellable\",\"status\":\"onHand\"}");
         Request request = new Request.Builder()
-                .url("http://admin.stage.foxcommerce.com/api/v1/inventory/stock-items/" + skuId_inventory + "/increment")
+                .url(adminUrl + "/api/v1/inventory/stock-items/" + skuId_inventory + "/increment")
                 .patch(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -1831,6 +1883,7 @@ public class DataProvider extends BaseTest {
 
     }
 
+    @Step("Create SKU specifically for search filter tests")
     private static void createSKU_search() throws IOException {
 
         System.out.println("Creating a new SKU, options: ACTIVE state...");
@@ -1843,7 +1896,7 @@ public class DataProvider extends BaseTest {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"" + skuCode + "\"},\"title\":{\"t\":\"string\",\"v\":\"" + title + "\"},\"upc\":{\"t\":\"string\",\"v\":\"Test UPC\"},\"description\":{\"t\":\"richText\",\"v\":\"<p>Test description</p>\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"90000\"}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"90000\"}},\"unitCost\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":\"90000\"}},\"activeFrom\":{\"t\":\"datetime\",\"v\":\"" + getDate() + "T00:03:26.685Z\"},\"activeTo\":{\"t\":\"datetime\",\"v\":null}}}");
         Request request = new Request.Builder()
-                .url(adminUrl + "/api/v1/skus/default")
+                .url(apiUrl + "/api/v1/skus/default")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -1868,6 +1921,7 @@ public class DataProvider extends BaseTest {
 
     }
 
+    @Step("Archive SKU <{0}>")
     public static void archiveSKU(String skuCode) throws IOException {
 
         System.out.println("Archiving SKU <" + skuCode + ">...");
@@ -1875,7 +1929,7 @@ public class DataProvider extends BaseTest {
         OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
-                .url("http://admin.stage.foxcommerce.com/api/v1/skus/default/" + skuCode)
+                .url(apiUrl + "/api/v1/skus/default/" + skuCode)
                 .delete(null)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -1898,9 +1952,7 @@ public class DataProvider extends BaseTest {
 
     }
 
-
-
-
+    @Step("Create test data using API")
     protected void provideTestData(String testMethodName) throws IOException {
 
         loginAsAdmin();
@@ -2001,7 +2053,7 @@ public class DataProvider extends BaseTest {
 //                createCart(customerId);
 //                createPromotion_coupon();
 //                createCoupon(promotionId);
-//                bulkGenerateCodes(couponId);
+//                generateCodes_bulk(couponId);
 //                applyCouponCode(bulkCodes.get(0));
 //                break;
 

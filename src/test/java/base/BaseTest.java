@@ -12,8 +12,9 @@ public class BaseTest extends ConciseAPI {
     protected String getUrl() {
         return getWebDriver().getCurrentUrl();
     }
-    protected static String adminUrl = "https://admin.stage.foxcommerce.com";
-    protected static String storefrontUrl = "https://stage.foxcommerce.com";
+    protected static String apiUrl = "https://demo1.foxcommerce.com";
+    protected static String adminUrl = "https://demo1.foxcommerce.com/admin";
+    protected static String storefrontUrl = "https://demo1.foxcommerce.com";
 
     @BeforeSuite
     public void browserConfig() {

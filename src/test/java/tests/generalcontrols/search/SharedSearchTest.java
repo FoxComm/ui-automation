@@ -25,7 +25,7 @@ public class SharedSearchTest extends DataProvider {
         if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
             LoginPage loginPage = open(adminUrl + "/login", LoginPage.class);
             loginPage.login("admin@admin.com", "password");
-            loginPage.userMenuBtn().shouldBe(visible);
+            shouldBeVisible(loginPage.userMenuBtn(), "Failed to log in");
         }
 
     }
@@ -38,15 +38,13 @@ public class SharedSearchTest extends DataProvider {
 
         p.switchToTab("Search " + searchRandomId);
         p.searchContextMenu("Share Search");
-        setFieldVal( p.inviteUsersFld(), "such root" );
-        click( p.userName("Such Root") );
-        p.shareBtn().shouldBe(enabled);
-        p.adminPilledLabel().shouldHave(text("Such Root")
-                .because("Admin user isn't selected for sharing - 'pilled label with admin name' isn't displayed."));
-        click( p.shareBtn() );
-        p.successIcon().shouldBe(visible
-                .because("'Success' message isn't displayed after clicking 'Share'."));
-        click( p.closeModalWindowBtn() );
+        p.shareSearchWith("Such Root");
+//        p.adminPilledLabel().shouldHave(text("Such Root")
+//                .because("Admin user isn't selected for sharing - 'pilled label with admin name' isn't displayed."));
+        p.clickShare();
+        shouldBeVisible(p.successIcon(), "\"Success\" message isn't displayed after clicking \"Share\"");
+        p.closeModalWindow();
+
         p.logout();
         p.login("hackerman@yahoo.com", "password1");
         p.tab("Search " + searchRandomId).shouldBe(visible.because("Shared search isn't displayed."));
@@ -62,12 +60,8 @@ public class SharedSearchTest extends DataProvider {
 
         p.switchToTab("Search " + searchRandomId);
         p.searchContextMenu("Share Search");
-        click( p.removeAdminBtn("Such Root") );
-        p.successIcon().shouldBe(visible
-                .because("'Success msg isn't displayed."));
-        p.successIcon().shouldBe(visible
-                .because("'Success' message isn't displayed after clicking 'Share'."));
-        click( p.closeModalWindowBtn() );
+        p.unshareSearchWith("Such Root");
+        p.closeModalWindow();
         p.logout();
         p.login("hackerman@yahoo.com", "password1");
         //refresh() is a workaround for a known bug - should be deleted later
@@ -84,11 +78,12 @@ public class SharedSearchTest extends DataProvider {
         p = open(adminUrl, GeneralControlsPage.class);
 
         p.switchToTab("Search " + searchRandomId);
-        click( p.removeFilterBtn("Order : Total : > : $0") );
+        p.removeSearchFilter("Order : Total : > : $0");
         waitForDataToLoad();
         p.addFilter("Order", "State", "Remorse Hold");
         p.searchContextMenu("Update Search");
-        p.dirtySearchIndicator().shouldNotBe(visible);
+        shouldNotBeVisible(p.dirtySearchIndicator(),
+                "\"Dirty Search\" indicator isn't displayed after search has been edited");
         p.logout();
         p.login("hackerman@yahoo.com", "password1");
         //refresh() is a workaround for a known bug - should be deleted later
@@ -97,6 +92,7 @@ public class SharedSearchTest extends DataProvider {
 
     }
 
+    // split into 2 tests
     @Test(priority = 4)
     public void deleteSharedSearch() throws IOException {
 

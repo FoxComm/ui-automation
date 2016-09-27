@@ -9,7 +9,6 @@ import testdata.DataProvider;
 import java.io.IOException;
 import java.util.Objects;
 
-import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.Selenide.refresh;
 
@@ -19,14 +18,12 @@ public class PlaceOrderTest extends DataProvider {
 
     @BeforeClass(alwaysRun = true)
     public void setUp() {
-
         open(adminUrl);
         if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
             LoginPage loginPage = open(adminUrl + "/login", LoginPage.class);
             loginPage.login("admin@admin.com", "password");
-            loginPage.userMenuBtn().shouldBe(visible);
+            shouldBeVisible(loginPage.userMenuBtn(), "Failed to log in");
         }
-
     }
 
     @Test(priority = 1)
@@ -36,7 +33,7 @@ public class PlaceOrderTest extends DataProvider {
         p = open(adminUrl + "/carts/" + cartId, OrderDetailsPage.class);
 
         p.assertNoWarnings();
-        click( p.placeOrderBtn() );
+        p.clickPlaceOderBtn();
         p.assertOrderState("Remorse Hold");
 
     }
@@ -47,13 +44,13 @@ public class PlaceOrderTest extends DataProvider {
         provideTestData("cart with 1 item, shipping method and issued SC");
         p = open(adminUrl + "/carts/" + cartId, OrderDetailsPage.class);
 
-        p.cartSummary().waitUntil(visible, 10000);
+        shouldBeVisible(p.cartSummary(), "Failed to open cart page");
         int amountToUse = (int) (p.grandTotalVal() * 100);
 
         setPayment_storeCredit(cartId, amountToUse);
         refresh();
         p.assertNoWarnings();
-        click( p.placeOrderBtn() );
+        p.clickPlaceOderBtn();
         p.assertOrderState("Remorse Hold");
 
     }
@@ -64,14 +61,13 @@ public class PlaceOrderTest extends DataProvider {
         provideTestData("cart with 1 item, shipping method and issued GC");
         p = open(adminUrl + "/carts/" + cartId, OrderDetailsPage.class);
 
-        p.cartSummary().waitUntil(visible, 10000);
+        shouldBeVisible(p.cartSummary(), "Failed to open cart page");
         int amountToUse = (int) (p.grandTotalVal() * 100);
-
 
         setPayment_giftCard(cartId, gcCode, amountToUse);
         refresh();
         p.assertNoWarnings();
-        click( p.placeOrderBtn() );
+        p.clickPlaceOderBtn();
         p.assertOrderState("Remorse Hold");
 
     }
@@ -82,13 +78,13 @@ public class PlaceOrderTest extends DataProvider {
         provideTestData("cart with 1 item, shipping method, credit card payment and issued SC");
         p = open(adminUrl + "/carts/" + cartId, OrderDetailsPage.class);
 
-        p.cartSummary().waitUntil(visible, 10000);
+        shouldBeVisible(p.cartSummary(), "Failed to open cart page");
         int amountToUse = (int) (p.grandTotalVal() / 2 * 100);
 
         setPayment_storeCredit(cartId, amountToUse);
         refresh();
         p.assertNoWarnings();
-        click( p.placeOrderBtn() );
+        p.clickPlaceOderBtn();
         p.assertOrderState("Remorse Hold");
 
     }
@@ -99,13 +95,13 @@ public class PlaceOrderTest extends DataProvider {
         provideTestData("cart with 1 item, shipping method, credit card payment and issued GC");
         p = open(adminUrl + "/carts/" + cartId, OrderDetailsPage.class);
 
-        p.cartSummary().waitUntil(visible, 10000);
+        shouldBeVisible(p.cartSummary(), "Failed to open cart page");
         int amountToUse = (int) (p.grandTotalVal() / 2 * 100);
 
         setPayment_giftCard(cartId, gcCode, amountToUse);
         refresh();
         p.assertNoWarnings();
-        click( p.placeOrderBtn() );
+        p.clickPlaceOderBtn();
         p.assertOrderState("Remorse Hold");
 
     }
@@ -116,7 +112,7 @@ public class PlaceOrderTest extends DataProvider {
         provideTestData("cart with 1 item, shipping method, issued SC and GC");
         p = open(adminUrl + "/carts/" + cartId, OrderDetailsPage.class);
 
-        p.cartSummary().waitUntil(visible, 10000);
+        shouldBeVisible(p.cartSummary(), "Failed to open cart page");
         int amountToUse_GC = (int) (p.grandTotalVal() / 2 * 100);
         int amountToUse_SC = calcAmount(amountToUse_GC, p.grandTotalVal());
 
@@ -124,7 +120,7 @@ public class PlaceOrderTest extends DataProvider {
         setPayment_storeCredit(cartId, amountToUse_SC);
         refresh();
         p.assertNoWarnings();
-        click( p.placeOrderBtn() );
+        p.clickPlaceOderBtn();
         p.assertOrderState("Remorse Hold");
 
     }

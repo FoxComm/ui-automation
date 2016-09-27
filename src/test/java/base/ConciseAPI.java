@@ -1,7 +1,9 @@
 package base;
 
 import com.codeborne.selenide.Configuration;
+import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
+import com.codeborne.selenide.ex.ElementNotFound;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
@@ -14,65 +16,82 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
-import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.Selenide.sleep;
 import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 import static org.openqa.selenium.By.xpath;
 
 public class ConciseAPI extends Configuration {
 
-    public String stageAdmin = "http://admin.stage.foxcommerce.com/";
-    public String stageStorefront = "http://stage.foxcommerce.com/";
-    public String tgtAdmin = "http://admin.tgt.foxcommerce.com/";
-    public String tgtStorefront = "http://tgt.foxcommerce.com/";
+    private String actualValue;     // used in shouldHaveText()
+    private int actualSize;         // used in shouldHaveSize()
 
-    @Step("Click {0}.")
+    //------------------------- ELEMENTS -------------------------//
+
+    protected SelenideElement itemsOnList() {
+        return $(xpath("//td[@class='fc-table-td']"));
+    }
+
+    protected SelenideElement emptyList() {
+        return $(xpath("//div[@class='fc-content-box__empty-row']"));
+    }
+
+    private SelenideElement loadingSpinner() {
+        return $(xpath("//div[@class='fc-wait-animation fc-wait-animation_size_l']"));
+    }
+
+    private String element;
+
+    //------------------------- ACTIONS -------------------------//
+
+    @Step("Open <{0}>")
+    public static <PageObjectClass> PageObjectClass openPage(String relativeOrAbsoluteUrl,
+                                                         Class<PageObjectClass> pageObjectClassClass) {
+        return open(relativeOrAbsoluteUrl, "", "", "", pageObjectClassClass);
+    }
+
     public void click(SelenideElement element) {
-        elementIsVisible(element);
+        shouldBeVisible(element, "Element is not visible");
         element.click();
     }
 
-    @Step("Click {1}th button from {0} List of elements.")
+    public void click(SelenideElement element, String errorMsg) {
+        shouldBeVisible(element, errorMsg);
+        element.click();
+    }
+
     protected void click(List<SelenideElement> listOfElements, int index) {
         SelenideElement element = listOfElements.get(index - 1);
-        elementIsVisible(element);
+        shouldBeVisible(element, "Element is not visible");
         element.click();
     }
 
-    @Step("Click {0}.")
     protected void jsClick(SelenideElement element) {
         JavascriptExecutor executor = (JavascriptExecutor)getWebDriver();
         executor.executeScript("arguments[0].click();", element);
     }
 
-    @Step("Select <{1}> option from <{0}> dropdown.")
     protected void setDdVal(SelenideElement ddElement, String ddValue) {
-        ddElement.click();
+        click( ddElement, "Dropdown isn't visible" );
         SelenideElement option = $(By.xpath("//li[text()='" + ddValue + "']"));
-        option.click();
+        click( option, "Option <" + ddValue + "> on dd list isn't visible" );
     }
 
-    @Step("Check if {0} element is visible.")
-    protected void elementIsVisible(SelenideElement element) {
-        element.shouldBe(visible);
-    }
-
-    @Step("Check if {0} element is not visible.")
-    protected void elementNotVisible(SelenideElement element) {
-        element.shouldNot(visible);
-    }
-
-    @Step("Set {0} field value to {1}")
     protected void setFieldVal(SelenideElement element, String value) {
-        elementIsVisible(element);
+        shouldBeVisible(element, "Field is not visible");
         element.setValue(value);
     }
 
-    @Step("Set {0} field value to {1}")
+    protected void setFieldVal(SelenideElement element, String value, String errorMsg) {
+        shouldBeVisible(element, errorMsg);
+        element.setValue(value);
+    }
+
     protected void setFieldVal_delayed(SelenideElement element, String value) {
         sleep(250);
-        elementIsVisible(element);
+        shouldBeVisible(element, "Failed to set field value - it's not visible");
         for(int i = 0; i < value.length(); i++) {
             element.sendKeys(String.valueOf(value.charAt(i)));
         }
@@ -83,51 +102,141 @@ public class ConciseAPI extends Configuration {
         element.sendKeys(Keys.BACK_SPACE);
     }
 
-    protected String addToString(String string1, String string2) {
+    //------------------------- ASSERTIONS -------------------------//
 
+    public void waitForDataToLoad() {
+        shouldNotBeVisible(loadingSpinner(),
+                "Data loading either took too long or it was interrupted by an error.");
+    }
+
+    protected void shouldBeVisible(SelenideElement element, String errorMsg) {
+        try {
+            element.shouldBe(visible);
+        } catch (ElementNotFound e) {
+            System.err.println(e.getStackTrace());
+            e.printStackTrace();
+            throw new RuntimeException(errorMsg);
+        }
+    }
+
+    protected void shouldNotBeVisible(SelenideElement element, String errorMsg) {
+        try {
+            element.shouldNotBe(visible);
+        } catch (ElementNotFound e) {
+            System.err.println(e.getStackTrace());
+            e.printStackTrace();
+            throw new RuntimeException(errorMsg);
+        }
+    }
+
+    protected void shouldBeEnabled(SelenideElement element, String errorMsg) {
+        try {
+            element.shouldBe(enabled);
+        } catch (ElementNotFound e) {
+            System.err.println(e.getStackTrace());
+            e.printStackTrace();
+            throw new RuntimeException(errorMsg);
+        }
+    }
+
+    protected void shouldNotExist(SelenideElement element, String errorMsg) {
+        try {
+            element.shouldNot(exist);
+        } catch (ElementNotFound e) {
+            System.err.println(e.getStackTrace());
+            e.printStackTrace();
+            throw new RuntimeException(errorMsg);
+        }
+    }
+
+    protected void shouldHaveValue(SelenideElement element, String expValue, String errorMsg) {
+        try {
+            actualValue = element.getValue();
+            element.shouldHave(attribute("value", expValue));
+        // must be different exception
+        } catch (ElementNotFound e) {
+            System.err.println(e.getStackTrace());
+            e.printStackTrace();
+            throw new RuntimeException(errorMsg +
+                    "\nExpected: [" + expValue + "], Actual: [" + actualValue + "].");
+        }
+    }
+
+    protected void shouldHaveText(SelenideElement element, String expValue, String errorMsg) {
+        try {
+            actualValue = element.getText();
+            element.shouldHave(text(expValue));
+            // must be different exception
+        } catch (ElementNotFound e) {
+            System.err.println(e.getStackTrace());
+            e.printStackTrace();
+            throw new RuntimeException(errorMsg +
+                    "\nExpected: [" + expValue + "], Actual: [" + actualValue + "].");
+        }
+    }
+
+    protected void shouldNotHaveText(SelenideElement element, String expValue, String errorMsg) {
+        try {
+            actualValue = element.getText();
+            element.shouldNotHave(text(expValue));
+            // must be different exception
+        } catch (ElementNotFound e) {
+            System.err.println(e.getStackTrace());
+            e.printStackTrace();
+            throw new RuntimeException(errorMsg +
+                    "\nExpected: [" + expValue + "], Actual: [" + actualValue + "].");
+        }
+    }
+
+    protected void shouldHaveSize(ElementsCollection collection, int expValue, String errorMsg) {
+        try {
+            actualSize = collection.size();
+            collection.shouldHaveSize(expValue);
+            // must be different exception
+        } catch (ElementNotFound e) {
+            System.err.println(e.getStackTrace());
+            e.printStackTrace();
+            throw new RuntimeException(errorMsg +
+                    "\nExpected: [" + expValue + "], Actual: [" + actualSize + "].");
+        }
+    }
+
+    //------------------------- HELPERS -------------------------//
+    //------------ MATH
+    protected String addToString(String string1, String string2) {
         Integer intString1 = Integer.valueOf(string1);
         Integer intString2 = Integer.valueOf(string2);
         Integer intResult = intString1 + intString2;
         return String.valueOf(intResult);
-
     }
 
     protected static String addToString(String string, int integer) {
-
         Integer intString1 = Integer.valueOf(string);
         return String.valueOf(intString1 + integer);
-
     }
 
     protected static String subtractFromString(String string1, String string2) {
-
         Integer intString1 = Integer.valueOf(string1);
         Integer intString2 = Integer.valueOf(string2);
         Integer intResult = intString1 - intString2;
         return String.valueOf(intResult);
-
     }
 
-    protected static String subtractFromString(String string, int integer) {
+    private static String subtractFromString(String string, int integer) {
         Integer intString = Integer.valueOf(string);
         return String.valueOf(intString - integer);
     }
 
     protected static String generateRandomID() {
-
         Random rand = new Random();
         String randomId = "";
-
         for (int i = 0; i < 7; i++) {
             // generates random int between 0 and 9
             int randomNum = rand.nextInt(9 + 1);
-
             String strRandomNum = String.valueOf(randomNum);
             randomId = randomId.concat(strRandomNum);
         }
-
         return randomId;
-
     }
 
     protected double cutDecimal(double numb) {
@@ -144,25 +253,7 @@ public class ConciseAPI extends Configuration {
         return (int) ((grandTotal - firstAmount_double) * 100);
     }
 
-    protected SelenideElement itemsOnList() {
-        return $(xpath("//td[@class='fc-table-td']"));
-    }
-
-    protected SelenideElement emptyList() {
-        return $(xpath("//div[@class='fc-content-box__empty-row']"));
-    }
-
-    private SelenideElement loadingSpinner() {
-        return $(xpath("//div[@class='fc-wait-animation fc-wait-animation_size_l']"));
-    }
-
-    @Step("Wait for data on the list to be loaded.")
-    public void waitForDataToLoad() {
-//        itemsOnList().should(exist.because("There's no content on the list."));
-        loadingSpinner().shouldNotBe(visible
-                .because("Data loading either took too long or it was interrupted by an error."));
-    }
-
+    //------------ DATES
     public static String getDate() {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date date = new Date();

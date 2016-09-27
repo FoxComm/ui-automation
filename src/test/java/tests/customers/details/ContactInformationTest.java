@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.util.Objects;
 
 import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.open;
 
 public class ContactInformationTest extends DataProvider {
@@ -28,7 +27,7 @@ public class ContactInformationTest extends DataProvider {
         if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
             LoginPage loginPage = open(adminUrl + "/login", LoginPage.class);
             loginPage.login("admin@admin.com", "password");
-            loginPage.userMenuBtn().shouldBe(visible);
+            shouldBeVisible(loginPage.userMenuBtn(), "Failed to log in");
         }
 
     }
@@ -52,9 +51,10 @@ public class ContactInformationTest extends DataProvider {
         provideTestData("a customer");
         p = open(adminUrl + "/customers/" + customerId, CustomersPage.class);
 
-        click( p.editBtn_contactInfo() );
-        setFieldVal( p.phoneNumberFld_contactInfo(), "7779994242" );
-        click( p.saveBtn() );
+        p.clickEditBtn_contactInfo();
+        p.setPhoneNumber_contactInfo("7779994242");
+        p.clickSave();
+
         p.phoneNumberVal_contactInfo().shouldHave(text("7779994242")
                 .because("Failed to set customer's phone number."));
 
@@ -66,10 +66,11 @@ public class ContactInformationTest extends DataProvider {
         provideTestData("a customer");
         p = open(adminUrl + "/customers/" + customerId, CustomersPage.class);
 
-        click( p.editBtn_contactInfo() );
-        setFieldVal( p.phoneNumberFld_contactInfo(), "7779994242" );
-        setFieldVal( p.nameFld_contactInfo(), newName );
-        click( p.saveBtn() );
+        p.clickEditBtn_contactInfo();
+        p.setPhoneNumber_contactInfo("7779994242");
+        p.setName_contactInfo(newName);
+        p.clickSave();
+
         p.nameVal_contactInfo().shouldHave(text(newName)
                 .because("Failed to edit customer's name."));
         p.nameVal_overview().shouldHave(text(newName)
@@ -83,10 +84,12 @@ public class ContactInformationTest extends DataProvider {
         provideTestData("a customer");
         p = open(adminUrl + "/customers/" + customerId, CustomersPage.class);
 
-        click( p.editBtn_contactInfo() );
-        setFieldVal( p.phoneNumberFld_contactInfo(), "7779994242" );
+        p.clickEditBtn_contactInfo();
+        p.setPhoneNumber_contactInfo("7779994242");
         setFieldVal( p.emailFld_contactInfo(), newEmail );
-        click( p.saveBtn() );
+        p.setEmail_contactInfo(newEmail);
+        p.clickSave();
+
         p.emailVal_contactInfo().shouldHave(text(newEmail)
                 .because("Failed to edit customer's email."));
         p.emailVal_overview().shouldHave(text(newEmail)

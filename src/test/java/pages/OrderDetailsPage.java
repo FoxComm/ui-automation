@@ -30,11 +30,10 @@ public class OrderDetailsPage extends CartPage {
 
     //------------------------------- HELPERS --------------------------------//
 
-    @Step("Set order state to {0}.")
+    @Step("Change order state to {0}")
     public void setOrderState(String state) {
-        click( orderStateDd() );
-        click( $(By.xpath("//li[text()='" + state + "']")) );
-        click( $(By.xpath("//span[text()='Yes, Change']/..")) );
+        setDdVal(orderStateDd(), state);
+        click( yesBtn() );
     }
 
     @Step("Check if remorse hold time has been increased.")

@@ -7,7 +7,6 @@ import org.testng.annotations.Test;
 import pages.LoginPage;
 
 import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.Selenide.refresh;
 
 public class LoginTest extends BaseTest {
@@ -16,7 +15,7 @@ public class LoginTest extends BaseTest {
 
     @BeforeClass(alwaysRun = true)
     public void setUp() {
-        p = open(adminUrl + "/login", LoginPage.class);
+        p = openPage(adminUrl + "/login", LoginPage.class);
     }
 
     @Test(priority = 1)

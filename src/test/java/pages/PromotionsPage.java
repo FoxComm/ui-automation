@@ -5,7 +5,6 @@ import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.By;
 import ru.yandex.qatools.allure.annotations.Step;
 
-import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.$;
 
 public class PromotionsPage extends BasePage {
@@ -77,47 +76,84 @@ public class PromotionsPage extends BasePage {
 
     @Step("Create a new promotion with <{0}> apply type")
     public void createNewPromo(String applyType, String id) {
-
-        click( addNewPromoBtn() );
-        setDdVal( applyTypeDd(), applyType );
-        setFieldVal( nameFld(), "Test Promo " + id );
-        setFieldVal( storefrontNameFld(), "sf name" );
-        setFieldVal( descriptionFld(), "test promo" );
-        setFieldVal( detailsFld(), "promo details" );
-        setDdVal( qualifierTypeDd(), "Order - No qualifier" );
-        setDdVal( offerTypeDd(), "Percent off order" );
-        setFieldVal( offerGetFld(), "10" );
+        clickAddNewPromoBtn();
+        setApplyType(applyType);
+        setPromoName("Test Promo " + id);
+        setStorefrontName("sf name");
+        setDescription("test promo");
+        setDetails("promo details");
+        setQualifierType("Order - No qualifier");
+        setOfferType("Percent off order");
+        setOfferGet("10");
         clickSave();
-        promotionIdVal().shouldNotHave(text("new")
-                .because("Failed to create a new promotion."));
-
+        shouldNotHaveText(promotionIdVal(), "new", "Failed to create a new promotion.");
     }
+
+        @Step("Click \"Create New Promotion\" btn")
+        public void clickAddNewPromoBtn() {
+            click(addNewPromoBtn());
+        }
+
+        @Step("Set \"Apply Type\" dd val to <{0}>")
+        public void setApplyType(String type) {
+            setDdVal(applyTypeDd(), type);
+        }
+
+        @Step("Set \"Name\" fld val to <{0}>")
+        public void setPromoName(String name) {
+            setFieldVal(nameFld(), name);
+        }
+
+        @Step("Set \"Storefront Name\" fld val to <{0}>")
+        public void setStorefrontName(String name) {
+            setFieldVal(storefrontNameFld(), name);
+        }
+
+        @Step("Set \"Description\" rich text fld val to <{0}>")
+        public void setDescription(String description) {
+            setFieldVal(descriptionFld(), description);
+        }
+
+        @Step("Set \"Details\" rich text fld val to <{0}>")
+        public void setDetails(String details) {
+            setFieldVal(detailsFld(), details);
+        }
+
+        @Step("Set \"Qualifyer Type\" dd val to <{0}>")
+        public void setQualifierType(String qualifierType) {
+            setDdVal(qualifierTypeDd(), qualifierType);
+        }
+
+        @Step("Set \"Offer Type\" dd val to <{0}>")
+        public void setOfferType(String offerType) {
+            setDdVal(offerTypeDd(), offerType);
+        }
+
+        @Step("Set \"Offer Get\" fld val to <{0}>")
+        public void setOfferGet(String offerGet) {
+            setFieldVal(offerGetFld(), offerGet);
+        }
 
     @Step("Create a new promotion with <{0}> apply type")
     public void createNewPromo_autoApply_active(String applyType, String id) {
-
-        click( addNewPromoBtn() );
-        setDdVal( applyTypeDd(), applyType );
-        setFieldVal( nameFld(), "Test Promo " + id );
-        setFieldVal( storefrontNameFld(), "sf name" );
-        setFieldVal( descriptionFld(), "test promo" );
-        setFieldVal( detailsFld(), "promo details" );
-        setDdVal( qualifierTypeDd(), "Order - No qualifier" );
-        setDdVal( offerTypeDd(), "Percent off order" );
-        setFieldVal( offerGetFld(), "10" );
+        clickAddNewPromoBtn();
+        setApplyType(applyType);
+        setPromoName("Test Promo " + id);
+        setStorefrontName("sf name");
+        setDescription("test promo");
+        setDetails("promo details");
+        setQualifierType("Order - No qualifier");
+        setOfferType("Percent off order");
+        setOfferGet("10");
         setDdVal( stateDd(), "Active" );
         clickSave();
-        promotionIdVal().shouldNotHave(text("new")
-                .because("Failed to create a new promotion."));
-
+        shouldNotHaveText(promotionIdVal(), "new", "Failed to create a new promotion.");
     }
 
-    @Step("Get '{1}' parameter value of {0}th promotion on the list")
+    @Step("Get <{1}> parameter value of <{0}th> promotion on the list")
     public SelenideElement getPromoParamVal(String promoIndex, String paramName) {
-
         SelenideElement promoParamVal = null;
         waitForDataToLoad();
-
         switch (paramName) {
             case "Promotion ID":
                 promoParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + promoIndex + "]/td[2]"));
@@ -143,16 +179,12 @@ public class PromotionsPage extends BasePage {
             case "State":
                 promoParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + promoIndex + "]/td[9]/div/div"));
                 break;
-
         }
-
         return promoParamVal;
-
     }
 
-    @Step("Set promotion's state to <{0}>")
+    @Step("Set promotion \"State\" dd val to <{0}>")
     public void setState(String state) {
-
         switch (state) {
             case "Inactive":
                 click( removeStartDateBtn() );
@@ -162,7 +194,11 @@ public class PromotionsPage extends BasePage {
                 click( stateListVal(state) );
                 break;
         }
+    }
 
+    @Step("Open promotion with <ID: {0}>")
+    public void openPromo(String promoId) {
+        click(promotion(promoId));
     }
 
 }
