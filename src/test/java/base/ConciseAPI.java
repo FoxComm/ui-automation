@@ -1,17 +1,26 @@
 package base;
 
-import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.ElementsCollection;
+import com.codeborne.selenide.Screenshots;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.ex.ElementNotFound;
 import com.codeborne.selenide.ex.ElementShould;
 import com.codeborne.selenide.ex.ElementShouldNot;
 import com.codeborne.selenide.ex.ListSizeMismatch;
+import com.google.common.io.Files;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
+import org.testng.IHookCallBack;
+import org.testng.IHookable;
+import org.testng.ITestResult;
+import ru.yandex.qatools.allure.annotations.Attachment;
 import ru.yandex.qatools.allure.annotations.Step;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.net.URLConnection;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -20,13 +29,11 @@ import java.util.List;
 import java.util.Random;
 
 import static com.codeborne.selenide.Condition.*;
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.open;
-import static com.codeborne.selenide.Selenide.sleep;
+import static com.codeborne.selenide.Selenide.*;
 import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 import static org.openqa.selenium.By.xpath;
 
-public class ConciseAPI extends Configuration {
+public class ConciseAPI implements IHookable {
 
     private String actualValue;     // used in shouldHaveText()
     private int actualSize;         // used in shouldHaveSize()
@@ -50,8 +57,8 @@ public class ConciseAPI extends Configuration {
     //------------------------- ACTIONS -------------------------//
 
     @Step("Open <{0}>")
-    public static <PageObjectClass> PageObjectClass openPage(String relativeOrAbsoluteUrl,
-                                                         Class<PageObjectClass> pageObjectClassClass) {
+    protected static <PageObjectClass> PageObjectClass openPage(String relativeOrAbsoluteUrl,
+                                                                Class<PageObjectClass> pageObjectClassClass) {
         return open(relativeOrAbsoluteUrl, "", "", "", pageObjectClassClass);
     }
 
@@ -306,6 +313,76 @@ public class ConciseAPI extends Configuration {
         String day = today.substring(8, 10);
         String yesterday = subtractFromString(day, 1);
         return today.substring(0, 8) + yesterday;
+    }
+
+
+    //----------------------------------------- SCREENSHOTS -----------------------------------------//
+
+    @Override
+    public void run(IHookCallBack callBack, ITestResult testResult) {
+        callBack.runTestMethod(testResult);
+        if (testResult.getThrowable() != null) {
+            try {
+                takeScreenShotStep(testResult.getMethod().getMethodName());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void takeScreenShotStep(String methodName) throws IOException {
+        File lastScreenShot = Screenshots.getLastScreenshot();
+        if (lastScreenShot != null) {
+            byte[] bytes = Files.toByteArray(lastScreenShot);
+            if (isByteArrIsText(bytes))
+                takeScreenShot(methodName, bytes);
+            else
+                errorText(new String(bytes, "UTF-8"));
+        } else {
+            log("MyScreenShotListener: takeScreenShotStep: new ScreenShot");
+            File newScreenShot = Screenshots.takeScreenShotAsFile();
+
+            if (newScreenShot != null) {
+                byte[] bytes = Files.toByteArray(newScreenShot);
+                if (isByteArrIsText(bytes))
+                    takeScreenShot(methodName, bytes);
+                else
+                    errorText(new String(bytes, "UTF-8"));
+            } else {
+                log("MyScreenShotListener: takeScreenShotStep: ScreenShot is null, return text attachment");
+                errorText("ScreenShot is null");
+            }
+        }
+    }
+
+    private boolean isByteArrIsText(byte[] value) {
+        String contentType = null;
+        try {
+            contentType = URLConnection.guessContentTypeFromStream(new ByteArrayInputStream(value));
+            if ("image/png".equals(contentType))
+                return true;
+            else {
+                log("contentType is: " + contentType);
+                return false;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Attachment(value = "Failure in method <{0}>", type = "text/html")
+    private String errorText(String text) {
+        return text;
+    }
+
+    @Attachment(value = "Failure in method <{0}>", type = "image/png")
+    private byte[] takeScreenShot(String methodName, byte[] image) throws IOException {
+        return image;
+    }
+
+    private void log(String text) {
+        //nothing
     }
 
 

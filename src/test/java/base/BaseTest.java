@@ -23,4 +23,5 @@ public class BaseTest extends ConciseAPI {
         Configuration.browser = "chrome";
         Configuration.timeout = 10000;
     }
+
 }
