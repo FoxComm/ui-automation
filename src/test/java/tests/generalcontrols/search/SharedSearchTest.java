@@ -25,7 +25,7 @@ public class SharedSearchTest extends DataProvider {
 
         open(adminUrl);
         if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
-            LoginPage loginPage = open(adminUrl + "/login", LoginPage.class);
+            LoginPage loginPage = openPage(adminUrl + "/login", LoginPage.class);
             loginPage.login("tenant", "admin@admin.com", "password");
             shouldBeVisible(loginPage.userMenuBtn(), "Failed to log in");
         }
@@ -145,7 +145,7 @@ public class SharedSearchTest extends DataProvider {
     public void cleanUp() throws IOException {
         refresh();
         if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
-            LoginPage loginPage = open(adminUrl + "/login", LoginPage.class);
+            LoginPage loginPage = openPage(adminUrl + "/login", LoginPage.class);
             p.login("tenant", "hackerman@yahoo.com", "password1");
             shouldBeVisible(loginPage.userMenuBtn(), "Failed to log in");
         }

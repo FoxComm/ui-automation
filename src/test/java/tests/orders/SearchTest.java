@@ -21,11 +21,11 @@ public class SearchTest extends DataProvider {
 
         open(adminUrl);
         if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
-            LoginPage loginPage = open(adminUrl + "/login", LoginPage.class);
+            LoginPage loginPage = openPage(adminUrl + "/login", LoginPage.class);
             loginPage.login("tenant", "admin@admin.com", "password");
             shouldBeVisible(loginPage.userMenuBtn(), "Failed to log in");
         }
-        p = open(adminUrl + "/orders", OrdersPage.class);
+        p = openPage(adminUrl + "/orders", OrdersPage.class);
     }
 
     @Test (priority = 1)

@@ -24,7 +24,7 @@ public class ShippingAddressTest extends DataProvider {
 
         open(adminUrl);
         if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
-            LoginPage loginPage = open(adminUrl + "/login", LoginPage.class);
+            LoginPage loginPage = openPage(adminUrl + "/login", LoginPage.class);
             loginPage.login("tenant", "admin@admin.com", "password");
             shouldBeVisible(loginPage.userMenuBtn(), "Failed to log in");
         }
@@ -35,7 +35,7 @@ public class ShippingAddressTest extends DataProvider {
     public void addNewAddress_emptyAddressBook() throws IOException {
 
         provideTestData("cart with empty address book");
-        p = open(adminUrl + "/carts/" + cartId, CartPage.class);
+        p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
 
         p.clickEditBtn_shipAddress();
         p.clearAddressBook();
@@ -52,7 +52,7 @@ public class ShippingAddressTest extends DataProvider {
     public void addNewAddress_nonEmptyAddressBook() throws IOException {
 
         provideTestData("cart with non-empty address book");
-        p = open(adminUrl + "/carts/" + cartId, CartPage.class);
+        p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
 
         p.clickEditBtn_shipAddress();
         p.addNewAddress("John Doe", "2101 Green Valley #320", "Suite 300", "Seattle", "Washington", "98101", "9879879876");
@@ -69,7 +69,7 @@ public class ShippingAddressTest extends DataProvider {
     public void chooseShippingAddress() throws IOException {
 
         provideTestData("cart with non-empty address book");
-        p = open(adminUrl + "/carts/" + cartId, CartPage.class);
+        p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
 
         p.clickEditBtn_shipAddress();
         p.chooseShipAddress(1);
@@ -102,7 +102,7 @@ public class ShippingAddressTest extends DataProvider {
     public void deleteChosenShippingAddress() throws IOException {
 
         provideTestData("cart with chosen shipping address");
-        p = open(adminUrl + "/carts/" + cartId, CartPage.class);
+        p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
 
         p.clickEditBtn_shipAddress();
         p.removeChosenAddress();
@@ -116,7 +116,7 @@ public class ShippingAddressTest extends DataProvider {
     public void setDefaultShippingAddress() throws IOException {
 
         provideTestData("cart with 2 addresses in address book");
-        p = open(adminUrl + "/carts/" + cartId, CartPage.class);
+        p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
 
         p.clickEditBtn_shipAddress();
         p.setAddressAsDefault("1");
@@ -130,7 +130,7 @@ public class ShippingAddressTest extends DataProvider {
     public void changeDefaultShippingAddress() throws IOException {
 
         provideTestData("cart with 2 addresses and defined default shipping address");
-        p = open(adminUrl + "/carts/" + cartId, CartPage.class);
+        p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
 
         p.clickEditBtn_shipAddress();
         p.setAddressAsDefault("1");

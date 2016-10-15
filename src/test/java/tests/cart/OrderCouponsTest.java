@@ -18,7 +18,7 @@ public class OrderCouponsTest extends DataProvider {
 
         open(adminUrl);
         if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
-            LoginPage loginPage = open(adminUrl + "/login", LoginPage.class);
+            LoginPage loginPage = openPage(adminUrl + "/login", LoginPage.class);
             loginPage.login("tenant", "admin@admin.com", "password");
             shouldBeVisible(loginPage.userMenuBtn(), "Failed to log in");
         }
@@ -29,7 +29,7 @@ public class OrderCouponsTest extends DataProvider {
 //    public void addCoupon() throws IOException {
 //
 //        provideTestData("a cart and a single code coupon");
-//        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
+//        p = openPage(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
 //
 //        click( p.editBtn_coupons() );
 //        setFieldVal( p.couponCode(), "newcpn-12345" );

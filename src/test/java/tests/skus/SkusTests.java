@@ -21,7 +21,7 @@ public class SkusTests extends DataProvider {
     public void setUp() {
         open(adminUrl);
         if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
-            LoginPage loginPage = open(adminUrl + "/login", LoginPage.class);
+            LoginPage loginPage = openPage(adminUrl + "/login", LoginPage.class);
             loginPage.login("tenant", "admin@admin.com", "password");
             shouldBeVisible(loginPage.userMenuBtn(), "Failed to log in");
         }
@@ -30,7 +30,7 @@ public class SkusTests extends DataProvider {
     @Test(priority = 1)
     public void createSKU() {
 
-        p = open(adminUrl + "/skus", SkusPage.class);
+        p = openPage(adminUrl + "/skus", SkusPage.class);
         String randomId = generateRandomID();
 
         p.clickAddNewSKU();
@@ -49,7 +49,7 @@ public class SkusTests extends DataProvider {
     public void addCustomProp_text() throws IOException {
 
         provideTestData("active SKU");
-        p = open(adminUrl + "/skus/" + sku, SkusPage.class);
+        p = openPage(adminUrl + "/skus/" + sku, SkusPage.class);
 
         p.addCustomProp("Text", "text fld");
         p.setCustomProp_text("text fld", "test val");
@@ -66,7 +66,7 @@ public class SkusTests extends DataProvider {
     public void addCustomProp_richText() throws IOException {
 
         provideTestData("active SKU");
-        p = open(adminUrl + "/skus/" + sku, SkusPage.class);
+        p = openPage(adminUrl + "/skus/" + sku, SkusPage.class);
 
         p.addCustomProp("Rich Text", "richtextfld");
         p.setCustomProp_richText("richtextfld", "test val");
@@ -82,7 +82,7 @@ public class SkusTests extends DataProvider {
     public void editTitle() throws IOException {
 
         provideTestData("active SKU");
-        p = open(adminUrl + "/skus/" + sku, SkusPage.class);
+        p = openPage(adminUrl + "/skus/" + sku, SkusPage.class);
 
         p.setTitle("Edited SKU Title");
         p.clickSave();
@@ -103,7 +103,7 @@ public class SkusTests extends DataProvider {
     public void editUPC() throws IOException {
 
         provideTestData("active SKU");
-        p = open(adminUrl + "/skus/" + sku, SkusPage.class);
+        p = openPage(adminUrl + "/skus/" + sku, SkusPage.class);
 
         p.setUpc("Edited UPC");
         p.clickSave();
@@ -120,7 +120,7 @@ public class SkusTests extends DataProvider {
     public void editDescription() throws IOException {
 
         provideTestData("active SKU");
-        p = open(adminUrl + "/skus/" + sku, SkusPage.class);
+        p = openPage(adminUrl + "/skus/" + sku, SkusPage.class);
 
         clearField( p.descriptionFld() );
         p.setDescription("Edited description");
@@ -141,7 +141,7 @@ public class SkusTests extends DataProvider {
     public void editRetailPrice() throws IOException {
 
         provideTestData("active SKU");
-        p = open(adminUrl + "/skus/" + sku, SkusPage.class);
+        p = openPage(adminUrl + "/skus/" + sku, SkusPage.class);
 
         p.setRetailPrice("70.00");
         p.clickSave();
@@ -160,7 +160,7 @@ public class SkusTests extends DataProvider {
     public void editSalePrice() throws IOException {
 
         provideTestData("active SKU");
-        p = open(adminUrl + "/skus/" + sku, SkusPage.class);
+        p = openPage(adminUrl + "/skus/" + sku, SkusPage.class);
 
         p.setSalePrice("70.00");
         p.clickSave();
@@ -178,7 +178,7 @@ public class SkusTests extends DataProvider {
     public void editState() throws IOException {
 
         provideTestData("active SKU");
-        p = open(adminUrl + "/skus/" + sku, SkusPage.class);
+        p = openPage(adminUrl + "/skus/" + sku, SkusPage.class);
 
         p.setState("Inactive");
         p.clickSave();
@@ -195,7 +195,7 @@ public class SkusTests extends DataProvider {
     public void titleReset_regressionTest() throws IOException {
 
         provideTestData("active SKU");
-        p = open(adminUrl + "/skus/" + sku, SkusPage.class);
+        p = openPage(adminUrl + "/skus/" + sku, SkusPage.class);
 
         p.titleFld().shouldHave(attribute("value", skuTitle)
                 .because("SKU Title has been wiped after a product with this SKU was created."));
@@ -206,7 +206,7 @@ public class SkusTests extends DataProvider {
     public void useExistingSKUCode_regressionTest() throws IOException {
 
         provideTestData("active SKU");
-        p = open(adminUrl + "/skus", SkusPage.class);
+        p = openPage(adminUrl + "/skus", SkusPage.class);
 
         p.clickAddNewSKU();
         p.setSKUCode(sku);

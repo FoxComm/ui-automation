@@ -20,7 +20,7 @@ public class PlaceOrderTest extends DataProvider {
     public void setUp() {
         open(adminUrl);
         if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
-            LoginPage loginPage = open(adminUrl + "/login", LoginPage.class);
+            LoginPage loginPage = openPage(adminUrl + "/login", LoginPage.class);
             loginPage.login("tenant", "admin@admin.com", "password");
             shouldBeVisible(loginPage.userMenuBtn(), "Failed to log in");
         }
@@ -30,7 +30,7 @@ public class PlaceOrderTest extends DataProvider {
     public void placeOrder_CC() throws IOException {
 
         provideTestData("cart with 1 item, shipping method, and credit card payment");
-        p = open(adminUrl + "/carts/" + cartId, OrderDetailsPage.class);
+        p = openPage(adminUrl + "/carts/" + cartId, OrderDetailsPage.class);
 
         p.assertNoWarnings();
         p.clickPlaceOderBtn();
@@ -42,7 +42,7 @@ public class PlaceOrderTest extends DataProvider {
     public void placeOrder_SC() throws IOException {
 
         provideTestData("cart with 1 item, shipping method and issued SC");
-        p = open(adminUrl + "/carts/" + cartId, OrderDetailsPage.class);
+        p = openPage(adminUrl + "/carts/" + cartId, OrderDetailsPage.class);
 
         shouldBeVisible(p.cartSummary(), "Failed to open cart page");
         int amountToUse = (int) (p.grandTotalVal() * 100);
@@ -59,7 +59,7 @@ public class PlaceOrderTest extends DataProvider {
     public void placeOrder_GC() throws IOException {
 
         provideTestData("cart with 1 item, shipping method and issued GC");
-        p = open(adminUrl + "/carts/" + cartId, OrderDetailsPage.class);
+        p = openPage(adminUrl + "/carts/" + cartId, OrderDetailsPage.class);
 
         shouldBeVisible(p.cartSummary(), "Failed to open cart page");
         int amountToUse = (int) (p.grandTotalVal() * 100);
@@ -76,7 +76,7 @@ public class PlaceOrderTest extends DataProvider {
     public void placeOrder_CC_SC() throws IOException {
 
         provideTestData("cart with 1 item, shipping method, credit card payment and issued SC");
-        p = open(adminUrl + "/carts/" + cartId, OrderDetailsPage.class);
+        p = openPage(adminUrl + "/carts/" + cartId, OrderDetailsPage.class);
 
         shouldBeVisible(p.cartSummary(), "Failed to open cart page");
         int amountToUse = (int) (p.grandTotalVal() / 2 * 100);
@@ -93,7 +93,7 @@ public class PlaceOrderTest extends DataProvider {
     public void placeOrder_CC_GC() throws IOException {
 
         provideTestData("cart with 1 item, shipping method, credit card payment and issued GC");
-        p = open(adminUrl + "/carts/" + cartId, OrderDetailsPage.class);
+        p = openPage(adminUrl + "/carts/" + cartId, OrderDetailsPage.class);
 
         shouldBeVisible(p.cartSummary(), "Failed to open cart page");
         int amountToUse = (int) (p.grandTotalVal() / 2 * 100);
@@ -110,7 +110,7 @@ public class PlaceOrderTest extends DataProvider {
     public void placeOrder_SC_GC() throws IOException {
 
         provideTestData("cart with 1 item, shipping method, issued SC and GC");
-        p = open(adminUrl + "/carts/" + cartId, OrderDetailsPage.class);
+        p = openPage(adminUrl + "/carts/" + cartId, OrderDetailsPage.class);
 
         shouldBeVisible(p.cartSummary(), "Failed to open cart page");
         int amountToUse_GC = (int) (p.grandTotalVal() / 2 * 100);
@@ -129,7 +129,7 @@ public class PlaceOrderTest extends DataProvider {
 //    public void placeOrder_coupon() throws IOException {
 //
 //        provideTestData("cart with 1 item, shipping method, CC and coupon");
-//        p = open(adminUrl + "/carts/" + cartId, OrderDetailsPage.class);
+//        p = openPage(adminUrl + "/carts/" + cartId, OrderDetailsPage.class);
 //
 //        assertTrue(p.couponName().is(visible),
 //                "Failed to apply coupon to an order.");

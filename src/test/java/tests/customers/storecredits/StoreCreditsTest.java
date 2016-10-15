@@ -21,7 +21,7 @@ public class StoreCreditsTest extends DataProvider {
 
         open(adminUrl);
         if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
-            LoginPage loginPage = open(adminUrl + "/login", LoginPage.class);
+            LoginPage loginPage = openPage(adminUrl + "/login", LoginPage.class);
             loginPage.login("tenant", "admin@admin.com", "password");
             shouldBeVisible(loginPage.userMenuBtn(), "Failed to log in");
         }
@@ -32,7 +32,7 @@ public class StoreCreditsTest extends DataProvider {
     public void issueSC_csrAppeasement() throws IOException {
 
         provideTestData("a customer");
-        p = open(adminUrl + "/customers/" + customerId, CustomersPage.class);
+        p = openPage(adminUrl + "/customers/" + customerId, CustomersPage.class);
 
         p.navToSCTab();
         p.clickNewSCBtn();
@@ -49,7 +49,7 @@ public class StoreCreditsTest extends DataProvider {
     public void issueSC_gcTransfer() throws IOException {
 
         provideTestData("a customer && GC");
-        p = open(adminUrl + "/customers/" + customerId, CustomersPage.class);
+        p = openPage(adminUrl + "/customers/" + customerId, CustomersPage.class);
 
         p.navToSCTab();
         p.clickNewSCBtn();
@@ -66,7 +66,7 @@ public class StoreCreditsTest extends DataProvider {
     public void issuedSC_displayedOnList() throws IOException {
 
         provideTestData("a customer");
-        p = open(adminUrl + "/customers/" + customerId, CustomersPage.class);
+        p = openPage(adminUrl + "/customers/" + customerId, CustomersPage.class);
 
         p.navToSCTab();
         p.clickNewSCBtn();
@@ -83,7 +83,7 @@ public class StoreCreditsTest extends DataProvider {
     public void issueSC_presetValues() throws IOException {
 
         provideTestData("a customer");
-        p = open(adminUrl + "/customers/" + customerId, CustomersPage.class);
+        p = openPage(adminUrl + "/customers/" + customerId, CustomersPage.class);
 
         p.navToSCTab();
         p.clickNewSCBtn();
@@ -99,7 +99,7 @@ public class StoreCreditsTest extends DataProvider {
     public void setState_onHold() throws IOException {
 
         provideTestData("a customer with issued SC");
-        p = open(adminUrl + "/customers/" + customerId, CustomersPage.class);
+        p = openPage(adminUrl + "/customers/" + customerId, CustomersPage.class);
 
         p.navToSCTab();
         waitForDataToLoad();
@@ -114,7 +114,7 @@ public class StoreCreditsTest extends DataProvider {
     public void setState_canceled() throws IOException {
 
         provideTestData("a customer with issued SC");
-        p = open(adminUrl + "/customers/" + customerId, CustomersPage.class);
+        p = openPage(adminUrl + "/customers/" + customerId, CustomersPage.class);
 
         p.navToSCTab();
         waitForDataToLoad();
@@ -129,7 +129,7 @@ public class StoreCreditsTest extends DataProvider {
     public void checkTransaction_csrAppeasement() throws IOException {
 
         provideTestData("order in Remorse Hold, payed with SC (CSR Appeasement)");
-        p = open(adminUrl + "/customers/" + customerId, CustomersPage.class);
+        p = openPage(adminUrl + "/customers/" + customerId, CustomersPage.class);
 
         p.navToSCTab();
         p.navToTransactionTab();
@@ -145,7 +145,7 @@ public class StoreCreditsTest extends DataProvider {
     public void checkTransaction_gcTransfer() throws IOException {
 
         provideTestData("order in Remorse Hold, payed with SC (GC Transfer)");
-        p = open(adminUrl + "/customers/" + customerId, CustomersPage.class);
+        p = openPage(adminUrl + "/customers/" + customerId, CustomersPage.class);
 
         p.navToSCTab();
         p.navToTransactionTab();

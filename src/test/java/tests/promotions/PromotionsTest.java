@@ -21,7 +21,7 @@ public class PromotionsTest extends DataProvider {
 
         open(adminUrl);
         if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
-            LoginPage loginPage = open(adminUrl + "/login", LoginPage.class);
+            LoginPage loginPage = openPage(adminUrl + "/login", LoginPage.class);
             loginPage.login("tenant", "admin@admin.com", "password");
             loginPage.userMenuBtn().shouldBe(visible);
         }
@@ -230,7 +230,7 @@ public class PromotionsTest extends DataProvider {
     public void cantDuplicateTag() throws IOException {
 
         provideTestData("a promotion");
-        p = open(adminUrl + "/promotions/" + promotionId, PromotionsPage.class);
+        p = openPage(adminUrl + "/promotions/" + promotionId, PromotionsPage.class);
 
         p.addTag("test promo");
         p.addTag("test promo");

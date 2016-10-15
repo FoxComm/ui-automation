@@ -26,7 +26,7 @@ public class ContactInformationTest extends DataProvider {
 
         open(adminUrl);
         if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
-            LoginPage loginPage = open(adminUrl + "/login", LoginPage.class);
+            LoginPage loginPage = openPage(adminUrl + "/login", LoginPage.class);
             loginPage.login("tenant", "admin@admin.com", "password");
             shouldBeVisible(loginPage.userMenuBtn(), "Failed to log in");
         }
@@ -37,7 +37,7 @@ public class ContactInformationTest extends DataProvider {
     public void assertDefaultValues() throws IOException {
 
         provideTestData("a customer");
-        p = open(adminUrl + "/customers/" + customerId, CustomersPage.class);
+        p = openPage(adminUrl + "/customers/" + customerId, CustomersPage.class);
 
         p.nameVal_contactInfo().shouldHave(text(customerName)
                 .because("Incorrect name is displayed in 'Contact Information'."));
@@ -50,7 +50,7 @@ public class ContactInformationTest extends DataProvider {
     public void addPhoneNumber() throws IOException {
 
         provideTestData("a customer");
-        p = open(adminUrl + "/customers/" + customerId, CustomersPage.class);
+        p = openPage(adminUrl + "/customers/" + customerId, CustomersPage.class);
 
         p.clickEditBtn_contactInfo();
         p.setPhoneNumber_contactInfo("7779994242");
@@ -65,7 +65,7 @@ public class ContactInformationTest extends DataProvider {
     public void editName() throws IOException {
 
         provideTestData("a customer");
-        p = open(adminUrl + "/customers/" + customerId, CustomersPage.class);
+        p = openPage(adminUrl + "/customers/" + customerId, CustomersPage.class);
 
         p.clickEditBtn_contactInfo();
         p.setPhoneNumber_contactInfo("7779994242");
@@ -83,7 +83,7 @@ public class ContactInformationTest extends DataProvider {
     public void editEmail() throws IOException {
 
         provideTestData("a customer");
-        p = open(adminUrl + "/customers/" + customerId, CustomersPage.class);
+        p = openPage(adminUrl + "/customers/" + customerId, CustomersPage.class);
 
         p.clickEditBtn_contactInfo();
         p.setPhoneNumber_contactInfo("7779994242");
@@ -101,7 +101,7 @@ public class ContactInformationTest extends DataProvider {
     public void phoneNumbFromBillAddress() throws IOException {
 
         provideTestData("customer with a credit card");
-        p = open(adminUrl + "/customers/" + customerId, CustomersPage.class);
+        p = openPage(adminUrl + "/customers/" + customerId, CustomersPage.class);
 
         assertEquals( p.phoneNumberVal_contactInfo(), "9879879876",
                 "Phone number from billing address isn't displayed in customer contact information.");

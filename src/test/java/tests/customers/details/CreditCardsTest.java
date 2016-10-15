@@ -22,7 +22,7 @@ public class CreditCardsTest extends DataProvider {
 
         open(adminUrl);
         if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
-            LoginPage loginPage = open(adminUrl + "/login", LoginPage.class);
+            LoginPage loginPage = openPage(adminUrl + "/login", LoginPage.class);
             loginPage.login("tenant", "admin@admin.com", "password");
             shouldBeVisible(loginPage.userMenuBtn(), "Failed to log in");
         }
@@ -33,7 +33,7 @@ public class CreditCardsTest extends DataProvider {
     public void addNewCC_newBillAddress() throws IOException {
 
         provideTestData("a customer");
-        p = open(adminUrl + "/customers/" + customerId, CustomersPage.class);
+        p = openPage(adminUrl + "/customers/" + customerId, CustomersPage.class);
 
         p.clickAddNewCCBtn();
         p.fillOutNewCCForm(customerName, "5555555555554444", "777", "02 - February", "2020");
@@ -47,7 +47,7 @@ public class CreditCardsTest extends DataProvider {
     public void addNewCC_existingBillAddress() throws IOException {
 
         provideTestData("customer with a shipping address");
-        p = open(adminUrl + "/customers/" + customerId, CustomersPage.class);
+        p = openPage(adminUrl + "/customers/" + customerId, CustomersPage.class);
 
         p.clickAddNewCCBtn();
         p.fillOutNewCCForm(customerName, "5555555555554444", "777", "02 - February", "2020");
@@ -61,7 +61,7 @@ public class CreditCardsTest extends DataProvider {
     public void editCC_holderName() throws IOException {
 
         provideTestData("customer with a credit card");
-        p = open(adminUrl + "/customers/" + customerId, CustomersPage.class);
+        p = openPage(adminUrl + "/customers/" + customerId, CustomersPage.class);
 
         p.clickEditCCBtn("1");
         p.clearField( p.holderNameFld() );
@@ -76,7 +76,7 @@ public class CreditCardsTest extends DataProvider {
     public void editCC_expirationDate() throws IOException {
 
         provideTestData("customer with a credit card");
-        p = open(adminUrl + "/customers/" + customerId, CustomersPage.class);
+        p = openPage(adminUrl + "/customers/" + customerId, CustomersPage.class);
 
         p.clickEditCCBtn("1");
         p.setExpirationDate("12 - December", "2030");
@@ -90,7 +90,7 @@ public class CreditCardsTest extends DataProvider {
     public void editCC_billAddress() throws IOException {
 
         provideTestData("customer with a credit card and 2 addresses");
-        p = open(adminUrl + "/customers/" + customerId, CustomersPage.class);
+        p = openPage(adminUrl + "/customers/" + customerId, CustomersPage.class);
 
         p.clickEditCCBtn("1");
         p.clickChangeBillAddressBtn();
@@ -105,7 +105,7 @@ public class CreditCardsTest extends DataProvider {
     public void editBillAddressInAddressBook() throws IOException {
 
         provideTestData("customer with a credit card");
-        p = open(adminUrl + "/customers/" + customerId, CustomersPage.class);
+        p = openPage(adminUrl + "/customers/" + customerId, CustomersPage.class);
 
         p.clickEditAddressBtn("1");
         p.setName("John Doe");

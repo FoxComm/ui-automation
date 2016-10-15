@@ -25,7 +25,7 @@ public class PaymentMethodTest extends DataProvider {
 
         open(adminUrl);
         if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
-            LoginPage loginPage = open(adminUrl + "/login", LoginPage.class);
+            LoginPage loginPage = openPage(adminUrl + "/login", LoginPage.class);
             loginPage.login("tenant", "admin@admin.com", "password");
             shouldBeVisible(loginPage.userMenuBtn(), "Failed to log in");
         }
@@ -36,7 +36,7 @@ public class PaymentMethodTest extends DataProvider {
     public void addPaymentMethod_creditCard() throws IOException {
 
         provideTestData("cart with 1 item and chosen shipping address");
-        p = open(adminUrl + "/carts/" + cartId, CartPage.class);
+        p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
 
         p.clickEditBtn_payment();
         p.clickNewPayMethodBtn();
@@ -55,7 +55,7 @@ public class PaymentMethodTest extends DataProvider {
     public void addPaymentMethod_giftCard() throws IOException {
 
         provideTestData("cart with 1 item && customer with GC");
-        p = open(adminUrl + "/carts/" + cartId, CartPage.class);
+        p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
 
         p.clickEditBtn_payment();
         p.clickNewPayMethodBtn();
@@ -79,7 +79,7 @@ public class PaymentMethodTest extends DataProvider {
         provideTestData("cart with 1 item && customer with SC");
         // workaround for possible bug with data sync
 //        refresh();
-        p = open(adminUrl + "/carts/" + cartId, CartPage.class);
+        p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
 
         p.clickEditBtn_payment();
         p.clickNewPayMethodBtn();
@@ -103,7 +103,7 @@ public class PaymentMethodTest extends DataProvider {
         provideTestData("cart with 1 item && customer with SC");
         // workaround for possible bug with data sync
 //        refresh();
-        p = open(adminUrl + "/carts/" + cartId, CartPage.class);
+        p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
 
         shouldBeVisible(p.cartSummary(), "Failed to open the cart page");
         double amountToUse = p.grandTotalVal() + 10.00;
@@ -120,7 +120,7 @@ public class PaymentMethodTest extends DataProvider {
         provideTestData("cart with 1 item && customer with GC");
         // workaround for possible bug with data sync
 //        refresh();
-        p = open(adminUrl + "/carts/" + cartId, CartPage.class);
+        p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
 
         shouldBeVisible(p.cartSummary(), "Failed to open the cart page");
         double amountToUse = p.grandTotalVal() + 10.00;
@@ -137,7 +137,7 @@ public class PaymentMethodTest extends DataProvider {
         provideTestData("cart with 1 item && SC onHold");
         // workaround for possible bug with data sync
 //        refresh();
-        p = open(adminUrl + "/carts/" + cartId, CartPage.class);
+        p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
 
         p.clickEditBtn_payment();
         p.clickNewPayMethodBtn();
@@ -155,7 +155,7 @@ public class PaymentMethodTest extends DataProvider {
         provideTestData("cart with 1 item && SC canceled");
         // workaround for possible bug with data sync
 //        refresh();
-        p = open(adminUrl + "/carts/" + cartId, CartPage.class);
+        p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
 
         click( p.editBtn_payment() );
         click( p.newPaymentBtn() );

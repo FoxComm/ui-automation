@@ -22,7 +22,7 @@ public class OrdersListTest extends DataProvider {
 
         open(adminUrl);
         if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
-            LoginPage loginPage = open(adminUrl + "/login", LoginPage.class);
+            LoginPage loginPage = openPage(adminUrl + "/login", LoginPage.class);
             loginPage.login("tenant", "admin@admin.com", "password");
             shouldBeVisible(loginPage.userMenuBtn(), "Failed to log in");
         }
@@ -33,7 +33,7 @@ public class OrdersListTest extends DataProvider {
     public void checkOrderOnList() throws IOException {
 
         provideTestData("customer with 2 orders in remorse hold");
-        p = open(adminUrl + "/customers/" + customerId + "/transactions", CustomersPage.class);
+        p = openPage(adminUrl + "/customers/" + customerId + "/transactions", CustomersPage.class);
 
         p.waitForDataToLoad();
         p.ordersOnList().shouldHave(size(2));
@@ -64,7 +64,7 @@ public class OrdersListTest extends DataProvider {
     public void searchFld_orderRefNum() throws IOException {
 
         provideTestData("customer with 2 orders in remorse hold and fulfillment started");
-        p = open(adminUrl + "/customers/" + customerId + "/transactions", CustomersPage.class);
+        p = openPage(adminUrl + "/customers/" + customerId + "/transactions", CustomersPage.class);
 
         waitForDataToLoad();
         p.addFilter("Order", "Reference Number", orderId);
@@ -77,7 +77,7 @@ public class OrdersListTest extends DataProvider {
     public void searchFld_productName() throws IOException {
 
         provideTestData("customer with 2 orders in remorse hold and fulfillment started");
-        p = open(adminUrl + "/customers/" + customerId + "/transactions", CustomersPage.class);
+        p = openPage(adminUrl + "/customers/" + customerId + "/transactions", CustomersPage.class);
 
         waitForDataToLoad();
         p.addFilter("Items", "Product Name", "Shark");
@@ -90,7 +90,7 @@ public class OrdersListTest extends DataProvider {
     public void searchFld_productSKU() throws IOException {
 
         provideTestData("customer with 2 orders in remorse hold and fulfillment started");
-        p = open(adminUrl + "/customers/" + customerId + "/transactions", CustomersPage.class);
+        p = openPage(adminUrl + "/customers/" + customerId + "/transactions", CustomersPage.class);
 
         waitForDataToLoad();
         p.addFilter("Items", "Product SKU", "SKU-BRO");

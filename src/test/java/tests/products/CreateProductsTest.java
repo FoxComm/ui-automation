@@ -23,7 +23,7 @@ public class CreateProductsTest extends DataProvider {
     public void setUp() {
         open(adminUrl);
         if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
-            LoginPage loginPage = open(adminUrl + "/login", LoginPage.class);
+            LoginPage loginPage = openPage(adminUrl + "/login", LoginPage.class);
             loginPage.login("tenant", "admin@admin.com", "password");
             shouldBeVisible(loginPage.userMenuBtn(), "Failed to log in");
         }
@@ -33,7 +33,7 @@ public class CreateProductsTest extends DataProvider {
     public void productIsDisplayed_admin() throws IOException {
 
         provideTestData("active SKU");
-        p = open(adminUrl + "/products", ProductsPage.class);
+        p = openPage(adminUrl + "/products", ProductsPage.class);
         String randomId = generateRandomID();
         String productName = "Test Product " + randomId;
 
@@ -51,7 +51,7 @@ public class CreateProductsTest extends DataProvider {
     public void skuIsApplied() throws IOException {
 
         provideTestData("active product, has tag, active SKU");
-        p = open(adminUrl + "/products/default/" + productId, ProductsPage.class);
+        p = openPage(adminUrl + "/products/default/" + productId, ProductsPage.class);
         p.skuName().shouldBe(visible
                 .because("'No SKUs.' msg is displayed - SKU wasn't applied, product won't be displayed on storefront."));
 
@@ -113,7 +113,7 @@ public class CreateProductsTest extends DataProvider {
     public void inactiveProductHasTag_notDisplayed_storefront() throws IOException {
 
         provideTestData("inactive product, has tag, active SKU");
-        p = open(adminUrl + "/products/default/" + productId, ProductsPage.class);
+        p = openPage(adminUrl + "/products/default/" + productId, ProductsPage.class);
 //        sleep(1500);
 //        p.assertSKUApplied();
 
@@ -128,7 +128,7 @@ public class CreateProductsTest extends DataProvider {
     public void inactiveProductHasTag_cantBeFound_storefrontSearch() throws IOException {
 
         provideTestData("inactive product, has tag, active SKU");
-        p = open(adminUrl + "/products/default/" + productId, ProductsPage.class);
+        p = openPage(adminUrl + "/products/default/" + productId, ProductsPage.class);
 //        sleep(1500);
 //        p.assertSKUApplied();
 
@@ -144,7 +144,7 @@ public class CreateProductsTest extends DataProvider {
     public void inactiveProductNoTag_notDisplayed_storefront() throws IOException {
 
         provideTestData("inactive product, no tag, active SKU");
-        p = open(adminUrl + "/products/default/" + productId, ProductsPage.class);
+        p = openPage(adminUrl + "/products/default/" + productId, ProductsPage.class);
 //        sleep(1500);
 //        p.assertSKUApplied();
 
@@ -159,7 +159,7 @@ public class CreateProductsTest extends DataProvider {
     public void inactiveProductNoTag_cantBeFound_storefrontSearch() throws IOException {
 
         provideTestData("inactive product, no tag, active SKU");
-        p = open(adminUrl + "/products/default/" + productId, ProductsPage.class);
+        p = openPage(adminUrl + "/products/default/" + productId, ProductsPage.class);
 //        sleep(1500);
 //        p.assertSKUApplied();
 
@@ -175,7 +175,7 @@ public class CreateProductsTest extends DataProvider {
     public void activeProductHasTag_inactiveSKU__notDisplayed_storefront() throws IOException {
 
         provideTestData("inactive product, no tag, active SKU");
-        p = open(adminUrl + "/products/default/" + productId, ProductsPage.class);
+        p = openPage(adminUrl + "/products/default/" + productId, ProductsPage.class);
 //        sleep(1500);
 //        p.assertSKUApplied();
 
@@ -190,7 +190,7 @@ public class CreateProductsTest extends DataProvider {
     public void activeProductHasTag_inactiveSKU__cantBeFound_storefrontSearch() throws IOException {
 
         provideTestData("inactive product, no tag, active SKU");
-        p = open(adminUrl + "/products/default/" + productId, ProductsPage.class);
+        p = openPage(adminUrl + "/products/default/" + productId, ProductsPage.class);
 //        sleep(1500);
 //        p.assertSKUApplied();
 
@@ -206,7 +206,7 @@ public class CreateProductsTest extends DataProvider {
     public void activeProductNoTag_inactiveSKU__notDisplayed_storefront() throws IOException {
 
         provideTestData("inactive product, no tag, active SKU");
-        p = open(adminUrl + "/products/default/" + productId, ProductsPage.class);
+        p = openPage(adminUrl + "/products/default/" + productId, ProductsPage.class);
 //        sleep(1500);
 //        p.assertSKUApplied();
 
@@ -221,7 +221,7 @@ public class CreateProductsTest extends DataProvider {
     public void activeProductNoTag_inactiveSKU__cantBeFound_storefrontSearch() throws IOException {
 
         provideTestData("inactive product, no tag, active SKU");
-        p = open(adminUrl + "/products/default/" + productId, ProductsPage.class);
+        p = openPage(adminUrl + "/products/default/" + productId, ProductsPage.class);
 //        sleep(1500);
 //        p.assertSKUApplied();
 
@@ -260,7 +260,7 @@ public class CreateProductsTest extends DataProvider {
     public void createProduct_SKU_noTitle() throws IOException {
 
         provideTestData("SKU with no title");
-        p = open(adminUrl + "/products/default/new", ProductsPage.class);
+        p = openPage(adminUrl + "/products/default/new", ProductsPage.class);
         String randomId = generateRandomID();
         String productTitle = "Test Product " + randomId;
 
@@ -281,7 +281,7 @@ public class CreateProductsTest extends DataProvider {
     public void createProduct_SKU_noDescription() throws IOException {
 
         provideTestData("SKU with no description");
-        p = open(adminUrl + "/products/default/new", ProductsPage.class);
+        p = openPage(adminUrl + "/products/default/new", ProductsPage.class);
         String randomId = generateRandomID();
         String productTitle = "Test Product " + randomId;
 
@@ -299,7 +299,7 @@ public class CreateProductsTest extends DataProvider {
     public void createProduct_SKU_noPrices() throws IOException {
 
         provideTestData("SKU with no prices set");
-        p = open(adminUrl + "/products/default/new", ProductsPage.class);
+        p = openPage(adminUrl + "/products/default/new", ProductsPage.class);
         String randomId = generateRandomID();
         String productTitle = "Test Product " + randomId;
 

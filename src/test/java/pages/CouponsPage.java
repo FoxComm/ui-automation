@@ -168,7 +168,7 @@ public class CouponsPage extends BasePage {
         }
     }
 
-    @Step("Bulk generate codes with params <Code prefix:{1}>, <Code length:{2}>")
+    @Step("Generate single code with params <Code prefix:{1}>, <Code length:{2}>")
     public void generateCodes_single(String code) {
         selectCodeGenRadio("single");
         setCode(code);

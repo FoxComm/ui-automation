@@ -21,7 +21,7 @@ public class CustomersSearchTest extends DataProvider {
 
         open(adminUrl);
         if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
-            LoginPage loginPage = open(adminUrl + "/login", LoginPage.class);
+            LoginPage loginPage = openPage(adminUrl + "/login", LoginPage.class);
             loginPage.login("tenant", "admin@admin.com", "password");
             loginPage.userMenuBtn().shouldBe(visible);
         }
@@ -32,7 +32,7 @@ public class CustomersSearchTest extends DataProvider {
     public void customerName_full() throws IOException {
 
         provideTestData("a customer");
-        p = open(adminUrl + "/customers", CustomersPage.class);
+        p = openPage(adminUrl + "/customers", CustomersPage.class);
 
         p.addFilter("Customer", "Name", customerName);
         waitForDataToLoad();
@@ -47,7 +47,7 @@ public class CustomersSearchTest extends DataProvider {
     public void customerName_firstName() throws IOException {
 
         provideTestData("a customer");
-        p = open(adminUrl + "/customers", CustomersPage.class);
+        p = openPage(adminUrl + "/customers", CustomersPage.class);
 
         p.addFilter("Customer", "Name", customerName.substring(0, customerName.indexOf(" ")));
         waitForDataToLoad();
@@ -61,7 +61,7 @@ public class CustomersSearchTest extends DataProvider {
     public void customerName_lastName() throws IOException {
 
         provideTestData("a customer");
-        p = open(adminUrl + "/customers", CustomersPage.class);
+        p = openPage(adminUrl + "/customers", CustomersPage.class);
 
         p.addFilter("Customer", "Name", customerName.substring(customerName.indexOf(" "), customerName.length()));
         p.itemOnList(customerName).shouldBe(visible
@@ -74,7 +74,7 @@ public class CustomersSearchTest extends DataProvider {
     public void customerEmail_full() throws IOException {
 
         provideTestData("a customer");
-        p = open(adminUrl + "/customers", CustomersPage.class);
+        p = openPage(adminUrl + "/customers", CustomersPage.class);
 
         p.addFilter("Customer", "Email", customerEmail);
         p.itemOnList(customerEmail).shouldBe(visible
@@ -87,7 +87,7 @@ public class CustomersSearchTest extends DataProvider {
     public void customerEmail_part() throws IOException {
 
         provideTestData("a customer");
-        p = open(adminUrl + "/customers", CustomersPage.class);
+        p = openPage(adminUrl + "/customers", CustomersPage.class);
 
         p.addFilter("Customer", "Email", customerEmail.substring(0, customerEmail.indexOf("@")));
         p.itemOnList(customerEmail).shouldBe(visible
@@ -109,7 +109,7 @@ public class CustomersSearchTest extends DataProvider {
     public void orderRefNum_uppercase() throws IOException {
 
         provideTestData("order state: remorse hold");
-        p = open(adminUrl + "/customers", CustomersPage.class);
+        p = openPage(adminUrl + "/customers", CustomersPage.class);
 
         p.addFilter("Order", "Reference Number", orderId);
         p.itemOnList(customerName).shouldBe(visible
@@ -122,7 +122,7 @@ public class CustomersSearchTest extends DataProvider {
     public void orderRefNum_lowercase() throws IOException {
 
         provideTestData("order state: remorse hold");
-        p = open(adminUrl + "/customers", CustomersPage.class);
+        p = openPage(adminUrl + "/customers", CustomersPage.class);
 
         p.addFilter("Order", "Reference Number", orderId.toLowerCase());
         p.itemOnList(customerName).shouldBe(visible
@@ -135,7 +135,7 @@ public class CustomersSearchTest extends DataProvider {
     public void orderRefNum_incorrectVal() throws IOException {
 
         provideTestData("order state: remorse hold");
-        p = open(adminUrl + "/customers", CustomersPage.class);
+        p = openPage(adminUrl + "/customers", CustomersPage.class);
 
         p.addFilter("Order", "Reference Number", orderId.substring(0, orderId.length() - 1));
         p.itemOnList(customerName).shouldNotBe(visible
@@ -148,7 +148,7 @@ public class CustomersSearchTest extends DataProvider {
     public void orderState_remorseHold() throws IOException {
 
         provideTestData("order state: remorse hold");
-        p = open(adminUrl + "/customers", CustomersPage.class);
+        p = openPage(adminUrl + "/customers", CustomersPage.class);
 
         p.addFilter("Order", "State", "Remorse Hold");
         p.itemOnList(customerName).shouldBe(visible
@@ -160,7 +160,7 @@ public class CustomersSearchTest extends DataProvider {
     public void orderState_manualHold() throws IOException {
 
         provideTestData("order state: manual hold");
-        p = open(adminUrl + "/customers", CustomersPage.class);
+        p = openPage(adminUrl + "/customers", CustomersPage.class);
 
         p.addFilter("Order", "State", "Manual Hold");
         p.itemOnList(customerName).shouldBe(visible
@@ -172,7 +172,7 @@ public class CustomersSearchTest extends DataProvider {
     public void orderState_fraudHold() throws IOException {
 
         provideTestData("order state: fraud hold");
-        p = open(adminUrl + "/customers", CustomersPage.class);
+        p = openPage(adminUrl + "/customers", CustomersPage.class);
 
         p.addFilter("Order", "State", "Fraud Hold");
         p.itemOnList(customerName).shouldBe(visible
@@ -184,7 +184,7 @@ public class CustomersSearchTest extends DataProvider {
     public void orderState_fulfilmentStarted() throws IOException {
 
         provideTestData("order state: fulfilment started");
-        p = open(adminUrl + "/customers", CustomersPage.class);
+        p = openPage(adminUrl + "/customers", CustomersPage.class);
 
         p.addFilter("Order", "State", "Fulfilment Started");
         p.itemOnList(customerName).shouldBe(visible
@@ -196,7 +196,7 @@ public class CustomersSearchTest extends DataProvider {
     public void orderState_shipped() throws IOException {
 
         provideTestData("order state: shipped");
-        p = open(adminUrl + "/customers", CustomersPage.class);
+        p = openPage(adminUrl + "/customers", CustomersPage.class);
 
         p.addFilter("Order", "State", "Shipped");
         p.itemOnList(customerName).shouldBe(visible
@@ -208,7 +208,7 @@ public class CustomersSearchTest extends DataProvider {
     public void orderState_partiallyShipped() throws IOException {
 
         provideTestData("order state: partially shipped");
-        p = open(adminUrl + "/customers", CustomersPage.class);
+        p = openPage(adminUrl + "/customers", CustomersPage.class);
 
         p.addFilter("Order", "State", "Partially Shipped");
         p.itemOnList(customerName).shouldBe(visible
@@ -220,7 +220,7 @@ public class CustomersSearchTest extends DataProvider {
     public void orderState_canceled() throws IOException {
 
         provideTestData("order state: partially shipped");
-        p = open(adminUrl + "/customers", CustomersPage.class);
+        p = openPage(adminUrl + "/customers", CustomersPage.class);
 
         p.addFilter("Order", "State", "Canceled");
         p.itemOnList(customerName).shouldBe(visible
@@ -238,7 +238,7 @@ public class CustomersSearchTest extends DataProvider {
     public void shippingCity() throws IOException {
 
         provideTestData("customer with a shipping address");
-        p = open(adminUrl + "/customers", CustomersPage.class);
+        p = openPage(adminUrl + "/customers", CustomersPage.class);
 
         p.addFilter("Shipping", "City", "Portland");
         p.itemOnList(customerName).shouldBe(visible
@@ -250,7 +250,7 @@ public class CustomersSearchTest extends DataProvider {
     public void shippingState() throws IOException {
 
         provideTestData("customer with a shipping address");
-        p = open(adminUrl + "/customers", CustomersPage.class);
+        p = openPage(adminUrl + "/customers", CustomersPage.class);
 
         p.addFilter("Shipping", "City", "Oregon");
         p.itemOnList(customerName).shouldBe(visible
@@ -262,7 +262,7 @@ public class CustomersSearchTest extends DataProvider {
     public void shippingZip() throws IOException {
 
         provideTestData("customer with a shipping address");
-        p = open(adminUrl + "/customers", CustomersPage.class);
+        p = openPage(adminUrl + "/customers", CustomersPage.class);
 
         p.addFilter("Shipping", "Zip", "97201");
         p.itemOnList(customerName).shouldBe(visible
@@ -274,7 +274,7 @@ public class CustomersSearchTest extends DataProvider {
     public void billingCity() throws IOException {
 
         provideTestData("customer with a billing address");
-        p = open(adminUrl + "/customers", CustomersPage.class);
+        p = openPage(adminUrl + "/customers", CustomersPage.class);
 
         p.addFilter("Billing", "City", "Portland");
         p.itemOnList(customerName).shouldBe(visible
@@ -286,7 +286,7 @@ public class CustomersSearchTest extends DataProvider {
     public void billingState() throws IOException {
 
         provideTestData("customer with a billing address");
-        p = open(adminUrl + "/customers", CustomersPage.class);
+        p = openPage(adminUrl + "/customers", CustomersPage.class);
 
         p.addFilter("Billing", "State", "Oregon");
         p.itemOnList(customerName).shouldBe(visible
@@ -298,7 +298,7 @@ public class CustomersSearchTest extends DataProvider {
     public void billingZip() throws IOException {
 
         provideTestData("customer with a billing address");
-        p = open(adminUrl + "/customers", CustomersPage.class);
+        p = openPage(adminUrl + "/customers", CustomersPage.class);
 
         p.addFilter("Billing", "Zip", "07097");
         p.itemOnList(customerName).shouldBe(visible

@@ -24,12 +24,12 @@ public class ProductsSearchTest extends DataProvider {
 
         open(adminUrl);
         if ((Objects.equals(getUrl(), adminUrl + "/login"))) {
-            LoginPage loginPage = open(adminUrl + "/login", LoginPage.class);
+            LoginPage loginPage = openPage(adminUrl + "/login", LoginPage.class);
             loginPage.login("tenant", "admin@admin.com", "password");
             loginPage.userMenuBtn().shouldBe(visible);
         }
         provideTestData("product for search tests");
-        p = open(adminUrl + "/products", ProductsPage.class);
+        p = openPage(adminUrl + "/products", ProductsPage.class);
 
     }
 
@@ -382,7 +382,7 @@ public class ProductsSearchTest extends DataProvider {
     public void archivedAt_Equals_yesterday() throws IOException {
 
         provideTestData("archived product");
-        p = open(adminUrl + "/products", ProductsPage.class);
+        p = openPage(adminUrl + "/products", ProductsPage.class);
 
         p.addFilter("Product : Archived At", "=", p.yesterday());
         p.itemOnList(productId).shouldNotBe(visible
@@ -559,7 +559,7 @@ public class ProductsSearchTest extends DataProvider {
     @Test(priority = 53)
     public void archivedAtLogicCorrectnessTest() {
 
-        p = open(adminUrl + "/products", ProductsPage.class);
+        p = openPage(adminUrl + "/products", ProductsPage.class);
 
         p.addFilter("Product : Active From", "=", p.today());
         p.addFilter("Product : ID", productId);

@@ -21,7 +21,7 @@ public class ItemsTest extends DataProvider {
 
         open(adminUrl);
         if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
-            LoginPage loginPage = open(adminUrl + "/login", LoginPage.class);
+            LoginPage loginPage = openPage(adminUrl + "/login", LoginPage.class);
             loginPage.login("tenant", "admin@admin.com", "password");
             shouldBeVisible(loginPage.userMenuBtn(), "Failed to log in");
         }
@@ -32,7 +32,7 @@ public class ItemsTest extends DataProvider {
     public void addItemToCart() throws IOException {
 
         provideTestData("empty cart");
-        p = open(adminUrl + "/carts/" + cartId, CartPage.class);
+        p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
 
         p.addItemToCart("Shark");
         p.addItemToCart("Fox");
@@ -43,7 +43,7 @@ public class ItemsTest extends DataProvider {
     public void editItemQuantity_arrowBtn() throws IOException {
 
         provideTestData("cart with 1 item");
-        p = open(adminUrl + "/carts/" + cartId, CartPage.class);
+        p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
         shouldBeVisible(p.itemQty("1"), "Failed to open cart page");
 
         p.clickEditBtn_items();
@@ -64,7 +64,7 @@ public class ItemsTest extends DataProvider {
     public void decreaseItemQuantityBelowZero() throws IOException {
 
         provideTestData("cart with 3 items");
-        p = open(adminUrl + "/carts/" + cartId, CartPage.class);
+        p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
         shouldBeVisible(p.itemQty("1"), "Failed to open cart page");
         int expectedResult = p.itemsInCartAmount() - 1;
 
@@ -81,7 +81,7 @@ public class ItemsTest extends DataProvider {
     public void editItemQuantity_directInput() throws IOException {
 
         provideTestData("cart with 1 item");
-        p = open(adminUrl + "/carts/" + cartId, CartPage.class);
+        p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
 
         // increase value
         p.editItemQty("1", "3");
@@ -99,7 +99,7 @@ public class ItemsTest extends DataProvider {
     public void deletionCancel_deleteBtn() throws IOException {
 
         provideTestData("cart with 1 item, qty: 3");
-        p = open(adminUrl + "/carts/" + cartId, CartPage.class);
+        p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
         shouldBeVisible(p.itemQty("1"), "Failed to open cart page");
         int expectedResult = p.itemsInCartAmount();
 
@@ -115,7 +115,7 @@ public class ItemsTest extends DataProvider {
     public void deletionCancel_qtyBelowZero() throws IOException {
 
         provideTestData("cart with 3 items");
-        p = open(adminUrl + "/carts/" + cartId, CartPage.class);
+        p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
         shouldBeVisible(p.itemQty("1"), "Failed to open cart page");
         int expectedResult = p.itemsInCartAmount();
 
@@ -132,7 +132,7 @@ public class ItemsTest extends DataProvider {
     public void deleteItem_deleteBtn() throws IOException {
 
         provideTestData("cart with 3 items");
-        p = open(adminUrl + "/carts/" + cartId, CartPage.class);
+        p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
         shouldBeVisible(p.itemQty("1"), "Failed to open cart page");
         int expectedItemsAmount = p.cart().size() - 1;
 

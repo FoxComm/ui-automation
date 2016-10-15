@@ -20,7 +20,7 @@ public class ShippingMethodTest extends DataProvider {
 
         open(adminUrl);
         if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
-            LoginPage loginPage = open(adminUrl + "/login", LoginPage.class);
+            LoginPage loginPage = openPage(adminUrl + "/login", LoginPage.class);
             loginPage.login("tenant", "admin@admin.com", "password");
             shouldBeVisible(loginPage.userMenuBtn(), "Failed to log in");
         }
@@ -31,7 +31,7 @@ public class ShippingMethodTest extends DataProvider {
     public void setShippingMethod() throws IOException {
 
         provideTestData("cart with chosen shipping address");
-        p = open(adminUrl + "/carts/" + cartId, CartPage.class);
+        p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
 
         p.clickEditBtn_shipMethod();
         p.selectShipMethod("1");

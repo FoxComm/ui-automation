@@ -24,12 +24,12 @@ public class SKUTest extends DataProvider {
 
        open(adminUrl);
         if ((Objects.equals(getUrl(), adminUrl + "/login"))) {
-            LoginPage loginPage = open(adminUrl + "/login", LoginPage.class);
+            LoginPage loginPage = openPage(adminUrl + "/login", LoginPage.class);
             loginPage.login("tenant", "admin@admin.com", "password");
             loginPage.userMenuBtn().shouldBe(visible);
         }
         provideTestData("SKU for search tests");
-        p = open(adminUrl + "/skus", SkusPage.class);
+        p = openPage(adminUrl + "/skus", SkusPage.class);
 
     }
 
@@ -231,7 +231,7 @@ public class SKUTest extends DataProvider {
     public void archivedAt_Equals_yesterday() throws IOException {
 
         provideTestData("archived sku");
-        p = open(adminUrl + "/skus", SkusPage.class);
+        p = openPage(adminUrl + "/skus", SkusPage.class);
 
         p.addFilter("SKU : Archived At", "=", p.yesterday());
         p.itemOnList(sku).shouldNotBe(visible

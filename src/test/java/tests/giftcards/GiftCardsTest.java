@@ -22,7 +22,7 @@ public class GiftCardsTest extends DataProvider {
     public void setUp() {
         open(adminUrl);
         if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
-            LoginPage loginPage = open(adminUrl + "/login", LoginPage.class);
+            LoginPage loginPage = openPage(adminUrl + "/login", LoginPage.class);
             loginPage.login("tenant", "admin@admin.com", "password");
             shouldBeVisible(loginPage.userMenuBtn(), "Failed to log in");
         }
@@ -30,7 +30,7 @@ public class GiftCardsTest extends DataProvider {
 
     @Test(priority = 1)
     public void addGiftCard() {
-        p = open(adminUrl + "/gift-cards", GiftCardsPage.class);
+        p = openPage(adminUrl + "/gift-cards", GiftCardsPage.class);
 
         p.clickAddMewGCBtn();
         p.setType("Appeasement");
@@ -43,7 +43,7 @@ public class GiftCardsTest extends DataProvider {
 
     @Test(priority = 2)
     public void addGiftCard_presetValues() {
-        p = open(adminUrl + "/gift-cards", GiftCardsPage.class);
+        p = openPage(adminUrl + "/gift-cards", GiftCardsPage.class);
 
         p.clickAddMewGCBtn();
         p.setType("Appeasement");
@@ -57,7 +57,7 @@ public class GiftCardsTest extends DataProvider {
     @Test(priority = 3)
     public void newGCVisibleOnList() {
 
-        p = open(adminUrl + "/gift-cards", GiftCardsPage.class);
+        p = openPage(adminUrl + "/gift-cards", GiftCardsPage.class);
 
         p.clickAddMewGCBtn();
         p.setType("Appeasement");
@@ -76,7 +76,7 @@ public class GiftCardsTest extends DataProvider {
     @Test(priority = 4)
     public void newGCIsActive() {
 
-        p = open(adminUrl + "/gift-cards", GiftCardsPage.class);
+        p = openPage(adminUrl + "/gift-cards", GiftCardsPage.class);
 
         p.clickAddMewGCBtn();
         p.setType("Appeasement");
@@ -97,7 +97,7 @@ public class GiftCardsTest extends DataProvider {
     public void holdGC() throws IOException {
 
         provideTestData("gift card");
-        p = open(adminUrl + "/gift-cards/" + gcCode, GiftCardsPage.class);
+        p = openPage(adminUrl + "/gift-cards/" + gcCode, GiftCardsPage.class);
 
         p.setState("Hold");
         p.clickYes();
@@ -114,7 +114,7 @@ public class GiftCardsTest extends DataProvider {
     public void cancelNewGC() throws IOException {
 
         provideTestData("gift card");
-        p = open(adminUrl + "/gift-cards/" + gcCode, GiftCardsPage.class);
+        p = openPage(adminUrl + "/gift-cards/" + gcCode, GiftCardsPage.class);
 
         p.setState("Cancel Gift Card");
         p.setCancelReason("Other cancellation reason");
@@ -134,7 +134,7 @@ public class GiftCardsTest extends DataProvider {
     public void cantCancelUsedGC() throws IOException {
 
         provideTestData("used gift card");
-        p = open(adminUrl + "/gift-cards/" + gcCode, GiftCardsPage.class);
+        p = openPage(adminUrl + "/gift-cards/" + gcCode, GiftCardsPage.class);
 
         click( p.stateDd() );
         $(By.xpath("//div[text()='Cancel Gift Card']")).shouldNot(exist
@@ -146,7 +146,7 @@ public class GiftCardsTest extends DataProvider {
     public void editState_visibleOnList() throws IOException {
 
         provideTestData("gift card");
-        p = open(adminUrl + "/gift-cards/" + gcCode, GiftCardsPage.class);
+        p = openPage(adminUrl + "/gift-cards/" + gcCode, GiftCardsPage.class);
 
         p.setState("Hold");
         p.clickYes();
@@ -163,7 +163,7 @@ public class GiftCardsTest extends DataProvider {
     public void setStateToActive() throws IOException {
 
         provideTestData("gift card on hold");
-        p = open(adminUrl + "/gift-cards/" + gcCode, GiftCardsPage.class);
+        p = openPage(adminUrl + "/gift-cards/" + gcCode, GiftCardsPage.class);
 
         p.setState("Active");
         p.clickYes();
@@ -180,7 +180,7 @@ public class GiftCardsTest extends DataProvider {
     public void cancelStateChange() throws IOException {
 
         provideTestData("gift card");
-        p = open(adminUrl + "/gift-cards/" + gcCode, GiftCardsPage.class);
+        p = openPage(adminUrl + "/gift-cards/" + gcCode, GiftCardsPage.class);
 
         p.setState("Hold");
         p.clickYes();
@@ -196,7 +196,7 @@ public class GiftCardsTest extends DataProvider {
     public void gcAsPaymentMethod_availableBalance() throws IOException {
 
         provideTestData("used gift card");
-        p = open(adminUrl + "/gift-cards/" + gcCode, GiftCardsPage.class);
+        p = openPage(adminUrl + "/gift-cards/" + gcCode, GiftCardsPage.class);
 
         p.availableBalance().shouldHave(text("$162.73")
                 .because("Incorrect available balance value after placing order with GC as a payment method."));
@@ -207,7 +207,7 @@ public class GiftCardsTest extends DataProvider {
     public void addNewGC_issueToCustomer() throws IOException {
 
         provideTestData("a customer");
-        p = open(adminUrl + "/gift-cards", GiftCardsPage.class);
+        p = openPage(adminUrl + "/gift-cards", GiftCardsPage.class);
 
         p.clickAddMewGCBtn();
         p.setType("Appeasement");
@@ -223,7 +223,7 @@ public class GiftCardsTest extends DataProvider {
     @Test(priority = 13)
     public void issueMultipleGCs() {
 
-        p = open(adminUrl + "/gift-cards", GiftCardsPage.class);
+        p = openPage(adminUrl + "/gift-cards", GiftCardsPage.class);
 
         String expectedResult = addToString(p.counter().text(), 2);
         p.waitForDataToLoad();

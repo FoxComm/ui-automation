@@ -22,7 +22,7 @@ public class PromotionsTest_NoAPI extends DataProvider {
 
         open(adminUrl);
         if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
-            LoginPage loginPage = open(adminUrl + "/login", LoginPage.class);
+            LoginPage loginPage = openPage(adminUrl + "/login", LoginPage.class);
             loginPage.login("tenant", "admin@admin.com", "password");
             shouldBeVisible(loginPage.userMenuBtn(), "Failed to log in");
         }
@@ -32,7 +32,7 @@ public class PromotionsTest_NoAPI extends DataProvider {
     @Test(priority = 1)
     public void addNewPromo() {
 
-        p = open(adminUrl + "/promotions", PromotionsPage.class);
+        p = openPage(adminUrl + "/promotions", PromotionsPage.class);
         String randomId = generateRandomID();
 
         p.createNewPromo("Coupon", randomId);
@@ -47,7 +47,7 @@ public class PromotionsTest_NoAPI extends DataProvider {
     @Test(priority = 2)
     public void addNewPromo_appearsOnList() throws IOException {
 
-        p = open(adminUrl + "/promotions", PromotionsPage.class);
+        p = openPage(adminUrl + "/promotions", PromotionsPage.class);
         String randomId = generateRandomID();
 
         p.createNewPromo("Coupon", randomId);
@@ -62,7 +62,7 @@ public class PromotionsTest_NoAPI extends DataProvider {
     @Test(priority = 3)
     public void couponApplyType_stateActive() {
 
-        p = open(adminUrl + "/promotions", PromotionsPage.class);
+        p = openPage(adminUrl + "/promotions", PromotionsPage.class);
         String randomId = generateRandomID();
 
         p.createNewPromo("Coupon", randomId);
@@ -78,14 +78,14 @@ public class PromotionsTest_NoAPI extends DataProvider {
     public void editName() throws IOException {
 
         //Preconditions
-        p = open(adminUrl + "/promotions", PromotionsPage.class);
+        p = openPage(adminUrl + "/promotions", PromotionsPage.class);
         String randomId = generateRandomID();
         p.createNewPromo("Coupon", randomId);
         promoId = p.promotionIdVal().text();
         p.clickSave();
 
         //Test Steps
-        p = open(adminUrl + "/promotions/" + promoId, PromotionsPage.class);
+        p = openPage(adminUrl + "/promotions/" + promoId, PromotionsPage.class);
         setFieldVal( p.nameFld(), "Edited Promo Name" );
         p.clickSave();
 
@@ -103,14 +103,14 @@ public class PromotionsTest_NoAPI extends DataProvider {
     public void editStorefrontName() throws IOException {
 
         //Preconditions
-        p = open(adminUrl + "/promotions", PromotionsPage.class);
+        p = openPage(adminUrl + "/promotions", PromotionsPage.class);
         String randomId = generateRandomID();
         p.createNewPromo("Coupon", randomId);
         promoId = p.promotionIdVal().text();
         p.clickSave();
 
         //Test Steps
-        p = open(adminUrl + "/promotions/" + promoId, PromotionsPage.class);
+        p = openPage(adminUrl + "/promotions/" + promoId, PromotionsPage.class);
         clearField(p.storefrontNameFld());
         p.setStorefrontName("Edited Promo Storefront Name");
         p.clickSave();
@@ -129,14 +129,14 @@ public class PromotionsTest_NoAPI extends DataProvider {
     public void editDescription() throws IOException {
 
         //Preconditions
-        p = open(adminUrl + "/promotions", PromotionsPage.class);
+        p = openPage(adminUrl + "/promotions", PromotionsPage.class);
         String randomId = generateRandomID();
         p.createNewPromo("Coupon", randomId);
         promoId = p.promotionIdVal().text();
         p.clickSave();
 
         //Test Steps
-        p = open(adminUrl + "/promotions/" + promoId, PromotionsPage.class);
+        p = openPage(adminUrl + "/promotions/" + promoId, PromotionsPage.class);
         p.clearField( p.descriptionFld() );
         p.setDescription("Edited Promo Description");
         p.clickSave();
@@ -153,14 +153,14 @@ public class PromotionsTest_NoAPI extends DataProvider {
     public void editDetails() throws IOException {
 
         //Preconditions
-        p = open(adminUrl + "/promotions", PromotionsPage.class);
+        p = openPage(adminUrl + "/promotions", PromotionsPage.class);
         String randomId = generateRandomID();
         p.createNewPromo("Coupon", randomId);
         promoId = p.promotionIdVal().text();
         p.clickSave();
 
         //Test Steps
-        p = open(adminUrl + "/promotions/" + promoId, PromotionsPage.class);
+        p = openPage(adminUrl + "/promotions/" + promoId, PromotionsPage.class);
         p.clearField( p.detailsFld() );
         p.setDetails("Edited Promo Details");
         p.clickSave();
@@ -177,14 +177,14 @@ public class PromotionsTest_NoAPI extends DataProvider {
     public void editApplyType() throws IOException {
 
         //Preconditions
-        p = open(adminUrl + "/promotions", PromotionsPage.class);
+        p = openPage(adminUrl + "/promotions", PromotionsPage.class);
         String randomId = generateRandomID();
         p.createNewPromo("Coupon", randomId);
         promoId = p.promotionIdVal().text();
         p.clickSave();
 
         //Test Steps
-        p = open(adminUrl + "/promotions/" + promoId, PromotionsPage.class);
+        p = openPage(adminUrl + "/promotions/" + promoId, PromotionsPage.class);
         p.setApplyType("Auto");
         shouldBeVisible(p.stateDd(), "\"State\" dd isn't displayed after changing \"Apply Type\" from \"Coupon\" to \"Auto\"");
         p.clickSave();
@@ -204,14 +204,14 @@ public class PromotionsTest_NoAPI extends DataProvider {
     public void setStateToInactive() throws IOException {
 
         //Preconditions
-        p = open(adminUrl + "/promotions", PromotionsPage.class);
+        p = openPage(adminUrl + "/promotions", PromotionsPage.class);
         String randomId = generateRandomID();
         p.createNewPromo_autoApply_active("Auto", randomId);
         promoId = p.promotionIdVal().text();
         p.clickSave();
 
         //Test Steps
-        p = open(adminUrl + "/promotions/" + promoId, PromotionsPage.class);
+        p = openPage(adminUrl + "/promotions/" + promoId, PromotionsPage.class);
         p.stateDd().shouldBe(visible);
         shouldBeVisible(p.stateDd(), "Failed to wait for \"State\" dd to become visible");
         p.setState("Inactive");
@@ -233,14 +233,14 @@ public class PromotionsTest_NoAPI extends DataProvider {
     public void setStateToActive() throws IOException {
 
         //Preconditions
-        p = open(adminUrl + "/promotions", PromotionsPage.class);
+        p = openPage(adminUrl + "/promotions", PromotionsPage.class);
         String randomId = generateRandomID();
         p.createNewPromo("Auto", randomId);
         promoId = p.promotionIdVal().text();
         p.clickSave();
 
         //Test Steps
-        p = open(adminUrl + "/promotions/" + promoId, PromotionsPage.class);
+        p = openPage(adminUrl + "/promotions/" + promoId, PromotionsPage.class);
         shouldBeVisible(p.stateDd(), "Failed to wait for \"State\" dd to become visible");
         p.setState("Active");
         p.clickSave();
@@ -259,14 +259,14 @@ public class PromotionsTest_NoAPI extends DataProvider {
     public void addTag() throws IOException {
 
         //Preconditions
-        p = open(adminUrl + "/promotions", PromotionsPage.class);
+        p = openPage(adminUrl + "/promotions", PromotionsPage.class);
         String randomId = generateRandomID();
         p.createNewPromo("Coupon", randomId);
         promoId = p.promotionIdVal().text();
         p.clickSave();
 
         //Test Steps
-        p = open(adminUrl + "/promotions/" + promoId, PromotionsPage.class);
+        p = openPage(adminUrl + "/promotions/" + promoId, PromotionsPage.class);
         p.addTag("test promo");
         p.clickSave();
 
@@ -282,14 +282,14 @@ public class PromotionsTest_NoAPI extends DataProvider {
     public void cantDuplicateTag() throws IOException {
 
         //Preconditions
-        p = open(adminUrl + "/promotions", PromotionsPage.class);
+        p = openPage(adminUrl + "/promotions", PromotionsPage.class);
         String randomId = generateRandomID();
         p.createNewPromo("Coupon", randomId);
         promoId = p.promotionIdVal().text();
         p.clickSave();
 
         //Test Steps
-        p = open(adminUrl + "/promotions/" + promoId, PromotionsPage.class);
+        p = openPage(adminUrl + "/promotions/" + promoId, PromotionsPage.class);
         p.addTag("test promo");
         p.addTag("test promo");
 

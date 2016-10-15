@@ -24,12 +24,12 @@ public class GiftCardsSearchTest extends DataProvider {
 
         open(adminUrl);
         if ((Objects.equals(getUrl(), adminUrl + "/login"))) {
-            LoginPage loginPage = open(adminUrl + "/login", LoginPage.class);
+            LoginPage loginPage = openPage(adminUrl + "/login", LoginPage.class);
             loginPage.login("tenant", "admin@admin.com", "password");
             loginPage.userMenuBtn().shouldBe(visible);
         }
         provideTestData("SKU for search tests");
-        p = open(adminUrl + "/skus", SkusPage.class);
+        p = openPage(adminUrl + "/skus", SkusPage.class);
 
     }
 

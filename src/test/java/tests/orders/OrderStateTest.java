@@ -20,7 +20,7 @@ public class OrderStateTest extends DataProvider {
 
         open(adminUrl);
         if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
-            LoginPage loginPage = open(adminUrl + "/login", LoginPage.class);
+            LoginPage loginPage = openPage(adminUrl + "/login", LoginPage.class);
             loginPage.login("tenant", "admin@admin.com", "password");
             shouldBeVisible(loginPage.userMenuBtn(), "Failed to log in");
         }
@@ -86,7 +86,7 @@ public class OrderStateTest extends DataProvider {
     public void changeOrderState_backToRemorseHold() throws IOException {
 
         provideTestData("order in remorse hold payed with SC");
-        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
+        p = openPage(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
 
         click( p.addTimeBtn() );
         p.setOrderState("Manual Hold");
