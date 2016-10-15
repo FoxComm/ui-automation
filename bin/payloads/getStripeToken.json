@@ -1,0 +1,14 @@
+{
+  "customerId":1015,
+  "address":{
+    "name":"name",
+    "zip":"zip",
+    "city":"city",
+    "regionId":9999,
+    "address1":"address1"
+  },
+  "expMonth":5,
+  "expYear":2017,
+  "cardNumber":"4242424242424242",
+  "cvv":123
+}

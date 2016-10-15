@@ -9,7 +9,9 @@ import testdata.DataProvider;
 import java.io.IOException;
 import java.util.Objects;
 
-import static com.codeborne.selenide.Condition.*;
+import static com.codeborne.selenide.Condition.selected;
+import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.Selenide.sleep;
 
@@ -23,7 +25,7 @@ public class ShippingAddressTest extends DataProvider {
         open(adminUrl);
         if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
             LoginPage loginPage = open(adminUrl + "/login", LoginPage.class);
-            loginPage.login("admin@admin.com", "password");
+            loginPage.login("tenant", "admin@admin.com", "password");
             shouldBeVisible(loginPage.userMenuBtn(), "Failed to log in");
         }
 
@@ -102,7 +104,7 @@ public class ShippingAddressTest extends DataProvider {
         provideTestData("cart with chosen shipping address");
         p = open(adminUrl + "/carts/" + cartId, CartPage.class);
 
-        p.clickEditBtn_chosenAddress();
+        p.clickEditBtn_shipAddress();
         p.removeChosenAddress();
 
         p.chosenAddress().shouldNotBe(visible

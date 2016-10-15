@@ -2,13 +2,15 @@ package pages;
 
 import base.BasePage;
 import com.codeborne.selenide.SelenideElement;
-import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import ru.yandex.qatools.allure.annotations.Step;
 
 import java.util.List;
 
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
+import static com.codeborne.selenide.Selenide.sleep;
+import static org.openqa.selenium.By.xpath;
 import static org.testng.Assert.assertTrue;
 
 public class SkusPage extends BasePage {
@@ -16,100 +18,120 @@ public class SkusPage extends BasePage {
     //------------------------------------------------------------------------//
     //------------------------------ ELEMENTS --------------------------------//
 
+
     public SelenideElement addNewSKUBtn() {
-        return $(By.xpath("//button[@class='fc-btn fc-btn-primary']"));
+        return $(xpath("//button[@class='fc-btn fc-btn-primary']"));
     }
 
     public SelenideElement skuFld() {
-        return $(By.xpath("//input[@name='code']"));
+        return $(xpath("//input[@name='code']"));
     }
 
     public SelenideElement titleFld() {
-        return $(By.xpath("//input[@name='title']"));
+        return $(xpath("//input[@name='title']"));
     }
 
     public SelenideElement upcFld() {
-        return $(By.xpath("//input[@name='upc']"));
+        return $(xpath("//input[@name='upc']"));
     }
 
     public SelenideElement descriptionFld() {
-//        return $(By.xpath("//div[@id='foxcom']/div/div[1]/main/div/div[3]/div/div/div[1]/div[1]/div/div/div[4]/div/div[3]/div/div/div"));
-        return $(By.xpath("//div[@role='textbox']/div"));
+//        return $(By.xpath("//div[@role='textbox']/div/div"));
+        return $(xpath("//div[@class='public-DraftEditor-content']"));
     }
 
     public SelenideElement retailPriceFld() {
-        return $(By.xpath("//input[@name='retailPrice']"));
+        return $(xpath("//input[@name='retailPrice']"));
     }
 
     public SelenideElement salePriceFld() {
-        return $(By.xpath("//input[@name='salePrice']"));
+        return $(xpath("//input[@name='salePrice']"));
     }
 
     public SelenideElement unitCostFld() {
-        return $(By.xpath("//input[@name='unitCost']"));
+        return $(xpath("//input[@name='unitCost']"));
     }
 
     private SelenideElement removeStartDateBtn() {
-        return $(By.xpath("//a[@class='fc-date-time-picker__close']"));
+        return $(xpath("//a[@class='fc-date-time-picker__close']"));
     }
 
     private SelenideElement stateDd() {
-        return $(By.xpath("//div[text()='State']/../following-sibling::*/div[2]/button"));
+        return $(xpath("//div[text()='State']/../following-sibling::*/div[2]/button"));
     }
 
     private SelenideElement stateListVal(String state) {
-        return $(By.xpath("//li[text()='" + state + "']"));
+        return $(xpath("//li[text()='" + state + "']"));
     }
 
     public SelenideElement stateVal() {
-        return $(By.xpath("//div[text()='State']/../following-sibling::*[1]/div[2]/div"));
+        return $(xpath("//div[text()='State']/../following-sibling::*[1]/div[2]/div"));
     }
 
     public SelenideElement skuCodeVal() {
-        return $(By.xpath("//div[@class='fc-breadcrumbs']/ul/li[5]/a"));
+        return $(xpath("//div[@class='fc-breadcrumbs']/ul/li[5]/a"));
     }
 
     private SelenideElement addCustomPropBtn() {
-        return $(By.xpath("//div[text()='Custom Property']/a"));
+        return $(xpath("//div[text()='Custom Property']/a"));
     }
 
     private SelenideElement labelFld() {
-        return $(By.xpath("//input[@name='field']"));
+        return $(xpath("//input[@name='field']"));
     }
 
     private SelenideElement typeDd() {
-        return $(By.xpath("//label[text()='Field Type']/following-sibling::*/div[2]/button"));
+        return $(xpath("//label[text()='Field Type']/following-sibling::*/div[2]/button"));
     }
 
     private SelenideElement typeVal(String val) {
-        return $(By.xpath("//li[text()='" + val + "']"));
+        return $(xpath("//li[text()='" + val + "']"));
     }
 
     private SelenideElement saveAndApplyBtn() {
-        return $(By.xpath("//span[text()='Save and Apply']/.."));
+        return $(xpath("//span[text()='Save and Apply']/.."));
     }
 
     public SelenideElement customTextFld(String label) {
-        return $(By.xpath("//input[@name='" + label.toLowerCase() + "']"));
+        return $(xpath("//input[@name='" + label.toLowerCase() + "']"));
     }
 
     public SelenideElement customRichTextFld(String title) {
-        return $(By.xpath("//div[text()='" + title + "']/following-sibling::*[2]/div/div/div"));
+        return $(xpath("//div[text()='" + title + "']/following-sibling::*[2]//div[@class='public-DraftEditor-content']"));
+    }
+
+    public SelenideElement customRichTextFldVal(String title) {
+        return $(xpath("//div[text()='" + title + "']/following-sibling::*[2]//span/span"));
     }
 
     public String getRichTextVal(String label) {
-        SelenideElement richText = $(By.xpath("//div[text()='" + label.toLowerCase() + "']/following-sibling::*[2]/div/div/div/div/div/div/span/span"));
+        SelenideElement richText = $(xpath("//div[text()='" + label.toLowerCase() + "']/following-sibling::*[2]/div/div/div/div/div/div/span/span"));
         return richText.text();
     }
 
     public SelenideElement customPriceFld(String label) {
-        return $(By.xpath("//input[@name='" + label.toLowerCase() + "']"));
+        return $(xpath("//input[@name='" + label.toLowerCase() + "']"));
+    }
+
+    /**
+     * A part of error message works fine for this.
+     */
+    public SelenideElement errorMsg(String text) {
+        return $(xpath("//*[contains(text(), '" + text + "')]"));
     }
 
 
 
     //------------------------------------------------------------------------//
     //------------------------------- HELPERS --------------------------------//
+
+    // Overrides similar method from BasePage -- because at SKUs you need to wait for changes to get applied first
+    @Step("Click \"Save\"")
+    public void clickSave() {
+        click(saveBtn());
+        shouldBeEnabled(saveBtn(), "\"Save\" btn doesn't get re-enabled");
+        sleep(1000);
+    }
 
     @Step("Click \"Create New SKU\" btn")
     public void clickAddNewSKU() {
@@ -157,7 +179,9 @@ public class SkusPage extends BasePage {
 
         @Step("Set \"Description\" to <{0}>")
         public void setDescription(String description) {
-            setFieldVal(descriptionFld(), description);
+            click(descriptionFld());
+            descriptionFld().sendKeys(Keys.chord(Keys.CONTROL, "a"));
+            descriptionFld().sendKeys(description);
         }
 
         @Step("Set \"Retail price\" fld val to <{0}>")
@@ -200,16 +224,16 @@ public class SkusPage extends BasePage {
         waitForDataToLoad();
         switch (paramName) {
             case "Code":
-                skuParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + skuIndex + "]/td[2]"));
+                skuParamVal = $(xpath("//tbody[@class='fc-table-body']/a[" + skuIndex + "]/td[2]"));
                 break;
             case "Title":
-                skuParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + skuIndex + "]/td[3]"));
+                skuParamVal = $(xpath("//tbody[@class='fc-table-body']/a[" + skuIndex + "]/td[3]"));
                 break;
             case "Sale Price":
-                skuParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + skuIndex + "]/td[4]/span"));
+                skuParamVal = $(xpath("//tbody[@class='fc-table-body']/a[" + skuIndex + "]/td[4]/span"));
                 break;
             case "Retail Price":
-                skuParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + skuIndex + "]/td[5]/span"));
+                skuParamVal = $(xpath("//tbody[@class='fc-table-body']/a[" + skuIndex + "]/td[5]/span"));
                 break;
         }
         return skuParamVal;
@@ -223,7 +247,7 @@ public class SkusPage extends BasePage {
     @Step("Find SKU with code <{0}> on the list.")
     private SelenideElement findSKUOnList(String skuCode) {
         waitForDataToLoad();
-        List<SelenideElement> skusList = $$(By.xpath("//tbody[@class='fc-table-body']/a/td[2]"));
+        List<SelenideElement> skusList = $$(xpath("//tbody[@class='fc-table-body']/a/td[2]"));
         SelenideElement skuToClick = null;
         for(SelenideElement sku : skusList) {
             String skuCodeVal = sku.text();

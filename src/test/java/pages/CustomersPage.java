@@ -367,12 +367,12 @@ public class CustomersPage extends BasePage {
 
     @Step("Click \"Edit\" btn next to <{0}th> credit card")
     public void clickEditCCBtn(String index) {
-        click( editCreditCardBtn("1") );
+        click(editCreditCardBtn("1"));
     }
 
     @Step("Click \"Change\" next to billing address")
     public void clickChangeBillAddressBtn() {
-        click( changeBillAddressBtn() );
+        click(changeBillAddressBtn());
     }
 
     @Step("Add new credit card")
@@ -422,7 +422,7 @@ public class CustomersPage extends BasePage {
 
         @Step("Choose <{0}th> address from the address book to set it as a billing address")
         public void chooseAddress(String index) {
-            click(chooseBtn("1"));
+            click(chooseBtn(index));
         }
 
     @Step("Check if credit card is created")
@@ -489,7 +489,7 @@ public class CustomersPage extends BasePage {
 
     @Step("Click 'Edit' btn next to \"Contact Info\"")
     public void clickEditBtn_contactInfo() {
-        click( editBtn_contactInfo() );
+        click(editBtn_contactInfo());
     }
 
     @Step("Set contact info \"Phone Number\" fld val to <{0}>")
@@ -659,9 +659,8 @@ public class CustomersPage extends BasePage {
         return $(By.xpath("//input[@id='gcNumberField']"));
     }
 
-    public double gcAvailableBalanceVal() {
-        String gcAvailBalance = $(By.xpath("//div[contains(@class, 'gc-value')]/span")).getText();
-        return Double.valueOf(gcAvailBalance.substring(1, gcAvailBalance.length()));
+    public SelenideElement gcAvailableBalanceVal() {
+        return $(By.xpath("//div[contains(@class, 'gc-value')]/span"));
     }
 
     public SelenideElement submitBtn() {
@@ -669,9 +668,7 @@ public class CustomersPage extends BasePage {
     }
 
     public SelenideElement availableBalanceVal() {
-         return $(By.xpath("//label[text()='Gift card’s available balance to transfer:']/../following-sibling::*/span"));
-//        String availBalanceVal = availableBalance.getText();
-//        return Double.valueOf( availBalanceVal.substring(1, availBalanceVal.length()) );
+         return $(By.xpath("//div[text()='Total Available Balance']/following-sibling::*/div/span"));
     }
 
     public SelenideElement totalAvailableBalance() {

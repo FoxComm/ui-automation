@@ -76,7 +76,6 @@ public class PromotionsPage extends BasePage {
 
     @Step("Create a new promotion with <{0}> apply type")
     public void createNewPromo(String applyType, String id) {
-        clickAddNewPromoBtn();
         setApplyType(applyType);
         setPromoName("Test Promo " + id);
         setStorefrontName("sf name");
@@ -85,8 +84,6 @@ public class PromotionsPage extends BasePage {
         setQualifierType("Order - No qualifier");
         setOfferType("Percent off order");
         setOfferGet("10");
-        clickSave();
-        shouldNotHaveText(promotionIdVal(), "new", "Failed to create a new promotion.");
     }
 
         @Step("Click \"Create New Promotion\" btn")

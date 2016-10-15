@@ -20,14 +20,14 @@ public class LoginTest extends BaseTest {
 
     @Test(priority = 1)
     public void incorrect_credentials_test() {
-        p.login("wrong@email.com", "wrongpassword");
+        p.login("sticks and stones", "wrong@email.com", "wrongpassword");
         p.loginErrorMsg().shouldBe(visible
                 .because("'Incorrect credentials' error msg isn't shown."));
     }
 
     @Test(priority = 2)
     public void login_logout_test() {
-        p.login("admin@admin.com", "password");
+        p.login("tenant", "admin@admin.com", "password");
         p.userMenuBtn().shouldBe(visible.because("Log in has failed."));
         p.logout();
     }

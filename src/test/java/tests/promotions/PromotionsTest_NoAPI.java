@@ -23,7 +23,7 @@ public class PromotionsTest_NoAPI extends DataProvider {
         open(adminUrl);
         if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
             LoginPage loginPage = open(adminUrl + "/login", LoginPage.class);
-            loginPage.login("admin@admin.com", "password");
+            loginPage.login("tenant", "admin@admin.com", "password");
             shouldBeVisible(loginPage.userMenuBtn(), "Failed to log in");
         }
 
@@ -37,7 +37,7 @@ public class PromotionsTest_NoAPI extends DataProvider {
 
         p.createNewPromo("Coupon", randomId);
         promoId = p.promotionIdVal().text();
-        p.navigateTo("Promotions");
+        p.navigateTo("Marketing", "Promotions");
         p.search(randomId);
         p.getPromoParamVal("1", "Promotion ID").shouldHave(text(promoId)
                 .because("A just created promo isn't displayed on the list."));
@@ -52,7 +52,7 @@ public class PromotionsTest_NoAPI extends DataProvider {
 
         p.createNewPromo("Coupon", randomId);
         promoId = p.promotionIdVal().text();
-        p.navigateTo("Promotions");
+        p.navigateTo("Marketing", "Promotions");
         p.search(promoId);
         p.getPromoParamVal("1", "Promotion ID").shouldHave(text(promoId)
                 .because("Promotion isn't displayed on the list."));
@@ -67,7 +67,7 @@ public class PromotionsTest_NoAPI extends DataProvider {
 
         p.createNewPromo("Coupon", randomId);
         promoId = p.promotionIdVal().text();
-        p.navigateTo("Promotions");
+        p.navigateTo("Marketing", "Promotions");
         p.search(promoId);
         p.getPromoParamVal("1", "State").shouldHave(text("Active")
                 .because("State isn't automatically set to 'Active' for 'Coupon' apply type promotions."));
@@ -89,7 +89,7 @@ public class PromotionsTest_NoAPI extends DataProvider {
         setFieldVal( p.nameFld(), "Edited Promo Name" );
         p.clickSave();
 
-        p.navigateTo("Promotions");
+        p.navigateTo("Marketing", "Promotions");
         p.search(promoId);
         shouldHaveText(p.getPromoParamVal("1", "Name"), "Edited Promo Name",
                 "Incorrect \"Name\" is displayed on the list");
@@ -115,7 +115,7 @@ public class PromotionsTest_NoAPI extends DataProvider {
         p.setStorefrontName("Edited Promo Storefront Name");
         p.clickSave();
 
-        p.navigateTo("Promotions");
+        p.navigateTo("Marketing", "Promotions");
         p.search(promoId);
         shouldHaveText(p.getPromoParamVal("1", "Storefront Name"), "Edited Promo Storefront Name",
                 "Incorrect \"Storefront Type\" is displayed on the list");
@@ -141,7 +141,7 @@ public class PromotionsTest_NoAPI extends DataProvider {
         p.setDescription("Edited Promo Description");
         p.clickSave();
 
-        p.navigateTo("Promotions");
+        p.navigateTo("Marketing", "Promotions");
         p.search(promoId);
         p.openPromo(promoId);
         p.descriptionFld().shouldHave(text("Edited Promo Description")
@@ -165,7 +165,7 @@ public class PromotionsTest_NoAPI extends DataProvider {
         p.setDetails("Edited Promo Details");
         p.clickSave();
 
-        p.navigateTo("Promotions");
+        p.navigateTo("Marketing", "Promotions");
         p.search(promoId);
         p.openPromo(promoId);
         p.detailsFld().shouldHave(text("Edited Promo Details")
@@ -189,7 +189,7 @@ public class PromotionsTest_NoAPI extends DataProvider {
         shouldBeVisible(p.stateDd(), "\"State\" dd isn't displayed after changing \"Apply Type\" from \"Coupon\" to \"Auto\"");
         p.clickSave();
 
-        p.navigateTo("Promotions");
+        p.navigateTo("Marketing", "Promotions");
         p.search(promoId);
         p.getPromoParamVal("1", "Apply Type").shouldHave(text("auto"));
         shouldHaveText(p.getPromoParamVal("1", "Apply Type"), "auto",
@@ -217,7 +217,7 @@ public class PromotionsTest_NoAPI extends DataProvider {
         p.setState("Inactive");
         p.clickSave();
 
-        p.navigateTo("Promotions");
+        p.navigateTo("Marketing", "Promotions");
         p.search(promoId);
         p.getPromoParamVal("1", "State").shouldHave(text("Inactive")
                 .because("Incorrect promotion's \"State\" value is displayed on the list."));
@@ -245,7 +245,7 @@ public class PromotionsTest_NoAPI extends DataProvider {
         p.setState("Active");
         p.clickSave();
 
-        p.navigateTo("Promotions");
+        p.navigateTo("Marketing", "Promotions");
         p.search(promoId);
         shouldHaveText(p.getPromoParamVal("1", "State"), "Active",
                 "Incorrect \"State\" is displayed on the list");
@@ -270,7 +270,7 @@ public class PromotionsTest_NoAPI extends DataProvider {
         p.addTag("test promo");
         p.clickSave();
 
-        p.navigateTo("Promotions");
+        p.navigateTo("Marketing", "Promotions");
         p.search(promoId);
         p.openPromo(promoId);
         p.tag("test promo").shouldBe(visible

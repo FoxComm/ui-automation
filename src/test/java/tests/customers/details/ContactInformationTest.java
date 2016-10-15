@@ -11,6 +11,7 @@ import java.util.Objects;
 
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.open;
+import static org.testng.Assert.assertEquals;
 
 public class ContactInformationTest extends DataProvider {
 
@@ -26,7 +27,7 @@ public class ContactInformationTest extends DataProvider {
         open(adminUrl);
         if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
             LoginPage loginPage = open(adminUrl + "/login", LoginPage.class);
-            loginPage.login("admin@admin.com", "password");
+            loginPage.login("tenant", "admin@admin.com", "password");
             shouldBeVisible(loginPage.userMenuBtn(), "Failed to log in");
         }
 
@@ -86,7 +87,6 @@ public class ContactInformationTest extends DataProvider {
 
         p.clickEditBtn_contactInfo();
         p.setPhoneNumber_contactInfo("7779994242");
-        setFieldVal( p.emailFld_contactInfo(), newEmail );
         p.setEmail_contactInfo(newEmail);
         p.clickSave();
 
@@ -97,19 +97,19 @@ public class ContactInformationTest extends DataProvider {
 
     }
 
-//    @Test(priority = 5)
-//    public void phoneNumbFromBillAddress() throws IOException {
-//
-//        provideTestData("customer with a credit card");
-//        p = open(adminUrl + "/customers/" + customerId, CustomersPage.class);
-//
-//        assertEquals( p.phoneNumberVal_contactInfo(), "9879879876",
-//                "Phone number from billing address isn't displayed in customer contact information.");
-//
-////      move this assertion to overview-related test
-////      assertEquals( p.phoneNumberVal_overview(),  "9879879876",
-////                "Phone number from billing address isn't displayed in customer overview.");
-//
-//    }
+    @Test(priority = 5)
+    public void phoneNumbFromBillAddress() throws IOException {
+
+        provideTestData("customer with a credit card");
+        p = open(adminUrl + "/customers/" + customerId, CustomersPage.class);
+
+        assertEquals( p.phoneNumberVal_contactInfo(), "9879879876",
+                "Phone number from billing address isn't displayed in customer contact information.");
+
+//      move this assertion to overview-related test
+//      assertEquals( p.phoneNumberVal_overview(),  "9879879876",
+//                "Phone number from billing address isn't displayed in customer overview.");
+
+    }
 
 }

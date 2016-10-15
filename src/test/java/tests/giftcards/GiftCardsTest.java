@@ -23,7 +23,7 @@ public class GiftCardsTest extends DataProvider {
         open(adminUrl);
         if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
             LoginPage loginPage = open(adminUrl + "/login", LoginPage.class);
-            loginPage.login("admin@admin.com", "password");
+            loginPage.login("tenant", "admin@admin.com", "password");
             shouldBeVisible(loginPage.userMenuBtn(), "Failed to log in");
         }
     }
@@ -66,7 +66,7 @@ public class GiftCardsTest extends DataProvider {
         shouldBeVisible(p.availableBalance(), "Waiting for \"Available Balance\" to become visible has failed");
         String gcNumber = p.getGCNumber(getUrl(), adminUrl);
 
-        p.navigateTo("Gift Cards");
+        p.navigateTo("Marketing", "Gift Cards");
         p.search(gcNumber);
         p.getGCParamVal("1", "Gift Card Number").shouldHave(text(gcNumber)
                 .because("Search failed to find a just created GC."));
@@ -86,7 +86,7 @@ public class GiftCardsTest extends DataProvider {
                 "Incorrect 'State' value is displayed on GC details page");
 
         String gcNumber = p.getGCNumber(getUrl(), adminUrl);
-        p.navigateTo("Gift Cards");
+        p.navigateTo("Marketing", "Gift Cards");
         p.search(gcNumber);
         p.getGCParamVal("1", "State").shouldHave(text("Active")
                 .because("A just created gift card isn't in 'Active state'."));
@@ -152,7 +152,7 @@ public class GiftCardsTest extends DataProvider {
         p.clickYes();
         p.yesBtn().shouldNotBe(visible);
         shouldNotBeVisible(p.yesBtn(), "Failed to wait untill yesBtn won't be visible");
-        p.navigateTo("Gift Cards");
+        p.navigateTo("Marketing", "Gift Cards");
         p.search(gcCode);
         p.getGCParamVal("1", "State").shouldHave(text("On Hold")
                 .because("Failed to set GC's state to 'On Hold'."));
@@ -169,7 +169,7 @@ public class GiftCardsTest extends DataProvider {
         p.clickYes();
         refresh();
         shouldHaveText(p.stateVal(), "Active", "Failed to set GC \"State\" to \"Active\"");
-        p.navigateTo("Gift Cards");
+        p.navigateTo("Marketing", "Gift Cards");
         p.search(gcCode);
         p.getGCParamVal("1", "State").shouldHave(text("Active")
                 .because("Incorrect 'State' value is displayed on the list."));

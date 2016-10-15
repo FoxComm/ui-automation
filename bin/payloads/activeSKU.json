@@ -1,0 +1,56 @@
+{
+  "context":{
+    "name":"default","attributes":{
+      "lang":"en",
+      "modality":"desktop"
+    }
+  },
+  "attributes":{
+    "code":{
+      "t":"string",
+      "v":"SKU-TST02"
+    },
+    "title":{
+      "t":"string",
+      "v":"THATS A TITLE"
+    },
+    "upc":{
+      "t":"string",
+      "v":"TEST UPC"
+    },
+    "description":{
+      "t":"richText",
+      "v":"<p>TEST DESCRIPTION</p>"
+    },
+    "retailPrice":{
+      "t":"price",
+      "v":{
+        "currency":"USD",
+        "value":5000
+      }
+    },
+    "salePrice":{
+      "t":"price",
+      "v":{
+        "currency":"USD",
+        "value":5000
+      }
+    },
+    "unitCost":{
+      "t":"price",
+      "v":{
+        "currency":"USD",
+        "value":5000
+      }
+    },
+    "activeFrom":{
+      "t":"datetime",
+      "v":"2016-07-29T00:03:26.685Z"
+    },
+    "activeTo":{
+      "t":"datetime",
+      "v":null
+    }
+  },
+  "albums":[]
+}

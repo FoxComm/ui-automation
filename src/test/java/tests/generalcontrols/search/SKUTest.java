@@ -25,7 +25,7 @@ public class SKUTest extends DataProvider {
        open(adminUrl);
         if ((Objects.equals(getUrl(), adminUrl + "/login"))) {
             LoginPage loginPage = open(adminUrl + "/login", LoginPage.class);
-            loginPage.login("admin@admin.com", "password");
+            loginPage.login("tenant", "admin@admin.com", "password");
             loginPage.userMenuBtn().shouldBe(visible);
         }
         provideTestData("SKU for search tests");

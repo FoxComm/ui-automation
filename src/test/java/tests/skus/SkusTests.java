@@ -22,7 +22,7 @@ public class SkusTests extends DataProvider {
         open(adminUrl);
         if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
             LoginPage loginPage = open(adminUrl + "/login", LoginPage.class);
-            loginPage.login("admin@admin.com", "password");
+            loginPage.login("tenant", "admin@admin.com", "password");
             shouldBeVisible(loginPage.userMenuBtn(), "Failed to log in");
         }
     }
@@ -37,8 +37,7 @@ public class SkusTests extends DataProvider {
         p.createNewSKU(randomId, "Active");
         p.clickSave();
         shouldHaveText(p.skuCodeVal(), "SKU-" + randomId, "Failed to create new SKU");
-        p.sideMenu("SKUs");
-        p.waitForDataToLoad();
+        p.navigateTo("Catalog", "SKUs");
 
         p.search(randomId);
         p.getSKUParamVal("1", "Code").shouldHave(text("SKU-" + randomId)
@@ -62,18 +61,19 @@ public class SkusTests extends DataProvider {
 
     }
 
+    // NOT FIXED
     @Test(priority = 3)
     public void addCustomProp_richText() throws IOException {
 
         provideTestData("active SKU");
         p = open(adminUrl + "/skus/" + sku, SkusPage.class);
 
-        p.addCustomProp("Rich Text", "richText fld");
-        p.setCustomProp_richText("richText fld", "test val");
+        p.addCustomProp("Rich Text", "richtextfld");
+        p.setCustomProp_richText("richtextfld", "test val");
         p.clickSave();
         refresh();
 
-        p.customRichTextFld("richText fld").shouldHave(text("test val")
+        p.customRichTextFldVal("richtextfld").shouldHave(text("test val")
                 .because("Customer property isn't saved."));
 
     }
@@ -86,7 +86,7 @@ public class SkusTests extends DataProvider {
 
         p.setTitle("Edited SKU Title");
         p.clickSave();
-        p.sideMenu("SKUs");
+        p.navigateTo("Catalog", "SKUs");
 
         // seraches for SKU by its uid
         p.search( sku.substring(4, sku.length()) );
@@ -107,8 +107,8 @@ public class SkusTests extends DataProvider {
 
         p.setUpc("Edited UPC");
         p.clickSave();
-        p.sideMenu("SKUs");
-        p.search( sku.substring(4, sku.length()) );
+        p.navigateTo("Catalog", "SKUs");
+        p.search(sku.substring(4, sku.length()));
         p.openSKU(sku);
 
         p.upcFld().shouldHave(value("Edited UPC")
@@ -125,7 +125,7 @@ public class SkusTests extends DataProvider {
         clearField( p.descriptionFld() );
         p.setDescription("Edited description");
         p.clickSave();
-        p.sideMenu("SKUs");
+        p.navigateTo("Catalog", "SKUs");
         p.search( sku.substring(4, sku.length()) );
         p.openSKU(sku);
 
@@ -145,8 +145,8 @@ public class SkusTests extends DataProvider {
 
         p.setRetailPrice("70.00");
         p.clickSave();
-        p.sideMenu("SKUs");
-        p.search( sku.substring(4, sku.length()) );
+        p.navigateTo("Catalog", "SKUs");
+        p.search(sku.substring(4, sku.length()));
         p.getSKUParamVal("1", "Retail Price").shouldHave(text("70.00")
                 .because("Retail price isn't updated on the list."));
         p.openSKU(sku);
@@ -164,8 +164,8 @@ public class SkusTests extends DataProvider {
 
         p.setSalePrice("70.00");
         p.clickSave();
-        p.sideMenu("SKUs");
-        p.search( sku.substring(4, sku.length()) );
+        p.navigateTo("Catalog", "SKUs");
+        p.search(sku.substring(4, sku.length()));
         shouldHaveText(p.getSKUParamVal("1", "Sale Price"), "70.00", "Sale price isn't updated on the list.");
         p.openSKU(sku);
 
@@ -182,9 +182,8 @@ public class SkusTests extends DataProvider {
 
         p.setState("Inactive");
         p.clickSave();
-        click( p.sideMenu("SKUs") );
-        p.sideMenu("SKUs");
-        p.search( sku.substring(4, sku.length()) );
+        p.navigateTo("Catalog", "SKUs");
+        p.search(sku.substring(4, sku.length()));
         p.openSKU(sku);
 
         p.stateVal().shouldHave(text("Inactive")
@@ -209,28 +208,10 @@ public class SkusTests extends DataProvider {
         provideTestData("active SKU");
         p = open(adminUrl + "/skus", SkusPage.class);
 
-        click( p.addNewSKUBtn() );
-        p.setSKUCode( sku );
-        p.setTitle("Test Title");
-        p.setUpc("Test UPC");
-        p.setDescription("Just another test SKU.");
-        p.setRetailPrice("50.00");
-        p.setSalePrice("32.00");
-        p.setUnitCost("32.00");
+        p.clickAddNewSKU();
+        p.setSKUCode(sku);
         p.clickSave();
-
-        p.skuFld().shouldNotBe(empty
-                .because("'SKU' field is empty - probably form has been blanked."));
-        p.titleFld().shouldNotBe(empty
-                .because("'Title' field is empty - probably form has been blanked."));
-        p.upcFld().shouldNotBe(empty
-                .because("'UPC' field is empty - probably form has been blanked."));
-        p.retailPriceFld().shouldNotBe(empty
-                .because("'Retail Price' field is empty - probably form has been blanked."));
-        p.salePriceFld().shouldNotBe(empty
-                .because("'Sale Price' field is empty - probably form has been blanked."));
-        p.unitCostFld().shouldNotBe(empty
-                .because("'Unit Price' field is empty - probably form has been blanked."));
+        p.errorMsg("already exists").shouldBe(visible);
 
     }
 }

@@ -78,6 +78,10 @@ public class CartPage extends BasePage {
         return $(xpath("//div[contains(@class, 'order-checkout')]/button"));
     }
 
+    public SelenideElement orderState() {
+        return $(xpath("//div[text()='Order State']/following-sibling::*/div/div[2]/div"));
+    }
+
     //---------------------------------------- HELPERS ----------------------------------------//
 
     @Step("Click \"Place Order\" btn")
@@ -476,18 +480,18 @@ public class CartPage extends BasePage {
 
     @Step("Click \"Edit\" btn at chosen shipping address")
     public void clickEditBtn_chosenAddress() {
-        click(deleteBtn_chosenAddress());
+        click(editBtn_chosenAddress());
     }
 
     @Step("Click \"Delete\" btn at chosen shipping address")
     public void removeChosenAddress() {
-        click( deleteBtn_chosenAddress() );
-        click( confirmDeletionBtn() );
+        click(deleteBtn_chosenAddress());
+        click(confirmDeletionBtn());
     }
 
     @Step("Click \"Done\" at 'Shipping Address' block")
     public void clickDoneBtn_shipAddress() {
-        click( doneBtn_shipAddress() );
+        click(doneBtn_shipAddress());
         shouldNotBeVisible(nameFld(),
                 "'New Address' form isn't closed after clicking 'Save'");
     }
@@ -825,7 +829,6 @@ public class CartPage extends BasePage {
     public void addNewCreditCard(String holderName, String cardNumber, String cvv, String month, String year) {
 
         clickNewCCBtn();
-        clickNewCCBtn();
         setHolderName(holderName);
         setCardNumber(cardNumber);
         setCVV(cvv);
@@ -877,6 +880,7 @@ public class CartPage extends BasePage {
         @Step("Click 'Add Payment Method' btn")
         public void clickAddPayMethodBtn() {
             click( addPaymentBtn() );
+            shouldBeVisible($(xpath("//strong")), "Payment method wasn't applied");
         }
 
     @Step("Assert that credit card is added")

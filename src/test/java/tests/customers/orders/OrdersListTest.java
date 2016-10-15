@@ -23,7 +23,7 @@ public class OrdersListTest extends DataProvider {
         open(adminUrl);
         if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
             LoginPage loginPage = open(adminUrl + "/login", LoginPage.class);
-            loginPage.login("admin@admin.com", "password");
+            loginPage.login("tenant", "admin@admin.com", "password");
             shouldBeVisible(loginPage.userMenuBtn(), "Failed to log in");
         }
 
@@ -66,6 +66,7 @@ public class OrdersListTest extends DataProvider {
         provideTestData("customer with 2 orders in remorse hold and fulfillment started");
         p = open(adminUrl + "/customers/" + customerId + "/transactions", CustomersPage.class);
 
+        waitForDataToLoad();
         p.addFilter("Order", "Reference Number", orderId);
         p.getOrderParamVal(1, "Order State").shouldHave(text("Fulfillment Started")
                 .because("Found order <" + orderId + "> is not in 'Fulfillment Started' state."));
@@ -78,6 +79,7 @@ public class OrdersListTest extends DataProvider {
         provideTestData("customer with 2 orders in remorse hold and fulfillment started");
         p = open(adminUrl + "/customers/" + customerId + "/transactions", CustomersPage.class);
 
+        waitForDataToLoad();
         p.addFilter("Items", "Product Name", "Shark");
         p.ordersOnList().shouldHaveSize(1);
 //                "Order with 'Shark' product in it isn't listed in search results."
@@ -90,6 +92,7 @@ public class OrdersListTest extends DataProvider {
         provideTestData("customer with 2 orders in remorse hold and fulfillment started");
         p = open(adminUrl + "/customers/" + customerId + "/transactions", CustomersPage.class);
 
+        waitForDataToLoad();
         p.addFilter("Items", "Product SKU", "SKU-BRO");
         p.ordersOnList().shouldHaveSize(1);
 //                "Order with 'Shark' product in it isn't listed in search results."

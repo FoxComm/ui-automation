@@ -57,18 +57,34 @@ public class BasePage extends ConciseAPI {
         return $(xpath("//span[text()='" + sectionName + "']"));
     }
 
-    @Step("Click <{0}> section title in side nav menu")
-    public void navigateTo(String sectionName) {
-        click(sideMenu(sectionName));
+    private SelenideElement navContainer(String sectionTitle) {
+        return $(xpath("//span[text()='" + sectionTitle + "']/../following-sibling::*/i"));
+    }
+
+    private SelenideElement category(String sectionTitle, String categoryTitle) {
+        return $(xpath("//span[text()='" + sectionTitle + "']/../../following-sibling::*/a[text()='" + categoryTitle + "']"));
+    }
+
+    @Step("Navigate to <{0}> -> <{1}>")
+    public void navigateTo(String sectionTitle, String categoryTitle) {
+        click(navContainer(sectionTitle));
+        click(category(sectionTitle, categoryTitle));
+        waitForDataToLoad();
     }
 
     //------------------------------------ LOGIN SCREEN --------------------------------------//
-    public SelenideElement emailField() {
+    public SelenideElement organizationFld() {
+        return $(xpath("//label[text()='Organization']/following-sibling::*"));
+    }
+
+    public SelenideElement emailFld() {
         return $(xpath("//label[text()='Email']/following-sibling::*"));
     }
-    public SelenideElement passwordField() {
+
+    public SelenideElement passwordFld() {
         return $(xpath("//div[text()='Password']/../../following-sibling::*"));
     }
+
     public SelenideElement googleAuthButton() {
         return $(xpath("//button[@class='fc-btn fc-login__google-btn']"));
     }
@@ -82,9 +98,10 @@ public class BasePage extends ConciseAPI {
     }
 
     @Step("Log in as <{0}> / <{1}>")
-    public void login(String email, String password) {
-        emailField().val(email);
-        passwordField().val(password).submit();
+    public void login(String organization, String email, String password) {
+        setFieldVal(organizationFld(), organization);
+        setFieldVal(emailFld(), email);
+        setFieldVal_andSubmit(passwordFld(), password);
     }
 
     @Step("Log out")
@@ -103,11 +120,12 @@ public class BasePage extends ConciseAPI {
 
     @Step("Click \"Save\"")
     public void clickSave() {
-        click( saveBtn() );
+        click(saveBtn());
+        shouldBeEnabled(saveBtn(), "Failed to wait until \"Save\" will be re-enabled");
     }
 //----
     public SelenideElement addTagBtn() {
-        return $(xpath("//div[text()='Tags']/following-sibling::*"));
+        return $(xpath("//div[text()='Tags']/following-sibling::*/i"));
     }
 
     private SelenideElement tagFld() {
@@ -124,7 +142,7 @@ public class BasePage extends ConciseAPI {
     }
 
     public ElementsCollection allTags() {
-        return $$(xpath("//div[contains(@class, '_tags_')]/div"));
+        return $$(xpath("//div[@class='_rounded_pill_rounded_pill__text']"));
     }
 
     //---------------------------------- HELPERS -----------------------------------//
@@ -199,7 +217,7 @@ public class BasePage extends ConciseAPI {
 
 //----
     private SelenideElement columnLabel(int labelIndex) {
-        return $(By.xpath("//table[@class='fc-table fc-multi-select-table']/thead/tr/th[" + (labelIndex + 1) + "]"));
+        return $(By.xpath("//table[@class='fc-table']/thead/tr/th[" + (labelIndex + 1) + "]"));
     }
 
     private SelenideElement firstCriteria(String criteria) {
@@ -307,6 +325,7 @@ public class BasePage extends ConciseAPI {
     public void search(String searchQuery) {
         waitForDataToLoad();
         setFieldVal(searchFld(), searchQuery);
+        hitEnter();
         shouldBeVisible(itemsOnList(), "Search request returned no results.");
         click(searchFld());
         click($(xpath("//h1")));
@@ -330,9 +349,9 @@ public class BasePage extends ConciseAPI {
         waitForDataToLoad();
     }
 
-    @Step
+    @Step("Search should return no results -- \"No orders found\" msg should be displayed")
     public void assertNoSearchResults() {
-        noSearchResultsMsg().shouldNotBe(visible
+        noSearchResultsMsg().shouldBe(visible
                 .because("Search query output isn't empty"));
     }
 

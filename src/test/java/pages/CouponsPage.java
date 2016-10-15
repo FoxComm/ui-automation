@@ -46,7 +46,7 @@ public class CouponsPage extends BasePage {
     }
 
     private SelenideElement promotionListVal(String promotionId) {
-        return $(xpath("//span[text()='" + promotionId + "']/.."));
+        return $(xpath("//span[text()='" + promotionId + "']"));
     }
 
     private SelenideElement generateCodesRadio(String type) {
@@ -113,6 +113,10 @@ public class CouponsPage extends BasePage {
         return $(xpath("//div[text()='Start']/following-sibling::*/div[2]/a"));
     }
 
+    public SelenideElement couponNumber() {
+        return $$(xpath("//a[@class='fc-breadcrumbs__link is-active']")).get(2);
+    }
+
 
     //--------------------------------- HELPERS -----------------------------//
 
@@ -143,7 +147,8 @@ public class CouponsPage extends BasePage {
 
     @Step("Select promotion with id <{0}>")
     public void setPromotion(String promotionId) {
-        setDdVal(promotionDd(), promotionId);
+        click(promotionDd());
+        click(promotionListVal(promotionId));
     }
 
     @Step("Set \"Code\" fld val to <{0}>")

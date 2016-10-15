@@ -24,7 +24,7 @@ public class EditProductTest extends DataProvider {
         open(adminUrl);
         if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
             LoginPage loginPage = open(adminUrl + "/login", LoginPage.class);
-            loginPage.login("admin@admin.com", "password");
+            loginPage.login("tenant", "admin@admin.com", "password");
             loginPage.userMenuBtn().shouldBe(visible);
         }
 
@@ -58,7 +58,7 @@ public class EditProductTest extends DataProvider {
         p.setTitle("Edited Product " + uid);
         p.clickSave();
         sleep(1000);
-        p.sideMenu("Products");
+        p.navigateTo("Catalog", "Products");
         p.search(uid);
 
         p.getProductParamVal("1", "Name").shouldHave(text("Edited Product " + uid)
@@ -161,7 +161,7 @@ public class EditProductTest extends DataProvider {
         p.setState( "Inactive" );
         p.clickSave();
         sleep(1000);
-        p.sideMenu("Products");
+        p.navigateTo("Catalog", "Products");
         p.search(uid);
 
         p.getProductParamVal("1", "State").shouldHave(text("Inactive")

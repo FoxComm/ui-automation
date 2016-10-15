@@ -22,7 +22,7 @@ public class StoreCreditsTest extends DataProvider {
         open(adminUrl);
         if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
             LoginPage loginPage = open(adminUrl + "/login", LoginPage.class);
-            loginPage.login("admin@admin.com", "password");
+            loginPage.login("tenant", "admin@admin.com", "password");
             shouldBeVisible(loginPage.userMenuBtn(), "Failed to log in");
         }
 
@@ -55,7 +55,7 @@ public class StoreCreditsTest extends DataProvider {
         p.clickNewSCBtn();
         p.selectType("Gift Card Transfer");
         p.setGCNumber(gcCode);
-        shouldHaveText(p.availableBalanceVal(), "$125.00", "GC available balance isn't displayed.");
+        shouldHaveText(p.gcAvailableBalanceVal(), "$125.00", "GC available balance isn't displayed.");
         p.clickIssueSCButton();
         p.availableBalanceVal().shouldHave(text("$125.00")
                 .because("Current available balance value is incorrect."));
@@ -73,14 +73,9 @@ public class StoreCreditsTest extends DataProvider {
         p.selectType("Csr Appeasement");
         p.setValue("50");
         p.clickIssueSCButton();
-//        shouldBeVisible(p.newSCBtn(),
-//                "\"Add New SC\" btn isn't visible - possibly gailed to issue SC");        //bug workaround
-//        refresh();                                                                        //bug workaround
         waitForDataToLoad();
 
         p.storeCreditsOnList().shouldHaveSize(1);
-//                "A just issued SC isn't displayed on the list."
-//        p.getSCParamVal("1", "State").shouldHave(text("Active").because("A just issued SC isn't in 'Active' state."));
 
     }
 
@@ -98,14 +93,9 @@ public class StoreCreditsTest extends DataProvider {
         shouldHaveText(p.availableBalanceVal(), "$100.00",
                 "Current available balance value is incorrect.");
 
-//        p.storeCreditsOnList().shouldHaveSize(1);
-//                "A just issued SC isn't displayed on the list."
-        p.getSCParamVal("1", "Original Balance").shouldHave(text("$100.00")
-                .because("A just issued SC's Original Balance value is incorrect."));
-
     }
 
-    @Test(priority = 5)
+    @Test(priority = 5, dependsOnMethods = "issuedSC_displayedOnList")
     public void setState_onHold() throws IOException {
 
         provideTestData("a customer with issued SC");
@@ -120,7 +110,7 @@ public class StoreCreditsTest extends DataProvider {
 
     }
 
-    @Test(priority = 6)
+    @Test(priority = 6, dependsOnMethods = "issuedSC_displayedOnList")
     public void setState_canceled() throws IOException {
 
         provideTestData("a customer with issued SC");

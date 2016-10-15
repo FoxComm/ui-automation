@@ -41,11 +41,11 @@ public class ProductsPage extends BasePage {
     }
 
     public SelenideElement retailPriceFld() {
-        return $(xpath("//tbody[@class='fc-table-body']/tr/td[3]/div/div/input"));
+        return $(xpath("//tbody[@class='fc-table-body']/tr[1]/td[4]//input"));
     }
 
     public SelenideElement salePriceFld() {
-        return $(xpath("//tbody[@class='fc-table-body']/tr/td[4]/div/div/input"));
+        return $(xpath("//tbody[@class='fc-table-body']/tr[1]/td[5]//input"));
     }
 
     public SelenideElement stateDd() {
@@ -223,7 +223,7 @@ public class ProductsPage extends BasePage {
 
         @Step("Add SKU to a product: <{0}>, <salePr:{1}>, <retailPr:{2}>")
         private void addSKU(String SKU, String retailPrice, String salePrice) {
-            click(skuSearchView(SKU));
+            setFieldVal(sku(), SKU);
             click(skuSearchView(SKU));
             setFieldVal(retailPriceFld(), retailPrice);
             setFieldVal(salePriceFld(), salePrice);
@@ -239,9 +239,10 @@ public class ProductsPage extends BasePage {
             setFieldVal(salePriceFld(), price);
         }
 
-    @Step("Assert that SKU is applied to the product")
-    public void assertSKUApplied() {
-        shouldBeVisible(skuName(), "\"No SKUs.\" msg is displayed - SKU wasn't applied, product won't be displayed on storefront.");
-    }
+//    @Step("Assert that SKU is applied to the product")
+//    public void assertSKUApplied(String sku) {
+////        shouldBeVisible(skuName(), "\"No SKUs.\" msg is displayed - SKU wasn't applied, product won't be displayed on storefront.");
+//        sku().shouldHave(value(sku));
+//    }
 
 }

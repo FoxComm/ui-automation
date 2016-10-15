@@ -4,6 +4,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import pages.CouponsPage;
 import pages.LoginPage;
+import ru.yandex.qatools.allure.annotations.Description;
 import testdata.DataProvider;
 
 import java.io.IOException;
@@ -21,7 +22,7 @@ public class CouponsTest extends DataProvider {
         open(adminUrl);
         if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
             LoginPage loginPage = open(adminUrl + "/login", LoginPage.class);
-            loginPage.login("admin@admin.com", "password");
+            loginPage.login("tenant", "admin@admin.com", "password");
             shouldBeVisible(loginPage.userMenuBtn(), "Failed to log in");
         }
     }
@@ -34,16 +35,17 @@ public class CouponsTest extends DataProvider {
         String randomId = generateRandomID();
 
         p.clickAddNewCouponBtn();
+        p.setPromotion(promotionId);
         p.setCouponName("test coupon " + randomId);
         p.setStorefrontName("that's a storefront name");
         p.setDescription("that's nothing but another test coupon");
         p.setDetails("get 10% off for any order");
-        p.setPromotion(promotionId);
         p.generateCodes_single("NWCPN-" + randomId);
         p.clickSave();
-        p.navigateTo("Coupons");
-        p.waitForDataToLoad();
+        shouldNotHaveText(p.couponNumber(), "new", "Failed to create new coupon");
 
+        p.navigateTo("Marketing", "Coupons");
+        p.waitForDataToLoad();
         p.search("test coupon " + randomId);
         p.getCouponParamVal("1", "Name").shouldHave(text("test coupon " + randomId)
                 .because("A just created coupon isn't displayed on the list."));
@@ -58,17 +60,17 @@ public class CouponsTest extends DataProvider {
         String randomId = generateRandomID();
 
         p.clickAddNewCouponBtn();
+        p.setPromotion(promotionId);
         p.setCouponName("test coupon " + randomId);
         p.setStorefrontName("that's a storefront name");
         p.setDescription("that's nothing but another test coupon");
         p.setDetails("get 10% off for any order");
-        p.setPromotion(promotionId);
         p.generateCodes_bulk(4, "BULKCPN_" + randomId + "-", 5);
         p.setState("Active");
-        shouldNotHaveText(p.couponIdVal(), "new", "Failed to create a new coupon");
         p.clickSave();
+        shouldNotHaveText(p.couponNumber(), "new", "Failed to create new coupon");
 
-        p.navigateTo("Coupons");
+        p.navigateTo("Marketing", "Coupons");
         p.waitForDataToLoad();
         p.getCouponParamVal("1", "Name").shouldHave(text("test coupon " + randomId)
                 .because("A just created coupon isn't displayed on the list."));
@@ -104,7 +106,7 @@ public class CouponsTest extends DataProvider {
 
         p.setCouponName("edited coupon " + randomId);
         p.clickSave();
-        p.navigateTo("Coupons");
+        p.navigateTo("Marketing", "Coupons");
         p.search(couponId);
 
         p.getCouponParamVal("1", "Name").shouldHave(text("edited coupon " + randomId)
@@ -121,7 +123,7 @@ public class CouponsTest extends DataProvider {
         clearField( p.storefrontNameFld() );
         p.setStorefrontName("edited SF name");
         p.clickSave();
-        p.navigateTo("Coupons");
+        p.navigateTo("Marketing", "Coupons");
         p.search(couponId);
 
         p.getCouponParamVal("1", "Storefront Name").shouldHave(text("<p>edited SF name</p>")
@@ -138,7 +140,7 @@ public class CouponsTest extends DataProvider {
         clearField(p.descriptionFld());
         p.setDescription("edited description");
         p.clickSave();
-        p.navigateTo("Coupons");
+        p.navigateTo("Marketing", "Coupons");
         p.search(couponId);
 //        System.out.println("Coupon name: <" + couponName + ">");
         p.openCoupon(couponName);
@@ -157,7 +159,7 @@ public class CouponsTest extends DataProvider {
         clearField(p.detailsFld());
         p.setDetails("edited details");
         p.clickSave();
-        p.navigateTo("Coupons");
+        p.navigateTo("Marketing", "Coupons");
         p.search(couponId);
         p.openCoupon(couponName);
 
@@ -174,7 +176,7 @@ public class CouponsTest extends DataProvider {
 
         p.setState("Inactive");
         p.clickSave();
-        p.navigateTo("Coupons");
+        p.navigateTo("Marketing", "Coupons");
         p.search(couponId);
 
         p.getCouponParamVal("1", "State").shouldHave(text("Inactive")
@@ -182,9 +184,10 @@ public class CouponsTest extends DataProvider {
 
     }
 
+    @Description("Fails due to bug with applying coupon to cart")
     @Test(priority = 10)
     public void totalUses() throws IOException {
-        // will fail due to bug with applying coupon to order
+
         provideTestData("order in remorse hold with applied coupon");
         p = open(adminUrl + "/coupons/", CouponsPage.class);
         p.search(couponId);
@@ -193,6 +196,7 @@ public class CouponsTest extends DataProvider {
 
     }
 
+    @Description("Fails due to bug with applying coupon to cart")
     @Test(priority = 11)
     public void currentCarts() throws IOException {
 

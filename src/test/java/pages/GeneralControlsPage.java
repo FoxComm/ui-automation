@@ -61,6 +61,10 @@ public class GeneralControlsPage extends BasePage {
         return $(xpath("//span[text()='" + adminName + "']/following-sibling::*[3]/a"));
     }
 
+    public SelenideElement adminOnAssociationsList(String adminName) {
+        return $(xpath("//span[text()='" + adminName + "']"));
+    }
+
     //------------------------------ HELPERS ---------------------------------//
 
     @Step("Set tab title to <{0}>")
@@ -104,18 +108,23 @@ public class GeneralControlsPage extends BasePage {
         shouldBeEnabled(tab(title), "Tab with <" + title + "> isn't enabled");
     }
 
-    @Step("Add <{0}> admin user to \"Shared With\" list")
+    @Step("Add <{0}> admin user to \"Search Associations\" list")
     public void shareSearchWith(String adminName) {
         setFieldVal(inviteUsersFld(), adminName);
         click(userName(adminName));
         shouldBeEnabled(shareBtn(), "\"Share\" btn isn't re-enabled after it was clicked");
     }
 
-    @Step("Remove <{0}> admin user from \"Shared With\" list")
+    @Step("Remove <{0}> admin user from \"Search Associations\" list")
     public void unshareSearchWith(String adminName) {
-        click(removeAdminBtn(adminName));
+        removeAdmin(adminName);
         shouldBeVisible(successIcon(), "\"Success\" msg isn't displayed.");
     }
+
+        @Step("Click \"X\" btn next to <{0}> admin user")
+        public void removeAdmin(String adminName) {
+            click(removeAdminBtn(adminName));
+        }
 
     @Step("Click \"Share\"")
     public void clickShare() {

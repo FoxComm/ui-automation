@@ -23,7 +23,7 @@ public class CreditCardsTest extends DataProvider {
         open(adminUrl);
         if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
             LoginPage loginPage = open(adminUrl + "/login", LoginPage.class);
-            loginPage.login("admin@admin.com", "password");
+            loginPage.login("tenant", "admin@admin.com", "password");
             shouldBeVisible(loginPage.userMenuBtn(), "Failed to log in");
         }
 
@@ -36,7 +36,7 @@ public class CreditCardsTest extends DataProvider {
         p = open(adminUrl + "/customers/" + customerId, CustomersPage.class);
 
         p.clickAddNewCCBtn();
-        p.fillOutNewCCForm(customerName, "5555555555554444", "777", "2", "2020");
+        p.fillOutNewCCForm(customerName, "5555555555554444", "777", "02 - February", "2020");
         p.addNewBillAddress(customerName, "2101 Green Valley", "Suite 300", "Seattle", "Washington", "98101", "9879879876");
         p.clickSave();
         p.assertCardAdded(customerName);
@@ -50,7 +50,7 @@ public class CreditCardsTest extends DataProvider {
         p = open(adminUrl + "/customers/" + customerId, CustomersPage.class);
 
         p.clickAddNewCCBtn();
-        p.fillOutNewCCForm(customerName, "5555555555554444", "777", "2", "2020");
+        p.fillOutNewCCForm(customerName, "5555555555554444", "777", "02 - February", "2020");
         p.chooseAddress("1");
         p.clickSave();
         p.assertCardAdded(customerName);
@@ -79,7 +79,7 @@ public class CreditCardsTest extends DataProvider {
         p = open(adminUrl + "/customers/" + customerId, CustomersPage.class);
 
         p.clickEditCCBtn("1");
-        p.setExpirationDate("12", "2030");
+        p.setExpirationDate("12 - December", "2030");
         p.clickSave();
         p.expirationDateVal("1").shouldHave(text("12/2030")
                 .because("Failed to edit expiration date; expected: <12/2030>, actual: <" + p.expirationDateVal("1") + ">."));

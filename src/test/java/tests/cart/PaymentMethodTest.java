@@ -11,7 +11,9 @@ import java.util.Objects;
 
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
+import static org.openqa.selenium.By.xpath;
 
 public class PaymentMethodTest extends DataProvider {
 
@@ -24,7 +26,7 @@ public class PaymentMethodTest extends DataProvider {
         open(adminUrl);
         if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
             LoginPage loginPage = open(adminUrl + "/login", LoginPage.class);
-            loginPage.login("admin@admin.com", "password");
+            loginPage.login("tenant", "admin@admin.com", "password");
             shouldBeVisible(loginPage.userMenuBtn(), "Failed to log in");
         }
 
@@ -40,6 +42,7 @@ public class PaymentMethodTest extends DataProvider {
         p.clickNewPayMethodBtn();
         p.selectPaymentType("Credit Card");
         p.addNewCreditCard("John Doe", "5555555555554444", "777", "2", "2020");
+        shouldBeVisible($(xpath("//strong")), "Payment method wasn't applied");
         p.clickDoneBtn_payment();
 
         p.assertCardAdded();
@@ -47,7 +50,6 @@ public class PaymentMethodTest extends DataProvider {
                 .because("'Insufficient funds' warning is displayed."));
 
     }
-
 
     @Test(priority = 2)
     public void addPaymentMethod_giftCard() throws IOException {
@@ -60,7 +62,6 @@ public class PaymentMethodTest extends DataProvider {
         p.selectPaymentType("Gift Card");
         p.setGCNumber(gcCode);
         p.setAmountToUse(String.valueOf(p.grandTotalVal()));
-        p.clickDoneBtn_payment();
 
         double expectedVal = cutDecimal( p.gcAvailableBalanceVal() - p.grandTotalVal() );
         p.gcNewAvailableBalance().shouldHave(text("$" + expectedVal)
@@ -84,7 +85,6 @@ public class PaymentMethodTest extends DataProvider {
         p.clickNewPayMethodBtn();
         p.selectPaymentType("Store Credit");
         p.setAmountToUse(String.valueOf(p.grandTotalVal()));
-        p.clickDoneBtn_payment();
 
         double expectedVal = cutDecimal( p.gcAvailableBalanceVal() - p.grandTotalVal() );
         System.out.println("GC New available balance should be: <$" + expectedVal + ">");
@@ -108,7 +108,6 @@ public class PaymentMethodTest extends DataProvider {
         shouldBeVisible(p.cartSummary(), "Failed to open the cart page");
         double amountToUse = p.grandTotalVal() + 10.00;
         p.addPaymentMethod_SC( String.valueOf(amountToUse) );
-        p.clickDoneBtn_payment();
 
         p.appliedAmount().shouldHave(text(p.grandTotal().text())
                 .because("Amount of funds to be applied as a payment isn't auto-adjusted."));
@@ -126,7 +125,6 @@ public class PaymentMethodTest extends DataProvider {
         shouldBeVisible(p.cartSummary(), "Failed to open the cart page");
         double amountToUse = p.grandTotalVal() + 10.00;
         p.addPaymentMethod_GC(gcCode, String.valueOf(amountToUse));
-        p.clickDoneBtn_payment();
 
         p.appliedAmount().shouldHave(text(p.grandTotal().text())
                 .because("Amount of funds to be applied as a payment isn't auto-adjusted."));
@@ -145,7 +143,6 @@ public class PaymentMethodTest extends DataProvider {
         p.clickNewPayMethodBtn();
         p.selectPaymentType("Store Credit");
         p.setAmountToUse(String.valueOf(p.grandTotal()));
-        p.clickDoneBtn_payment();
 
         p.gcAvailableBalance().shouldHave(text("$0.00")
                 .because("A store credit with 'onHold' state can be used as a payment method."));
@@ -165,7 +162,6 @@ public class PaymentMethodTest extends DataProvider {
         p.selectPaymentType("Store Credit");
         setFieldVal( p.amountToUseFld(), String.valueOf(p.grandTotal()) );
         p.setAmountToUse(String.valueOf(p.grandTotal()));
-        p.clickDoneBtn_payment();
 
         p.gcAvailableBalance().shouldHave(text("$0.00")
                 .because("A store credit with 'canceled' state can be used as a payment method."));

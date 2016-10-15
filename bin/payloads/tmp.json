@@ -1,0 +1,15 @@
+{
+  "zip":"97201",
+  "isDefault":false,
+  "phoneNumber":"5038234000",
+  "address2":"200 Suite",
+  "city":"Portland",
+  "address1":"757 Foggy Crow Isle",
+  "name":"John Doe",
+  "id":1038,
+  "region":{
+    "name":"Oregon",
+    "id":4164,
+    "countryId":234
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "applyType": "coupon",
+  "form": {
+    "id": 243,
+    "attributes": {
+      "eaa8440703": "new promo",
+      "25e24d5d0f": "<p>new promo</p>"
+    },
+    "discounts": [
+      {
+        "id": 244,
+        "attributes": {
+          "bb0b82afad": {
+            "orderAny": {}
+          },
+          "3db8e5c670": {
+            "orderPercentOff": {
+              "discount": 10
+            }
+          }
+        },
+        "createdAt": "2016-06-27T21:17:32.671Z"
+      }
+    ],
+    "createdAt": "2016-06-27T21:17:32.660Z"
+  },
+  "shadow": {
+    "id": 298,
+    "formId": 243,
+    "attributes": {
+      "name": {
+        "type": "string",
+        "ref": "eaa8440703"
+      },
+      "storefrontName": {
+        "type": "richText",
+        "ref": "25e24d5d0f"
+      },
+      "description": {
+        "type": "richText",
+        "ref": "eaa8440703"
+      },
+      "details": {
+        "type": "richText",
+        "ref": "25e24d5d0f"
+      }
+    },
+    "discounts": [
+      {
+        "id": 244,
+        "attributes": {
+          "qualifier": {
+            "type": "qualifier",
+            "ref": "bb0b82afad"
+          },
+          "offer": {
+            "type": "offer",
+            "ref": "3db8e5c670"
+          }
+        },
+        "createdAt": "2016-06-27T21:17:32.671Z"
+      }
+    ],
+    "createdAt": "2016-06-27T21:17:32.660Z"
+  }
+}

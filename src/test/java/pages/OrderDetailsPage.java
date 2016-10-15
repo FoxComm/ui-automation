@@ -39,11 +39,10 @@ public class OrderDetailsPage extends CartPage {
     @Step("Check if remorse hold time has been increased.")
     public void assertTimerValue(int expectedHoursVal, int expectedMinutesVal) {
 
-        int actualMinutesVal = Integer.valueOf(timer().val().substring(3, 5));
-        int actualHoursVal = Integer.valueOf(timer().val().substring(0, 2));
-
-        System.out.println("actualMinutesVal: " + actualMinutesVal);
-        System.out.println("actualHoursVal: " + actualHoursVal);
+        shouldBeVisible(timer(), "Timer isn't visible");
+        String timerVal = timer().text();
+        Integer actualMinutesVal = Integer.valueOf(timerVal.substring(3, 5));
+        Integer actualHoursVal = Integer.valueOf(timerVal.substring(0, 2));
 
         assertTrue( (expectedHoursVal == actualHoursVal) && (expectedMinutesVal - actualMinutesVal <= 1),
                 "Actual 'Remorse Hold' timer value differs from expected one." );
