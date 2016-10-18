@@ -125,11 +125,23 @@ public class SkusPage extends BasePage {
     //------------------------------------------------------------------------//
     //------------------------------- HELPERS --------------------------------//
 
-    // Overrides similar method from BasePage -- because at SKUs you need to wait for changes to get applied first
+    /**
+     * Click "Save" btn and wait for it to get re-enabled
+     * Overrides similar method from BasePage
+     */
     @Step("Click \"Save\"")
     public void clickSave() {
         click(saveBtn());
         shouldBeEnabled(saveBtn(), "\"Save\" btn doesn't get re-enabled");
+        sleep(1000);
+    }
+
+    /**
+     * Click "Save" btn without waiting for it to get re-enabled
+     */
+    @Step("Click \"Save\"")
+    public void clickSave_() {
+        click(saveBtn());
         sleep(1000);
     }
 

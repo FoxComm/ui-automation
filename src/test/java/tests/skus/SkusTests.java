@@ -1,6 +1,5 @@
 package tests.skus;
 
-import base.BasePage;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import pages.LoginPage;
@@ -211,7 +210,7 @@ public class SkusTests extends DataProvider {
 
         p.clickAddNewSKU();
         p.setSKUCode(sku);
-        BasePage.clickSave();
+        p.clickSave_();
         p.errorMsg("already exists").shouldBe(visible);
 
     }

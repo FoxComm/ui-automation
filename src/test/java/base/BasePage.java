@@ -114,12 +114,12 @@ public class BasePage extends ConciseAPI {
 
     //---------------------------- GENERAL FORM SPECIFIC ----------------------------//
     //---------------------------------- ELEMENTS -----------------------------------//
-    protected static SelenideElement saveBtn() {
+    protected SelenideElement saveBtn() {
         return $(xpath("//span[text()='Save']/.."));
     }
 
     @Step("Click \"Save\"")
-    public static void clickSave() {
+    public void clickSave() {
         click(saveBtn());
         sleep(1000);
     }
