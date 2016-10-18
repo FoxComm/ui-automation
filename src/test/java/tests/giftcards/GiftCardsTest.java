@@ -82,7 +82,7 @@ public class GiftCardsTest extends DataProvider {
         p.setType("Appeasement");
         p.setValue("123.78");
         p.clickIssueGCBtn();
-        shouldHaveText(p.stateVal(), "Active",
+        shouldHaveValue(p.stateVal(), "Active",
                 "Incorrect 'State' value is displayed on GC details page");
 
         String gcNumber = p.getGCNumber(getUrl(), adminUrl);
@@ -105,7 +105,7 @@ public class GiftCardsTest extends DataProvider {
         shouldHaveText(p.stateDd(), "On Hold",
                 "Failed to edit GC state - incorrect state value is displayed.");
         refresh();
-        p.stateVal().shouldHave(text("On Hold")
+        p.stateVal().shouldHave(value("On Hold")
                 .because("Failed to edit GC state - incorrect state value is displayed."));
 
     }
@@ -168,7 +168,7 @@ public class GiftCardsTest extends DataProvider {
         p.setState("Active");
         p.clickYes();
         refresh();
-        shouldHaveText(p.stateVal(), "Active", "Failed to set GC \"State\" to \"Active\"");
+        shouldHaveValue(p.stateVal(), "Active", "Failed to set GC \"State\" to \"Active\"");
         p.navigateTo("Marketing", "Gift Cards");
         p.search(gcCode);
         p.getGCParamVal("1", "State").shouldHave(text("Active")
@@ -185,8 +185,8 @@ public class GiftCardsTest extends DataProvider {
         p.setState("Hold");
         p.clickYes();
         refresh();
-        shouldHaveText(p.stateVal(), "Active", "Failed to set GC \"State\" to \"Active\"");
-        p.stateVal().shouldHave(text("Active")
+        shouldHaveValue(p.stateVal(), "Active", "Failed to set GC \"State\" to \"Active\"");
+        p.stateVal().shouldHave(value("Active")
                 .because("'Current state dd value isn't reset to actual GC 'State' value after canceling state change."));
 
     }

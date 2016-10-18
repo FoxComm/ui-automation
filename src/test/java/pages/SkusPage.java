@@ -69,7 +69,7 @@ public class SkusPage extends BasePage {
     }
 
     public SelenideElement skuCodeVal() {
-        return $(xpath("//div[@class='fc-breadcrumbs']/ul/li[5]/a"));
+        return $(xpath("//h1"));
     }
 
     private SelenideElement addCustomPropBtn() {

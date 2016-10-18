@@ -32,8 +32,12 @@ public class GiftCardsPage extends BasePage {
         return $(xpath("//div[text()='Current State']/following-sibling::*/div/div[2]/button"));
     }
 
+    private SelenideElement stateOpt(String state) {
+        return $(xpath("//li[text()='Hold']"));
+    }
+
     public SelenideElement stateVal() {
-        return $(xpath("//div[text()='Current State']/following-sibling::*/div/div[2]/div"));
+        return $(xpath("//div[text()='Current State']/following-sibling::*//input"));
     }
 
     public SelenideElement qtyIncrBtn() {
@@ -139,9 +143,10 @@ public class GiftCardsPage extends BasePage {
         }
     }
 
-    @Step("Set (GC's) \"State\" dd val to <{0}>")
+    @Step("Set GC's \"State\" dd val to <{0}>")
     public void setState(String state) {
-        setDdVal(stateDd(), state);
+        click(stateDd());
+        click(stateOpt(state));
     }
 
     @Step("Select cancellation reason <{0}>")

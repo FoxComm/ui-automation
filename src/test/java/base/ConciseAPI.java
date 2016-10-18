@@ -62,7 +62,7 @@ public class ConciseAPI implements IHookable {
         return open(relativeOrAbsoluteUrl, "", "", "", pageObjectClassClass);
     }
 
-    public void click(SelenideElement element) {
+    public static void click(SelenideElement element) {
         shouldBeVisible(element, "Element is not visible");
         element.click();
     }

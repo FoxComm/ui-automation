@@ -261,6 +261,12 @@ public class CustomersPage extends BasePage {
                     .because("'State' is reset to default value"));
         }
 
+    @Step("Click \"Save\"")
+    public void clickSave() {
+        click(saveBtn());
+        shouldBeEnabled(saveBtn(), "Failed to wait until \"Save\" will be re-enabled");
+    }
+
     @Step("Remove <{0}th> shipping address from address book")
     public void deleteAddress(String index) {
         click(deleteAddressBtn(index));

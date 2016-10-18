@@ -1,5 +1,6 @@
 package tests.skus;
 
+import base.BasePage;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import pages.LoginPage;
@@ -197,12 +198,12 @@ public class SkusTests extends DataProvider {
         provideTestData("active SKU");
         p = openPage(adminUrl + "/skus/" + sku, SkusPage.class);
 
-        p.titleFld().shouldHave(attribute("value", skuTitle)
+        p.titleFld().shouldHave(value(skuTitle)
                 .because("SKU Title has been wiped after a product with this SKU was created."));
 
     }
 
-    @Test(priority = 10)
+    @Test(priority = 11)
     public void useExistingSKUCode_regressionTest() throws IOException {
 
         provideTestData("active SKU");
@@ -210,7 +211,7 @@ public class SkusTests extends DataProvider {
 
         p.clickAddNewSKU();
         p.setSKUCode(sku);
-        p.clickSave();
+        BasePage.clickSave();
         p.errorMsg("already exists").shouldBe(visible);
 
     }

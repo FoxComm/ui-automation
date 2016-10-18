@@ -148,7 +148,7 @@ public class OrdersPage extends BasePage {
         hitEnter();
     }
 
-    @Step("Create a search filter {0} : {1} : {2}")
+    @Step("Create a search filter <{0} : {1} : {2}>")
     public void addFilter_arrowKeys(String firstStatement, String secondStatement, String thirdStatement) {
 
         searchFld().click();
@@ -182,7 +182,6 @@ public class OrdersPage extends BasePage {
                                 waitForDataToLoad();
                                 break;
                         }
-                        break;
                 }
 
             case "Customer":
@@ -202,6 +201,17 @@ public class OrdersPage extends BasePage {
                         break;
                 }
 
+            case "Items":
+                selectLine(7);
+                switch (secondStatement)
+                {
+                    case "Product SKU":
+                        selectLine(3);
+                        searchFld().sendKeys(thirdStatement);
+                        waitForDataToLoad();
+                        break;
+                }
+
             case "Assignee":
                 selectLine(8);
                 switch(thirdStatement)
@@ -215,7 +225,6 @@ public class OrdersPage extends BasePage {
                         waitForDataToLoad();
                         break;
                 }
-                break;
 
             case "Shipping":
                 selectLine(5);
@@ -249,7 +258,7 @@ public class OrdersPage extends BasePage {
 
     }
 
-    @Step("Create a search filter {0} : {1} : {2} : {3}")
+    @Step("Create a search filter <{0} : {1} : {2} : {3}>")
     public void addFilter_arrowKeys(String firstStatement, String secondStatement, String thirdStatement, String fourthStatement) {
 
         searchFld().click();
@@ -267,7 +276,7 @@ public class OrdersPage extends BasePage {
                         break;
                     case "Product SKU":
                         selectLine(3);
-                        defineOperator(thirdStatement, fourthStatement);
+                        searchFld().sendKeys(thirdStatement);
                         waitForDataToLoad();
                         break;
                 }
