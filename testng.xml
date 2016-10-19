@@ -60,4 +60,9 @@
             <class name="tests.giftcards.GiftCardsTest" />
         </classes>
     </test>
+    <test name="Inventory Tests">
+        <classes>
+            <class name="tests.inventory.InventoryTest" />
+        </classes>
+    </test>
 </suite>
