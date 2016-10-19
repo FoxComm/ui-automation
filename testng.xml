@@ -1,5 +1,5 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="_" verbose="1" >
+<suite name="Suite" verbose="1" >
     <test name="General UI Tests" >
         <classes>
             <class name="tests.generalcontrols.login.LoginTest" />

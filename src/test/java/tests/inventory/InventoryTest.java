@@ -12,8 +12,10 @@ import java.io.IOException;
 import java.util.Objects;
 
 import static com.codeborne.selenide.Condition.*;
+import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.Selenide.refresh;
+import static org.openqa.selenium.By.xpath;
 
 public class InventoryTest extends DataProvider {
 
@@ -30,83 +32,83 @@ public class InventoryTest extends DataProvider {
         }
     }
 
-//    @Test(priority = 1)
-//    public void editOnHand_sellable() throws IOException {
-//
-//        provideTestData("active SKU");
-//        p = openPage(adminUrl + "/skus/" + sku + "/inventory", InventoryPage.class);
-//
-//        p.expandWarehouse("default");
-//        p.setOnHand("Sellable", "1");
-//        p.clickSave();
-//        refresh();
-//
-//        p.onHandQty("default").shouldHave(text("1"));
-//
-//    }
-//
-//    @Test(priority = 2)
-//    public void editOnHand_nonsellable() throws IOException {
-//
-//        provideTestData("active SKU");
-//        p = openPage(adminUrl + "/skus/" + sku + "/inventory", InventoryPage.class);
-//
-//        p.expandWarehouse("default");
-//        p.setOnHand("Non-sellable", "1");
-//        p.clickSave();
-//        refresh();
-//
-//        p.onHandQty("default").shouldHave(text("1"));
-//
-//    }
-//
-//    @Test(priority = 3)
-//    public void editOnHand_backorder() throws IOException {
-//
-//        provideTestData("active SKU");
-//        p = openPage(adminUrl + "/skus/" + sku + "/inventory", InventoryPage.class);
-//
-//        p.expandWarehouse("default");
-//        p.setOnHand("Backorder", "1");
-//        p.clickSave();
-//        refresh();
-//
-//        p.onHandQty("default").shouldHave(text("1"));
-//
-//    }
-//
-//    @Test(priority = 4)
-//    public void editOnHand_preorder() throws IOException {
-//
-//        provideTestData("active SKU");
-//        p = openPage(adminUrl + "/skus/" + sku + "/inventory", InventoryPage.class);
-//
-//        p.expandWarehouse("default");
-//        p.setOnHand("Preorder", "1");
-//        p.clickSave();
-//        refresh();
-//
-//        p.onHandQty("default").shouldHave(text("1"));
-//
-//    }
-//
-//    @Test(priority = 5)
-//    public void editOnHand_multipleTypes() throws IOException {
-//
-//        provideTestData("active SKU");
-//        p = openPage(adminUrl + "/skus/" + sku + "/inventory", InventoryPage.class);
-//
-//        p.expandWarehouse("default");
-//        p.setOnHand("Sellable", "1");
-//        p.setOnHand("Non-sellable", "1");
-//        p.setOnHand("Backorder", "1");
-//        p.setOnHand("Preorder", "1");
-//        p.clickSave();
-//        refresh();
-//
-//        p.onHandQty("default").shouldHave(text("4"));
-//
-//    }
+    @Test(priority = 1)
+    public void editOnHand_sellable() throws IOException {
+
+        provideTestData("active SKU");
+        p = openPage(adminUrl + "/skus/" + sku + "/inventory", InventoryPage.class);
+
+        p.expandWarehouse("default");
+        p.setOnHand("Sellable", "1");
+        p.clickSave();
+        refresh();
+
+        p.onHandQty("default").shouldHave(text("1"));
+
+    }
+
+    @Test(priority = 2)
+    public void editOnHand_nonsellable() throws IOException {
+
+        provideTestData("active SKU");
+        p = openPage(adminUrl + "/skus/" + sku + "/inventory", InventoryPage.class);
+
+        p.expandWarehouse("default");
+        p.setOnHand("Non-sellable", "1");
+        p.clickSave();
+        refresh();
+
+        p.onHandQty("default").shouldHave(text("1"));
+
+    }
+
+    @Test(priority = 3)
+    public void editOnHand_backorder() throws IOException {
+
+        provideTestData("active SKU");
+        p = openPage(adminUrl + "/skus/" + sku + "/inventory", InventoryPage.class);
+
+        p.expandWarehouse("default");
+        p.setOnHand("Backorder", "1");
+        p.clickSave();
+        refresh();
+
+        p.onHandQty("default").shouldHave(text("1"));
+
+    }
+
+    @Test(priority = 4)
+    public void editOnHand_preorder() throws IOException {
+
+        provideTestData("active SKU");
+        p = openPage(adminUrl + "/skus/" + sku + "/inventory", InventoryPage.class);
+
+        p.expandWarehouse("default");
+        p.setOnHand("Preorder", "1");
+        p.clickSave();
+        refresh();
+
+        p.onHandQty("default").shouldHave(text("1"));
+
+    }
+
+    @Test(priority = 5)
+    public void editOnHand_multipleTypes() throws IOException {
+
+        provideTestData("active SKU");
+        p = openPage(adminUrl + "/skus/" + sku + "/inventory", InventoryPage.class);
+
+        p.expandWarehouse("default");
+        p.setOnHand("Sellable", "1");
+        p.setOnHand("Non-sellable", "1");
+        p.setOnHand("Backorder", "1");
+        p.setOnHand("Preorder", "1");
+        p.clickSave();
+        refresh();
+
+        p.onHandQty("default").shouldHave(text("4"));
+
+    }
 
     @Test(priority = 6)
     public void editOnHand_arrowBtns() throws IOException {
@@ -141,21 +143,21 @@ public class InventoryTest extends DataProvider {
 
     }
 
-//    @Test(priority = 8)
-//    public void transactionsLog() throws IOException {
-//
-//        provideTestData("active SKU");
-//        p = openPage(adminUrl + "/skus/" + sku + "/inventory", InventoryPage.class);
-//
-//        p.expandWarehouse("default");
-//        p.setOnHand("Sellable", "1");
-//        p.clickSave();
-//        p.openTransactions();
-//        waitForDataToLoad();
-//
-//        $(xpath("//td[text()='default']")).shouldBe(visible);
-//
-//    }
+    @Test(priority = 8)
+    public void transactionsLog() throws IOException {
+
+        provideTestData("active SKU");
+        p = openPage(adminUrl + "/skus/" + sku + "/inventory", InventoryPage.class);
+
+        p.expandWarehouse("default");
+        p.setOnHand("Sellable", "1");
+        p.clickSave();
+        p.openTransactions();
+        waitForDataToLoad();
+
+        $(xpath("//td[text()='default']")).shouldBe(visible);
+
+    }
 
 //    @Test(priority = 9)
 //    public void checkoutCart_backorder() throws IOException {
