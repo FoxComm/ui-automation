@@ -10,6 +10,7 @@ import testdata.DataProvider;
 import java.io.IOException;
 import java.util.Objects;
 
+import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.open;
 
 public class SearchTest extends DataProvider {
@@ -32,9 +33,10 @@ public class SearchTest extends DataProvider {
     public void removeFilter() throws IOException {
 
         provideTestData("order in remorse hold");
+        p = openPage(adminUrl + "/orders", OrdersPage.class);
 
         p.addFilter_arrowKeys("Order", "Total", ">", "1");
-        p.removeSearchFilter("Order : Total : > : 1");
+        p.removeSearchFilter("Order : Total : > : $1");
 
     }
 
@@ -42,9 +44,10 @@ public class SearchTest extends DataProvider {
     public void addSearchFilter_usingArrowKeys() throws IOException {
 
         provideTestData("order in remorse hold");
+        p = openPage(adminUrl + "/orders", OrdersPage.class);
 
         p.addFilter_arrowKeys("Order", "State", "Remorse Hold");
-        p.assertOrderParameter(1, "Order State", "Remorse Hold");
+        p.getOrderParamValue(1, "State").shouldHave(text("Remorse Hold"));
 
     }
 
@@ -52,9 +55,10 @@ public class SearchTest extends DataProvider {
     public void customerName_filter() throws IOException {
 
         provideTestData("order in remorse hold");
+        p = openPage(adminUrl + "/orders", OrdersPage.class);
 
         p.addFilter_arrowKeys("Customer", "Name", customerName);
-        p.assertOrderParameter(1, "Customer Name", customerName);
+        p.getOrderParamValue(1, "Customer Name").shouldHave(text(customerName));
 
     }
 
@@ -62,23 +66,30 @@ public class SearchTest extends DataProvider {
     public void customerEmail_filter() throws IOException {
 
         provideTestData("order in remorse hold");
+        p = openPage(adminUrl + "/orders", OrdersPage.class);
 
         p.addFilter_arrowKeys("Customer", "Email", customerEmail);
-        p.assertOrderParameter(1, "Customer Email", customerEmail);
+        p.getOrderParamValue(1, "Email").shouldHave(text(customerEmail));
 
     }
 
-    @Test (priority = 5)
-    public void orderTotal_filter() {
 
-        p.addFilter_arrowKeys("Order", "Total", ">=", "$50");
-        p.sortListBy(7);
-        p.assertOrderParameter(1, "Total", ">=", 50);
-
-    }
+//    Need to refactor assertion for this
+//    @Test (priority = 5)
+//    public void orderTotal_filter() {
+//
+//        p = openPage(adminUrl + "/orders", OrdersPage.class);
+//
+//        p.addFilter_arrowKeys("Order", "Total", ">=", "$50");
+//        p.sortListBy(7);
+//        p.assertOrderParameter(1, "Total", ">=", 50);
+//
+//    }
 
     @Test (priority = 6)
     public void noSearchResults_email() {
+
+        p = openPage(adminUrl + "/orders", OrdersPage.class);
 
         p.addFilter_arrowKeys("Customer", "Email", "find.nothing@withthis.com");
         p.assertNoSearchResults();
@@ -87,6 +98,8 @@ public class SearchTest extends DataProvider {
 
     @Test (priority = 7)
     public void noSearchResults_SKU() {
+
+        p = openPage(adminUrl + "/orders", OrdersPage.class);
 
         p.addFilter_arrowKeys("Items", "Product SKU", "SKU-NONE");
         p.assertNoSearchResults();

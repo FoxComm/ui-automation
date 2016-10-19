@@ -15,7 +15,7 @@ public class ProductsPage extends BasePage {
     //------------------------------------------------------------------------//
     //------------------------------ ELEMENTS --------------------------------//
 
-    public SelenideElement addNewProduct() {
+    private SelenideElement addNewProductBtn() {
         return $(xpath("//span[text()='Product']/.."));
     }
 
@@ -32,7 +32,7 @@ public class ProductsPage extends BasePage {
         return $(xpath("//div[@class='public-DraftEditor-content']"));
     }
 
-    public SelenideElement sku() {
+    private SelenideElement skuFld() {
         return $(xpath("//input[@placeholder='SKU']"));
     }
 
@@ -81,8 +81,8 @@ public class ProductsPage extends BasePage {
         return $(xpath("//header/div/ul/li[5]"));
     }
 
-    public SelenideElement skuName() {
-        return $(xpath("//tr[@class='fc-table-tr']/td[2]/div"));
+    public SelenideElement sku(String skuCode) {
+        return $(xpath("//tr[@class='fc-table-tr']//div[text()='" + skuCode + "']"));
     }
 
 
@@ -196,7 +196,7 @@ public class ProductsPage extends BasePage {
 
     @Step("Click \"Add New Product\" btn")
     public void clickAddNewProduct(){
-        click(addNewProduct());
+        click(addNewProductBtn());
     }
 
     @Step("Fill out the 'New Product' form - Title: <{0}>, SKU: <{1}>, Retail Price: <{2}>, Sale Price: <{3}>, State: <{4}>")
@@ -223,7 +223,7 @@ public class ProductsPage extends BasePage {
 
         @Step("Add SKU to a product: <{0}>, <salePr:{1}>, <retailPr:{2}>")
         private void addSKU(String SKU, String retailPrice, String salePrice) {
-            setFieldVal(sku(), SKU);
+            setFieldVal(skuFld(), SKU);
             click(skuSearchView(SKU));
             setFieldVal(retailPriceFld(), retailPrice);
             setFieldVal(salePriceFld(), salePrice);
@@ -234,7 +234,7 @@ public class ProductsPage extends BasePage {
             setFieldVal(retailPriceFld(), price);
         }
 
-        @Step("Set \"Retail Price\" fld val to <{0}>")
+        @Step("Set \"Sale Price\" fld val to <{0}>")
         public void setSalePrice(String price) {
             setFieldVal(salePriceFld(), price);
         }

@@ -68,7 +68,7 @@ public class SharedSearchTest extends DataProvider {
 
     }
 
-    @Test(priority = 3, dependsOnMethods = "removeUserFromAssociationsList")
+    @Test(priority = 3)
     public void unshareSearch() throws IOException {
 
         provideTestData("saved search with 1 filter");
@@ -122,7 +122,7 @@ public class SharedSearchTest extends DataProvider {
     }
 
     @Description("Shared search shouldn't be displayed for associated admin users if owner has deleted it")
-    @Test(priority = 5, dependsOnMethods = "deleteSavedSearch")
+    @Test(priority = 6)
     public void deleteSharedSearch() throws IOException {
 
         provideTestData("saved search with 1 filter");

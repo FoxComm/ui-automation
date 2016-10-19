@@ -52,7 +52,7 @@ public class CreateProductsTest extends DataProvider {
 
         provideTestData("active product, has tag, active SKU");
         p = openPage(adminUrl + "/products/default/" + productId, ProductsPage.class);
-        p.skuName().shouldBe(visible
+        p.sku(sku).shouldBe(visible
                 .because("'No SKUs.' msg is displayed - SKU wasn't applied, product won't be displayed on storefront."));
 
     }

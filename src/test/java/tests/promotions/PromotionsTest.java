@@ -4,12 +4,15 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import pages.LoginPage;
 import pages.PromotionsPage;
+import ru.yandex.qatools.allure.annotations.Description;
 import testdata.DataProvider;
 
 import java.io.IOException;
 import java.util.Objects;
 
-import static com.codeborne.selenide.Condition.*;
+import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Condition.value;
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.Selenide.refresh;
 
@@ -210,10 +213,12 @@ public class PromotionsTest extends DataProvider {
 
     }
 
+    @Description("Fails due confirmation box bug")
     @Test(priority = 11)
     public void addTag() throws IOException {
 
-        p = open(adminUrl + "/promotions/new", PromotionsPage.class);
+        provideTestData("a promotion");
+        p = open(adminUrl + "/promotions/" + promotionId, PromotionsPage.class);
 
         p.addTag("test promo");
         p.clickSave();

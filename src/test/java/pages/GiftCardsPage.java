@@ -196,25 +196,25 @@ public class GiftCardsPage extends BasePage {
         waitForDataToLoad();
         switch (paramName) {
             case "Gift Card Number":
-                gcParamVal = $(xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + gcIndex + "]/td[2]"));
+                gcParamVal = $(xpath("//tbody[@class='fc-table-body']/a[" + gcIndex + "]/td[2]"));
                 break;
             case "Type":
-                gcParamVal = $(xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + gcIndex + "]/td[3]/div/div"));
+                gcParamVal = $(xpath("//tbody[@class='fc-table-body']/a[" + gcIndex + "]/td[3]/div/div"));
                 break;
             case "Original Balance":
-                gcParamVal = $(xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + gcIndex + "]/td[4]/td/span"));
+                gcParamVal = $(xpath("//tbody[@class='fc-table-body']/a[" + gcIndex + "]/td[4]/td/span"));
                 break;
             case "Current Balance":
-                gcParamVal = $(xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + gcIndex + "]/td[5]"));
+                gcParamVal = $(xpath("//tbody[@class='fc-table-body']/a[" + gcIndex + "]/td[5]"));
                 break;
             case "Available Balance":
-                gcParamVal = $(xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + gcIndex + "]/td[6]"));
+                gcParamVal = $(xpath("//tbody[@class='fc-table-body']/a[" + gcIndex + "]/td[6]"));
                 break;
             case "State":
-                gcParamVal = $(xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + gcIndex + "]/td[7]/span"));
+                gcParamVal = $(xpath("//tbody[@class='fc-table-body']/a[" + gcIndex + "]/td[7]/span"));
                 break;
             case "Date/Time Created":
-                gcParamVal = $(xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + gcIndex + "]/td[8]/time"));
+                gcParamVal = $(xpath("//tbody[@class='fc-table-body']/a[" + gcIndex + "]/td[8]/time"));
                 break;
         }
         return gcParamVal;

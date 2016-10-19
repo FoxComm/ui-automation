@@ -268,7 +268,6 @@ public class CustomersPage extends BasePage {
     @Step("Click \"Save\"")
     public void clickSave() {
         click(saveBtn());
-        sleep(1000);
         shouldBeEnabled(saveBtn(), "Failed to wait until \"Save\" will be re-enabled");
     }
 
@@ -278,6 +277,7 @@ public class CustomersPage extends BasePage {
     @Step("Click \"Save\"")
     public void clickSave_() {
         click(saveBtn());
+        sleep(1000);
     }
 
     @Step("Remove <{0}th> shipping address from address book")

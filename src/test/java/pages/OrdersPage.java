@@ -4,14 +4,10 @@ import base.BasePage;
 import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.NoSuchElementException;
 import ru.yandex.qatools.allure.annotations.Step;
 
-import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.sleep;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
 
 public class OrdersPage extends BasePage {
 
@@ -56,87 +52,88 @@ public class OrdersPage extends BasePage {
 
     //-------------------- ORDERS LIST --------------------//
 
-    private String getOrderParamValue(int orderIndex, String paramName) {
-
-        String orderParamVal = "";
+    public SelenideElement getOrderParamValue(int orderIndex, String paramName) {
+        SelenideElement orderParamVal = null;
         waitForDataToLoad();
-
         switch(paramName) {
             case "Order":
-                orderParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + orderIndex + "]/td[2]")).getText();
+                orderParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + orderIndex + "]/td[2]"));
                 break;
             case "Date/Time Placed":
-                orderParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + orderIndex + "]/td[3]/time")).getText();
+                orderParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + orderIndex + "]/td[3]/time"));
                 break;
             case "Customer Name":
-                orderParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + orderIndex + "]/td[4]")).getText();
+                orderParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + orderIndex + "]/td[4]"));
                 break;
             case "Customer Email":
-                orderParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + orderIndex + "]/td[5]")).getText();
+                orderParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + orderIndex + "]/td[5]"));
                 break;
             case "Order State":
-                orderParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + orderIndex + "]/td[6]/span")).getText();
+                orderParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + orderIndex + "]/td[6]/span"));
                 break;
             case "Shipment State":
-                orderParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + orderIndex + "]/td[7]")).getText();
+                orderParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + orderIndex + "]/td[7]"));
                 break;
             case "Total":
-                orderParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + orderIndex + "]/td[8]/span")).getText();
+                orderParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + orderIndex + "]/td[8]/span"));
                 break;
         }
-
         return orderParamVal;
-
     }
 
-    @Step("{1} parameter value of {0}-th order on the list should be {2}")
-    public void assertOrderParameter(int index, String paramName, String expectedParamValue) {
+//    TO BE DELETED
 
-        String actualParamValue = null;
-        try {
-            actualParamValue = getOrderParamValue(index, paramName);
-        } catch (NoSuchElementException e) {
-            assertTrue(!emptyList().is(visible), "A specified search filter gave no results.");
-        }
-        System.out.println(actualParamValue);
-        assertEquals(actualParamValue, expectedParamValue,
-                "Search results aren't relevant to a given search criteria");
+//    @Step("{1} parameter value of {0}-th order on the list should be {2}")
+//    public void assertOrderParameter(int index, String paramName, String expectedParamValue) {
+//
+//        String actualParamValue = null;
+//        try {
+//            actualParamValue = getOrderParamValue(index, paramName);
+//        } catch (NoSuchElementException e) {
+//            assertTrue(!emptyList().is(visible), "A specified search filter gave no results.");
+//        }
+//        System.out.println(actualParamValue);
+//        assertEquals(actualParamValue, expectedParamValue,
+//                "Search results aren't relevant to a given search criteria");
+//
+//    }
 
-    }
+//     DONT"T DELETE
 
-    @Step("{1} parameter value of {0}-th order on the list should be '{2} {3}'")
-    public void assertOrderParameter(int index, String paramName, String operatorName, int expectedParamValue) {
-
-        String strActualParamValue = getOrderParamValue(index, paramName);
-        System.out.println("strActualParamValue :" + strActualParamValue);
-        double actualParamValue = Double.valueOf(strActualParamValue.substring(1, strActualParamValue.length()));
-        System.out.println("actualParamValue :" + actualParamValue);
-
-        switch (operatorName) {
-            case "=":
-                assertEquals(actualParamValue, expectedParamValue,
-                        "Search results aren't relevant to a given search criteria");
-                break;
-            case ">":
-                assertTrue(actualParamValue > expectedParamValue,
-                        "Search results aren't relevant to a given search criteria");
-                break;
-            case ">=":
-                System.out.println(actualParamValue >= expectedParamValue);
-                assertTrue( (actualParamValue >= expectedParamValue),
-                        "Search results aren't relevant to a given search criteria");
-                break;
-            case "<":
-                assertTrue(actualParamValue < expectedParamValue,
-                        "Search results aren't relevant to a given search criteria");
-                break;
-            case "<=":
-                assertTrue(actualParamValue <= expectedParamValue,
-                        "Search results aren't relevant to a given search criteria");
-                break;
-        }
-
-    }
+//     This assertion will be refactored
+//    @Step("{1} parameter value of {0}-th order on the list should be '{2} {3}'")
+//    public void assertOrderParameter(int index, String paramName, String operatorName, int expectedParamValue) {
+//
+//        String strActualParamValue = getOrderParamValue(index, paramName);
+//        System.out.println("strActualParamValue :" + strActualParamValue);
+//        double actualParamValue = Double.valueOf(strActualParamValue.substring(1, strActualParamValue.length()));
+//        System.out.println("actualParamValue :" + actualParamValue);
+//
+//        switch (operatorName) {
+//            case "=":
+//                assertEquals(actualParamValue, expectedParamValue,
+//                        "Search results aren't relevant to a given search criteria");
+//                break;
+//            case ">":
+//                assertTrue(actualParamValue > expectedParamValue,
+//                        "Search results aren't relevant to a given search criteria");
+//                break;
+//            case ">=":
+//                System.out.println(actualParamValue >= expectedParamValue);
+//                assertTrue( (actualParamValue >= expectedParamValue),
+//                        "Search results aren't relevant to a given search criteria");
+//                break;
+//            case "<":
+//                assertTrue(actualParamValue < expectedParamValue,
+//                        "Search results aren't relevant to a given search criteria");
+//                break;
+//            case "<=":
+//                assertTrue(actualParamValue <= expectedParamValue,
+//                        "Search results aren't relevant to a given search criteria");
+//                break;
+//        }
+//
+//    }
 
 
     //-------------------- SEARCH FIELD --------------------//

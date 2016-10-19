@@ -887,7 +887,7 @@ public class DataProvider extends BaseTest {
     }
 
     @Step("Checkout cart <{0}>")
-    private static void checkoutOrder(String cartId) throws IOException {
+    private static void checkoutCart(String cartId) throws IOException {
 
         System.out.println("Checking out order <" + cartId + ">...");
 
@@ -2251,7 +2251,7 @@ public class DataProvider extends BaseTest {
                 getCustomerAddress(customerId, addressId1);
                 createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard");
                 setPayment_creditCard(cartId, creditCardId);
-                checkoutOrder(cartId);
+                checkoutCart(cartId);
                 break;
 
             case "order in remorse hold payed with SC":
@@ -2266,7 +2266,7 @@ public class DataProvider extends BaseTest {
                 setShipMethod(cartId, shipMethodId);
                 issueStoreCredit(customerId, 30000);
                 setPayment_storeCredit(cartId, 10000);
-                checkoutOrder(cartId);
+                checkoutCart(cartId);
                 break;
 
             //--------------------------------- CUSTOMER ADDRESS BOOK ---------------------------------//
@@ -2310,7 +2310,7 @@ public class DataProvider extends BaseTest {
                 getCustomerAddress(customerId, addressId1);
                 createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard");
                 setPayment_creditCard(cartId, creditCardId);
-                checkoutOrder(cartId);
+                checkoutCart(cartId);
 
                 createCart(customerId);
                 increaseOnHandQty("SKU-BRO", "Sellable", 2);
@@ -2320,7 +2320,7 @@ public class DataProvider extends BaseTest {
                 setShipMethod(cartId, shipMethodId);
                 listCustomerAddresses(customerId);
                 setPayment_creditCard(cartId, creditCardId);
-                checkoutOrder(cartId);
+                checkoutCart(cartId);
 
                 break;
 
@@ -2336,7 +2336,7 @@ public class DataProvider extends BaseTest {
                 getCustomerAddress(customerId, addressId1);
                 createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard");
                 setPayment_creditCard(cartId, creditCardId);
-                checkoutOrder(cartId);
+                checkoutCart(cartId);
 
                 createCart(customerId);
                 increaseOnHandQty("SKU-BRO", "Sellable", 2);
@@ -2346,7 +2346,7 @@ public class DataProvider extends BaseTest {
                 setShipMethod(cartId, shipMethodId);
                 listCustomerAddresses(customerId);
                 setPayment_creditCard(cartId, creditCardId);
-                checkoutOrder(cartId);
+                checkoutCart(cartId);
 
                 changeOrderState(orderId, "fulfillmentStarted");
                 break;
@@ -2374,7 +2374,7 @@ public class DataProvider extends BaseTest {
                 listCustomerAddresses(customerId);
                 issueStoreCredit(customerId, 50000);
                 setPayment_storeCredit(cartId, 3727);
-                checkoutOrder(cartId);
+                checkoutCart(cartId);
                 break;
 
             case "order in Remorse Hold, payed with SC (GC Transfer)":
@@ -2389,7 +2389,7 @@ public class DataProvider extends BaseTest {
                 issueGiftCard(50000, 1);
                 issueStoreCredit_gcTransfer(customerId, gcCode);
                 setPayment_storeCredit(cartId, 3727);
-                checkoutOrder(cartId);
+                checkoutCart(cartId);
                 break;
 
             //---------------------------------- PROMOTIONS ---------------------------------//
@@ -2441,7 +2441,7 @@ public class DataProvider extends BaseTest {
                 createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard");
                 setPayment_creditCard(cartId, creditCardId);
                 applyCouponCode(cartId, singleCouponCode);
-                checkoutOrder(cartId);
+                checkoutCart(cartId);
                 break;
 
             //----------------------------------- PRODUCTS -----------------------------------//
@@ -2523,6 +2523,11 @@ public class DataProvider extends BaseTest {
 
             //----------------------------------- INVENTORY -----------------------------------//
 
+            case "active SKU for inventory":
+                createSKU_active();
+                sleep(5000);
+                break;
+
             case "cart with backorder SKU":
                 createNewCustomer();
                 createCart(customerId);
@@ -2586,12 +2591,14 @@ public class DataProvider extends BaseTest {
                 issueGiftCard(20000, 1);
                 createNewCustomer();
                 createCart(customerId);
+                increaseOnHandQty("SKU-YAX", "Sellable", 1);
                 updSKULineItems(cartId, "SKU-YAX", 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
                 listCustomerAddresses(customerId);
                 setPayment_giftCard(cartId, gcCode, 10000);
+                checkoutCart(cartId);
                 break;
 
             case "gift card on hold":
@@ -2622,7 +2629,7 @@ public class DataProvider extends BaseTest {
                 getCustomerAddress(customerId, addressId1);
                 createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard");
                 setPayment_creditCard(cartId, creditCardId);
-                checkoutOrder(cartId);
+                checkoutCart(cartId);
                 break;
 
             case "order state: manual hold":
@@ -2636,7 +2643,7 @@ public class DataProvider extends BaseTest {
                 getCustomerAddress(customerId, addressId1);
                 createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard");
                 setPayment_creditCard(cartId, creditCardId);
-                checkoutOrder(cartId);
+                checkoutCart(cartId);
                 changeOrderState(orderId, "manualHold");
                 break;
 
@@ -2651,7 +2658,7 @@ public class DataProvider extends BaseTest {
                 getCustomerAddress(customerId, addressId1);
                 createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard");
                 setPayment_creditCard(cartId, creditCardId);
-                checkoutOrder(cartId);
+                checkoutCart(cartId);
                 changeOrderState(orderId, "fraudHold");
                 break;
 
@@ -2666,7 +2673,7 @@ public class DataProvider extends BaseTest {
                 getCustomerAddress(customerId, addressId1);
                 createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard");
                 setPayment_creditCard(cartId, creditCardId);
-                checkoutOrder(cartId);
+                checkoutCart(cartId);
                 changeOrderState(orderId, "fulfilmentStarted");
                 break;
 
@@ -2681,7 +2688,7 @@ public class DataProvider extends BaseTest {
                 getCustomerAddress(customerId, addressId1);
                 createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard");
                 setPayment_creditCard(cartId, creditCardId);
-                checkoutOrder(cartId);
+                checkoutCart(cartId);
                 changeOrderState(orderId, "shipped");
                 break;
 
@@ -2696,7 +2703,7 @@ public class DataProvider extends BaseTest {
                 getCustomerAddress(customerId, addressId1);
                 createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard");
                 setPayment_creditCard(cartId, creditCardId);
-                checkoutOrder(cartId);
+                checkoutCart(cartId);
                 changeOrderState(orderId, "partiallyShipped");
                 break;
 
@@ -2711,7 +2718,7 @@ public class DataProvider extends BaseTest {
                 getCustomerAddress(customerId, addressId1);
                 createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard");
                 setPayment_creditCard(cartId, creditCardId);
-                checkoutOrder(cartId);
+                checkoutCart(cartId);
                 changeOrderState(orderId, "canceled");
                 break;
 

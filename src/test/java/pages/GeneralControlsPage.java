@@ -19,7 +19,7 @@ public class GeneralControlsPage extends BasePage {
     }
 
     private SelenideElement searchContextMenuBtn() {
-        return $(xpath("//i[@class='icon-search']/../following-sibling::*"));
+        return $(xpath("//div[@class='_common_button_with_menu__controls']/button[2]"));
     }
     public SelenideElement tab(String tabTitle) {
         return $(xpath("//li[text()='" + tabTitle + "']"));
@@ -76,8 +76,8 @@ public class GeneralControlsPage extends BasePage {
     public void searchContextMenu(String option) {
         sleep(3000);
         shouldBeEnabled(searchContextMenuBtn(), "Failed to wait until searchContextMenuBtn() will become <enabled>");
-        jsClick(searchContextMenuBtn());
-        jsClick($(xpath("//li[text()='" + option + "']")));
+        click(searchContextMenuBtn());
+        click($(xpath("//li[text()='" + option + "']")));
         waitForDataToLoad();
         if (option.equals("Save New Search")) {
             tabTitleFld().pressEnter();

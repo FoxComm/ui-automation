@@ -249,7 +249,7 @@ public class BasePage extends ConciseAPI {
 
     @Step("Remove search filter; <{0}>")
     public void removeSearchFilter(String label) {
-        jsClick(removeFilterBtn(label));
+        click(removeFilterBtn(label));
     }
 
     // used with filters like 'Products : ID : val', where "Products : ID" - is a single (non-composite) line

@@ -35,7 +35,7 @@ public class InventoryTest extends DataProvider {
     @Test(priority = 1)
     public void editOnHand_sellable() throws IOException {
 
-        provideTestData("active SKU");
+        provideTestData("active SKU for inventory");
         p = openPage(adminUrl + "/skus/" + sku + "/inventory", InventoryPage.class);
 
         p.expandWarehouse("default");
@@ -50,7 +50,7 @@ public class InventoryTest extends DataProvider {
     @Test(priority = 2)
     public void editOnHand_nonsellable() throws IOException {
 
-        provideTestData("active SKU");
+        provideTestData("active SKU for inventory");
         p = openPage(adminUrl + "/skus/" + sku + "/inventory", InventoryPage.class);
 
         p.expandWarehouse("default");
@@ -65,7 +65,7 @@ public class InventoryTest extends DataProvider {
     @Test(priority = 3)
     public void editOnHand_backorder() throws IOException {
 
-        provideTestData("active SKU");
+        provideTestData("active SKU for inventory");
         p = openPage(adminUrl + "/skus/" + sku + "/inventory", InventoryPage.class);
 
         p.expandWarehouse("default");
@@ -80,7 +80,7 @@ public class InventoryTest extends DataProvider {
     @Test(priority = 4)
     public void editOnHand_preorder() throws IOException {
 
-        provideTestData("active SKU");
+        provideTestData("active SKU for inventory");
         p = openPage(adminUrl + "/skus/" + sku + "/inventory", InventoryPage.class);
 
         p.expandWarehouse("default");
@@ -95,7 +95,7 @@ public class InventoryTest extends DataProvider {
     @Test(priority = 5)
     public void editOnHand_multipleTypes() throws IOException {
 
-        provideTestData("active SKU");
+        provideTestData("active SKU for inventory");
         p = openPage(adminUrl + "/skus/" + sku + "/inventory", InventoryPage.class);
 
         p.expandWarehouse("default");
@@ -113,7 +113,7 @@ public class InventoryTest extends DataProvider {
     @Test(priority = 6)
     public void editOnHand_arrowBtns() throws IOException {
 
-        provideTestData("active SKU");
+        provideTestData("active SKU for inventory");
         p = openPage(adminUrl + "/skus/" + sku + "/inventory", InventoryPage.class);
 
         p.expandWarehouse("default");
@@ -132,7 +132,7 @@ public class InventoryTest extends DataProvider {
     @Description("Check visibility of \"Adjust Quantity\" block for the last row on table")
     public void visibilityOfAdjustQty() throws IOException {
 
-        provideTestData("active SKU");
+        provideTestData("active SKU for inventory");
         p = openPage(adminUrl + "/skus/" + sku + "/inventory", InventoryPage.class);
 
         p.expandWarehouse("default");
@@ -146,7 +146,7 @@ public class InventoryTest extends DataProvider {
     @Test(priority = 8)
     public void transactionsLog() throws IOException {
 
-        provideTestData("active SKU");
+        provideTestData("active SKU for inventory");
         p = openPage(adminUrl + "/skus/" + sku + "/inventory", InventoryPage.class);
 
         p.expandWarehouse("default");

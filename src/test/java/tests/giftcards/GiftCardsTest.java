@@ -1,5 +1,6 @@
 package tests.giftcards;
 
+import com.codeborne.selenide.ex.ElementNotFound;
 import org.openqa.selenium.By;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -170,11 +171,13 @@ public class GiftCardsTest extends DataProvider {
         p.clickYes();
         refresh();
         shouldHaveText(p.stateVal(), "Active", "Failed to set GC \"State\" to \"Active\"");
-        p.navigateTo("Marketing", "Gift Cards");
-        p.search(gcCode);
 
-        p.getGCParamVal("1", "State").shouldHave(text("Active")
-                .because("Incorrect 'State' value is displayed on the list."));
+//        make this check a separate test -- ES specific
+//        p.navigateTo("Marketing", "Gift Cards");
+//        p.search(gcCode);
+//
+//        p.getGCParamVal("1", "State").shouldHave(text("Active")
+//                .because("Incorrect 'State' value is displayed on the list."));
 
     }
 
@@ -237,8 +240,14 @@ public class GiftCardsTest extends DataProvider {
         p.clickIssueGCBtn();
         p.waitForDataToLoad();
 
-        p.counter().shouldHave(text(expectedResult)
-                .because("Incorrect GCs amount counter - either GCs creation has failed or counter value isn't updated."));
+        try {
+            p.counter().shouldHave(text(expectedResult)
+                    .because("Incorrect GCs amount counter - either GCs creation has failed or counter value isn't updated."));
+        } catch (ElementNotFound enf) {
+            refresh();
+            p.counter().shouldHave(text(expectedResult)
+                    .because("Incorrect GCs amount counter - either GCs creation has failed or counter value isn't updated."));
+        }
 
     }
 

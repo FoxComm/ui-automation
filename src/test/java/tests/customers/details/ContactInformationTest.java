@@ -4,6 +4,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import pages.CustomersPage;
 import pages.LoginPage;
+import ru.yandex.qatools.allure.annotations.Description;
 import testdata.DataProvider;
 
 import java.io.IOException;
@@ -96,6 +97,7 @@ public class ContactInformationTest extends DataProvider {
 
     }
 
+    @Description("Phone number from billing address should be transmitted to \"Contact Info\"")
     @Test(priority = 5)
     public void phoneNumbFromBillAddress() throws IOException {
 

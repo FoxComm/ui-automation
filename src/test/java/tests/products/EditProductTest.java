@@ -1,5 +1,6 @@
 package tests.products;
 
+import com.codeborne.selenide.ex.ElementNotFound;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import pages.LoginPage;
@@ -227,7 +228,7 @@ public class EditProductTest extends DataProvider {
         p.clickSave();
 
         sf = open(storefrontUrl + "/products/" + productId, StorefrontCategoryPage.class);
-        sf.priceVal().shouldHave(text("35.18")
+        sf.priceVal().shouldHave(text("$35.18")
                 .because("Failed to edit sale price."));
 
     }
@@ -301,8 +302,14 @@ public class EditProductTest extends DataProvider {
 
         sf = open(storefrontUrl + "/eyeglasses?type=men", StorefrontCategoryPage.class);
         sf.waitForDataToLoad_sf();
-        sf.product(productName).shouldNotBe(visible
-                .because("Product is displayed on the storefront category (it shouldn't)."));
+        try {
+            sf.product(productName).shouldNotBe(visible
+                    .because("Product is displayed on the storefront category (it shouldn't)."));
+        } catch(ElementNotFound enf) {
+            refresh();
+            sf.product(productName).shouldNotBe(visible
+                    .because("Product is displayed on the storefront category (it shouldn't)."));
+        }
 
     }
 

@@ -38,11 +38,11 @@ public class StorefrontCategoryPage extends BasePage {
     }
 
     public SelenideElement priceVal() {
-        return $(By.xpath("//div[contains(@class, '_price_')]/span"));
+        return $(By.xpath("//div[@class='_src_pages_catalog_pdp__price']/span"));
     }
 
     public SelenideElement descriptionVal() {
-        return $(By.xpath("//div[contains(@class, '_description_')]"));
+        return $(By.xpath("//div[@class='_src_pages_catalog_pdp__description']"));
     }
 
     private SelenideElement noContentMsg() {
