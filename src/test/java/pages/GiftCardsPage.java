@@ -143,7 +143,7 @@ public class GiftCardsPage extends BasePage {
         }
     }
 
-    @Step("Set GC's \"State\" dd val to <{0}>")
+    @Step("Set \"State\" dd val to <{0}>")
     public void setState(String state) {
         click(stateDd());
         click(stateOpt(state));

@@ -146,7 +146,7 @@ public class SharedSearchTest extends DataProvider {
         refresh();
         if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
             LoginPage loginPage = openPage(adminUrl + "/login", LoginPage.class);
-            p.login("tenant", "hackerman@yahoo.com", "password1");
+            p.login("tenant", "admin@admin.com", "password");
             shouldBeVisible(loginPage.userMenuBtn(), "Failed to log in");
         }
         p.ordersCounter().click();

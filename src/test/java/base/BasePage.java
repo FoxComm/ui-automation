@@ -159,7 +159,8 @@ public class BasePage extends ConciseAPI {
     @Step("Add tag <{0}>")
     public void addTag(String tagVal) {
         click(addTagBtn());
-        setFieldValWithSubmit(tagFld(), tagVal);
+        setFieldVal(tagFld(), tagVal);
+        tagFld().pressEnter();
         shouldNotBeVisible(tagFld(), "\"Tag\" fld shouldn't be visible after pressing \"Enter\" key on it");
     }
 

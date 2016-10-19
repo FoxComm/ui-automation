@@ -212,8 +212,7 @@ public class PromotionsTest extends DataProvider {
     @Test(priority = 11)
     public void addTag() throws IOException {
 
-        provideTestData("a promotion");
-        p = open(adminUrl + "/promotions/" + promotionId, PromotionsPage.class);
+        p = open(adminUrl + "/promotions/new", PromotionsPage.class);
 
         p.addTag("test promo");
         p.clickSave();
@@ -229,11 +228,11 @@ public class PromotionsTest extends DataProvider {
     @Test(priority = 12)
     public void cantDuplicateTag() throws IOException {
 
-        provideTestData("a promotion");
-        p = openPage(adminUrl + "/promotions/" + promotionId, PromotionsPage.class);
+        p = openPage(adminUrl + "/promotions/new", PromotionsPage.class);
 
         p.addTag("test promo");
         p.addTag("test promo");
+
         p.allTags().shouldHaveSize(1);
 //            "Tag is duplicated."
 

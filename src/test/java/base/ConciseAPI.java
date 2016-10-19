@@ -109,6 +109,7 @@ public class ConciseAPI implements IHookable {
         shouldBeVisible(element, "Failed to set field value - it's not visible");
         for(int i = 0; i < value.length(); i++) {
             element.sendKeys(String.valueOf(value.charAt(i)));
+            sleep(250);
         }
     }
 

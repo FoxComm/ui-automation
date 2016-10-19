@@ -147,6 +147,16 @@ public class PromotionsPage extends BasePage {
         shouldNotHaveText(promotionIdVal(), "new", "Failed to create a new promotion.");
     }
 
+    /**
+     * Click "Save" btn and wait for it to get re-enabled
+     * Overrides similar method from BasePage
+     */
+    @Step("Click \"Save\"")
+    public void clickSave() {
+        click(saveBtn());
+        shouldBeEnabled(saveBtn(), "\"Save\" btn doesn't get re-enabled");
+    }
+
     @Step("Get <{1}> parameter value of <{0}th> promotion on the list")
     public SelenideElement getPromoParamVal(String promoIndex, String paramName) {
         SelenideElement promoParamVal = null;
