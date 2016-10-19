@@ -33,11 +33,11 @@ public class GiftCardsPage extends BasePage {
     }
 
     private SelenideElement stateOpt(String state) {
-        return $(xpath("//li[text()='Hold']"));
+        return $(xpath("//li[text()='" + state + "']"));
     }
 
     public SelenideElement stateVal() {
-        return $(xpath("//div[text()='Current State']/following-sibling::*//input"));
+        return $(xpath("//div[text()='Current State']/following-sibling::*/div/div[2]/div"));
     }
 
     public SelenideElement qtyIncrBtn() {

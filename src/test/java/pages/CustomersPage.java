@@ -211,7 +211,7 @@ public class CustomersPage extends BasePage {
         setZip(zipCode);
         setPhoneNumber(phoneNumber);
         assertStateIsntReset();         // regression assertion
-        clickSave();
+        clickSave_();
 
     }
 
@@ -261,8 +261,20 @@ public class CustomersPage extends BasePage {
                     .because("'State' is reset to default value"));
         }
 
+    /**
+     * Click "Save" btn without waiting for it to get re-enabled
+     */
     @Step("Click \"Save\"")
     public void clickSave() {
+        click(saveBtn());
+    }
+
+    /**
+     * Click "Save" btn and wait for it to get re-enabled
+     * Overrides similar method from BasePage
+     */
+    @Step("Click \"Save\"")
+    public void clickSave_() {
         click(saveBtn());
         shouldBeEnabled(saveBtn(), "Failed to wait until \"Save\" will be re-enabled");
     }

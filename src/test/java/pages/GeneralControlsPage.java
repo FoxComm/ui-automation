@@ -76,8 +76,8 @@ public class GeneralControlsPage extends BasePage {
     public void searchContextMenu(String option) {
         sleep(3000);
         shouldBeEnabled(searchContextMenuBtn(), "Failed to wait until searchContextMenuBtn() will become <enabled>");
-        click(searchContextMenuBtn());
-        click($(xpath("//li[text()='" + option + "']")));
+        jsClick(searchContextMenuBtn());
+        jsClick($(xpath("//li[text()='" + option + "']")));
         waitForDataToLoad();
         if (option.equals("Save New Search")) {
             tabTitleFld().pressEnter();

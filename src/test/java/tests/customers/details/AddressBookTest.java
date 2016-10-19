@@ -51,7 +51,7 @@ public class AddressBookTest extends DataProvider {
         p.clickEditAddressBtn("1");
         p.setName("John Doe");
         p.assertStateIsntReset();
-        p.clickSave();
+        p.clickSave_();
 
         p.nameFldVal("1").shouldHave(text("John Doe")
                 .because("Failed to edit name field; expected: <John Doe>, actual: <" + p.nameFldVal("1") + ">."));
@@ -67,7 +67,7 @@ public class AddressBookTest extends DataProvider {
         p.clickEditAddressBtn("1");
         p.setAddress1("2525 Narrow Ave");
         p.assertStateIsntReset();
-        p.clickSave();
+        p.clickSave_();
 
         p.address1FldVal("1").shouldHave(text("2525 Narrow Ave")
                 .because("Failed to edit address1 field; expected: <2525 Narrow Ave>, actual: <" + p.address1FldVal("1") + ">."));
@@ -83,7 +83,7 @@ public class AddressBookTest extends DataProvider {
         p.clickEditAddressBtn("1");
         p.setAddress2("Suite 300");
         p.assertStateIsntReset();
-        p.clickSave();
+        p.clickSave_();
 
         p.address2FldVal("1").shouldHave(text("Suite 300")
                 .because("Failed to edit address1 field; expected: <Suite 300>, actual: <" + p.address2FldVal("1") + ">."));
@@ -99,7 +99,7 @@ public class AddressBookTest extends DataProvider {
         p.clickEditAddressBtn("1");
         p.setCity("New York");
         p.assertStateIsntReset();
-        p.clickSave();
+        p.clickSave_();
 
         p.cityFldVal("1").should(matchesText("New York")
                 .because("Failed to edit city field; expected: <New York>, actual: <" + p.cityFldVal("1") + ">."));
@@ -115,7 +115,7 @@ public class AddressBookTest extends DataProvider {
         p.clickEditAddressBtn("1");
         p.setState("New York");
         p.assertStateIsntReset();
-        p.clickSave();
+        p.clickSave_();
 
         p.stateVal("1").shouldHave(text("New York")
                 .because("Failed to edit state dd value; expected: <New York>, actual: " + p.stateVal("1") + ">."));
@@ -131,7 +131,7 @@ public class AddressBookTest extends DataProvider {
         p.clickEditAddressBtn("1");
         p.setZip("10001");
         p.assertStateIsntReset();
-        p.clickSave();
+        p.clickSave_();
 
         p.zipFldVal("1").shouldHave(text("10001")
                 .because("Failed to edit zip field; expected: <10001>, actual: <" + p.zipFldVal("1").text() + ">."));
@@ -148,7 +148,7 @@ public class AddressBookTest extends DataProvider {
         clearField( p.phoneNumberFld() );
         p.setPhoneNumber("5551237575");
         p.assertStateIsntReset();
-        p.clickSave();
+        p.clickSave_();
 
         p.phoneNumberFldVal("1").shouldHave(text("(555) 123-7575")
                 .because("Failed to edit phone number in existing address at address book."));

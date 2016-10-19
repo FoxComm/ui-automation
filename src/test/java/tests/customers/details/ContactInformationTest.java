@@ -11,7 +11,6 @@ import java.util.Objects;
 
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.open;
-import static org.testng.Assert.assertEquals;
 
 public class ContactInformationTest extends DataProvider {
 
@@ -70,7 +69,7 @@ public class ContactInformationTest extends DataProvider {
         p.clickEditBtn_contactInfo();
         p.setPhoneNumber_contactInfo("7779994242");
         p.setName_contactInfo(newName);
-        p.clickSave();
+        p.clickSave_();
 
         p.nameVal_contactInfo().shouldHave(text(newName)
                 .because("Failed to edit customer's name."));
@@ -88,7 +87,7 @@ public class ContactInformationTest extends DataProvider {
         p.clickEditBtn_contactInfo();
         p.setPhoneNumber_contactInfo("7779994242");
         p.setEmail_contactInfo(newEmail);
-        p.clickSave();
+        p.clickSave_();
 
         p.emailVal_contactInfo().shouldHave(text(newEmail)
                 .because("Failed to edit customer's email."));
@@ -103,8 +102,8 @@ public class ContactInformationTest extends DataProvider {
         provideTestData("customer with a credit card");
         p = openPage(adminUrl + "/customers/" + customerId, CustomersPage.class);
 
-        assertEquals( p.phoneNumberVal_contactInfo(), "9879879876",
-                "Phone number from billing address isn't displayed in customer contact information.");
+        p.phoneNumberVal_contactInfo().shouldHave(text("9879879876")
+                .because("Phone number from billing address isn't displayed in customer contact information."));
 
 //      move this assertion to overview-related test
 //      assertEquals( p.phoneNumberVal_overview(),  "9879879876",

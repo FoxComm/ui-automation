@@ -101,7 +101,7 @@ public class GiftCardsTest extends DataProvider {
 
         p.setState("Hold");
         p.clickYes();
-        shouldNotBeVisible(p.yesBtn(), "Failed to wait untill yesBtn won't be visible");
+        shouldNotBeVisible(p.yesBtn(), "Failed to wait until yesBtn won't be visible");
         shouldHaveText(p.stateDd(), "On Hold",
                 "Failed to edit GC state - incorrect state value is displayed.");
         refresh();
@@ -119,7 +119,7 @@ public class GiftCardsTest extends DataProvider {
         p.setState("Cancel Gift Card");
         p.setCancelReason("Other cancellation reason");
         p.clickYes();
-        shouldNotBeVisible(p.yesBtn(), "Failed to wait untill yesBtn won't be visible");
+        shouldNotBeVisible(p.yesBtn(), "Failed to wait until yesBtn won't be visible");
         sleep(1000);
         refresh();
         shouldHaveText($(By.xpath("//span[@class='fc-model-state']")), "Canceled",
@@ -154,6 +154,7 @@ public class GiftCardsTest extends DataProvider {
         shouldNotBeVisible(p.yesBtn(), "Failed to wait untill yesBtn won't be visible");
         p.navigateTo("Marketing", "Gift Cards");
         p.search(gcCode);
+
         p.getGCParamVal("1", "State").shouldHave(text("On Hold")
                 .because("Failed to set GC's state to 'On Hold'."));
 
@@ -165,12 +166,13 @@ public class GiftCardsTest extends DataProvider {
         provideTestData("gift card on hold");
         p = openPage(adminUrl + "/gift-cards/" + gcCode, GiftCardsPage.class);
 
-        p.setState("Active");
+        p.setState("Activate");
         p.clickYes();
         refresh();
         shouldHaveValue(p.stateVal(), "Active", "Failed to set GC \"State\" to \"Active\"");
         p.navigateTo("Marketing", "Gift Cards");
         p.search(gcCode);
+
         p.getGCParamVal("1", "State").shouldHave(text("Active")
                 .because("Incorrect 'State' value is displayed on the list."));
 
@@ -183,11 +185,12 @@ public class GiftCardsTest extends DataProvider {
         p = openPage(adminUrl + "/gift-cards/" + gcCode, GiftCardsPage.class);
 
         p.setState("Hold");
-        p.clickYes();
+        p.clickCancel();
+        shouldHaveValue(p.stateVal(), "Active", "\"State\" val isn't reverted back to initial value");
         refresh();
-        shouldHaveValue(p.stateVal(), "Active", "Failed to set GC \"State\" to \"Active\"");
+
         p.stateVal().shouldHave(value("Active")
-                .because("'Current state dd value isn't reset to actual GC 'State' value after canceling state change."));
+                .because("Failed to cancel GC \"State\" change"));
 
     }
 
@@ -233,6 +236,7 @@ public class GiftCardsTest extends DataProvider {
         p.increaseQtyBy(1);
         p.clickIssueGCBtn();
         p.waitForDataToLoad();
+
         p.counter().shouldHave(text(expectedResult)
                 .because("Incorrect GCs amount counter - either GCs creation has failed or counter value isn't updated."));
 

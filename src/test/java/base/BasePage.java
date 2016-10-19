@@ -48,7 +48,16 @@ public class BasePage extends ConciseAPI {
 
     @Step("Click \"Yes\" btn")
     public void clickYes() {
-        click( yesBtn() );
+        click(yesBtn());
+    }
+
+    public SelenideElement cancelBtn() {
+        return $(xpath("//a[text()='Cancel']"));
+    }
+
+    @Step("Click \"Cancel\"")
+    public void clickCancel() {
+        click(cancelBtn());
     }
 
     //----------------------------------- NAVIGATION MENU ------------------------------------//
@@ -101,7 +110,7 @@ public class BasePage extends ConciseAPI {
     public void login(String organization, String email, String password) {
         setFieldVal(organizationFld(), organization);
         setFieldVal(emailFld(), email);
-        setFieldVal_andSubmit(passwordFld(), password);
+        setFieldValWithSubmit(passwordFld(), password);
     }
 
     @Step("Log out")
@@ -125,20 +134,20 @@ public class BasePage extends ConciseAPI {
     }
 //----
     public SelenideElement addTagBtn() {
-        return $(xpath("//div[text()='Tags']/following-sibling::*/i"));
+        return $(xpath("//button[@class='_tags_tags__icon']"));
     }
 
     private SelenideElement tagFld() {
         return $(xpath("//input[@placeholder='Separate tags with a comma']"));
     }
 
-    public SelenideElement removeTagBtn(String index) {
+    protected SelenideElement removeTagBtn(String index) {
         // define only btn on the first tag in line
-        return $(xpath("//div[contains(@class, '_tags_')]/div[" + index + "]/button"));
+        return $(xpath("//div[@class='_tags_tags__tags']/div[1]/button"));
     }
 
     public SelenideElement tag(String tagVal) {
-        return $(xpath("//div[contains(@class, '_tags_')]/div/div[text()='" + tagVal + "']"));
+        return $(xpath("//div[@class='_tags_tags__tags']/div/div[text()='" + tagVal + "']"));
     }
 
     public ElementsCollection allTags() {
@@ -150,8 +159,7 @@ public class BasePage extends ConciseAPI {
     @Step("Add tag <{0}>")
     public void addTag(String tagVal) {
         click(addTagBtn());
-        setFieldVal(tagFld(), tagVal);
-        tagFld().pressEnter();
+        setFieldValWithSubmit(tagFld(), tagVal);
         shouldNotBeVisible(tagFld(), "\"Tag\" fld shouldn't be visible after pressing \"Enter\" key on it");
     }
 
@@ -167,7 +175,7 @@ public class BasePage extends ConciseAPI {
         return $(xpath("//input[@placeholder='filter or keyword search']"));
     }
 
-    public SelenideElement removeFilterBtn(String filterTitle) {
+    private SelenideElement removeFilterBtn(String filterTitle) {
         return $(xpath("//div[@title='" + filterTitle + "']/a"));
     }
 
@@ -240,7 +248,7 @@ public class BasePage extends ConciseAPI {
 
     @Step("Remove search filter; <{0}>")
     public void removeSearchFilter(String label) {
-        click(removeFilterBtn(label));
+        jsClick(removeFilterBtn(label));
     }
 
     // used with filters like 'Products : ID : val', where "Products : ID" - is a single (non-composite) line

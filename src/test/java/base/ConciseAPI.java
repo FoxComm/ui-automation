@@ -99,7 +99,7 @@ public class ConciseAPI implements IHookable {
         element.setValue(value);
     }
 
-    protected void setFieldVal_andSubmit(SelenideElement element, String value) {
+    protected void setFieldValWithSubmit(SelenideElement element, String value) {
         shouldBeVisible(element, "Field is not visible");
         element.setValue(value).submit();
     }

@@ -534,7 +534,6 @@ public class DataProvider extends BaseTest {
 
     }
 
-    @Step("Get Stripe token")
     private static void getStripeToken(int customerId, String cardNumber, int expMonth, int expYear, int cvv) throws IOException {
 
         JSONObject jsonObj = parse("bin/payloads/getStripeToken.json");

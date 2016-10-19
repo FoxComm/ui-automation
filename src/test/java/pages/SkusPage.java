@@ -133,7 +133,6 @@ public class SkusPage extends BasePage {
     public void clickSave() {
         click(saveBtn());
         shouldBeEnabled(saveBtn(), "\"Save\" btn doesn't get re-enabled");
-        sleep(1000);
     }
 
     /**
