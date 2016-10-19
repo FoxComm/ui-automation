@@ -11,6 +11,7 @@ import java.util.Objects;
 
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.open;
+import static com.codeborne.selenide.Selenide.refresh;
 
 public class PromotionsTest extends DataProvider {
 
@@ -217,9 +218,7 @@ public class PromotionsTest extends DataProvider {
         p.addTag("test promo");
         p.clickSave();
 
-        p.navigateTo("Marketing", "Promotions");
-        p.search(promotionId);
-        p.openPromo(promotionId);
+        refresh();
         p.tag("test promo").shouldBe(visible
                 .because("A just added tag isn't displayed on promotion details page."));
 

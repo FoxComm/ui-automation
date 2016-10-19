@@ -95,7 +95,7 @@ public class StoreCreditsTest extends DataProvider {
 
     }
 
-    @Test(priority = 5, dependsOnMethods = "issuedSC_displayedOnList")
+    @Test(priority = 5)
     public void setState_onHold() throws IOException {
 
         provideTestData("a customer with issued SC");
@@ -110,7 +110,7 @@ public class StoreCreditsTest extends DataProvider {
 
     }
 
-    @Test(priority = 6, dependsOnMethods = "issuedSC_displayedOnList")
+    @Test(priority = 6)
     public void setState_canceled() throws IOException {
 
         provideTestData("a customer with issued SC");

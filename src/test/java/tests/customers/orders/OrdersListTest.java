@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.Objects;
 
 import static com.codeborne.selenide.CollectionCondition.size;
-import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.open;
 
 public class OrdersListTest extends DataProvider {
@@ -68,8 +68,10 @@ public class OrdersListTest extends DataProvider {
 
         waitForDataToLoad();
         p.addFilter("Order", "Reference Number", orderId);
-        p.getOrderParamVal(1, "Order State").shouldHave(text("Fulfillment Started")
+
+        p.getOrderParamVal(1, "Order State").shouldBe(visible
                 .because("Found order <" + orderId + "> is not in 'Fulfillment Started' state."));
+        p.ordersOnList().shouldHaveSize(1);
 
     }
 

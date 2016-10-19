@@ -53,7 +53,7 @@ public class ContactInformationTest extends DataProvider {
 
         p.clickEditBtn_contactInfo();
         p.setPhoneNumber_contactInfo("7779994242");
-        p.clickSave();
+        p.clickSave_();
 
         p.phoneNumberVal_contactInfo().shouldHave(text("7779994242")
                 .because("Failed to set customer's phone number."));

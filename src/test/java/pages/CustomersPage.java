@@ -427,7 +427,7 @@ public class CustomersPage extends BasePage {
     public void addNewBillAddress(String name, String streetAddress1, String streetAddress2, String city, String state, String zipCode, String phoneNumber) {
         clickNewBillAddressBtn();
         addNewAddress(name, streetAddress1, streetAddress2, city, state, zipCode, phoneNumber);
-        clickSave();
+        clickSave_();
         shouldHaveSize(addressBook(), 1, "Failed to create a new address.");
         chooseAddress("1");
         billName().shouldHave(text(name)

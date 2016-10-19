@@ -102,7 +102,7 @@ public class GiftCardsTest extends DataProvider {
         p.setState("Hold");
         p.clickYes();
         shouldNotBeVisible(p.yesBtn(), "Failed to wait until yesBtn won't be visible");
-        shouldHaveText(p.stateDd(), "On Hold",
+        shouldHaveText(p.stateVal(), "On Hold",
                 "Failed to edit GC state - incorrect state value is displayed.");
         refresh();
         p.stateVal().shouldHave(text("On Hold")
