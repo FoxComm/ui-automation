@@ -15,7 +15,7 @@ import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.Selenide.refresh;
 
-public class SearchControlsTest extends DataProvider {
+public class SavedSearchTest extends DataProvider {
 
     private GeneralControlsPage p;
 

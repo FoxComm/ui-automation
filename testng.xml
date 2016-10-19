@@ -12,9 +12,14 @@
             <class name="tests.generalcontrols.login.LoginTest" />
         </classes>
     </test>
-    <test name="Search Controls">
+    <test name="Search Controls > Saved Search">
         <classes>
-            <class name="tests.generalcontrols.search.SearchControlsTest" />
+            <class name="tests.generalcontrols.search.SavedSearchTest" />
+        </classes>
+    </test>
+    <test name="Search Controls > Search Field">
+        <classes>
+            <class name="tests.orders.SearchTest" />
         </classes>
     </test>
     <test name="Shared Search">
@@ -51,12 +56,6 @@
     </test>
 
 
-    <!--<test name="Orders Tests" >-->
-        <!--<classes>-->
-            <!--Move tests from this class to Search Controls suite-->
-            <!--<class name="tests.orders.SearchTest" />-->
-        <!--</classes>-->
-    <!--</test>-->
     <test name="Orders" >
         <classes>
             <class name="tests.orders.OrderStateTest" />
