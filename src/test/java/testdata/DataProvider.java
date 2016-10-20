@@ -1871,6 +1871,7 @@ public class DataProvider extends BaseTest {
 
     private static void viewSKU_inventory(String skuCode) throws IOException {
 
+        sleep(10000);
         System.out.println("Viewing inventory summary of SKU <" + skuCode + ">...");
 
         OkHttpClient client = new OkHttpClient();
@@ -1905,7 +1906,6 @@ public class DataProvider extends BaseTest {
     @Step("Increase amount of sellable unites of <{0}> by <{1}>")
     private static void increaseOnHandQty(String skuCode, String type, Integer qty) throws IOException {
 
-//        sleep(10000);
         viewSKU_inventory(skuCode);
 
         System.out.println("Increase amount of sellable items by <" + qty + "> for SKU <" + skuCode + ">, ID: <" + skuId_inventory + ">...");
