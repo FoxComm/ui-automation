@@ -99,10 +99,10 @@ public class InventoryTest extends DataProvider {
         p = openPage(adminUrl + "/skus/" + sku + "/inventory", InventoryPage.class);
 
         p.expandWarehouse("default");
-        p.setOnHand("Sellable", "1");
-        p.setOnHand("Non-sellable", "1");
-        p.setOnHand("Backorder", "1");
         p.setOnHand("Preorder", "1");
+        p.setOnHand("Backorder", "1");
+        p.setOnHand("Non-sellable", "1");
+        p.setOnHand("Sellable", "1");
         p.clickSave();
         refresh();
 

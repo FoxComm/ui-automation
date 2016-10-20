@@ -204,7 +204,7 @@ public class GiftCardsTest extends DataProvider {
         provideTestData("used gift card");
         p = openPage(adminUrl + "/gift-cards/" + gcCode, GiftCardsPage.class);
 
-        p.availableBalance().shouldHave(text("$162.73")
+        p.availableBalance().shouldHave(text("164.00")
                 .because("Incorrect available balance value after placing order with GC as a payment method."));
 
     }

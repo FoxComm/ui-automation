@@ -100,7 +100,7 @@ public class GiftCardsPage extends BasePage {
     //------------------------------ HELPERS ---------------------------------//
 
     public String getGCNumber(String url, String adminUrl) {
-        return url.substring((adminUrl.length() + 11), (adminUrl.length() + 27));
+        return url.substring((adminUrl.length() + 12), (adminUrl.length() + 28));
     }
 
     @Step("Click \"Add New GC\" btn")

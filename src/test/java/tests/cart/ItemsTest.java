@@ -66,14 +66,13 @@ public class ItemsTest extends DataProvider {
         provideTestData("cart with 3 items");
         p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
         shouldBeVisible(p.itemQty("1"), "Failed to open cart page");
-        int expectedResult = p.itemsInCartAmount() - 1;
 
         p.clickEditBtn_items();
         p.decreaseItemQtyBelowZero("1");
         p.confirmDeletion();
         p.clickDoneBtn_items();
 
-        p.cart().shouldHaveSize(expectedResult);
+        p.cart().shouldHaveSize(2);
 
     }
 
@@ -101,13 +100,12 @@ public class ItemsTest extends DataProvider {
         provideTestData("cart with 1 item, qty: 3");
         p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
         shouldBeVisible(p.itemQty("1"), "Failed to open cart page");
-        int expectedResult = p.itemsInCartAmount();
 
         p.clickEditBtn_items();
         click(p.deleteBtn_item("1"));
         p.cancelDeletion();
 
-        p.cart().shouldHaveSize(expectedResult);
+        p.cart().shouldHaveSize(1);
 
     }
 
