@@ -46,6 +46,22 @@ public class StoreCreditsTest extends DataProvider {
     }
 
     @Test(priority = 2)
+    public void issueSC_presetValues() throws IOException {
+
+        provideTestData("a customer");
+        p = openPage(adminUrl + "/customers/" + customerId, CustomersPage.class);
+
+        p.navToSCTab();
+        p.clickNewSCBtn();
+        p.selectType("Csr Appeasement");
+        p.setValue("100");
+        p.clickIssueSCButton();
+        shouldHaveText(p.availableBalanceVal(), "$100.00",
+                "Current available balance value is incorrect.");
+
+    }
+
+    @Test(priority = 3)
     public void issueSC_gcTransfer() throws IOException {
 
         provideTestData("a customer && GC");
@@ -62,7 +78,7 @@ public class StoreCreditsTest extends DataProvider {
 
     }
 
-    @Test(priority = 3)
+    @Test(priority = 4)
     public void issuedSC_displayedOnList() throws IOException {
 
         provideTestData("a customer");
@@ -76,22 +92,6 @@ public class StoreCreditsTest extends DataProvider {
         waitForDataToLoad();
 
         p.storeCreditsOnList().shouldHaveSize(1);
-
-    }
-
-    @Test(priority = 4)
-    public void issueSC_presetValues() throws IOException {
-
-        provideTestData("a customer");
-        p = openPage(adminUrl + "/customers/" + customerId, CustomersPage.class);
-
-        p.navToSCTab();
-        p.clickNewSCBtn();
-        p.selectType("Csr Appeasement");
-        p.setValue("100");
-        p.clickIssueSCButton();
-        shouldHaveText(p.availableBalanceVal(), "$100.00",
-                "Current available balance value is incorrect.");
 
     }
 

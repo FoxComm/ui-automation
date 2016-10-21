@@ -92,6 +92,7 @@ public class InventoryTest extends DataProvider {
 
     }
 
+    // TODO: [Fix] Investigate why not all 4 types are edited
     @Test(priority = 5)
     public void editOnHand_multipleTypes() throws IOException {
 

@@ -12,6 +12,8 @@ import java.util.Objects;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.open;
 
+// TODO: [New Test] Check if line items with Qty > 1 are stacked to one-line record at Items block
+
 public class ItemsTest extends DataProvider {
 
     private CartPage p;
