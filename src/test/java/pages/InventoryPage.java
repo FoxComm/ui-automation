@@ -5,6 +5,7 @@ import com.codeborne.selenide.SelenideElement;
 import ru.yandex.qatools.allure.annotations.Step;
 
 import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.$$;
 import static com.codeborne.selenide.Selenide.sleep;
 import static org.openqa.selenium.By.xpath;
 
@@ -40,12 +41,26 @@ public class InventoryPage extends BasePage {
         return $(xpath("//td[text()='" + warehouse + "']/following-sibling::*[5]"));
     }
 
-    public SelenideElement arrowUp(String type) {
-        return $(xpath("//td[text()='" + type + "']/following-sibling::*[1]//i[@class='icon-chevron-up']/.."));
-    }
+    public SelenideElement arrowBtn(String direction, String type) {
+        SelenideElement arrowBtnElem = null;
+        switch (type) {
+            case "Sellable":
+                arrowBtnElem = $$(xpath("//div[text()='Adjust Quantity']/following-sibling::*//i[@class='icon-chevron-" + direction.toLowerCase() + "']")).get(0);
+                break;
 
-    private SelenideElement arrowDown(String type) {
-        return $(xpath("//td[text()='" + type + "']/following-sibling::*[1]//i[@class='icon-chevron-down']/.."));
+            case "Non-sellable":
+                arrowBtnElem = $$(xpath("//div[text()='Adjust Quantity']/following-sibling::*//i[@class='icon-chevron-" + direction.toLowerCase() + "']")).get(1);
+                break;
+
+            case "Backorder":
+                arrowBtnElem = $$(xpath("//div[text()='Adjust Quantity']/following-sibling::*//i[@class='icon-chevron-" + direction.toLowerCase() + "']")).get(2);
+                break;
+
+            case "Preorder":
+                arrowBtnElem = $$(xpath("//div[text()='Adjust Quantity']/following-sibling::*//i[@class='icon-chevron-" + direction.toLowerCase() + "']")).get(3);
+                break;
+        }
+        return arrowBtnElem;
     }
 
     private SelenideElement transactionsTab() {
@@ -78,7 +93,7 @@ public class InventoryPage extends BasePage {
     public void increaseOnHand_arrowBtn(String type, int amount) {
         click(onHandFld(type));
         for (int i = 0; i < amount; i++) {
-            click(arrowUp(type));
+            click(arrowBtn("up", type));
         }
     }
 
@@ -86,7 +101,7 @@ public class InventoryPage extends BasePage {
     public void decreaseOnHand_arrowBtn(String type, int amount) {
         click(onHandFld(type));
         for (int i = 0; i < amount; i++) {
-            click(arrowDown(type));
+            click(arrowBtn("down", type));
         }
     }
 

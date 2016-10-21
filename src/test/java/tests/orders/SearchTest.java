@@ -35,7 +35,7 @@ public class SearchTest extends DataProvider {
         provideTestData("order in remorse hold");
         p = openPage(adminUrl + "/orders", OrdersPage.class);
 
-        p.addFilter_arrowKeys("Order", "Total", ">", "1");
+        p.addFilter("Order", "Total", ">", "1");
         p.removeSearchFilter("Order : Total : > : $1");
 
     }
@@ -47,7 +47,7 @@ public class SearchTest extends DataProvider {
         p = openPage(adminUrl + "/orders", OrdersPage.class);
 
         p.addFilter_arrowKeys("Order", "State", "Remorse Hold");
-        p.getOrderParamValue(1, "State").shouldHave(text("Remorse Hold"));
+        p.getOrderParamValue(1, "Order State").shouldHave(text("Remorse Hold"));
 
     }
 
@@ -57,7 +57,7 @@ public class SearchTest extends DataProvider {
         provideTestData("order in remorse hold");
         p = openPage(adminUrl + "/orders", OrdersPage.class);
 
-        p.addFilter_arrowKeys("Customer", "Name", customerName);
+        p.addFilter("Customer", "Name", customerName);
         p.getOrderParamValue(1, "Customer Name").shouldHave(text(customerName));
 
     }
@@ -68,8 +68,8 @@ public class SearchTest extends DataProvider {
         provideTestData("order in remorse hold");
         p = openPage(adminUrl + "/orders", OrdersPage.class);
 
-        p.addFilter_arrowKeys("Customer", "Email", customerEmail);
-        p.getOrderParamValue(1, "Email").shouldHave(text(customerEmail));
+        p.addFilter("Customer", "Email", customerEmail);
+        p.getOrderParamValue(1, "Customer Email").shouldHave(text(customerEmail));
 
     }
 
@@ -91,7 +91,7 @@ public class SearchTest extends DataProvider {
 
         p = openPage(adminUrl + "/orders", OrdersPage.class);
 
-        p.addFilter_arrowKeys("Customer", "Email", "find.nothing@withthis.com");
+        p.addFilter("Customer", "Email", "find.nothing@withthis.com");
         p.assertNoSearchResults();
 
     }
@@ -101,7 +101,7 @@ public class SearchTest extends DataProvider {
 
         p = openPage(adminUrl + "/orders", OrdersPage.class);
 
-        p.addFilter_arrowKeys("Items", "Product SKU", "SKU-NONE");
+        p.addFilter("Items", "Product SKU", "SKU-NONE");
         p.assertNoSearchResults();
 
     }

@@ -45,9 +45,9 @@ public class OrdersPage extends BasePage {
 
     //---------------------------------------- HELPERS ----------------------------------------//
 
-    private void takeFocusAway() {
+    private void takeFocusFromSearchFld() {
         ordersCounter().click();
-        sleep(500);
+        shouldNotBeVisible(searchMenu(), "Failed to wait for search menu to disappear");
     }
 
     //-------------------- ORDERS LIST --------------------//
@@ -149,6 +149,7 @@ public class OrdersPage extends BasePage {
     public void addFilter_arrowKeys(String firstStatement, String secondStatement, String thirdStatement) {
 
         searchFld().click();
+        shouldBeVisible(searchMenu(), "Failed to wait for search menu to appear");
 
         switch(firstStatement)
         {
@@ -180,6 +181,7 @@ public class OrdersPage extends BasePage {
                                 break;
                         }
                 }
+                break;
 
             case "Customer":
                 selectLine(4);
@@ -197,31 +199,7 @@ public class OrdersPage extends BasePage {
                         waitForDataToLoad();
                         break;
                 }
-
-            case "Items":
-                selectLine(7);
-                switch (secondStatement)
-                {
-                    case "Product SKU":
-                        selectLine(3);
-                        searchFld().sendKeys(thirdStatement);
-                        waitForDataToLoad();
-                        break;
-                }
-
-            case "Assignee":
-                selectLine(8);
-                switch(thirdStatement)
-                {
-                    case "Has Assignee":
-                        selectLine(1);
-                        waitForDataToLoad();
-                        break;
-                    case "Has No Assignee":
-                        selectLine(2);
-                        waitForDataToLoad();
-                        break;
-                }
+                break;
 
             case "Shipping":
                 selectLine(5);
@@ -248,10 +226,39 @@ public class OrdersPage extends BasePage {
                         waitForDataToLoad();
                         break;
                 }
+                break;
+
+            case "Items":
+                selectLine(7);
+                switch (secondStatement)
+                {
+                    case "Product SKU":
+                        selectLine(3);
+                        searchFld().sendKeys(thirdStatement);
+                        waitForDataToLoad();
+                        break;
+                }
+                break;
+
+            case "Assignee":
+                selectLine(8);
+                switch(thirdStatement)
+                {
+                    case "Has Assignee":
+                        selectLine(1);
+                        waitForDataToLoad();
+                        break;
+                    case "Has No Assignee":
+                        selectLine(2);
+                        waitForDataToLoad();
+                        break;
+                }
+                break;
 
         }
-        // resets searchFld focus (works as a hack)
-        takeFocusAway();
+
+        waitForDataToLoad();
+        takeFocusFromSearchFld();
 
     }
 
@@ -259,6 +266,7 @@ public class OrdersPage extends BasePage {
     public void addFilter_arrowKeys(String firstStatement, String secondStatement, String thirdStatement, String fourthStatement) {
 
         searchFld().click();
+        shouldNotBeVisible(searchMenu(), "Failed to wait for search menu to appear");
 
         switch(firstStatement)
         {
@@ -297,7 +305,7 @@ public class OrdersPage extends BasePage {
 
         }
         // resets searchFld focus (works as a hack)
-        takeFocusAway();
+        takeFocusFromSearchFld();
 
     }
 

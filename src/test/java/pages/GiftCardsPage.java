@@ -136,7 +136,7 @@ public class GiftCardsPage extends BasePage {
             click(presetValue(value));
         }
 
-    @Step("Set amount of GCs to issue to <QTY:{0}+1(default amount)>")
+    @Step("Increase amount of GCs to be issued by <{0}>")
     public void increaseQtyBy(int increaseBy) {
         for(int i = 0; i < increaseBy; i++){
             click(qtyIncrBtn());

@@ -188,6 +188,10 @@ public class BasePage extends ConciseAPI {
         return $$(xpath("//tbody[@class='fc-table-body']/a"));
     }
 
+    public SelenideElement searchMenu() {
+        return $(xpath("//ul[@class='fc-menu-items']"));
+    }
+
     public SelenideElement itemOnList(String itemParam) {
         return $(xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a/td[text()='" + itemParam + "']"));
     }
@@ -266,10 +270,10 @@ public class BasePage extends ConciseAPI {
     // used with filters like 'Orders : State : Canceled'
     @Step("Create a search filter <{0} : {1} : {2}>")
     public void addFilter(String firstCriteria, String secondCriteria, String thirdCriteria) {
-
         String secondCriteriaVal = firstCriteria + " : " + secondCriteria;
 
         click( searchFld() );
+        shouldBeVisible(searchMenu(), "Failed to wait for search menu to appear");
         click( firstCriteria(firstCriteria) );
         click( secondCriteria(secondCriteriaVal) );
         searchFld().sendKeys(thirdCriteria);
@@ -282,10 +286,10 @@ public class BasePage extends ConciseAPI {
     // used with date pickers
     @Step("Create a search filter <{0} : {1} : {2}>")
     public void addFilter(String firstCriteria, String secondCriteria, SelenideElement date) {
-
         String secondCriteriaVal = firstCriteria + " : " + secondCriteria;
 
         click( searchFld() );
+        shouldBeVisible(searchMenu(), "Failed to wait for search menu to appear");
         click( firstCriteria(firstCriteria) );
         click( secondCriteria(secondCriteriaVal) );
         click( date );
@@ -297,11 +301,11 @@ public class BasePage extends ConciseAPI {
     // used with date pickers
     @Step("Create a search filter <{0} : {1} : {2} : {3}>")
     public void addFilter(String firstCriteria, String secondCriteria, String thirdCriteria, SelenideElement date) {
-
         String secondCriteriaVal = firstCriteria + " : " + secondCriteria;
         String thirdCriteriaVal = secondCriteriaVal + " : " + thirdCriteria;
 
         click( searchFld() );
+        shouldBeVisible(searchMenu(), "Failed to wait for search menu to appear");
         click( firstCriteria(firstCriteria) );
         click( secondCriteria(secondCriteriaVal) );
         click( thirdCriteria(thirdCriteriaVal) );
@@ -314,11 +318,11 @@ public class BasePage extends ConciseAPI {
     //used with filters like 'Order : Total : > : $1'
     @Step("Create a search filter <{0} : {1} : {2} : {3}>")
     public void addFilter(String firstCriteria, String secondCriteria, String thirdCriteria, String fourthCriteria) {
-
         String secondCriteriaVal = firstCriteria + " : " + secondCriteria;
         String thirdCriteriaVal = secondCriteriaVal + " : " + thirdCriteria;
 
         click( searchFld() );
+        shouldBeVisible(searchMenu(), "Failed to wait for search menu to appear");
         click( firstCriteria(firstCriteria) );
         click( secondCriteria(secondCriteriaVal) );
         click( thirdCriteria(thirdCriteriaVal) );
@@ -361,7 +365,7 @@ public class BasePage extends ConciseAPI {
     @Step("Search should return no results -- \"No orders found\" msg should be displayed")
     public void assertNoSearchResults() {
         noSearchResultsMsg().shouldBe(visible
-                .because("Search query output isn't empty"));
+                .because("Search output isn't empty"));
     }
 
 }
