@@ -128,11 +128,7 @@ public class ConciseAPI implements IHookable {
     protected void shouldBeVisible(SelenideElement element, String errorMsg) {
         try {
             element.shouldBe(visible);
-        } catch (ElementNotFound enf) {
-            System.err.println(enf.getStackTrace());
-            enf.printStackTrace();
-            throw new RuntimeException(errorMsg);
-        } catch (ElementShouldNot e) {
+        } catch (ElementNotFound | ElementShould | NullPointerException e) {
             System.err.println(e.getStackTrace());
             e.printStackTrace();
             throw new RuntimeException(errorMsg);
@@ -142,11 +138,7 @@ public class ConciseAPI implements IHookable {
     protected void shouldNotBeVisible(SelenideElement element, String errorMsg) {
         try {
             element.shouldNotBe(visible);
-        } catch (ElementNotFound enf) {
-            System.err.println(enf.getStackTrace());
-            enf.printStackTrace();
-            throw new RuntimeException(errorMsg);
-        } catch (ElementShouldNot e) {
+        } catch (ElementNotFound | ElementShouldNot | NullPointerException e) {
             System.err.println(e.getStackTrace());
             e.printStackTrace();
             throw new RuntimeException(errorMsg);
@@ -156,11 +148,7 @@ public class ConciseAPI implements IHookable {
     protected void shouldBeEnabled(SelenideElement element, String errorMsg) {
         try {
             element.shouldBe(enabled);
-        } catch (ElementNotFound enf) {
-            System.err.println(enf.getStackTrace());
-            enf.printStackTrace();
-            throw new RuntimeException(errorMsg);
-        } catch (ElementShould e) {
+        } catch (ElementNotFound | ElementShould |NullPointerException e) {
             System.err.println(e.getStackTrace());
             e.printStackTrace();
             throw new RuntimeException(errorMsg);
@@ -170,11 +158,7 @@ public class ConciseAPI implements IHookable {
     protected void shouldNotExist(SelenideElement element, String errorMsg) {
         try {
             element.shouldNot(exist);
-        } catch (ElementNotFound enf) {
-            System.err.println(enf.getStackTrace());
-            enf.printStackTrace();
-            throw new RuntimeException(errorMsg);
-        } catch (ElementShouldNot e) {
+        } catch (ElementNotFound | ElementShouldNot | NullPointerException e) {
             System.err.println(e.getStackTrace());
             e.printStackTrace();
             throw new RuntimeException(errorMsg);
@@ -185,15 +169,11 @@ public class ConciseAPI implements IHookable {
         try {
             actualValue = element.getValue();
             element.shouldHave(attribute("value", expValue));
-        } catch (ElementNotFound enf) {
-            System.err.println(enf.getStackTrace());
-            enf.printStackTrace();
-            throw new RuntimeException(errorMsg +
-                    "\nExpected: [" + expValue + "], Actual: [" + actualValue + "].");
-        } catch (ElementShould e) {
+        } catch (ElementNotFound | ElementShould | NullPointerException e) {
             System.err.println(e.getStackTrace());
             e.printStackTrace();
-            throw new RuntimeException(errorMsg);
+            throw new RuntimeException(errorMsg +
+                    "\nExpected: [" + expValue + "], Actual: [" + actualValue + "].");
         }
     }
 
@@ -201,15 +181,11 @@ public class ConciseAPI implements IHookable {
         try {
             actualValue = element.getText();
             element.shouldHave(text(expValue));
-        } catch (ElementNotFound enf) {
-            System.err.println(enf.getStackTrace());
-            enf.printStackTrace();
+        } catch (ElementNotFound | ElementShould | NullPointerException e) {
+            System.err.println(e.getStackTrace());
+            e.printStackTrace();
             throw new RuntimeException(errorMsg +
                     "\nExpected: [" + expValue + "], Actual: [" + actualValue + "].");
-        } catch (ElementShould es) {
-            System.err.println(es.getStackTrace());
-            es.printStackTrace();
-            throw new RuntimeException(errorMsg);
         }
     }
 
@@ -218,37 +194,107 @@ public class ConciseAPI implements IHookable {
             actualValue = element.getText();
             element.shouldNotHave(text(expValue));
             // must be different exception
-        } catch (ElementNotFound enf) {
-            System.err.println(enf.getStackTrace());
-            enf.printStackTrace();
+        } catch (ElementNotFound | ElementShouldNot | NullPointerException e) {
+            System.err.println(e.getStackTrace());
+            e.printStackTrace();
             throw new RuntimeException(errorMsg +
                     "\nExpected: [" + expValue + "], Actual: [" + actualValue + "].");
-        } catch (ElementShouldNot e) {
-            System.err.println(e.getStackTrace());
-            e.printStackTrace();
-            throw new RuntimeException(errorMsg);
         }
     }
 
-    protected void shouldHaveSize(ElementsCollection collection, int expValue, String errorMsg) {
+    protected void shouldHaveSize(ElementsCollection elemCollection, int expValue, String errorMsg) {
         try {
-            actualSize = collection.size();
-            collection.shouldHaveSize(expValue);
+            actualSize = elemCollection.size();
+            elemCollection.shouldHaveSize(expValue);
             // must be different exception
-        } catch (ElementNotFound enf) {
-            System.err.println(enf.getStackTrace());
-            enf.printStackTrace();
-            throw new RuntimeException(errorMsg +
-                    "\nExpected: [" + expValue + "], Actual: [" + actualSize + "].");
-        } catch (ListSizeMismatch e) {
+        } catch (ElementNotFound | ListSizeMismatch | NullPointerException e) {
             System.err.println(e.getStackTrace());
             e.printStackTrace();
             throw new RuntimeException(errorMsg +
                     "\nExpected: [" + expValue + "], Actual: [" + actualSize + "].");
         }
     }
+
+    public void assertTwice(SelenideElement element, String condition, String errorMsg) {
+        switch (condition.toLowerCase()) {
+
+            case "should be visible":
+                try {
+                    element.shouldBe(visible.because(errorMsg));
+                } catch (ElementNotFound | ElementShould | NullPointerException e) {
+                    refresh();
+                    element.shouldBe(visible.because(errorMsg));
+                }
+                break;
+            case "should not be visible":
+                try {
+                    element.shouldNotBe(visible.because(errorMsg));
+                } catch (ElementNotFound | ElementShouldNot | NullPointerException e) {
+                    refresh();
+                    element.shouldNotBe(visible.because(errorMsg));
+                }
+                break;
+            case "should be enabled":
+                try {
+                    element.shouldBe(enabled.because(errorMsg));
+                } catch (ElementNotFound | ElementShould | NullPointerException e) {
+                    refresh();
+                    element.shouldBe(enabled.because(errorMsg));
+                }
+                break;
+            case "should not exist":
+                try {
+                    element.shouldNot(exist.because(errorMsg));
+                } catch (ElementNotFound | ElementShouldNot | NullPointerException e) {
+                    refresh();
+                    element.shouldNot(exist.because(errorMsg));
+                }
+                break;
+        }
+    }
+
+    public void assertTwice(SelenideElement element, String condition, String value, String errorMsg) {
+        switch (condition.toLowerCase()) {
+
+            case "should have value":
+                try {
+                    element.shouldHave(value(value).because(errorMsg));
+                } catch (ElementNotFound | ElementShould | NullPointerException e) {
+                    refresh();
+                    element.shouldHave(value(value).because(errorMsg));
+                }
+                break;
+            case "should have text":
+                try {
+                    element.shouldHave(text(value).because(errorMsg));
+                } catch (ElementNotFound | ElementShould | NullPointerException e) {
+                    refresh();
+                    element.shouldHave(text(value).because(errorMsg));
+                }
+                break;
+            case "should not have text":
+                try {
+                    element.shouldNotHave(text(value).because(errorMsg));
+                } catch (ElementNotFound | ElementShouldNot | NullPointerException e) {
+                    refresh();
+                    element.shouldNotHave(text(value).because(errorMsg));
+                }
+                break;
+        }
+    }
+
+    public void assertTwice(ElementsCollection elemCollection, int expValue) {
+        try {
+            elemCollection.shouldHaveSize(expValue);
+        } catch (ElementNotFound | ElementShouldNot | NullPointerException ignored) {
+            refresh();
+            elemCollection.shouldHaveSize(expValue);
+        }
+    }
+
 
     //------------------------- HELPERS -------------------------//
+
     //------------ MATH
     protected String addToString(String string1, String string2) {
         Integer intString1 = Integer.valueOf(string1);

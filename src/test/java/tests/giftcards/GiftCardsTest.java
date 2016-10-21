@@ -1,6 +1,5 @@
 package tests.giftcards;
 
-import com.codeborne.selenide.ex.ElementNotFound;
 import org.openqa.selenium.By;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -240,14 +239,8 @@ public class GiftCardsTest extends DataProvider {
         p.clickIssueGCBtn();
         p.waitForDataToLoad();
 
-        try {
-            p.counter().shouldHave(text(expectedResult)
-                    .because("Incorrect GCs amount counter - either GCs creation has failed or counter value isn't updated."));
-        } catch (ElementNotFound enf) {
-            refresh();
-            p.counter().shouldHave(text(expectedResult)
-                    .because("Incorrect GCs amount counter - either GCs creation has failed or counter value isn't updated."));
-        }
+        assertTwice(p.counter(), "should have text", expectedResult,
+                "Incorrect GCs amount counter - either GCs creation has failed or counter value isn't updated");
 
     }
 

@@ -608,7 +608,6 @@ public class DataProvider extends BaseTest {
         jsonObj.getJSONObject("billingAddress").putOpt("state", region.getString("name"));
         jsonObj.getJSONObject("billingAddress").putOpt("country", "United States");
         String payload = jsonObj.toString();
-        System.out.println(payload);
 
         OkHttpClient client = new OkHttpClient();
 
@@ -1871,6 +1870,7 @@ public class DataProvider extends BaseTest {
 
     private static void viewSKU_inventory(String skuCode) throws IOException {
 
+        System.out.println("Inventory takes its time to get created...");
         sleep(10000);
         System.out.println("Viewing inventory summary of SKU <" + skuCode + ">...");
 

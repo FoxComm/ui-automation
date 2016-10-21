@@ -81,26 +81,9 @@ public class OrdersPage extends BasePage {
         return orderParamVal;
     }
 
-//    TO BE DELETED
-
-//    @Step("{1} parameter value of {0}-th order on the list should be {2}")
-//    public void assertOrderParameter(int index, String paramName, String expectedParamValue) {
-//
-//        String actualParamValue = null;
-//        try {
-//            actualParamValue = getOrderParamValue(index, paramName);
-//        } catch (NoSuchElementException e) {
-//            assertTrue(!emptyList().is(visible), "A specified search filter gave no results.");
-//        }
-//        System.out.println(actualParamValue);
-//        assertEquals(actualParamValue, expectedParamValue,
-//                "Search results aren't relevant to a given search criteria");
-//
-//    }
-
 //     DONT"T DELETE
-
-//     This assertion will be refactored
+//    To be refactored --
+//    make it possible to assert that order's total on the category list is greater/less than certain value
 //    @Step("{1} parameter value of {0}-th order on the list should be '{2} {3}'")
 //    public void assertOrderParameter(int index, String paramName, String operatorName, int expectedParamValue) {
 //

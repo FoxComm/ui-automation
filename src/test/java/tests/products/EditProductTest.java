@@ -1,6 +1,5 @@
 package tests.products;
 
-import com.codeborne.selenide.ex.ElementNotFound;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import pages.LoginPage;
@@ -302,14 +301,9 @@ public class EditProductTest extends DataProvider {
 
         sf = open(storefrontUrl + "/eyeglasses?type=men", StorefrontCategoryPage.class);
         sf.waitForDataToLoad_sf();
-        try {
-            sf.product(productName).shouldNotBe(visible
-                    .because("Product is displayed on the storefront category (it shouldn't)."));
-        } catch(ElementNotFound enf) {
-            refresh();
-            sf.product(productName).shouldNotBe(visible
-                    .because("Product is displayed on the storefront category (it shouldn't)."));
-        }
+
+        assertTwice(sf.product(productName), "should not be visible",
+                "Product is displayed on the storefront category (it shouldn't)");
 
     }
 
