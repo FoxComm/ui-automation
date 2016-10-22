@@ -316,4 +316,14 @@ public class CreateProductsTest extends DataProvider {
 
     }
 
+    @Test(priority = 18)
+    public void titleIsRequired() {
+
+        String randomId = generateRandomID();
+        p = openPage(adminUrl + "/products/default/new", ProductsPage.class);
+        p.sku("SKU-" + randomId);
+        p.clickSave();
+
+    }
+
 }

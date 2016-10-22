@@ -54,7 +54,7 @@ public class ContactInformationTest extends DataProvider {
 
         p.clickEditBtn_contactInfo();
         p.setPhoneNumber_contactInfo("7779994242");
-        p.clickSave_();
+        p.clickSave();
 
         p.phoneNumberVal_contactInfo().shouldHave(text("7779994242")
                 .because("Failed to set customer's phone number."));
@@ -70,7 +70,7 @@ public class ContactInformationTest extends DataProvider {
         p.clickEditBtn_contactInfo();
         p.setPhoneNumber_contactInfo("7779994242");
         p.setName_contactInfo(newName);
-        p.clickSave_();
+        p.clickSave();
 
         p.nameVal_contactInfo().shouldHave(text(newName)
                 .because("Failed to edit customer's name."));
@@ -88,7 +88,7 @@ public class ContactInformationTest extends DataProvider {
         p.clickEditBtn_contactInfo();
         p.setPhoneNumber_contactInfo("7779994242");
         p.setEmail_contactInfo(newEmail);
-        p.clickSave_();
+        p.clickSave();
 
         p.emailVal_contactInfo().shouldHave(text(newEmail)
                 .because("Failed to edit customer's email."));

@@ -39,7 +39,7 @@ public class PromotionsTest extends DataProvider {
         String randomId = generateRandomID();
 
         p.createNewPromo("Coupon", randomId);
-        p.clickSave();
+        p.clickSave_wait();
         shouldNotHaveText(p.promotionIdVal(), "new", "\"new\" isn't changed to promoId value of a just created promo");
         String promotionId = p.promotionIdVal().text();
 
@@ -69,7 +69,7 @@ public class PromotionsTest extends DataProvider {
         String randomId = generateRandomID();
 
         p.createNewPromo("Coupon", randomId);
-        p.clickSave();
+        p.clickSave_wait();
         shouldNotHaveText(p.promotionIdVal(), "new", "\"new\" isn't changed to promoId value of a just created promo");
         p.navigateTo("Marketing", "Promotions");
         p.search(promotionId);
@@ -85,7 +85,7 @@ public class PromotionsTest extends DataProvider {
         p = open(adminUrl + "/promotions/" + promotionId, PromotionsPage.class);
 
         p.setPromoName("Edited Promo Name");
-        p.clickSave();
+        p.clickSave_wait();
 
         p.navigateTo("Marketing", "Promotions");
         p.search(promotionId);
@@ -105,7 +105,7 @@ public class PromotionsTest extends DataProvider {
 
         clearField( p.storefrontNameFld() );
         p.setStorefrontName("Edited Promo Storefront Name");
-        p.clickSave();
+        p.clickSave_wait();
 
         p.navigateTo("Marketing", "Promotions");
         p.search(promotionId);
@@ -125,7 +125,7 @@ public class PromotionsTest extends DataProvider {
 
         p.clearField( p.descriptionFld() );
         p.setDescription("Edited Promo Description");
-        p.clickSave();
+        p.clickSave_wait();
 
         p.navigateTo("Marketing", "Promotions");
         p.search(promotionId);
@@ -143,7 +143,7 @@ public class PromotionsTest extends DataProvider {
 
         p.clearField( p.detailsFld() );
         p.setDetails("Edited Promo Details");
-        p.clickSave();
+        p.clickSave_wait();
 
         p.navigateTo("Marketing", "Promotions");
         p.search(promotionId);
@@ -161,7 +161,7 @@ public class PromotionsTest extends DataProvider {
 
         p.setApplyType("Auto");
         shouldBeVisible(p.stateDd(), "Failed to want until \"State\" dd will become visible");
-        p.clickSave();
+        p.clickSave_wait();
 
         p.navigateTo("Marketing", "Promotions");
         p.search(promotionId);
@@ -181,7 +181,7 @@ public class PromotionsTest extends DataProvider {
 
         shouldBeVisible(p.stateDd(), "Failed to want until \"State\" dd will become visible");
         p.setState("Inactive");
-        p.clickSave();
+        p.clickSave_wait();
 
         p.navigateTo("Marketing", "Promotions");
         p.search(promotionId);
@@ -201,7 +201,7 @@ public class PromotionsTest extends DataProvider {
 
         shouldBeVisible(p.stateDd(), "Failed to want until \"State\" dd will become visible");
         p.setState("Active");
-        p.clickSave();
+        p.clickSave_wait();
 
         p.navigateTo("Marketing", "Promotions");
         p.search(promotionId);
@@ -221,7 +221,7 @@ public class PromotionsTest extends DataProvider {
         p = open(adminUrl + "/promotions/" + promotionId, PromotionsPage.class);
 
         p.addTag("test promo");
-        p.clickSave();
+        p.clickSave_wait();
 
         refresh();
         p.tag("test promo").shouldBe(visible

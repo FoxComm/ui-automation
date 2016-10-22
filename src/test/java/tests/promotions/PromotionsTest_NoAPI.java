@@ -82,12 +82,12 @@ public class PromotionsTest_NoAPI extends DataProvider {
         String randomId = generateRandomID();
         p.createNewPromo("Coupon", randomId);
         promoId = p.promotionIdVal().text();
-        p.clickSave();
+        p.clickSave_wait();
 
         //Test Steps
         p = openPage(adminUrl + "/promotions/" + promoId, PromotionsPage.class);
         setFieldVal( p.nameFld(), "Edited Promo Name" );
-        p.clickSave();
+        p.clickSave_wait();
 
         p.navigateTo("Marketing", "Promotions");
         p.search(promoId);
@@ -107,13 +107,13 @@ public class PromotionsTest_NoAPI extends DataProvider {
         String randomId = generateRandomID();
         p.createNewPromo("Coupon", randomId);
         promoId = p.promotionIdVal().text();
-        p.clickSave();
+        p.clickSave_wait();
 
         //Test Steps
         p = openPage(adminUrl + "/promotions/" + promoId, PromotionsPage.class);
         clearField(p.storefrontNameFld());
         p.setStorefrontName("Edited Promo Storefront Name");
-        p.clickSave();
+        p.clickSave_wait();
 
         p.navigateTo("Marketing", "Promotions");
         p.search(promoId);
@@ -133,13 +133,13 @@ public class PromotionsTest_NoAPI extends DataProvider {
         String randomId = generateRandomID();
         p.createNewPromo("Coupon", randomId);
         promoId = p.promotionIdVal().text();
-        p.clickSave();
+        p.clickSave_wait();
 
         //Test Steps
         p = openPage(adminUrl + "/promotions/" + promoId, PromotionsPage.class);
         p.clearField( p.descriptionFld() );
         p.setDescription("Edited Promo Description");
-        p.clickSave();
+        p.clickSave_wait();
 
         p.navigateTo("Marketing", "Promotions");
         p.search(promoId);
@@ -157,13 +157,13 @@ public class PromotionsTest_NoAPI extends DataProvider {
         String randomId = generateRandomID();
         p.createNewPromo("Coupon", randomId);
         promoId = p.promotionIdVal().text();
-        p.clickSave();
+        p.clickSave_wait();
 
         //Test Steps
         p = openPage(adminUrl + "/promotions/" + promoId, PromotionsPage.class);
         p.clearField( p.detailsFld() );
         p.setDetails("Edited Promo Details");
-        p.clickSave();
+        p.clickSave_wait();
 
         p.navigateTo("Marketing", "Promotions");
         p.search(promoId);
@@ -181,13 +181,13 @@ public class PromotionsTest_NoAPI extends DataProvider {
         String randomId = generateRandomID();
         p.createNewPromo("Coupon", randomId);
         promoId = p.promotionIdVal().text();
-        p.clickSave();
+        p.clickSave_wait();
 
         //Test Steps
         p = openPage(adminUrl + "/promotions/" + promoId, PromotionsPage.class);
         p.setApplyType("Auto");
         shouldBeVisible(p.stateDd(), "\"State\" dd isn't displayed after changing \"Apply Type\" from \"Coupon\" to \"Auto\"");
-        p.clickSave();
+        p.clickSave_wait();
 
         p.navigateTo("Marketing", "Promotions");
         p.search(promoId);
@@ -208,14 +208,14 @@ public class PromotionsTest_NoAPI extends DataProvider {
         String randomId = generateRandomID();
         p.createNewPromo_autoApply_active("Auto", randomId);
         promoId = p.promotionIdVal().text();
-        p.clickSave();
+        p.clickSave_wait();
 
         //Test Steps
         p = openPage(adminUrl + "/promotions/" + promoId, PromotionsPage.class);
         p.stateDd().shouldBe(visible);
         shouldBeVisible(p.stateDd(), "Failed to wait for \"State\" dd to become visible");
         p.setState("Inactive");
-        p.clickSave();
+        p.clickSave_wait();
 
         p.navigateTo("Marketing", "Promotions");
         p.search(promoId);
@@ -237,13 +237,13 @@ public class PromotionsTest_NoAPI extends DataProvider {
         String randomId = generateRandomID();
         p.createNewPromo("Auto", randomId);
         promoId = p.promotionIdVal().text();
-        p.clickSave();
+        p.clickSave_wait();
 
         //Test Steps
         p = openPage(adminUrl + "/promotions/" + promoId, PromotionsPage.class);
         shouldBeVisible(p.stateDd(), "Failed to wait for \"State\" dd to become visible");
         p.setState("Active");
-        p.clickSave();
+        p.clickSave_wait();
 
         p.navigateTo("Marketing", "Promotions");
         p.search(promoId);
@@ -263,12 +263,12 @@ public class PromotionsTest_NoAPI extends DataProvider {
         String randomId = generateRandomID();
         p.createNewPromo("Coupon", randomId);
         promoId = p.promotionIdVal().text();
-        p.clickSave();
+        p.clickSave_wait();
 
         //Test Steps
         p = openPage(adminUrl + "/promotions/" + promoId, PromotionsPage.class);
         p.addTag("test promo");
-        p.clickSave();
+        p.clickSave_wait();
 
         p.navigateTo("Marketing", "Promotions");
         p.search(promoId);
@@ -286,7 +286,7 @@ public class PromotionsTest_NoAPI extends DataProvider {
         String randomId = generateRandomID();
         p.createNewPromo("Coupon", randomId);
         promoId = p.promotionIdVal().text();
-        p.clickSave();
+        p.clickSave_wait();
 
         //Test Steps
         p = openPage(adminUrl + "/promotions/" + promoId, PromotionsPage.class);

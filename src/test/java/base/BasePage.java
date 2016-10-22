@@ -127,10 +127,22 @@ public class BasePage extends ConciseAPI {
         return $(xpath("//span[text()='Save']/.."));
     }
 
+    /**
+     * Click "Save" btn without waiting for it to get re-enabled
+     */
     @Step("Click \"Save\"")
     public void clickSave() {
         click(saveBtn());
         sleep(1000);
+    }
+
+    /**
+     * Click "Save" btn and wait for it to get re-enabled
+     */
+    @Step("Click \"Save\" and wait until it's re-enabled")
+    public void clickSave_wait() {
+        jsClick(saveBtn());
+        shouldBeEnabled(saveBtn(), "\"Save\" btn doesn't get re-enabled");
     }
 //----
     public SelenideElement addTagBtn() {

@@ -6,7 +6,6 @@ import ru.yandex.qatools.allure.annotations.Step;
 
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
-import static com.codeborne.selenide.Selenide.sleep;
 import static org.openqa.selenium.By.xpath;
 
 public class InventoryPage extends BasePage {
@@ -70,13 +69,6 @@ public class InventoryPage extends BasePage {
 
 
     //----------------------------------- HELPERS -------------------------------------//
-
-    @Step("Click \"Save\"")
-    public void clickSave() {
-        jsClick(saveBtn());
-        shouldBeEnabled(saveBtn(), "\"Save\" btn doesn't get re-enabled");
-        sleep(1000);
-    }
 
     @Step("Expand <{0}> warehouse")
     public void expandWarehouse(String warehouse) {

@@ -9,7 +9,6 @@ import java.util.List;
 
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
-import static com.codeborne.selenide.Selenide.sleep;
 import static org.openqa.selenium.By.xpath;
 import static org.testng.Assert.assertTrue;
 
@@ -124,25 +123,6 @@ public class SkusPage extends BasePage {
 
     //------------------------------------------------------------------------//
     //------------------------------- HELPERS --------------------------------//
-
-    /**
-     * Click "Save" btn and wait for it to get re-enabled
-     * Overrides similar method from BasePage
-     */
-    @Step("Click \"Save\"")
-    public void clickSave() {
-        click(saveBtn());
-        shouldBeEnabled(saveBtn(), "\"Save\" btn doesn't get re-enabled");
-    }
-
-    /**
-     * Click "Save" btn without waiting for it to get re-enabled
-     */
-    @Step("Click \"Save\"")
-    public void clickSave_() {
-        click(saveBtn());
-        sleep(1000);
-    }
 
     @Step("Click \"Create New SKU\" btn")
     public void clickAddNewSKU() {

@@ -40,7 +40,7 @@ public class InventoryTest extends DataProvider {
 
         p.expandWarehouse("default");
         p.setOnHand("Sellable", "1");
-        p.clickSave();
+        p.clickSave_wait();
         refresh();
 
         p.onHandQty("default").shouldHave(text("1"));
@@ -55,7 +55,7 @@ public class InventoryTest extends DataProvider {
 
         p.expandWarehouse("default");
         p.setOnHand("Non-sellable", "1");
-        p.clickSave();
+        p.clickSave_wait();
         refresh();
 
         p.onHandQty("default").shouldHave(text("1"));
@@ -70,7 +70,7 @@ public class InventoryTest extends DataProvider {
 
         p.expandWarehouse("default");
         p.setOnHand("Backorder", "1");
-        p.clickSave();
+        p.clickSave_wait();
         refresh();
 
         p.onHandQty("default").shouldHave(text("1"));
@@ -85,7 +85,7 @@ public class InventoryTest extends DataProvider {
 
         p.expandWarehouse("default");
         p.setOnHand("Preorder", "1");
-        p.clickSave();
+        p.clickSave_wait();
         refresh();
 
         p.onHandQty("default").shouldHave(text("1"));
@@ -104,7 +104,7 @@ public class InventoryTest extends DataProvider {
         p.setOnHand("Backorder", "1");
         p.setOnHand("Non-sellable", "1");
         p.setOnHand("Sellable", "1");
-        p.clickSave();
+        p.clickSave_wait();
         refresh();
 
         p.onHandQty("default").shouldHave(text("4"));
@@ -122,7 +122,7 @@ public class InventoryTest extends DataProvider {
         p.onHandFld("Sellable").shouldHave(value("2"));
         p.decreaseOnHand_arrowBtn("Sellable", 1);
         p.onHandFld("Sellable").shouldHave(value("1"));
-        p.clickSave();
+        p.clickSave_wait();
         refresh();
 
         p.onHandQty("default").shouldHave(text("1"));
@@ -152,7 +152,7 @@ public class InventoryTest extends DataProvider {
 
         p.expandWarehouse("default");
         p.setOnHand("Sellable", "1");
-        p.clickSave();
+        p.clickSave_wait();
         p.openTransactions();
         waitForDataToLoad();
 

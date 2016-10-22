@@ -35,7 +35,7 @@ public class SkusTests extends DataProvider {
 
         p.clickAddNewSKU();
         p.createNewSKU(randomId, "Active");
-        p.clickSave();
+        p.clickSave_wait();
         shouldHaveText(p.skuCodeVal(), "SKU-" + randomId, "Failed to create new SKU");
         p.navigateTo("Catalog", "SKUs");
 
@@ -53,7 +53,7 @@ public class SkusTests extends DataProvider {
 
         p.addCustomProp("Text", "text fld");
         p.setCustomProp_text("text fld", "test val");
-        p.clickSave();
+        p.clickSave_wait();
         refresh();
 
         p.customTextFld("text fld").shouldHave(value("test val")
@@ -70,7 +70,7 @@ public class SkusTests extends DataProvider {
 
         p.addCustomProp("Rich Text", "richtextfld");
         p.setCustomProp_richText("richtextfld", "test val");
-        p.clickSave();
+        p.clickSave_wait();
         refresh();
 
         p.customRichTextFldVal("richtextfld").shouldHave(text("test val")
@@ -85,7 +85,7 @@ public class SkusTests extends DataProvider {
         p = openPage(adminUrl + "/skus/" + sku, SkusPage.class);
 
         p.setTitle("Edited SKU Title");
-        p.clickSave();
+        p.clickSave_wait();
         p.navigateTo("Catalog", "SKUs");
 
         // seraches for SKU by its uid
@@ -106,7 +106,7 @@ public class SkusTests extends DataProvider {
         p = openPage(adminUrl + "/skus/" + sku, SkusPage.class);
 
         p.setUpc("Edited UPC");
-        p.clickSave();
+        p.clickSave_wait();
         p.navigateTo("Catalog", "SKUs");
         p.search(sku.substring(4, sku.length()));
         p.openSKU(sku);
@@ -124,7 +124,7 @@ public class SkusTests extends DataProvider {
 
         clearField( p.descriptionFld() );
         p.setDescription("Edited description");
-        p.clickSave();
+        p.clickSave_wait();
         p.navigateTo("Catalog", "SKUs");
         p.search( sku.substring(4, sku.length()) );
         p.openSKU(sku);
@@ -144,7 +144,7 @@ public class SkusTests extends DataProvider {
         p = openPage(adminUrl + "/skus/" + sku, SkusPage.class);
 
         p.setRetailPrice("70.00");
-        p.clickSave();
+        p.clickSave_wait();
         p.navigateTo("Catalog", "SKUs");
         p.search(sku.substring(4, sku.length()));
         p.getSKUParamVal("1", "Retail Price").shouldHave(text("70.00")
@@ -163,7 +163,7 @@ public class SkusTests extends DataProvider {
         p = openPage(adminUrl + "/skus/" + sku, SkusPage.class);
 
         p.setSalePrice("70.00");
-        p.clickSave();
+        p.clickSave_wait();
         p.navigateTo("Catalog", "SKUs");
         p.search(sku.substring(4, sku.length()));
         shouldHaveText(p.getSKUParamVal("1", "Sale Price"), "70.00", "Sale price isn't updated on the list.");
@@ -181,7 +181,7 @@ public class SkusTests extends DataProvider {
         p = openPage(adminUrl + "/skus/" + sku, SkusPage.class);
 
         p.setState("Inactive");
-        p.clickSave();
+        p.clickSave_wait();
         p.navigateTo("Catalog", "SKUs");
         p.search(sku.substring(4, sku.length()));
         p.openSKU(sku);
@@ -210,7 +210,7 @@ public class SkusTests extends DataProvider {
 
         p.clickAddNewSKU();
         p.setSKUCode(sku);
-        p.clickSave_();
+        p.clickSave();
         p.errorMsg("already exists").shouldBe(visible);
 
     }
