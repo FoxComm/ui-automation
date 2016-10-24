@@ -82,7 +82,7 @@ public class ProductsPage extends BasePage {
     }
 
     public SelenideElement sku(String skuCode) {
-        return $(xpath("//tr[@class='fc-table-tr']//div[text()='" + skuCode + "']"));
+        return $(xpath("//tr[@class='fc-table-tr']//input[@value='" + skuCode + "']"));
     }
 
 
@@ -238,11 +238,5 @@ public class ProductsPage extends BasePage {
         public void setSalePrice(String price) {
             setFieldVal(salePriceFld(), price);
         }
-
-//    @Step("Assert that SKU is applied to the product")
-//    public void assertSKUApplied(String sku) {
-////        shouldBeVisible(skuName(), "\"No SKUs.\" msg is displayed - SKU wasn't applied, product won't be displayed on storefront.");
-//        sku().shouldHave(value(sku));
-//    }
 
 }

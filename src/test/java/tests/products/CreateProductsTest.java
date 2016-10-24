@@ -312,17 +312,7 @@ public class CreateProductsTest extends DataProvider {
         shouldHaveText(p.getProductParamVal("1", "Name"), "Test Product " + randomId,
                 "Queried product is not found - either search doesn't work correctly or product wasn't created");
         p.openProduct(productTitle);
-//        p.assertSKUApplied();
-
-    }
-
-    @Test(priority = 18)
-    public void titleIsRequired() {
-
-        String randomId = generateRandomID();
-        p = openPage(adminUrl + "/products/default/new", ProductsPage.class);
-        p.sku("SKU-" + randomId);
-        p.clickSave();
+        p.sku(sku).shouldBe(visible);
 
     }
 
