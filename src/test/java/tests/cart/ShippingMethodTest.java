@@ -33,9 +33,9 @@ public class ShippingMethodTest extends DataProvider {
         provideTestData("cart with chosen shipping address");
         p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
 
-        p.clickEditBtn_shipMethod();
+        p.clickEditBtn("Shipping Method");
         p.selectShipMethod("1");
-        p.clickDoneBtn_shipMethod();
+        p.clickDoneBtn("Shipping Method");
         p.assertShipMethodDefined();
 
     }

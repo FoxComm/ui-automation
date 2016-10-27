@@ -38,12 +38,12 @@ public class PaymentMethodTest extends DataProvider {
         provideTestData("cart with 1 item and chosen shipping address");
         p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
 
-        p.clickEditBtn_payment();
+        p.clickEditBtn("Payment Method");
         p.clickNewPayMethodBtn();
         p.selectPaymentType("Credit Card");
         p.addNewCreditCard("John Doe", "5555555555554444", "777", "2", "2020");
         shouldBeVisible($(xpath("//strong")), "Payment method wasn't applied");
-        p.clickDoneBtn_payment();
+        p.clickDoneBtn("Payment Method");
 
         p.assertCardAdded();
         p.fundsWarn().shouldNotBe(visible
@@ -57,7 +57,7 @@ public class PaymentMethodTest extends DataProvider {
         provideTestData("cart with 1 item && customer with GC");
         p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
 
-        p.clickEditBtn_payment();
+        p.clickEditBtn("Payment Method");
         p.clickNewPayMethodBtn();
         p.selectPaymentType("Gift Card");
         p.setGCNumber(gcCode);
@@ -81,7 +81,7 @@ public class PaymentMethodTest extends DataProvider {
 //        refresh();
         p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
 
-        p.clickEditBtn_payment();
+        p.clickEditBtn("Payment Method");
         p.clickNewPayMethodBtn();
         p.selectPaymentType("Store Credit");
         p.setAmountToUse(String.valueOf(p.grandTotalVal()));
@@ -139,7 +139,7 @@ public class PaymentMethodTest extends DataProvider {
 //        refresh();
         p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
 
-        p.clickEditBtn_payment();
+        p.clickEditBtn("Payment Method");
         p.clickNewPayMethodBtn();
         p.selectPaymentType("Store Credit");
         p.setAmountToUse(String.valueOf(p.grandTotal()));

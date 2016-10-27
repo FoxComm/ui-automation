@@ -48,15 +48,15 @@ public class ItemsTest extends DataProvider {
         p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
         shouldBeVisible(p.itemQty("1"), "Failed to open cart page");
 
-        p.clickEditBtn_items();
+        p.clickEditBtn("Items");
         p.increaseItemQty("1", 2);
-        p.clickDoneBtn_items();
+        p.clickDoneBtn("Items");
         p.itemQty("1").shouldHave(text("3")
                 .because("Line item with index <1> has incorrect quantity value."));
 
-        p.clickEditBtn_items();
+        p.clickEditBtn("Items");
         p.decreaseItemQty("1", 1);
-        p.clickDoneBtn_items();
+        p.clickDoneBtn("Items");
         p.itemQty("1").shouldHave(text("2")
                 .because("Line item with index <1> has incorrect quantity value."));
 
@@ -69,10 +69,10 @@ public class ItemsTest extends DataProvider {
         p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
         shouldBeVisible(p.itemQty("1"), "Failed to open cart page");
 
-        p.clickEditBtn_items();
+        p.clickEditBtn("Items");
         p.decreaseItemQtyBelowZero("1");
         p.confirmDeletion();
-        p.clickDoneBtn_items();
+        p.clickDoneBtn("Items");
 
         p.cart().shouldHaveSize(2);
 
@@ -103,7 +103,7 @@ public class ItemsTest extends DataProvider {
         p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
         shouldBeVisible(p.itemQty("1"), "Failed to open cart page");
 
-        p.clickEditBtn_items();
+        p.clickEditBtn("Items");
         click(p.deleteBtn_item("1"));
         p.cancelDeletion();
 
@@ -119,10 +119,10 @@ public class ItemsTest extends DataProvider {
         shouldBeVisible(p.itemQty("1"), "Failed to open cart page");
         int expectedResult = p.itemsInCartAmount();
 
-        p.clickEditBtn_items();
+        p.clickEditBtn("Items");
         p.decreaseItemQtyBelowZero("1");
         p.cancelDeletion();
-        p.clickDoneBtn_items();
+        p.clickDoneBtn("Items");
 
         p.cart().shouldHaveSize(expectedResult);
 
@@ -136,7 +136,7 @@ public class ItemsTest extends DataProvider {
         shouldBeVisible(p.itemQty("1"), "Failed to open cart page");
         int expectedItemsAmount = p.cart().size() - 1;
 
-        p.clickEditBtn_items();
+        p.clickEditBtn("Items");
         click( p.deleteBtn_item("1") );
         p.confirmDeletion();
 

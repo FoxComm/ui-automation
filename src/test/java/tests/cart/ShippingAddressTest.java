@@ -37,7 +37,7 @@ public class ShippingAddressTest extends DataProvider {
         provideTestData("cart with empty address book");
         p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
 
-        p.clickEditBtn_shipAddress();
+        p.clickEditBtn("Shipping Address");
         p.clearAddressBook();
         p.addNewAddress("John Doe", "2101 Green Valley #320", "Suite 300", "Seattle", "Washington", "98101", "9879879876");
 
@@ -54,9 +54,9 @@ public class ShippingAddressTest extends DataProvider {
         provideTestData("cart with non-empty address book");
         p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
 
-        p.clickEditBtn_shipAddress();
+        p.clickEditBtn("Shipping Address");
         p.addNewAddress("John Doe", "2101 Green Valley #320", "Suite 300", "Seattle", "Washington", "98101", "9879879876");
-        click( p.doneBtn_shipAddress() );
+        p.clickDoneBtn("Shipping Address");
 
         p.successIcon_shipAddress().shouldBe(visible
                 .because("'Success' icon is not displayed"));
@@ -71,11 +71,12 @@ public class ShippingAddressTest extends DataProvider {
         provideTestData("cart with non-empty address book");
         p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
 
-        p.clickEditBtn_shipAddress();
+        p.clickEditBtn("Shipping Address");
         p.chooseShipAddress(1);
         p.chosenAddress().shouldBe(visible
                 .because("A chosen address isn't displayed as a chosen shipping address."));
-        p.clickDoneBtn_shipAddress();
+        p.clickDoneBtn("Shipping Address");
+        shouldNotBeVisible(p.nameFld(), "\"New Address\" form isn't closed after clicking 'Save'");
 
         p.addressDetails().shouldBe(visible
                 .because("A chosen address isn't displayed as a chosen shipping address."));
@@ -87,7 +88,7 @@ public class ShippingAddressTest extends DataProvider {
     @Test(priority = 3)
     public void editChosenShippingAddress() {
 
-        p.clickEditBtn_shipAddress();
+        p.clickEditBtn("Shipping Address");
         p.clickEditBtn_chosenAddress();
         p.setName("Edited Customer Name");
         p.clickSave();
@@ -104,7 +105,7 @@ public class ShippingAddressTest extends DataProvider {
         provideTestData("cart with chosen shipping address");
         p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
 
-        p.clickEditBtn_shipAddress();
+        p.clickEditBtn("Shipping Address");
         p.removeChosenAddress();
 
         p.chosenAddress().shouldNotBe(visible
@@ -118,7 +119,7 @@ public class ShippingAddressTest extends DataProvider {
         provideTestData("cart with 2 addresses in address book");
         p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
 
-        p.clickEditBtn_shipAddress();
+        p.clickEditBtn("Shipping Address");
         p.setAddressAsDefault("1");
         sleep(750);
         p.defaultShipAddressChkbox_input("1").shouldBe(selected
@@ -132,7 +133,7 @@ public class ShippingAddressTest extends DataProvider {
         provideTestData("cart with 2 addresses and defined default shipping address");
         p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
 
-        p.clickEditBtn_shipAddress();
+        p.clickEditBtn("Shipping Address");
         p.setAddressAsDefault("1");
         sleep(750);
         p.defaultShipAddressChkbox_input("1").shouldBe(selected

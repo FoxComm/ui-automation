@@ -1,17 +1,20 @@
 package tests.cart;
 
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
+import pages.CartPage;
 import pages.LoginPage;
 import pages.OrderDetailsPage;
 import testdata.DataProvider;
 
+import java.io.IOException;
 import java.util.Objects;
 
 import static com.codeborne.selenide.Selenide.open;
 
 public class OrderCouponsTest extends DataProvider {
 
-    private OrderDetailsPage p;
+    private CartPage p = openPage(adminUrl + "/orders/" + orderId, CartPage.class);
 
     @BeforeClass(alwaysRun = true)
     public void setUp() {
@@ -29,7 +32,7 @@ public class OrderCouponsTest extends DataProvider {
 //    public void addCoupon() throws IOException {
 //
 //        provideTestData("a cart and a single code coupon");
-//        p = openPage(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
+//        p = openPage(adminUrl + "/orders/" + orderId, CartPage.class);
 //
 //        click( p.editBtn_coupons() );
 //        setFieldVal( p.couponCode(), "newcpn-12345" );

@@ -74,6 +74,14 @@ public class CartPage extends BasePage {
 
     // assignees, watchers, customer info will be listed here
 
+    private SelenideElement editBtn(String blockName) {
+        return $(xpath("//div[text()='" + blockName + "']/../../following-sibling::*/button"));
+    }
+
+    private SelenideElement doneBtn(String blockName) {
+        return $(xpath("//div[text()='" + blockName + "']/../../../following-sibling::*//span[text()='Done']"));
+    }
+
     public SelenideElement placeOrderBtn() {
         return $(xpath("//div[contains(@class, 'order-checkout')]/button"));
     }
@@ -83,6 +91,18 @@ public class CartPage extends BasePage {
     }
 
     //---------------------------------------- HELPERS ----------------------------------------//
+
+    @Step("Click \"Edit\" at <{0}> block")
+    public void clickEditBtn(String blockName) {
+        click( editBtn(blockName) );
+        shouldBeVisible( doneBtn(blockName), "\"Done\" btn isn't visible - failed to enter editing mode." );
+    }
+
+    @Step("Click \"Done\" at <{0}> block")
+    public void clickDoneBtn(String blockName) {
+        click( doneBtn(blockName) );
+        shouldNotBeVisible(doneBtn(blockName), "\"Done\" btn is visible (it shouldn't)");
+    }
 
     @Step("Click \"Place Order\" btn")
     public void clickPlaceOderBtn() {
@@ -117,18 +137,14 @@ public class CartPage extends BasePage {
             shouldNotBeVisible(fundsWarn(), "'Insufficient funds' warning is displayed.");
         }
 
-    //------------------------ I T E M S    B L O C K ------------------------//
-    //------------------------------------------------------------------------//
-    //------------------------------ ELEMENTS --------------------------------//
-
-    private SelenideElement editBtn_items() {
-        return $(xpath("//div[@class='fc-content-box fc-editable-content-box fc-line-items']/header/div[2]/button"));
-    }
+    //----------------------------- I T E M S    B L O C K -----------------------------//
+    //----------------------------------------------------------------------------------//
+    //----------------------------------- ELEMENTS -------------------------------------//
 
     public SelenideElement itemQty(String itemIndex) {
 
 //        if (itemsInEditMode()) {
-//            clickDoneBtn_items();
+//            clickDoneBtn("Items");
 //        }
 
         return $(xpath("//table[@class='fc-table']/tbody/tr[" + itemIndex + "]/td[5]"));
@@ -136,10 +152,6 @@ public class CartPage extends BasePage {
 
     private SelenideElement lineItemSearchFld() {
         return $(xpath("//input[@class='fc-input fc-typeahead__input']"));
-    }
-
-    private SelenideElement doneBtn_items() {
-        return $(xpath("//div[contains(@class, 'line-items')]/div/footer/button"));
     }
 
     private SelenideElement decreaseItemQtyBtn(String itemIndex) {
@@ -187,27 +199,13 @@ public class CartPage extends BasePage {
     }
 
 
-    //------------------------------- HELPERS --------------------------------//
-    //------------------------------------------------------------------------//
-    //-------------------------------- ITEMS ---------------------------------//
-
-    @Step("Click \"Edit\" at \"Items\" block")
-    public void clickEditBtn_items() {
-        click( editBtn_items() );
-        shouldBeVisible( doneBtn_items(), "Items 'Done' btn isn't visible - failed to enter editing mode." );
-    }
-
-    @Step("Click \"Done\" at \"Items\" block")
-    public void clickDoneBtn_items() {
-        click( doneBtn_items() );
-        shouldNotBeVisible(doneBtn_items(), "'Done' btn is visible (it shouldn't)");
-    }
+    //------------------------------------ HELPERS -------------------------------------//
 
     @Step("Add item to cart, searchQuery: {0}")
     public void addItemToCart(String searchQuery) {
 
         if ( !(itemsInEditMode()) ) {
-            clickEditBtn_items();
+            clickEditBtn("Items");
         }
         shouldBeVisible(lineItemSearchFld(),
                 "Failed to enter 'Edit' mode for line items");
@@ -219,7 +217,7 @@ public class CartPage extends BasePage {
         addFoundItem(searchQuery);
         lineItem_byName(searchQuery).shouldBe(visible
                 .because("Failed to add line, used search query: <" + searchQuery + ">"));
-        clickDoneBtn_items();
+        clickDoneBtn("Items");
         lineItem_byName(searchQuery).shouldBe(visible
                 .because("Line item isn't displayed after clicking 'Done' btn."));
 
@@ -255,7 +253,7 @@ public class CartPage extends BasePage {
         System.out.println("Deleting items... expectedItemsAmount: " + expectedItemsAmount);
 
         if ( !(itemsInEditMode()) ) {
-            clickEditBtn_items();
+            clickEditBtn("Items");
         }
 
         click(deleteBtn_item(itemIndex));
@@ -270,7 +268,7 @@ public class CartPage extends BasePage {
     public void clearCart() {
 
         if ( !(itemsInEditMode()) ) {
-            clickEditBtn_items();
+            clickEditBtn("Items");
         }
 
         int timesToIterate = itemsInCartAmount();
@@ -280,7 +278,7 @@ public class CartPage extends BasePage {
             deleteItem(itemIndex);
         }
 
-        clickDoneBtn_items();
+        clickDoneBtn("Items");
 
     }
 
@@ -289,13 +287,13 @@ public class CartPage extends BasePage {
     }
 
     private boolean itemsInEditMode() {
-        return doneBtn_items().isDisplayed();
+        return doneBtn("Items").isDisplayed();
     }
 
     @Step("Increase {0}th item in cart qty by {1}")
     public void increaseItemQty(String itemIndex, int increaseBy) {
-//        if ( !(doneBtn_items().is(visible)) ) {
-//            clickEditBtn_items();
+//        if ( !(doneBtn("Items").is(visible)) ) {
+//            clickEditBtn("Items");
 //        }
         int initialQty = Integer.valueOf(itemQtyInputFld(itemIndex).getValue());
         for (int i = 0; i < increaseBy; i++) {
@@ -315,8 +313,8 @@ public class CartPage extends BasePage {
 
     @Step("Decrease <{0}th> line item QTY by <{1}>")
     public void decreaseItemQty(String itemIndex, int decreaseBy) {
-//        if ( !(doneBtn_items().is(visible)) ) {
-//            clickEditBtn_items();
+//        if ( !(doneBtn("Items").is(visible)) ) {
+//            clickEditBtn("Items");
 //        }
         int initialQty = Integer.valueOf(itemQtyInputFld(itemIndex).getValue());
         for (int i = 0; i < decreaseBy; i++) {
@@ -350,10 +348,10 @@ public class CartPage extends BasePage {
     @Step("Edit QTY of <{0}th> line item using input fld; <newQTY:{1}>")
     public void editItemQty(String itemIndex, String newQuantity) {
         if ( !(itemsInEditMode()) ) {
-            clickEditBtn_items();
+            clickEditBtn("Items");
         }
         setLineItemQty(itemIndex, newQuantity);
-        clickDoneBtn_items();
+        clickDoneBtn("Items");
     }
 
         @Step("Set line item QTY to <{0}> using direct input")
@@ -363,20 +361,12 @@ public class CartPage extends BasePage {
 
 
 
-    //------------------- S H I P P I N G    A D D R E S S -------------------//
-    //------------------------------------------------------------------------//
-    //------------------------------ ELEMENTS --------------------------------//
+    //------------------------ S H I P P I N G    A D D R E S S ------------------------//
+    //----------------------------------------------------------------------------------//
+    //----------------------------------- ELEMENTS -------------------------------------//
 
     public SelenideElement customerName_chosenShipAddress() {
         return $(xpath(".//ul[@class='fc-addresses-list']/li/div[3]/div/ul/li[1]"));
-    }
-
-    public SelenideElement editBtn_shipAddress() {
-        return $(xpath("//div[contains(@class, 'shipping-address')]/header/div[2]/button"));
-    }
-
-    public SelenideElement doneBtn_shipAddress() {
-        return $(xpath("//div[contains(@class, 'shipping-address')]/div/footer/button"));
     }
 
     public SelenideElement successIcon_shipAddress() {
@@ -387,12 +377,12 @@ public class CartPage extends BasePage {
         return $(xpath("//div[text()='Shipping Address']/preceding-sibling::*/i[contains(@class, 'warning')]"));
     }
 
-    public SelenideElement editBtn_chosenAddress() {
-        return $(xpath("//li[@class='fc-card-container fc-address is-active']/div/div/button[2]"));
-    }
-
     public SelenideElement deleteBtn_chosenAddress() {
         return $(xpath("//li[contains (@class, 'address is-active')]/div[2]/div/button[1]"));
+    }
+
+    public SelenideElement editBtn_chosenAddress() {
+        return $(xpath("//li[contains (@class, 'address is-active')]/div[2]/div/button[2]"));
     }
 
     private SelenideElement deleteBtn_inAddressBook(String addressIndex) {
@@ -476,24 +466,17 @@ public class CartPage extends BasePage {
     }
 
 
-    //------------------------------- HELPERS --------------------------------//
+    //------------------------------------ HELPERS -------------------------------------//
 
     @Step("Click \"Edit\" btn at chosen shipping address")
     public void clickEditBtn_chosenAddress() {
-        click(editBtn_chosenAddress());
+        click(editBtn_chosenAddress(), "Failed to wait for \"Edit\" btn on chosen shipp address to become visible");
     }
 
     @Step("Click \"Delete\" btn at chosen shipping address")
     public void removeChosenAddress() {
         click(deleteBtn_chosenAddress());
         click(confirmDeletionBtn());
-    }
-
-    @Step("Click \"Done\" at 'Shipping Address' block")
-    public void clickDoneBtn_shipAddress() {
-        click(doneBtn_shipAddress());
-        shouldNotBeVisible(nameFld(),
-                "'New Address' form isn't closed after clicking 'Save'");
     }
 
     @Step("Choose existing shipping address")
@@ -579,14 +562,6 @@ public class CartPage extends BasePage {
                     .because("'State' is reset to default value"));
         }
 
-    @Step("Click \"Edit\" btn at \"Shipping Address\" block")
-    public void clickEditBtn_shipAddress() {
-        if ( !(addNewAddressBtn().is(visible)) ) {
-            click( editBtn_shipAddress() );
-        }
-        shouldBeVisible( doneBtn_shipAddress(), "Items 'Done' btn isn't visible - failed to enter editing mode." );
-    }
-
     private boolean isAddressInEditMode() {
         return addNewAddressBtn().isDisplayed();
     }
@@ -594,7 +569,7 @@ public class CartPage extends BasePage {
 //    @Step
 //    public void restorePageDefaultState() {
 //
-//        while ( !(editBtn_items().is(visible)) ) {
+//        while ( !(editBtn("Items").is(visible)) ) {
 //
 //            if ( confirmDeletionBtn().is(visible) ) {
 //                click( cancelDeletionBtn() );
@@ -602,8 +577,8 @@ public class CartPage extends BasePage {
 //            if ( saveBtn_addressForm().is(visible) ) {
 //                click( cancelBtn_addressForm() );
 //            }
-//            if ( doneBtn_shipAddress().is(visible) ) {
-//                click( doneBtn_shipAddress() );
+//            if ( doneBtn("Shipping Address").is(visible) ) {
+//                click( doneBtn("Shipping Address") );
 //            }
 //
 //        }
@@ -626,32 +601,24 @@ public class CartPage extends BasePage {
 
     }
 
-    @Step("Set an address from address book as a shipping address.")
+    @Step("Set an address from address book as a shipping address")
     public void setShipAddress() {
 
-        click( editBtn_shipAddress() );
+        click( editBtn("Shipping Address") );
         chooseShipAddress(1);
-        click( doneBtn_shipAddress() );
+        click( doneBtn("Shipping Address") );
 
     }
 
 
 
-    //-------------------- S H I P P I N G    M E T H O D --------------------//
-    //------------------------------------------------------------------------//
-    //------------------------------ ELEMENTS --------------------------------//
-
-    public SelenideElement editBtn_shipMethod() {
-        return $(xpath("//div[contains(@class, 'shipping-method')]/header/div[2]/button"));
-    }
+    //------------------------- S H I P P I N G    M E T H O D -------------------------//
+    //----------------------------------------------------------------------------------//
+    //----------------------------------- ELEMENTS -------------------------------------//
 
     // should be clicked with 'jsClick(element)'
     public SelenideElement shipMethodRdbtn(String index) {
         return $(xpath("//table[@class='fc-table']/tbody/tr[" + index + "]//input"));
-    }
-
-    public SelenideElement doneBtn_shipMethod() {
-        return $(xpath("//div[contains(@class, 'shipping-method')]/div/footer/button"));
     }
 
     public SelenideElement editSelectedShipMethodBtn() {
@@ -667,7 +634,7 @@ public class CartPage extends BasePage {
     }
 
 
-    //------------------------------- HELPERS --------------------------------//
+    //------------------------------------ HELPERS -------------------------------------//
 
     @Step("Check if \"Shipping Method\" is defined")
     public void assertShipMethodDefined() {
@@ -679,16 +646,10 @@ public class CartPage extends BasePage {
 
     @Step("Set shipping method")
     public void setShipMethod() {
-        click( editBtn_shipMethod() );
-        clickEditBtn_shipMethod();
+        clickEditBtn("Shipping Method");
         selectShipMethod("1");
-        click( doneBtn_shipMethod() );
+        clickDoneBtn("Shipping Method");
         assertShipMethodDefined();
-    }
-
-    @Step("Click \"Edit\" at \"Shipping Method\" block")
-    public void clickEditBtn_shipMethod() {
-        click( editBtn_shipMethod() );
     }
 
     @Step("Select <{0}th> shipping method")
@@ -696,26 +657,25 @@ public class CartPage extends BasePage {
         jsClick( shipMethodRdbtn(methodIndex) );
     }
 
-    @Step("Click \"Done\" at 'Shipping Method' block")
-    public void clickDoneBtn_shipMethod() {
-        click( doneBtn_shipMethod() );
-    }
+
+
+    //--------------------------------- C O U P O N S ----------------------------------//
+    //----------------------------------------------------------------------------------//
+    //----------------------------------- ELEMENTS -------------------------------------//
+
+
+
+    //------------------------------------ HELPERS -------------------------------------//
 
 
 
 
-
-
-    //--------------------- P A Y M E N T    M E T H O D ---------------------//
-    //------------------------------------------------------------------------//
-    //------------------------------ ELEMENTS --------------------------------//
+    //-------------------------- P A Y M E N T    M E T H O D --------------------------//
+    //----------------------------------------------------------------------------------//
+    //----------------------------------- ELEMENTS -------------------------------------//
 
     public SelenideElement editBtn_payment() {
         return $(xpath("//div[contains(@class, 'order-payment')]/header/div[2]/button"));
-    }
-
-    public SelenideElement doneBtn_payment() {
-        return $(xpath("//div[contains(@class, 'order-payment')]/div/footer/button"));
     }
 
     public SelenideElement newPaymentBtn() {
@@ -811,13 +771,7 @@ public class CartPage extends BasePage {
     }
 
 
-    //------------------------------- HELPERS --------------------------------//
-
-    @Step("Click \"Edit\" at \"Payment Method\" block")
-    public void clickEditBtn_payment() {
-        click(editBtn_payment());
-        shouldBeVisible( doneBtn_payment(), "Payment method's 'Done' btn isn't visible - failed to enter editing mode." );
-    }
+    //------------------------------------ HELPERS -------------------------------------//
 
     @Step("Click \"Add New Payment Method\" button")
     public void clickNewPayMethodBtn() {
@@ -885,7 +839,7 @@ public class CartPage extends BasePage {
 
     @Step("Assert that credit card is added")
     public void assertCardAdded() {
-//        editBtn_payment().shouldBe(visible);
+//        editBtn("Payment Method").shouldBe(visible);
         shouldBeVisible($(xpath("//strong[contains(text(), 'xxxx xxxx xxxx')]")),
                 "Failed to add credit card to order as a payment method.");
     }
@@ -901,15 +855,9 @@ public class CartPage extends BasePage {
         setFieldVal( amountToUseFld(), amount );
     }
 
-    @Step("Click \"Done\" at 'Payment Method' block")
-    public void clickDoneBtn_payment() {
-        click( doneBtn_payment() );
-        shouldNotBeVisible(doneBtn_payment(), "'Done' button is visible at 'Payment Method' block (it shouldn't)");
-    }
-
     @Step("Add credit card as a payment method")
     public void addPaymentMethod_CC(String holderName, String cardNumber, String cvv, String month, String year) {
-        click( editBtn_payment() );
+        click( editBtn("Payment Method") );
         click( newPaymentBtn() );
         selectPaymentType("Credit Card");
         addNewCreditCard(holderName, cardNumber, cvv, month, year);
@@ -920,7 +868,7 @@ public class CartPage extends BasePage {
 
     @Step("Add gift card as a payment method")
     public void addPaymentMethod_GC(String gcNumber, String amountToUse) {
-        clickEditBtn_payment();
+        clickEditBtn("Payment Method");
         clickNewPayMethodBtn();
         selectPaymentType("Gift Card");
         setGCNumber(gcNumber);
@@ -931,7 +879,7 @@ public class CartPage extends BasePage {
     @Step("Add store credit as a payment method")
     public void addPaymentMethod_SC(String amountToUse) {
 
-        clickEditBtn_payment();
+        clickEditBtn("Payment Method");
         clickNewPayMethodBtn();
         selectPaymentType("Store Credit");
         clearField(amountToUseFld());
