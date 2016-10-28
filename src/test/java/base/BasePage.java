@@ -158,7 +158,7 @@ public class BasePage extends ConciseAPI {
      * A part of error message works fine for this.
      */
     public SelenideElement errorMsg(String text) {
-        return $(xpath("SKU Code violates constraint: minLength"));
+        return $(xpath("//*[contains(text(), '" + text + "')]"));
     }
 
 

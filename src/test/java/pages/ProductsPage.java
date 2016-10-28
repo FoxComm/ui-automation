@@ -294,7 +294,7 @@ public class ProductsPage extends BasePage {
         click(addNewProductBtn());
     }
 
-    @Step("Add existind SKU <{0}>")
+    @Step("Add existind SKU <{1}>")
     public void addExistingSKU(int index, String SKU) {
         setFieldVal(skuFld(index), SKU);
         click(skuSearchView(SKU));
@@ -412,7 +412,7 @@ public class ProductsPage extends BasePage {
 
     @Step("Re-add SKU for option values combo <{0} & {1}>")
     public void reAddSKU(String firstValue, String secondValue) {
-        String availableOption = firstValue + secondValue;
+        String availableOption = firstValue + ", " + secondValue;
         click(addSKUBtn());
         jsClick(availableOptionChkbx(availableOption));
         click(addBtn());

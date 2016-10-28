@@ -39,7 +39,7 @@ public class NewProductFormTest extends DataProvider {
         p.setTitle("SKU-TST");
         p.clickSave();
 
-        p.errorMsg("SKUs must not be empty").shouldBe(visible);
+        p.errorMsg("SKU Code").shouldBe(visible);
 
     }
 
@@ -52,7 +52,7 @@ public class NewProductFormTest extends DataProvider {
         p.addExistingSKU(sku);
         p.clickSave();
 
-        p.errorMsg("SKU Code").shouldBe(visible);
+        p.errorMsg("title is a required field").shouldBe(visible);
 
     }
 
@@ -181,7 +181,7 @@ public class NewProductFormTest extends DataProvider {
         p = openPage(adminUrl + "/products/default/new", ProductsPage.class);
         p.addOption("color");
         p.addOptionValue("color", "red");
-        p.addExistingSKU(1, sku);
+        p.addExistingSKU(sku);
         p.clickSave();
         refresh();
 
@@ -198,7 +198,7 @@ public class NewProductFormTest extends DataProvider {
         p = openPage(adminUrl + "/products/default/new", ProductsPage.class);
         p.addOption("color");
         p.addOptionValue("color", "red");
-        p.addExistingSKU(1, sku);
+        p.addExistingSKU(sku);
         p.clickSave();
         refresh();
 
