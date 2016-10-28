@@ -659,19 +659,33 @@ public class CartPage extends BasePage {
 
 
 
-    //--------------------------------- C O U P O N S ----------------------------------//
-    //----------------------------------------------------------------------------------//
+    //-------------------------------- C O U P O N S -----------------------------------//
     //----------------------------------- ELEMENTS -------------------------------------//
 
+    private SelenideElement addCouponFld() {
+        return $(xpath("//input[@placeholder='Enter coupon code']"));
+    }
+
+    private SelenideElement applyBtn() {
+        return $(xpath("//span[text()='Apply']/.."));
+    }
 
 
     //------------------------------------ HELPERS -------------------------------------//
 
+    @Step("Add <{0}> coupon code")
+    public void addCouponCode(String codeVal) {
+        setFieldVal(addCouponFld(), codeVal);
+    }
+
+    @Step("Click \"Apply\"")
+    public void clickApplyBtn() {
+        click(applyBtn());
+    }
 
 
 
     //-------------------------- P A Y M E N T    M E T H O D --------------------------//
-    //----------------------------------------------------------------------------------//
     //----------------------------------- ELEMENTS -------------------------------------//
 
     public SelenideElement editBtn_payment() {

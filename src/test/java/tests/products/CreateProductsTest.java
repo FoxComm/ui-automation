@@ -29,6 +29,9 @@ public class CreateProductsTest extends DataProvider {
         }
     }
 
+    // TODO: Can create prod with $0.00 prices SKU
+    // TODO: SKU created along with creating a product inherits product's state
+
     @Test(priority = 1)
     public void productIsDisplayed_admin() throws IOException {
 

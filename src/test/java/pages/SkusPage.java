@@ -112,13 +112,6 @@ public class SkusPage extends BasePage {
         return $(xpath("//input[@name='" + label.toLowerCase() + "']"));
     }
 
-    /**
-     * A part of error message works fine for this.
-     */
-    public SelenideElement errorMsg(String text) {
-        return $(xpath("//*[contains(text(), '" + text + "')]"));
-    }
-
 
 
     //------------------------------------------------------------------------//

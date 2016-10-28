@@ -28,48 +28,48 @@ public class OrderCouponsTest extends DataProvider {
 
     }
 
-//    @Test(priority = 1)
-//    public void addCoupon() throws IOException {
-//
-//        provideTestData("a cart and a single code coupon");
-//        p = openPage(adminUrl + "/orders/" + orderId, CartPage.class);
-//
-//        click( p.editBtn_coupons() );
-//        setFieldVal( p.couponCode(), "newcpn-12345" );
-//        click( p.applyBtn() );
-//        click(  p.doneBtn_coupons );
-//
+    @Test(priority = 1)
+    public void addCoupon() throws IOException {
+
+        provideTestData("a cart and a single code coupon");
+        p = openPage(adminUrl + "/orders/" + orderId, CartPage.class);
+
+        p.clickEditBtn("Coupons");
+        p.addCouponCode("newcpn-12345");
+        p.clickApplyBtn();
+        p.clickDoneBtn("Coupons");
+
 //        assertTrue( p. )
-//        // assert that coupon is displayed in 'Discounts' block
-//
-//    }
-//
-//    @Test(priority = 2)
-//    public void addCoupon_checkTotal() throws IOException {
-//
-//        // add coupon to order through the API
-//        provideTestData("cart with single code coupon");
-//        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
-//
-//        //assert that coupon affects order's grand total
-//
-//    }
-//
-//    @Test(priority = 2)
-//    public void removeCoupon() throws IOException {
-//
-//        // add coupon to order through the API
-//        provideTestData("cart with single code coupon");
-//        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
-//
-////        click( p.editBtn_coupons() );
-////        click( p.deleteBtn_coupons() );
-////        click( p.doneBtn_coupons() );
-//
-//        // assert order's Grand Total
-//        // assert that 'Discounts' is cleared
-//
-//    }
+        // assert that coupon is displayed in 'Discounts' block
+
+    }
+
+    @Test(priority = 2)
+    public void addCoupon_checkTotal() throws IOException {
+
+        // add coupon to order through the API
+        provideTestData("cart with single code coupon");
+        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
+
+        //assert that coupon affects order's grand total
+
+    }
+
+    @Test(priority = 2)
+    public void removeCoupon() throws IOException {
+
+        // add coupon to order through the API
+        provideTestData("cart with single code coupon");
+        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
+
+//        click( p.editBtn_coupons() );
+//        click( p.deleteBtn_coupons() );
+//        click( p.doneBtn_coupons() );
+
+        // assert order's Grand Total
+        // assert that 'Discounts' is cleared
+
+    }
 
 
 }

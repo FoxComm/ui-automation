@@ -83,15 +83,15 @@ public class BasePage extends ConciseAPI {
 
     //------------------------------------ LOGIN SCREEN --------------------------------------//
     public SelenideElement organizationFld() {
-        return $(xpath("//label[text()='Organization']/following-sibling::*"));
+        return $(xpath("//label[text()='Organization']/following-sibling::*[@type='text']"));
     }
 
     public SelenideElement emailFld() {
-        return $(xpath("//label[text()='Email']/following-sibling::*"));
+        return $(xpath("//label[text()='Email']/following-sibling::*[@type='text']"));
     }
 
     public SelenideElement passwordFld() {
-        return $(xpath("//div[text()='Password']/../../following-sibling::*"));
+        return $(xpath("//input[@type='password']"));
     }
 
     public SelenideElement googleAuthButton() {
@@ -144,6 +144,24 @@ public class BasePage extends ConciseAPI {
         jsClick(saveBtn());
         shouldBeEnabled(saveBtn(), "\"Save\" btn doesn't get re-enabled");
     }
+
+    private SelenideElement saveOptionsDd() {
+        return $(xpath("//div[@class='_common_button_with_menu__controls']/button[2]"));
+    }
+
+    @Step("Open dd next to \"Save\" btn and select <{0}>")
+    public void saveWithOption(String optionVal) {
+        setDdVal(saveOptionsDd(), optionVal);
+    }
+
+    /**
+     * A part of error message works fine for this.
+     */
+    public SelenideElement errorMsg(String text) {
+        return $(xpath("SKU Code violates constraint: minLength"));
+    }
+
+
 //----
     public SelenideElement addTagBtn() {
         return $(xpath("//button[@class='_tags_tags__icon']"));
