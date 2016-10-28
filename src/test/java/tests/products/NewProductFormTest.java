@@ -153,7 +153,7 @@ public class NewProductFormTest extends DataProvider {
         p.addOptionValue("size", "small");
         p.removeSKU("red", "small");
 
-        p.sku("red", "small").shouldNotBe(visible);
+        p.skuWithVariant("red", "small").shouldNotBe(visible);
 
     }
 
@@ -170,7 +170,7 @@ public class NewProductFormTest extends DataProvider {
         p.removeSKU("blue", "small");
         p.reAddSKU("blue", "small");
 
-        p.sku("blue", "small").shouldBe(visible);
+        p.skuWithVariant("blue", "small").shouldBe(visible);
 
     }
 

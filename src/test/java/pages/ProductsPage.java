@@ -102,14 +102,14 @@ public class ProductsPage extends BasePage {
      * Looks for a SKU input field filled with a given SKU code
      */
     public SelenideElement sku(String skuCode) {
-        return $(xpath("//tr[@class='fc-table-tr']//input[@value='" + skuCode + "']"));
+        return $(xpath("//tr[@class='fc-table-tr']//div[text()='" + skuCode + "']"));
     }
 
     /**
      * Looks for a block with a given option value pair
      * Values should be given as they are displayed on the page in order left to right
      */
-    public SelenideElement sku(String firstValue, String secondValue) {
+    public SelenideElement skuWithVariant(String firstValue, String secondValue) {
         return $(xpath("//td/div[text()='" + firstValue + "']/../following-sibling::*[1]/div[text()='" + secondValue + "']"));
     }
 
