@@ -34,7 +34,7 @@ public class ProductsPage extends BasePage {
     }
 
     public SelenideElement skuFld(int index) {
-        return $$(xpath("//input[@placeholder='SKU']")).get(index);
+        return $(xpath("//div[text()='SKUs']/../following-sibling::*//tbody/tr[" + index + "]//div[@class='_forms_css_loading_input_wrapper__wrapper']/input"));
     }
 
     private SelenideElement skuFld() {

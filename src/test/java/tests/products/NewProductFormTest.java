@@ -1,5 +1,6 @@
 package tests.products;
 
+import base.ConciseAPI;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import pages.LoginPage;
@@ -158,7 +159,7 @@ public class NewProductFormTest extends DataProvider {
 
     @Test(priority = 10)
     @Description("Removed SKU related to a specific option values combination can be re-added")
-    public void reAddVariantSpecificSKU() {
+    public void reAddVariantSpecificSKU() throws IOException {
 
         p = openPage(adminUrl + "/products/default/new", ProductsPage.class);
         p.addOption("color");
@@ -179,6 +180,7 @@ public class NewProductFormTest extends DataProvider {
 
         provideTestData("active SKU");
         p = openPage(adminUrl + "/products/default/new", ProductsPage.class);
+        p.setTitle("Product " + generateRandomID());
         p.addOption("color");
         p.addOptionValue("color", "red");
         p.addExistingSKU(sku);
@@ -196,6 +198,7 @@ public class NewProductFormTest extends DataProvider {
 
         provideTestData("active SKU");
         p = openPage(adminUrl + "/products/default/new", ProductsPage.class);
+        p.setTitle("Product " + generateRandomID());
         p.addOption("color");
         p.addOptionValue("color", "red");
         p.addExistingSKU(sku);
