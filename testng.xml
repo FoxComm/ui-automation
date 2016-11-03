@@ -54,6 +54,11 @@
             <!--<class name="tests.cart.OrderCouponsTest" />-->
         <!--</classes>-->
     <!--</test>-->
+    <test name="Cart > Validation">
+        <classes>
+            <class name="tests.cart.CartValidationTest" />
+        </classes>
+    </test>
 
 
     <test name="Orders" >

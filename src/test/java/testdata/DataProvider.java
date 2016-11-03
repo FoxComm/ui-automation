@@ -26,14 +26,14 @@ public class DataProvider extends BaseTest {
 
     protected static String customerName;       // stored from viewCustomer()
     protected static String customerEmail;      // stored from viewCustomer()
-    private static int addressId1;              // stored from listCustomerAddresses()
+    protected static int addressId1;              // stored from listCustomerAddresses()
     private static int addressId2;              // stored from listCustomerAddresses()
     private static String addressPayload;   // stored from listCustomerAddresses()
 
     protected static String gcCode;           // stored from issueGiftCard()
-    private static int scId;                    // stored from issueStoreCredit()
+    protected static int scId;                    // stored from issueStoreCredit()
     private static int shipMethodId;            // stored from listShipMethods()
-    private static int creditCardId;            // stored from create createCreditCard()
+    protected static int creditCardId;            // stored from create createCreditCard()
     private static String stripeToken;          // stored from getStripeToken()
 
     protected static String promotionId;
@@ -47,11 +47,13 @@ public class DataProvider extends BaseTest {
     protected static int skuId_inventory;                     // stored from viewSKU();
     protected static String productName;            // stored from createProduct_<..>() methods
     protected static String productId;                 // stored from createProduct_<..>() methods
+    protected static String variantSKU_1;               // stored from createProduct_variants()
+    protected static String variantSKU_2;               // stored from createProduct_variants()
 
     private static int searchId;                    // stored from createSharedSearch() methods
-    public static String searchRandomId;            // stored at createSharedSearch() methods
+    protected static String searchRandomId;            // stored at createSharedSearch() methods
     protected static String searchCode;             // stored from createSharedSearch() methods
-    protected static int adminId;                   // stored from getAdminId() method
+    private static int adminId;                   // stored from getAdminId() method
 
     private static JSONObject parse(String rout) throws IOException {
         String jsonData = "";
@@ -74,7 +76,7 @@ public class DataProvider extends BaseTest {
         }
     }
 
-    @Step("Log in as admin")
+    @Step("[API] Log in as admin")
     private static void loginAsAdmin() throws IOException {
 
         System.out.println("Authorizing as an admin...");
@@ -110,7 +112,7 @@ public class DataProvider extends BaseTest {
 
     }
 
-    @Step("Create new customer")
+    @Step("[API] Create new customer")
     private static void createNewCustomer() throws IOException {
 
         System.out.println("Creating a new customer...");
@@ -153,7 +155,7 @@ public class DataProvider extends BaseTest {
 
     }
 
-    @Step("Create cart for customer <{0}>")
+    @Step("[API] Create cart for customer <{0}>")
     private static void createCart(int customerId) throws IOException {
 
         System.out.println("Creating a cart for customer " + customerId + "...");
@@ -214,8 +216,8 @@ public class DataProvider extends BaseTest {
 //
 //    }
 
-    @Step("Add line item: <{1}>, <QTY:{2}> to cart: <{0}>")
-    private static void updSKULineItems(String orderRefNum, String SKU, int quantity) throws IOException {
+    @Step("[API] Add line item: <{1}>, <QTY:{2}> to cart: <{0}>")
+    private static void updLineItems(String orderRefNum, String SKU, int quantity) throws IOException {
 
         System.out.println("Updating SKUs: setting <" + SKU + "> quantity to <" + quantity + ">...");
 
@@ -248,7 +250,7 @@ public class DataProvider extends BaseTest {
 
     }
 
-    @Step("View customer <{0}>")
+    @Step("[API] View customer <{0}>")
     private static void viewCustomer(int customerId) throws IOException {
 
         System.out.println("Getting name and email of customer <" + customerId + ">...");
@@ -282,7 +284,7 @@ public class DataProvider extends BaseTest {
 
     }
 
-    @Step("Create new shipping address for customer <{0}>")
+    @Step("[API] Create new shipping address for customer <{0}>")
     private static void createAddress(int customerId, String name, int regionId, int countryId, String region_name, String address1, String address2, String city, String zip, String phoneNumber, boolean isDefault)
             throws IOException {
 
@@ -325,7 +327,37 @@ public class DataProvider extends BaseTest {
 
     }
 
-    @Step("Add new shipping address and set it as a chosen for cart <{0}>")
+    @Step("[API] Delete address <ID:{1}> from ccutomer <ID:{0}> address book")
+    protected static void deleteAddress(int customerId, int addressId) throws IOException {
+
+        System.out.println("Deleting address <ID:{1}> from ccutomer <ID:{0}> address book");
+
+        OkHttpClient client = new OkHttpClient();
+
+        Request request = new Request.Builder()
+                .url("https://stage.foxcommerce.com/api/v1/customers/" + customerId + "/addresses/" + addressId)
+                .delete(null)
+                .addHeader("content-type", "application/json")
+                .addHeader("accept", "application/json")
+                .addHeader("cache-control", "no-cache")
+                .addHeader("JWT", jwt)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+        int responseCode = response.code();
+        String responseMsg = response.message();
+
+        if (responseCode == 204) {
+            System.out.println(responseCode + " " + responseMsg);
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
+
+    }
+
+    @Step("[API] Add new shipping address and set it as a chosen for cart <{0}>")
     private static void setShipAddress(String cartId, String name, int regionId, int countryId, String region_name, String address1, String address2, String city, String zip, String phoneNumber, boolean isDefault) throws IOException {
 
         System.out.println("Adding new shipping address and setting it as a chosen for <" + cartId + "> order...");
@@ -364,7 +396,7 @@ public class DataProvider extends BaseTest {
 
     }
 
-    @Step("List all shipping addresses of customer <{0}>")
+    @Step("[API] List all shipping addresses of customer <{0}>")
     private static void listCustomerAddresses(int customerId) throws IOException {
 
         System.out.println("Listing all addresses of customer " + customerId + "...");
@@ -396,9 +428,10 @@ public class DataProvider extends BaseTest {
 
     }
 
-    @Step("View address details, customerID: <{0}>, addressID: <{1}>")
+    @Step("[API] View address details, customerID: <{0}>, addressID: <{1}>")
     private static void getCustomerAddress(int customerId, int addressId) throws IOException {
 
+        listCustomerAddresses(customerId);
         System.out.println("Getting address with ID <" + addressId + "> of customer <" + customerId + ">...");
         OkHttpClient client = new OkHttpClient();
 
@@ -427,7 +460,7 @@ public class DataProvider extends BaseTest {
 
     }
 
-    @Step("Update shipping address details. addressID: <{1}>, customerId: <{0}>")
+    @Step("[API] Update shipping address details. addressID: <{1}>, customerId: <{0}>")
     private static void updateCustomerShipAddress(int customerId, int addressId1, String customerName, int regionId, String address1, String address2, String city, String zip, String phoneNumber) throws IOException {
 
         System.out.println("Updating shipping address ID:<" + addressId1 + "> for customer <" + customerId + ">...");
@@ -468,7 +501,7 @@ public class DataProvider extends BaseTest {
     }
 
 
-    @Step("List possible shipping methods for cart <{0}>")
+    @Step("[API] List possible shipping methods for cart <{0}>")
     private static void listShipMethods(String cartId) throws IOException {
 
         System.out.println("Getting possible shipping methods for order <" + cartId + ">...");
@@ -501,7 +534,7 @@ public class DataProvider extends BaseTest {
 
     }
 
-    @Step("Set shipping method <{1}> for cart <{1}>")
+    @Step("[API] Set shipping method <{1}> for cart <{1}>")
     private static void setShipMethod(String cartId, int shipMethodId) throws IOException {
 
         System.out.println("Setting shipping method for order <" + cartId + ">...");
@@ -586,7 +619,7 @@ public class DataProvider extends BaseTest {
 
     }
 
-    @Step("Create credit card")
+    @Step("[API] Create credit card")
     private static void createCreditCard(int customerId, String holderName, String cardNumber, int expMonth, int expYear, int cvv, String brand) throws IOException {
 
         getStripeToken(customerId, cardNumber, expMonth, expYear, cvv);
@@ -638,7 +671,40 @@ public class DataProvider extends BaseTest {
         }
     }
 
-    @Step("Set credit card <{1}> as a payment method for cart <{0}>")
+    @Step("[API] Delete credit cart <ID:{1} of customer <ID:{0}>")
+    protected void deleteCreditCard(int customerId, int creditCardId) throws IOException {
+
+        System.out.println("Deleting credit cart <ID:{1} of customer <ID:{0}>...");
+
+        OkHttpClient client = new OkHttpClient();
+
+        Request request = new Request.Builder()
+                .url(apiUrl + "/v1/customers/" + customerId + "/payment-methods/credit-cards/" + creditCardId)
+                .delete(null)
+                .addHeader("content-type", "application/json")
+                .addHeader("accept", "application/json")
+                .addHeader("cache-control", "no-cache")
+                .addHeader("JWT", jwt)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+        int responseCode = response.code();
+        String responseMsg = response.message();
+
+        if (responseCode == 204) {
+            System.out.println(responseCode + " " + responseMsg);
+            org.json.JSONObject jsonData = new org.json.JSONObject(responseBody);
+            creditCardId = jsonData.getInt("id");
+            System.out.println("Credit Card ID: <" + creditCardId + ">");
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
+
+    }
+
+    @Step("[API] Set credit card <{1}> as a payment method for cart <{0}>")
     private static void setPayment_creditCard(String cartId, int creditCardId) throws IOException {
 
         System.out.println("Setting credit card with id <" + creditCardId + "> as a payment method for order <" + cartId + ">...");
@@ -670,7 +736,7 @@ public class DataProvider extends BaseTest {
 
     }
 
-    @Step("Issue store credit in amount of <{1}> for customer <{0}>")
+    @Step("[API] Issue store credit in amount of <{1}> for customer <{0}>")
     private static void issueStoreCredit(int customerId, int amount) throws IOException {
 
         System.out.println("Issuing store credit for customer <" + customerId + ">...");
@@ -709,7 +775,7 @@ public class DataProvider extends BaseTest {
 
     }
 
-    @Step("Transfer GC <{1}> to store credits for customer <{0}>")
+    @Step("[API] Transfer GC <{1}> to store credits for customer <{0}>")
     private static void issueStoreCredit_gcTransfer(int customerId, String gcNumber) throws IOException {
 
         System.out.println("Transferring GC <" + gcNumber + "to SC for customer <" + customerId + ">...");
@@ -745,10 +811,41 @@ public class DataProvider extends BaseTest {
             failTest(responseBody, responseCode, responseMsg);
         }
 
+    }
+
+    @Step("[API] Set store credit <ID:{0}> state to <{1}>")
+    protected static void setStoreCreditState(int id, String state) throws IOException {
+
+        System.out.println("Setting SC <ID:" + id + "> state to <" + state + ">...");
+
+        OkHttpClient client = new OkHttpClient();
+
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{\n  \"state\": \"" + state + "\",\n  \"reasonId\": 1\n}");
+        Request request = new Request.Builder()
+                .url(apiUrl + "/v1/store-credits/" + id)
+                .patch(body)
+                .addHeader("content-type", "application/json")
+                .addHeader("accept", "application/json")
+                .addHeader("cache-control", "no-cache")
+                .addHeader("JWT", jwt)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+        int responseCode = response.code();
+        String responseMsg = response.message();
+
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
 
     }
 
-    @Step("Set store credits <amount: {1}> as a payment method for cart <{0}>")
+    @Step("[API] Set store credits <amount: {1}> as a payment method for cart <{0}>")
     protected static void setPayment_storeCredit(String cartId, int amount) throws IOException {
 
         System.out.println("Setting store credit in amount of <" + amount + "> as a payment for order <" + cartId + ">...");
@@ -780,7 +877,7 @@ public class DataProvider extends BaseTest {
 
     }
 
-    @Step("Issue GC <balance: {0}>, <QTY: {1}>")
+    @Step("[API] Issue GC <balance: {0}>, <QTY: {1}>")
     private static void issueGiftCard(int balance, int quantity) throws IOException {
 
         System.out.println("Creating new gift card...");
@@ -819,15 +916,20 @@ public class DataProvider extends BaseTest {
 
     }
 
-    @Step("Put GC <{0}> on hold")
-    private static void putGCOnHold(String gcNumber) throws IOException {
+    /**
+     * Possible state values: active, onHold, canceled
+     */
+    @Step("[API] Set GC <{0}> state to <{1}>")
+    protected static void setGiftCardState(String gcNumber, String state) throws IOException {
 
-        System.out.println("Puting <" + gcNumber + "> on hold..." );
+        System.out.println("Putting <" + gcNumber + "> on hold..." );
 
         OkHttpClient client = new OkHttpClient();
 
         MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, "{\"state\":\"onHold\"}");
+        RequestBody body = RequestBody.create(mediaType, "{" +
+                "\"state\": \"" + state + "\"," +
+                "\"reasonId\": 1}");
         Request request = new Request.Builder()
                 .url(apiUrl + "/v1/gift-cards/" + gcNumber)
                 .patch(body)
@@ -851,7 +953,7 @@ public class DataProvider extends BaseTest {
 
     }
 
-    @Step("Set GC <gcNumber: {1}>, <amount: {2}> for cart <{0}>")
+    @Step("[API] Set GC <gcNumber: {1}>, <amount: {2}> for cart <{0}>")
     protected static void setPayment_giftCard(String cartId, String gcNumber, int amount) throws IOException {
 
         System.out.println("Setting gict card <"+ gcNumber + "> in amount of <" + amount + "> as a payment for order <" + cartId + ">...");
@@ -885,7 +987,7 @@ public class DataProvider extends BaseTest {
 
     }
 
-    @Step("Checkout cart <{0}>")
+    @Step("[API] Checkout cart <{0}>")
     private static void checkoutCart(String cartId) throws IOException {
 
         System.out.println("Checking out order <" + cartId + ">...");
@@ -918,7 +1020,7 @@ public class DataProvider extends BaseTest {
 
     }
 
-    @Step("Change order <{0}> state to <{1}>")
+    @Step("[API] Change order <{0}> state to <{1}>")
     private static void changeOrderState(String orderId, String newState) throws IOException {
 
         System.out.println("Change state of order <" + orderId + "> to <" + newState + ">...");
@@ -950,7 +1052,7 @@ public class DataProvider extends BaseTest {
 
     }
 
-    @Step("Create promotion -- <Apply type: 'Coupon'>")
+    @Step("[API] Create promotion -- <Apply type: 'Coupon'>")
     private static void createPromotion_coupon() throws IOException {
 
         System.out.println("Creating a new promotion...");
@@ -985,7 +1087,7 @@ public class DataProvider extends BaseTest {
 
     }
 
-    @Step("Create promotion -- <Apply type: 'Auto'>, <State: 'Inactive'>")
+    @Step("[API] Create promotion -- <Apply type: 'Auto'>, <State: 'Inactive'>")
     private static void createPromotion_auto_inactive() throws IOException {
 
         System.out.println("Creating a new promotion...");
@@ -1020,7 +1122,7 @@ public class DataProvider extends BaseTest {
 
     }
 
-    @Step("Create promotion -- <Apply type: 'Auto'>, <State: 'Active'>")
+    @Step("[API] Create promotion -- <Apply type: 'Auto'>, <State: 'Active'>")
     private static void createPromotion_auto_active() throws IOException {
 
         System.out.println("Creating a new promotion...");
@@ -1055,7 +1157,7 @@ public class DataProvider extends BaseTest {
 
     }
 
-    @Step("Create coupon with promotion <ID:'{0}>'")
+    @Step("[API] Create coupon with promotion <ID:'{0}>'")
     private static void createCoupon(String promotionId) throws IOException {
 
         System.out.println("Creating a new coupon with promotion <" + promotionId + ">...");
@@ -1091,7 +1193,7 @@ public class DataProvider extends BaseTest {
 
     }
 
-    @Step("Generate a single code for coupon <ID:'{0}>'")
+    @Step("[API] Generate a single code for coupon <ID:'{0}>'")
     private static void generateSingleCode(String couponId) throws IOException {
 
         System.out.println("Generating a single code for coupon <" + couponId + ">...");
@@ -1125,7 +1227,7 @@ public class DataProvider extends BaseTest {
 
     }
 
-    @Step("Bulk generate codes for coupon <ID:'{0}'>; [prefix:'{1}', codeLength:'{2}', QTY:'{3}']")
+    @Step("[API] Bulk generate codes for coupon <ID:'{0}'>; [prefix:'{1}', codeLength:'{2}', QTY:'{3}']")
     private static void bulkGenerateCodes(String couponId, String prefix, int codeLength, int quantity) throws IOException {
 
         int length = prefix.length() + codeLength;
@@ -1177,7 +1279,7 @@ public class DataProvider extends BaseTest {
 
     }
 
-    @Step("Apply coupon <ID:'{1}'> to cart <{0}>")
+    @Step("[API] Apply coupon <ID:'{1}'> to cart <{0}>")
     private static void applyCouponCode(String cartId, String couponCode) throws IOException {
 
         System.out.println("Applying coupon code <" + couponCode + "> to order <" + cartId + ">...");
@@ -1209,7 +1311,7 @@ public class DataProvider extends BaseTest {
 
     }
 
-    @Step("Change store credit <ID:'{0}'> state to <{1}>")
+    @Step("[API] Change store credit <ID:'{0}'> state to <{1}>")
     private static void updateSCState(int scId, String state) throws IOException {
 
         System.out.println("Updating state of store credit with Id <" + scId + ">...");
@@ -1244,7 +1346,7 @@ public class DataProvider extends BaseTest {
 
     }
 
-    @Step("Create SKU in <State:'Active'>")
+    @Step("[API] Create SKU in <State:'Active'>")
     private static void createSKU_active() throws IOException {
 
         System.out.println("Creating a new SKU, options: ACTIVE state...");
@@ -1282,7 +1384,7 @@ public class DataProvider extends BaseTest {
 
     }
 
-    @Step("Create SKU in <State: 'Inactive'>")
+    @Step("[API] Create SKU in <State: 'Inactive'>")
     private static void createSKU_inactive() throws IOException {
 
         System.out.println("Creating a new SKU, options: INACTIVE state...");
@@ -1318,7 +1420,7 @@ public class DataProvider extends BaseTest {
 
     }
 
-    @Step("Create SKU with empty 'Title'")
+    @Step("[API] Create SKU with empty 'Title'")
     private static void createSKU_noTitle() throws IOException {
 
         System.out.println("Creating a new SKU, options: no title...");
@@ -1354,7 +1456,7 @@ public class DataProvider extends BaseTest {
 
     }
 
-    @Step("Create SKU with empty 'Description'")
+    @Step("[API] Create SKU with empty 'Description'")
     private static void createSKU_noDescription() throws IOException {
 
         System.out.println("Creating a new SKU, options: no description...");
@@ -1390,7 +1492,7 @@ public class DataProvider extends BaseTest {
 
     }
 
-    @Step("Create SKU without specifying the prices")
+    @Step("[API] Create SKU without specifying the prices")
     private static void createSKU_noPrices() throws IOException {
 
         System.out.println("Creating a new SKU, options: all prices equals <0>...");
@@ -1426,7 +1528,7 @@ public class DataProvider extends BaseTest {
 
     }
 
-    @Step("Create product; <SKU: auto-created with product>, <State:'Active'>")
+    @Step("[API] Create product; <SKU: auto-created with product>, <State:'Active'>")
     private static void createProduct_noSKU_active() throws IOException {
 
         System.out.println("Creating a new product... No SKU code is provided, so a new one will be created.");
@@ -1464,7 +1566,7 @@ public class DataProvider extends BaseTest {
 
     }
 
-    @Step("Create product; <SKU:'{0}'>, <Tag:'{1}'>, <State:'Active'>")
+    @Step("[API] Create product; <SKU:'{0}'>, <Tag:'{1}'>, <State:'Active'>")
     private static void createProduct_active(String sku, String tag) throws IOException {
 
         System.out.println("Creating a new product with SKU <" + sku + ">...");
@@ -1502,7 +1604,7 @@ public class DataProvider extends BaseTest {
 
     }
 
-    @Step("Create product; <SKU:'{0}'> <State:'Active'>, no tag")
+    @Step("[API] Create product; <SKU:'{0}'> <State:'Active'>, no tag")
     private static void createProduct_active_noTag(String sku) throws IOException {
 
         System.out.println("Creating a new product with SKU <" + sku + ">...");
@@ -1540,7 +1642,7 @@ public class DataProvider extends BaseTest {
 
     }
 
-    @Step("Create product; <SKU:'{0}'>, <Tag:'{1}'>, <State:'Inactive'>")
+    @Step("[API] Create product; <SKU:'{0}'>, <Tag:'{1}'>, <State:'Inactive'>")
     private static void createProduct_inactive(String sku, String tag) throws IOException {
 
         System.out.println("Creating a new product with SKU <" + sku + ">...");
@@ -1578,7 +1680,7 @@ public class DataProvider extends BaseTest {
 
     }
 
-    @Step("Create product; <SKU:'{0}'>, no tag, <State:'Inactive'>")
+    @Step("[API] Create product; <SKU:'{0}'>, no tag, <State:'Inactive'>")
     private static void createProduct_inactive_noTag(String sku) throws IOException {
 
         System.out.println("Creating a new product with SKU <" + sku + ">...");
@@ -1616,7 +1718,7 @@ public class DataProvider extends BaseTest {
 
     }
 
-    @Step("Create product; <SKU:'{0}'>, <Tag:'sunglasses'>, <Active From:'{1}'>, <Active To:'{2}'>")
+    @Step("[API] Create product; <SKU:'{0}'>, <Tag:'sunglasses'>, <Active From:'{1}'>, <Active To:'{2}'>")
     private static void createProduct_activeFromTo(String sku, String startDate, String endDate) throws IOException {
 
         System.out.println("Creating product with active from-to dates; SKU: <" + sku + ">...");
@@ -1654,8 +1756,73 @@ public class DataProvider extends BaseTest {
 
     }
 
-    @Step("Archive product <ID:'{0}'>")
-    private static void archiveProduct(String productId) throws IOException {
+    /**
+     * Product is active -- activeFrom equals the time of prod creation, activeTo is null
+     * Title -- parametrized
+     * 1 option with 2 values -- hardcoded
+     * 2 SKUs for each variant -- not parametrized, created using generateRandomId(), stored in variables
+     * SKU prices -- hardcoded
+     */
+    @Step("[API] Create product with variants")
+    private static void createProduct_variants(String title) throws IOException {
+
+        System.out.println("Creating a product with 2 variants...");
+        System.out.println("* * * * * * * * * *");
+        // create SKU, then store its code to a local var to use it in prod creation payload
+        createSKU_active();
+        String sku_1 = sku;
+        createSKU_active();
+        String sku_2 = sku;
+        System.out.println("* * * * * * * * * *");
+
+        JSONObject jsonObj = parse("bin/payloads/productWithVariants.json");
+        jsonObj.getJSONObject("attributes").getJSONObject("title").put("v", title);
+
+        JSONArray tempJSONArray;
+        // Store JSONArray with SKU code to variable, delete its only value, put a new value SKU code instead
+        // (check productWithVariants.json for schema details)
+        tempJSONArray = jsonObj.getJSONArray("variants").getJSONObject(0).getJSONArray("values").getJSONObject(0).getJSONArray("skuCodes");
+        tempJSONArray.remove(0);
+        tempJSONArray.put(sku_1);
+
+        tempJSONArray = jsonObj.getJSONArray("variants").getJSONObject(0).getJSONArray("values").getJSONObject(1).getJSONArray("skuCodes");
+        tempJSONArray.remove(0);
+        tempJSONArray.put(sku_2);
+
+        String payload = jsonObj.toString();
+
+        OkHttpClient client = new OkHttpClient();
+
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, payload);
+        Request request = new Request.Builder()
+                .url(apiUrl + "/v1/products/default")
+                .post(body)
+                .addHeader("content-type", "application/json")
+                .addHeader("cache-control", "no-cache")
+                .addHeader("JWT", jwt)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+        int responseCode = response.code();
+        String responseMsg = response.message();
+        // TODO: COMPLETE IT -- need to store variantSKU_1 and variantSKU_2 from response
+        JSONObject jsonData = new JSONObject(responseBody);
+        productName = jsonData.getJSONObject("attributes").getJSONObject("title").getString("v");
+        variantSKU_1 = (String) jsonData.getJSONArray("variants").getJSONObject(0).getJSONArray("values").getJSONObject(0).getJSONArray("skuCodes").get(0);
+        variantSKU_1 = (String) jsonData.getJSONArray("variants").getJSONObject(0).getJSONArray("values").getJSONObject(1).getJSONArray("skuCodes").get(0);
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
+
+    }
+
+    @Step("[API] Archive product <ID:'{0}'>")
+    protected static void archiveProduct(String productId) throws IOException {
 
         System.out.println("Archiving product with ID <" + productId + ">...");
 
@@ -1682,7 +1849,7 @@ public class DataProvider extends BaseTest {
 
     }
 
-    @Step("Create shared search with one search filter")
+    @Step("[API] Create shared search with one search filter")
     private static void createSharedSearch_oneFilter() throws IOException {
 
         System.out.println("Creating a new shared search...");
@@ -1720,7 +1887,7 @@ public class DataProvider extends BaseTest {
 
     }
 
-    @Step("Create shared search with two search filters")
+    @Step("[API] Create shared search with two search filters")
     private static void createSharedSearch_twoFilters() throws IOException {
 
         System.out.println("Creating a new shared search...");
@@ -1761,7 +1928,7 @@ public class DataProvider extends BaseTest {
 
     }
 
-    @Step("Share search <searchCode:'{0}'> with <{1}>")
+    @Step("[API] Share search <searchCode:'{0}'> with <{1}>")
     protected static void shareSearch(String searchCode, String adminName) throws IOException {
 
         getAdminId(adminName);
@@ -1838,7 +2005,7 @@ public class DataProvider extends BaseTest {
 
     }
 
-    @Step("Delete search <searchId:'{0}'>")
+    @Step("[API] Delete search <searchId:'{0}'>")
     protected static void deleteSearch(String searchId) throws IOException {
 
         System.out.println("Deleting saved search with id <" + searchId + ">.");
@@ -1903,7 +2070,10 @@ public class DataProvider extends BaseTest {
 
     }
 
-    @Step("Increase amount of sellable unites of <{0}> by <{1}>")
+    /**
+     * Given arg "String type" value should be capitalized, e.g. - "Sellable"
+     */
+    @Step("[API] Increase amount of sellable unites of <{0}> by <{1}>")
     private static void increaseOnHandQty(String skuCode, String type, Integer qty) throws IOException {
 
         viewSKU_inventory(skuCode);
@@ -1940,7 +2110,7 @@ public class DataProvider extends BaseTest {
 
     }
 
-    @Step("Create SKU specifically for search filter tests")
+    @Step("[API] Create SKU specifically for search filter tests")
     private static void createSKU_search() throws IOException {
 
         System.out.println("Creating a new SKU, options: ACTIVE state...");
@@ -1978,8 +2148,8 @@ public class DataProvider extends BaseTest {
 
     }
 
-    @Step("Archive SKU <{0}>")
-    private static void archiveSKU(String skuCode) throws IOException {
+    @Step("[API] Archive SKU <{0}>")
+    protected static void archiveSKU(String skuCode) throws IOException {
 
         System.out.println("Archiving SKU <" + skuCode + ">...");
 
@@ -2009,7 +2179,7 @@ public class DataProvider extends BaseTest {
 
     }
 
-    @Step("Create test data using API")
+    @Step("[API] Create test data using API")
     protected void provideTestData(String testMethodName) throws IOException {
 
         loginAsAdmin();
@@ -2022,7 +2192,7 @@ public class DataProvider extends BaseTest {
                 createNewCustomer();
                 break;
 
-            //----------------------------------------- ITEMS -----------------------------------------//
+            //----------------------------------------- CART ITEMS -----------------------------------------//
 
             case "empty cart":
                 createNewCustomer();
@@ -2032,31 +2202,31 @@ public class DataProvider extends BaseTest {
             case "cart with 1 item":
                 createNewCustomer();
                 createCart(customerId);
-                updSKULineItems(cartId, "SKU-TRL", 1);
+                updLineItems(cartId, "SKU-TRL", 1);
                 break;
 
             case "cart with 2 items":
                 createNewCustomer();
                 createCart(customerId);
-                updSKULineItems(cartId, "SKU-TRL", 1);
-                updSKULineItems(cartId, "SKU-TRL", 3);
+                updLineItems(cartId, "SKU-TRL", 1);
+                updLineItems(cartId, "SKU-TRL", 3);
                 break;
 
             case "cart with 3 items":
                 createNewCustomer();
                 createCart(customerId);
-                updSKULineItems(cartId, "SKU-TRL", 3);
-                updSKULineItems(cartId, "SKU-BRO", 2);
-                updSKULineItems(cartId, "SKU-ZYA", 4);
+                updLineItems(cartId, "SKU-TRL", 3);
+                updLineItems(cartId, "SKU-BRO", 2);
+                updLineItems(cartId, "SKU-ZYA", 4);
                 break;
 
             case "cart with 1 item, qty: 3":
                 createNewCustomer();
                 createCart(customerId);
-                updSKULineItems(cartId, "SKU-TRL", 3);
+                updLineItems(cartId, "SKU-TRL", 3);
                 break;
 
-            //------------------------------------- SHIPPING ADDRESS -------------------------------------//
+            //------------------------------------- CART SHIPPING ADDRESS -------------------------------------//
 
             case "cart with empty address book":
                 createNewCustomer();
@@ -2089,7 +2259,7 @@ public class DataProvider extends BaseTest {
                 createAddress(customerId, "Paul Puga", 4177, 234, "Washington", "2101 Green Valley", "200 Suite", "Seattle", "98101", "5551237575", false);
                 break;
 
-            //----------------------------------- ORDERS WITH COUPONS ------------------------------------//
+            //----------------------------------- CART COUPONS ------------------------------------//
 
 //            case "a cart && a single code coupon":
 //                createCart(customerId);
@@ -2126,33 +2296,33 @@ public class DataProvider extends BaseTest {
                 applyCouponCode(cartId, bulkCodes.get(0));
                 break;
 
-            //------------------------------------- PAYMENT METHOD -------------------------------------//
+            //------------------------------------- CART PAYMENT METHOD -------------------------------------//
 
             case "cart with 1 item and chosen shipping address":
                 createNewCustomer();
                 createCart(customerId);
-                updSKULineItems(cartId, "SKU-BRO", 1);
+                updLineItems(cartId, "SKU-BRO", 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 break;
 
             case "cart with 1 item && customer with GC":
                 createNewCustomer();
                 createCart(customerId);
-                updSKULineItems(cartId, "SKU-BRO", 1);
+                updLineItems(cartId, "SKU-BRO", 1);
                 issueGiftCard(50000, 1);
                 break;
 
             case "cart with 1 item && customer with SC":
                 createNewCustomer();
                 createCart(customerId);
-                updSKULineItems(cartId, "SKU-BRO", 1);
+                updLineItems(cartId, "SKU-BRO", 1);
                 issueStoreCredit(customerId, 50000);
                 break;
 
             case "cart with 1 item, shipping method, and credit card payment":
                 createNewCustomer();
                 createCart(customerId);
-                updSKULineItems(cartId, "SKU-YAX", 1);
+                updLineItems(cartId, "SKU-YAX", 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
@@ -2165,7 +2335,7 @@ public class DataProvider extends BaseTest {
             case "cart with 1 item, shipping method and issued SC":
                 createNewCustomer();
                 createCart(customerId);
-                updSKULineItems(cartId, "SKU-YAX", 1);
+                updLineItems(cartId, "SKU-YAX", 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
@@ -2175,7 +2345,7 @@ public class DataProvider extends BaseTest {
             case "cart with 1 item, shipping method and issued GC":
                 createNewCustomer();
                 createCart(customerId);
-                updSKULineItems(cartId, "SKU-YAX", 1);
+                updLineItems(cartId, "SKU-YAX", 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
@@ -2185,7 +2355,7 @@ public class DataProvider extends BaseTest {
             case "cart with 1 item, shipping method, credit card payment and issued SC":
                 createNewCustomer();
                 createCart(customerId);
-                updSKULineItems(cartId, "SKU-YAX", 1);
+                updLineItems(cartId, "SKU-YAX", 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
@@ -2199,7 +2369,7 @@ public class DataProvider extends BaseTest {
             case "cart with 1 item, shipping method, credit card payment and issued GC":
                 createNewCustomer();
                 createCart(customerId);
-                updSKULineItems(cartId, "SKU-YAX", 1);
+                updLineItems(cartId, "SKU-YAX", 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
@@ -2212,7 +2382,7 @@ public class DataProvider extends BaseTest {
 
             case "cart with 1 item, shipping method, issued SC and GC":
                 createCart(customerId);
-                updSKULineItems(cartId, "SKU-YAX", 1);
+                updLineItems(cartId, "SKU-YAX", 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
@@ -2224,7 +2394,7 @@ public class DataProvider extends BaseTest {
             case "cart with 1 item && SC onHold":
                 createNewCustomer();
                 createCart(customerId);
-                updSKULineItems(cartId, "SKU-YAX", 1);
+                updLineItems(cartId, "SKU-YAX", 1);
                 issueStoreCredit(customerId, 50000);
                 updateSCState(scId, "onHold");
                 break;
@@ -2232,9 +2402,75 @@ public class DataProvider extends BaseTest {
             case "cart with 1 item && SC canceled":
                 createNewCustomer();
                 createCart(customerId);
-                updSKULineItems(cartId, "SKU-YAX", 1);
+                updLineItems(cartId, "SKU-YAX", 1);
                 issueStoreCredit(customerId, 50000);
                 updateSCState(scId, "canceled");
+                break;
+
+            //----------------------------------- CART VALIDATION -----------------------------------//
+
+            case "filled out cart, SC as a payment method":
+                createSKU_active();
+                createProduct_active(sku, "sunglasses");
+                increaseOnHandQty(sku, "Sellable", 20);
+                createNewCustomer();
+                issueStoreCredit(customerId, 20000);
+
+                createCart(customerId);
+                updLineItems(cartId, sku, 1);
+                setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
+                listShipMethods(cartId);
+                setShipMethod(cartId, shipMethodId);
+                setPayment_storeCredit(cartId, 20000);
+                break;
+
+            case "filled out cart, GC as a payment method":
+                createSKU_active();
+                createProduct_active(sku, "sunglasses");
+                increaseOnHandQty(sku, "Sellable", 20);
+                createNewCustomer();
+                issueGiftCard(200, 1);
+
+                createCart(customerId);
+                updLineItems(cartId, sku, 1);
+                setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
+                listShipMethods(cartId);
+                setShipMethod(cartId, shipMethodId);
+                setPayment_giftCard(cartId, gcCode, 20000);
+                break;
+
+            case "filled out cart, CC as a payment method":
+                createSKU_active();
+                createProduct_active(sku, "sunglasses");
+                increaseOnHandQty(sku, "Sellable", 20);
+                createNewCustomer();
+
+                createCart(customerId);
+                updLineItems(cartId, sku, 1);
+                setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
+                listShipMethods(cartId);
+                setShipMethod(cartId, shipMethodId);
+                listCustomerAddresses(customerId);
+                getCustomerAddress(customerId, addressId1);
+                createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard");
+                setPayment_creditCard(cartId, creditCardId);
+                break;
+
+            case "filled out cart, product with variants, SC as a payment method":
+                createSKU_active();
+                createProduct_active(sku, "sunglasses");
+                increaseOnHandQty(sku, "Sellable", 20);
+                createNewCustomer();
+
+                createCart(customerId);
+                updLineItems(cartId, sku, 1);
+                setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
+                listShipMethods(cartId);
+                setShipMethod(cartId, shipMethodId);
+                listCustomerAddresses(customerId);
+                getCustomerAddress(customerId, addressId1);
+                createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard");
+                setPayment_creditCard(cartId, creditCardId);
                 break;
 
             //------------------------------------- ORDER STATE -------------------------------------//
@@ -2243,7 +2479,7 @@ public class DataProvider extends BaseTest {
                 createNewCustomer();
                 createCart(customerId);
                 increaseOnHandQty("SKU-YAX", "Sellable", 1);
-                updSKULineItems(cartId, "SKU-YAX", 1);
+                updLineItems(cartId, "SKU-YAX", 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
@@ -2260,7 +2496,7 @@ public class DataProvider extends BaseTest {
                 createSKU_active();
                 createProduct_active(sku, "sunglasses");
                 increaseOnHandQty(sku, "Sellable", 1);
-                updSKULineItems(cartId, sku, 1);
+                updLineItems(cartId, sku, 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
@@ -2302,7 +2538,7 @@ public class DataProvider extends BaseTest {
                 createNewCustomer();
                 createCart(customerId);
                 increaseOnHandQty("SKU-YAX", "Sellable", 1);
-                updSKULineItems(cartId, "SKU-YAX", 1);
+                updLineItems(cartId, "SKU-YAX", 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
@@ -2314,7 +2550,7 @@ public class DataProvider extends BaseTest {
 
                 createCart(customerId);
                 increaseOnHandQty("SKU-BRO", "Sellable", 2);
-                updSKULineItems(cartId, "SKU-BRO", 2);
+                updLineItems(cartId, "SKU-BRO", 2);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
@@ -2328,7 +2564,7 @@ public class DataProvider extends BaseTest {
                 createNewCustomer();
                 createCart(customerId);
                 increaseOnHandQty("SKU-YAX", "Sellable", 1);
-                updSKULineItems(cartId, "SKU-YAX", 1);
+                updLineItems(cartId, "SKU-YAX", 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
@@ -2340,7 +2576,7 @@ public class DataProvider extends BaseTest {
 
                 createCart(customerId);
                 increaseOnHandQty("SKU-BRO", "Sellable", 2);
-                updSKULineItems(cartId, "SKU-BRO", 2);
+                updLineItems(cartId, "SKU-BRO", 2);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
@@ -2367,7 +2603,7 @@ public class DataProvider extends BaseTest {
                 createNewCustomer();
                 createCart(customerId);
                 increaseOnHandQty("SKU-YAX", "Sellable", 1);
-                updSKULineItems(cartId, "SKU-YAX", 1);
+                updLineItems(cartId, "SKU-YAX", 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
@@ -2381,7 +2617,7 @@ public class DataProvider extends BaseTest {
                 createNewCustomer();
                 createCart(customerId);
                 increaseOnHandQty("SKU-YAX", "Sellable", 1);
-                updSKULineItems(cartId, "SKU-YAX", 1);
+                updLineItems(cartId, "SKU-YAX", 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
@@ -2432,7 +2668,7 @@ public class DataProvider extends BaseTest {
 
                 createNewCustomer();
                 createCart(customerId);
-                updSKULineItems(cartId, "SKU-YAX", 1);
+                updLineItems(cartId, "SKU-YAX", 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
@@ -2534,7 +2770,7 @@ public class DataProvider extends BaseTest {
                 createSKU_active();
                 createProduct_active(sku, "sunglasses");
                 increaseOnHandQty(sku, "Backorder", 1);
-                updSKULineItems(cartId, sku, 1);
+                updLineItems(cartId, sku, 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
@@ -2551,7 +2787,7 @@ public class DataProvider extends BaseTest {
                 createProduct_active(sku, "sunglasses");
                 increaseOnHandQty(sku, "Backorder", 1);
                 increaseOnHandQty(sku, "Sellable", 1);
-                updSKULineItems(cartId, sku, 2);
+                updLineItems(cartId, sku, 2);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
@@ -2567,11 +2803,11 @@ public class DataProvider extends BaseTest {
                 createSKU_active();
                 createProduct_active(sku, "sunglasses");
                 increaseOnHandQty(sku, "Backorder", 1);
-                updSKULineItems(cartId, sku, 1);
+                updLineItems(cartId, sku, 1);
                 createSKU_active();
                 createProduct_active(sku, "sunglasses");
                 increaseOnHandQty(sku, "Sellable", 1);
-                updSKULineItems(cartId, sku, 1);
+                updLineItems(cartId, sku, 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
@@ -2592,7 +2828,7 @@ public class DataProvider extends BaseTest {
                 createNewCustomer();
                 createCart(customerId);
                 increaseOnHandQty("SKU-YAX", "Sellable", 1);
-                updSKULineItems(cartId, "SKU-YAX", 1);
+                updLineItems(cartId, "SKU-YAX", 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
@@ -2603,7 +2839,7 @@ public class DataProvider extends BaseTest {
 
             case "gift card on hold":
                 issueGiftCard(20000, 1);
-                putGCOnHold(gcCode);
+                setGiftCardState(gcCode, "onHold");
                 break;
 
             //--------------------------------- SEARCH CONTROLS ---------------------------------//
@@ -2621,7 +2857,7 @@ public class DataProvider extends BaseTest {
             case "order state: remorse hold":
                 createNewCustomer();
                 createCart(customerId);
-                updSKULineItems(cartId, "SKU-YAX", 1);
+                updLineItems(cartId, "SKU-YAX", 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
@@ -2635,7 +2871,7 @@ public class DataProvider extends BaseTest {
             case "order state: manual hold":
                 createNewCustomer();
                 createCart(customerId);
-                updSKULineItems(cartId, "SKU-YAX", 1);
+                updLineItems(cartId, "SKU-YAX", 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
@@ -2650,7 +2886,7 @@ public class DataProvider extends BaseTest {
             case "order state: fraud hold":
                 createNewCustomer();
                 createCart(customerId);
-                updSKULineItems(cartId, "SKU-YAX", 1);
+                updLineItems(cartId, "SKU-YAX", 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
@@ -2665,7 +2901,7 @@ public class DataProvider extends BaseTest {
             case "order state: fulfilment started":
                 createNewCustomer();
                 createCart(customerId);
-                updSKULineItems(cartId, "SKU-YAX", 1);
+                updLineItems(cartId, "SKU-YAX", 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
@@ -2680,7 +2916,7 @@ public class DataProvider extends BaseTest {
             case "order state: shipped":
                 createNewCustomer();
                 createCart(customerId);
-                updSKULineItems(cartId, "SKU-YAX", 1);
+                updLineItems(cartId, "SKU-YAX", 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
@@ -2695,7 +2931,7 @@ public class DataProvider extends BaseTest {
             case "order state: partially shipped":
                 createNewCustomer();
                 createCart(customerId);
-                updSKULineItems(cartId, "SKU-YAX", 1);
+                updLineItems(cartId, "SKU-YAX", 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
@@ -2710,7 +2946,7 @@ public class DataProvider extends BaseTest {
             case "order state: canceled":
                 createNewCustomer();
                 createCart(customerId);
-                updSKULineItems(cartId, "SKU-YAX", 1);
+                updLineItems(cartId, "SKU-YAX", 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
@@ -2754,6 +2990,37 @@ public class DataProvider extends BaseTest {
         }
 
     }
+
+//    public static void main(String[] args) throws IOException {
+//
+//        JSONObject jsonObj = parse("bin/payloads/productWithVariants.json");
+//        String sku_1 = "SKU-" + generateRandomID();
+//        String sku_2 = "SKU-" + generateRandomID();
+//
+//        String prodTitle = "Test Prod " + generateRandomID();
+//        System.out.println(prodTitle);
+//        jsonObj.getJSONObject("attributes").getJSONObject("title").put("v", prodTitle);
+//
+//        JSONArray tempJSONArray;
+//        // Store JSONArray with SKU code to variable, delete its only value, put a new value SKU code instead
+//        tempJSONArray = jsonObj.getJSONArray("variants").getJSONObject(0).getJSONArray("values").getJSONObject(0).getJSONArray("skuCodes");
+//        tempJSONArray.remove(0);
+//        tempJSONArray.put(sku_1);
+//
+//        tempJSONArray = jsonObj.getJSONArray("variants").getJSONObject(0).getJSONArray("values").getJSONObject(1).getJSONArray("skuCodes");
+//        tempJSONArray.remove(0);
+//        tempJSONArray.put(sku_2);
+//
+//        String payload = jsonObj.toString();
+//
+//        JSONObject jsonData = new JSONObject(payload);
+//        variantSKU_1 = (String) jsonData.getJSONArray("variants").getJSONObject(0).getJSONArray("values").getJSONObject(0).getJSONArray("skuCodes").get(0);
+//        variantSKU_2 = (String) jsonData.getJSONArray("variants").getJSONObject(0).getJSONArray("values").getJSONObject(1).getJSONArray("skuCodes").get(0);
+//        System.out.println(payload);
+//        System.out.println(variantSKU_1);
+//        System.out.println(variantSKU_2);
+//
+//    }
 
 }
 

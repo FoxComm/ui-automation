@@ -247,8 +247,8 @@ public class CartPage extends BasePage {
 //        sleep(2000);
     }
 
-    @Step
-    private void deleteItem(String itemIndex) {
+    @Step("Remove <{0}th> line item from the cart")
+    public void removeItem(String itemIndex) {
         int expectedItemsAmount = cart().size() - 1;
         System.out.println("Deleting items... expectedItemsAmount: " + expectedItemsAmount);
 
@@ -264,20 +264,18 @@ public class CartPage extends BasePage {
 
     }
 
-    @Step("Remove all items from cart")
+    @Step("Remove all line items from cart")
     public void clearCart() {
 
         if ( !(itemsInEditMode()) ) {
             clickEditBtn("Items");
         }
-
         int timesToIterate = itemsInCartAmount();
         String itemIndex;
         for (int i = 1; i <= timesToIterate; i++) {
             itemIndex = String.valueOf(i);
-            deleteItem(itemIndex);
+            removeItem(itemIndex);
         }
-
         clickDoneBtn("Items");
 
     }
@@ -708,6 +706,10 @@ public class CartPage extends BasePage {
         return $(xpath("//tr[contains(@class, 'payment-row')]/td[2]/span"));
     }
 
+    public SelenideElement removePaymentMethodBtn(String index) {
+        return $(xpath("//div[text()='Payment Method']/../../..//following-sibling::*/div//table/tbody[2]//button[@class='fc-btn fc-btn-remove']"));
+    }
+
     // ----------- >> NEW CREDIT CARD FORM
     private SelenideElement newCreditCardBtn() {
         return $(xpath("//div[contains(@class, 'new-order-payment')]/following-sibling::*/div/div/button"));
@@ -845,7 +847,7 @@ public class CartPage extends BasePage {
             click( chooseBtn() );
         }
 
-        @Step("Click 'Add Payment Method' btn")
+        @Step("Click \"Add Payment Method\" btn")
         public void clickAddPayMethodBtn() {
             click( addPaymentBtn() );
             shouldBeVisible($(xpath("//strong")), "Payment method wasn't applied");
@@ -901,6 +903,11 @@ public class CartPage extends BasePage {
         setAmountToUse(amountToUse);
         clickAddPayMethodBtn();
 
+    }
+
+    @Step("Remove <{0}th> payment method on the table")
+    public void removePaymentMethod(String index) {
+        click(removePaymentMethodBtn(index));
     }
 
 }

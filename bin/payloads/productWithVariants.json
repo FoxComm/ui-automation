@@ -1,0 +1,126 @@
+{
+  "id": null,
+  "productId": null,
+  "attributes": {
+    "title": {
+      "t": "string",
+      "v": "Test Prod 003"
+    },
+    "description": {
+      "t": "richText",
+      "v": "<p>Test Prod Description</p>"
+    },
+    "tags": {
+      "t": "tags",
+      "v": ["sunglasses"]
+    },
+    "activeFrom": {
+      "v": "2016-11-02T23:05:38.990Z",
+      "t": "datetime"
+    },
+    "activeTo": {
+      "v": null,
+      "t": "datetime"
+    }
+  },
+  "skus": [{
+    "attributes": {
+      "code": {
+        "t": "string",
+        "v": "TST-RED"
+      },
+      "title": {
+        "t": "string",
+        "v": "Test Prod 003"
+      },
+      "retailPrice": {
+        "t": "price",
+        "v": {
+          "currency": "USD",
+          "value": 5200
+        }
+      },
+      "salePrice": {
+        "t": "price",
+        "v": {
+          "currency": "USD",
+          "value": 4800
+        }
+      },
+      "activeTo": {
+        "v": null,
+        "t": "datetime"
+      },
+      "activeFrom": {
+        "v": "2016-11-02T23:05:38.990Z",
+        "t": "datetime"
+      }
+    }
+  }, {
+    "attributes": {
+      "code": {
+        "t": "string",
+        "v": "TST-BLU"
+      },
+      "title": {
+        "t": "string",
+        "v": "Test Prod 003"
+      },
+      "retailPrice": {
+        "t": "price",
+        "v": {
+          "currency": "USD",
+          "value": 6200
+        }
+      },
+      "salePrice": {
+        "t": "price",
+        "v": {
+          "currency": "USD",
+          "value": 4800
+        }
+      },
+      "activeTo": {
+        "v": null,
+        "t": "datetime"
+      },
+      "activeFrom": {
+        "v": "2016-11-02T23:05:38.990Z",
+        "t": "datetime"
+      }
+    }
+  }],
+  "context": {
+    "name": "default"
+  },
+  "variants": [
+    {
+      "attributes":
+      {
+        "name": {
+          "t": "string",
+          "v": "color"
+        },
+        "type": {
+          "t": "string",
+          "v": ""
+        }
+      },
+      "values":
+      [
+        {
+          "name": "red",
+          "swatch": "",
+          "image": "",
+          "skuCodes": ["TST-RED"]
+        },
+        {
+          "name": "blue",
+          "swatch": "",
+          "image": "",
+          "skuCodes": ["TST-BLU"]
+        }
+      ]
+    }
+  ]
+}
