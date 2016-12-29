@@ -2179,7 +2179,7 @@ public class DataProvider extends BaseTest {
 
     }
 
-    @Step("[API] Create test data using API")
+    @Step("Create test data using API")
     protected void provideTestData(String testMethodName) throws IOException {
 
         loginAsAdmin();

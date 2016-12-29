@@ -61,19 +61,19 @@
     </test>
 
 
-    <test name="Orders" >
+    <test name="Orders">
         <classes>
             <class name="tests.orders.OrderStateTest" />
         </classes>
     </test>
 
 
-    <test name="Customers > Address Book" >
+    <test name="Customers > Address Book">
         <classes>
             <class name="tests.customers.details.AddressBookTest" />
         </classes>
     </test>
-    <test name="Customers > Credit Cards" >
+    <test name="Customers > Credit Cards">
         <classes>
             <class name="tests.customers.details.CreditCardsTest" />
         </classes>

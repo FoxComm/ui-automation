@@ -53,19 +53,19 @@ public class CartPage extends BasePage {
     }
 
     public SelenideElement cartWarn() {
-        return $(xpath("//div[@class='fc-order-messages']/div[text()='Cart is empty.']"));
+        return $(xpath("//div[@class='fc-order-messages']/*[text()='Cart is empty.']"));
     }
 
     public SelenideElement shipAddressWarn() {
-        return $(xpath("//div[@class='fc-order-messages']/div[text()='No shipping address applied.']"));
+        return $(xpath("//div[@class='fc-order-messages']/*[text()='No shipping address applied.']"));
     }
 
     public SelenideElement shipMethodWarn() {
-        return $(xpath("//div[@class='fc-order-messages']/div[text()='No shipping method applied.']"));
+        return $(xpath("//div[@class='fc-order-messages']/*[text()='No shipping method applied.']"));
     }
 
     public SelenideElement fundsWarn() {
-        return $(xpath("//div[@class='fc-order-messages']/div[text()='Insufficient funds.']"));
+        return $(xpath("//div[@class='fc-order-messages']/*[text()='Insufficient funds.']"));
     }
 
     public SelenideElement orderOverviewPanel() {
@@ -74,10 +74,18 @@ public class CartPage extends BasePage {
 
     // assignees, watchers, customer info will be listed here
 
+    /**
+     * new locator: //*[@id='" + blockName + "-edit-btn']
+     * where blockName is given in format like "shipping-address"
+     */
     private SelenideElement editBtn(String blockName) {
         return $(xpath("//div[text()='" + blockName + "']/../../following-sibling::*/button"));
     }
 
+    /**
+     * new locator: //*[@id='" + blockName + "-done-btn']
+     * where blockName is given in format like "shipping-address"
+     */
     private SelenideElement doneBtn(String blockName) {
         return $(xpath("//div[text()='" + blockName + "']/../../../following-sibling::*//span[text()='Done']"));
     }
@@ -151,9 +159,10 @@ public class CartPage extends BasePage {
     }
 
     private SelenideElement lineItemSearchFld() {
-        return $(xpath("//input[@class='fc-input fc-typeahead__input']"));
+        return $(xpath("//input[@name='typeahead']"));
     }
 
+    //TODO: [Ashes] Append className of DecrementButton and IncrementButton with "decrement-btn" or "increment-btn" (line items, Qty)
     private SelenideElement decreaseItemQtyBtn(String itemIndex) {
         return $(xpath("//table[@class='fc-table']/tbody/tr[" + itemIndex + "]/td[5]/div/div[1]/button"));
     }
@@ -162,15 +171,28 @@ public class CartPage extends BasePage {
         return $(xpath("//table[@class='fc-table']/tbody/tr[" + itemIndex + "]/td[5]/div/div[2]/button"));
     }
 
-    private SelenideElement itemQtyInputFld(String itemIndex) {
-        return $(xpath("//table[@class='fc-table']/tbody/tr[" + itemIndex + "]/td[5]/div/input"));
+    private SelenideElement itemQtyInputFld_byIndex(String itemIndex) {
+//        return $(xpath("//table[@class='fc-table']/tbody/tr[" + itemIndex + "]/td[5]/div/input"));
+        String skuCode = lineItemName_byIndex(itemIndex).text();
+        return itemQtyInputFld_bySKU(skuCode);
     }
 
+    private SelenideElement lineItemName_byIndex(String itemIndex) {
+        return $(xpath("//*[@id='line-item-" + itemIndex + "']//*[@id='skuCode']"));
+    }
+
+    private SelenideElement itemQtyInputFld_bySKU(String skuCode) {
+        return $(xpath("//*[@id='line-item-quantity-" + skuCode + "']"));
+    }
+
+    /**
+     * new locator: //*[@id='cart-items-block']//tr[" + itemIndex + "]//button[contains(@class, 'remove')]
+     */
     public SelenideElement deleteBtn_item(String itemIndex) {
         return $(xpath("//table[@class='fc-table']/tbody/tr[" + itemIndex + "]/td[7]/button"));
     }
 
-    public SelenideElement confirmDeletionBtn() {
+    private SelenideElement confirmDeletionBtn() {
         return $(xpath("//span[text()='Yes, Delete']/.."));
     }
 
@@ -179,7 +201,7 @@ public class CartPage extends BasePage {
     }
 
     private SelenideElement lineItemSearchView_byName(String itemName) {
-        return $(xpath("//ul[@class='fc-typeahead__items']/li/div/div[text()='" + itemName + "']"));
+        return $(xpath("//ul[@class='fc-typeahead__items']//*[text()='" + itemName + "']"));
     }
 
     private SelenideElement lineItem_byName(String itemName) {
@@ -187,7 +209,7 @@ public class CartPage extends BasePage {
     }
 
     public ElementsCollection cart() {
-            return $$(xpath("//table[@class='fc-table']/tbody/tr/td[6]"));
+        return $$(xpath("//*[@class='line-item']"));
     }
 
     public int itemsInCartAmount() {
@@ -203,7 +225,6 @@ public class CartPage extends BasePage {
 
     @Step("Add item to cart, searchQuery: {0}")
     public void addItemToCart(String searchQuery) {
-
         if ( !(itemsInEditMode()) ) {
             clickEditBtn("Items");
         }
@@ -220,7 +241,6 @@ public class CartPage extends BasePage {
         clickDoneBtn("Items");
         lineItem_byName(searchQuery).shouldBe(visible
                 .because("Line item isn't displayed after clicking 'Done' btn."));
-
     }
 
     @Step("Set \"Search\" field val to <{0}>")
@@ -248,7 +268,7 @@ public class CartPage extends BasePage {
     }
 
     @Step("Remove <{0}th> line item from the cart")
-    public void removeItem(String itemIndex) {
+    private void removeItem(String itemIndex) {
         int expectedItemsAmount = cart().size() - 1;
         System.out.println("Deleting items... expectedItemsAmount: " + expectedItemsAmount);
 
@@ -261,12 +281,10 @@ public class CartPage extends BasePage {
 
         int actualItemsAmount = cart().size();
         System.out.println("actualItemsAmount: " + actualItemsAmount);
-
     }
 
     @Step("Remove all line items from cart")
     public void clearCart() {
-
         if ( !(itemsInEditMode()) ) {
             clickEditBtn("Items");
         }
@@ -277,7 +295,6 @@ public class CartPage extends BasePage {
             removeItem(itemIndex);
         }
         clickDoneBtn("Items");
-
     }
 
     public String getItemName(String index) {
@@ -293,12 +310,12 @@ public class CartPage extends BasePage {
 //        if ( !(doneBtn("Items").is(visible)) ) {
 //            clickEditBtn("Items");
 //        }
-        int initialQty = Integer.valueOf(itemQtyInputFld(itemIndex).getValue());
+        int initialQty = Integer.valueOf(itemQtyInputFld_byIndex(itemIndex).getValue());
         for (int i = 0; i < increaseBy; i++) {
             String expectedValue = String.valueOf(initialQty + 1);
             clickIncreaseQty(itemIndex);
             sleep(750);
-            shouldHaveValue(itemQtyInputFld(itemIndex), expectedValue,
+            shouldHaveValue(itemQtyInputFld_byIndex(itemIndex), expectedValue,
                     "Item QTY input field has incorrect value");
             initialQty += 1;
         }
@@ -314,7 +331,7 @@ public class CartPage extends BasePage {
 //        if ( !(doneBtn("Items").is(visible)) ) {
 //            clickEditBtn("Items");
 //        }
-        int initialQty = Integer.valueOf(itemQtyInputFld(itemIndex).getValue());
+        int initialQty = Integer.valueOf(itemQtyInputFld_byIndex(itemIndex).getValue());
         for (int i = 0; i < decreaseBy; i++) {
             String expectedValue = String.valueOf(initialQty - 1);
             clickDecreaseQty(itemIndex);
@@ -323,7 +340,7 @@ public class CartPage extends BasePage {
                 confirmDeletionBtn().shouldBe(visible
                         .because("'Confirm deletion' modal window doesn't appear after item quantity is decreased to '0'."));
             } else {
-                shouldHaveValue(itemQtyInputFld(itemIndex), expectedValue,
+                shouldHaveValue(itemQtyInputFld_byIndex(itemIndex), expectedValue,
                         "Item QTY input field has incorrect value");
                 initialQty -= 1;
             }
@@ -336,7 +353,7 @@ public class CartPage extends BasePage {
     }
 
     public void decreaseItemQtyBelowZero(String itemIndex) {
-        int decreaseBy =  Integer.valueOf(itemQtyInputFld("1").getValue());
+        int decreaseBy =  Integer.valueOf(itemQtyInputFld_byIndex("1").getValue());
         System.out.println("decreaseBy" + decreaseBy);
 
         decreaseItemQty(itemIndex, decreaseBy);
@@ -353,8 +370,8 @@ public class CartPage extends BasePage {
     }
 
         @Step("Set line item QTY to <{0}> using direct input")
-        public void setLineItemQty(String index, String qty) {
-            setFieldVal(itemQtyInputFld(index), qty);
+        private void setLineItemQty(String index, String qty) {
+            setFieldVal(itemQtyInputFld_byIndex(index), qty);
         }
 
 
@@ -364,41 +381,52 @@ public class CartPage extends BasePage {
     //----------------------------------- ELEMENTS -------------------------------------//
 
     public SelenideElement customerName_chosenShipAddress() {
-        return $(xpath(".//ul[@class='fc-addresses-list']/li/div[3]/div/ul/li[1]"));
+        return $(xpath("//*[@class='fc-card-container fc-address is-active']//li[@class='name']"));
     }
+    //*[@class='fc-card-container fc-address is-active']
 
     public SelenideElement successIcon_shipAddress() {
         return $(xpath("//div[text()='Shipping Address']/preceding-sibling::*/i[contains(@class, 'success')]"));
     }
 
     public SelenideElement warningIcon_shipAddress() {
-        return $(xpath("//div[text()='Shipping Address']/preceding-sibling::*/i[contains(@class, 'warning')]"));
+        return $(xpath("//*[@id='cart-shipping-address-block']//i[contains(@class, 'warning')]"));
     }
 
-    public SelenideElement deleteBtn_chosenAddress() {
-        return $(xpath("//li[contains (@class, 'address is-active')]/div[2]/div/button[1]"));
+    private SelenideElement deleteBtn_chosenAddress() {
+        return $(xpath("//*[contains(@class, 'is-active')]//button[contains(@class, 'icon-trash')]"));
     }
 
-    public SelenideElement editBtn_chosenAddress() {
-        return $(xpath("//li[contains (@class, 'address is-active')]/div[2]/div/button[2]"));
+    private SelenideElement editBtn_chosenAddress() {
+        return $(xpath("//*[contains(@class, 'is-active')]//button[contains(@class, 'icon-edit')]"));
     }
 
     private SelenideElement deleteBtn_inAddressBook(String addressIndex) {
-        return $(xpath("//div[@class='fc-tile-selector__items']/div[" + addressIndex + "]/li/div[2]/div/button[1]"));
+        return $(xpath("//*[@class='fc-tile-selector__items']/div[" + addressIndex + "]//button[contains(@class, 'icon-trash')]"));
     }
 
-    public SelenideElement addNewAddressBtn() {
+    private SelenideElement editBtn_inAddressBook(String addressIndex) {
+        return $(xpath("//*[@class='fc-tile-selector__items']/div[" + addressIndex + "]//button[contains(@class, 'icon-edit')]"));
+    }
+
+    //TODO: [Ashes] Can't find the place where <AddButton> is rendered for a specific block at cart details page
+    private SelenideElement addNewAddressBtn() {
         return $(xpath("//div[text()='Address Book']/following-sibling::*"));
     }
 
     public SelenideElement chosenAddress() {
-        return $(xpath("//ul[@class='fc-addresses-list']//ul[@class='fc-address-details']"));
+        return $(xpath("//*[@class='fc-card-container fc-address is-active']"));
     }
 
     public SelenideElement addressBookHeader() {
-        return $(xpath("//div[text()='Address Book']"));
+        return $(xpath("//*[text()='Address Book']"));
     }
 
+    /**
+     * TODO: [Ashes] Generate ID for multiple similar elements in the block
+     * Refactoring should also cover chooseBtn and control buttons (edit, delete).
+     * After refactoring elements should be searched by address index.
+     */
     private ElementsCollection chooseAddressBtns() {
         return $$(xpath("//span[text()='Choose']/.."));
     }
@@ -407,15 +435,15 @@ public class CartPage extends BasePage {
         return $$(xpath("//li[@class='name']"));
     }
 
-    public SelenideElement nameOnAddressCard(int addressIndex) {
+    private SelenideElement nameOnAddressCard(int addressIndex) {
         return namesInAddressBook().get(addressIndex - 1);
     }
 
-    public SelenideElement defaultShipAddressChkbox(String addressIndex) {
-        return $(xpath("//div[" + addressIndex + "]/li/div/label/div"));
+    private SelenideElement defaultShipAddressChkbox(String addressIndex) {
+        return $(xpath("//*[@class='fc-tile-selector__items']/*[" + addressIndex + "]//*[contains(@id, 'is-default')]/.."));
     }
     public SelenideElement defaultShipAddressChkbox_input(String addressIndex) {
-        return $(xpath("//div[" + addressIndex + "]/li/div/label/div/input"));
+        return $(xpath("//*[@class='fc-tile-selector__items']/*[" + addressIndex + "]//*[contains(@id, 'is-default')]"));
     }
 
     // ----------- >> NEW ADDRESS FORM
@@ -428,17 +456,18 @@ public class CartPage extends BasePage {
     }
 
     private SelenideElement address1Fld() {
-        return $(xpath(".//input[@name='address1']"));
+        return $(xpath("//input[@name='address1']"));
     }
 
     private SelenideElement address2Fld() {
-        return $(xpath(".//input[@name='address2']"));
+        return $(xpath("//input[@name='address2']"));
     }
 
     private SelenideElement cityFld() {
-        return $(xpath(".//input[@name='city']"));
+        return $(xpath("//input[@name='city']"));
     }
 
+    //TODO: [Ashes] Add new shipping address form. IDs for "State" and "Country" dropdowns
     private SelenideElement stateDd() {
         return $(xpath("//label[text()='State']/following-sibling::*[1]/div[2]/button"));
     }
@@ -614,8 +643,11 @@ public class CartPage extends BasePage {
     //----------------------------------------------------------------------------------//
     //----------------------------------- ELEMENTS -------------------------------------//
 
+    /**
+     * new locator: //*[@id='cart-shipping-method-block']//tr[" + index + "]//input
+     */
     // should be clicked with 'jsClick(element)'
-    public SelenideElement shipMethodRdbtn(String index) {
+    private SelenideElement shipMethodRdbtn(String index) {
         return $(xpath("//table[@class='fc-table']/tbody/tr[" + index + "]//input"));
     }
 
@@ -623,10 +655,16 @@ public class CartPage extends BasePage {
         return $(xpath("//div[@class='fc-right']/button"));
     }
 
+    /**
+     * new locator: //*[@id='cart-shipping-method-block']//i[contains(@class, 'success')]
+     */
     private SelenideElement successIcon_shipMethod() {
         return $(xpath("//div[text()='Shipping Method']/preceding-sibling::*/i[contains(@class, 'success')]"));
     }
 
+    /**
+     * new locator: //*[@id='cart-shipping-method-block']//i[contains(@class, 'warning')]
+     */
     private SelenideElement warningIcon_shipMethod() {
         return $(xpath("//div[text()='Shipping Method']/preceding-sibling::*/i[contains(@class, 'warning')]"));
     }
@@ -637,7 +675,7 @@ public class CartPage extends BasePage {
     @Step("Check if \"Shipping Method\" is defined")
     public void assertShipMethodDefined() {
         successIcon_shipMethod().shouldBe(visible
-                .because("Success icon isn't deisplayed next to 'Shipping Method' block"));
+                .because("Success icon isn't displayed next to 'Shipping Method' block"));
         shipMethodWarn().shouldNotBe(visible
                 .because("Shipping method warning is displayed"));
     }
@@ -661,11 +699,15 @@ public class CartPage extends BasePage {
     //----------------------------------- ELEMENTS -------------------------------------//
 
     private SelenideElement addCouponFld() {
-        return $(xpath("//input[@placeholder='Enter coupon code']"));
+        return $(xpath("//input[@name='couponCode']"));
     }
 
     private SelenideElement applyBtn() {
         return $(xpath("//span[text()='Apply']/.."));
+    }
+
+    private SelenideElement removeCouponBtn() {
+        return $(xpath("//*[@id='cart-coupons-block']//button[contains(@class, 'remove')]"));
     }
 
 
@@ -681,6 +723,11 @@ public class CartPage extends BasePage {
         click(applyBtn());
     }
 
+    @Step("Click \"Remove\" btn")
+    public void clickRemoveCouponBtn() {
+        click(removeCouponBtn());
+    }
+
 
 
     //-------------------------- P A Y M E N T    M E T H O D --------------------------//
@@ -694,6 +741,7 @@ public class CartPage extends BasePage {
         return $(xpath("//div[contains(@class, 'order-payment')]/header/div[2]/button"));
     }
 
+    //TODO: [Ashes] Add ID to "Payment Type" dd
     private SelenideElement paymentTypeDd() {
         return $(xpath("//label[contains(@class, 'payment-type')]/following-sibling::*/div[2]/div"));
     }
@@ -703,14 +751,15 @@ public class CartPage extends BasePage {
     }
 
     public SelenideElement appliedAmount() {
-        return $(xpath("//tr[contains(@class, 'payment-row')]/td[2]/span"));
+        return $(xpath("//*[@id='cart-payment-method-block']//*[@class='fc-currency']"));
     }
 
-    public SelenideElement removePaymentMethodBtn(String index) {
-        return $(xpath("//div[text()='Payment Method']/../../..//following-sibling::*/div//table/tbody[2]//button[@class='fc-btn fc-btn-remove']"));
+    private SelenideElement removePaymentMethodBtn(String index) {
+        return $(xpath("//*[@id='cart-payment-method-block']//tbody[" + index + "]//button[contains(@class, 'remove')]"));
     }
 
     // ----------- >> NEW CREDIT CARD FORM
+    //TODO: [Ashes] AddButton at "Payment Method" (adds new credit card) and "Shipping Address" (adds new shipping address) blocks shares the same id
     private SelenideElement newCreditCardBtn() {
         return $(xpath("//div[contains(@class, 'new-order-payment')]/following-sibling::*/div/div/button"));
     }
@@ -728,34 +777,35 @@ public class CartPage extends BasePage {
     }
 
     private SelenideElement monthDd() {
-        return $(xpath("//label[text()='Expiration Date']/following-sibling::*/div[1]/div/div/div[2]/button"));
+        return $(xpath("//*[@id='expMonth']"));
     }
 
     private SelenideElement monthVal(String monthNumber) {
-        return $(xpath("//div[@class='fc-grid']/div[1]/div/div/div[3]/ul/li[" + monthNumber + "]"));
+        return $(xpath("//*[@id='expMonth']//li[" + monthNumber + "]"));
     }
 
     private SelenideElement yearDd() {
-        return $(xpath("//label[text()='Expiration Date']/following-sibling::*/div[2]/div/div/div[2]/button"));
+        return $(xpath("//*[@id='expYear']"));
     }
 
     private SelenideElement yearVal(String year) {
-        return $(xpath("//div[@class='fc-grid']/div[2]/div/div/div[3]/ul/li[text()='" + year + "']"));
+        return $(xpath("//*[@id='expYear']//li[text()='" + year + "']"));
     }
 
-    private SelenideElement chooseBtn() {
-        return $(xpath("//span[text()='Choose']/.."));
+    private SelenideElement chooseBtn(String index) {
+        return $(xpath("//div[@class='fc-address-select-list']/div[" + index + "]//button"));
     }
 
-    public SelenideElement addPaymentBtn() {
+    private SelenideElement addPaymentBtn() {
         return $(xpath("//span[text()='Add Payment Method']/.."));
     }
     // -------- -------- -------- --------
 
-    public SelenideElement gcNumberFld() {
+    private SelenideElement gcNumberFld() {
         return $(xpath("//input[@name='giftCardCode']"));
     }
 
+    //TODO: BLOCKED -- "Amount to use" input field doesn't appear: https://trello.com/c/0koiOypP
     public SelenideElement amountToUseFld() {
         return $(xpath("//input[@name='currencyInput']"));
     }
@@ -844,7 +894,7 @@ public class CartPage extends BasePage {
 
         @Step("Click \"Choose\" at existing shipping address")
         private void clickChooseBtn() {
-            click( chooseBtn() );
+            click( chooseBtn("1") );
         }
 
         @Step("Click \"Add Payment Method\" btn")
