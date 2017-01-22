@@ -2209,7 +2209,7 @@ public class DataProvider extends BaseTest {
                 createCustomer();
                 createCart(customerId);
                 updLineItems(cartId, "SKU-TRL", 1);
-                updLineItems(cartId, "SKU-TRL", 3);
+                updLineItems(cartId, "SKU-BRO", 3);
                 break;
 
             case "cart with 3 items":

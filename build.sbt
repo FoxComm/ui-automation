@@ -12,7 +12,7 @@ libraryDependencies ++= Seq(
   "com.codeborne" % "selenide" % "4.2",
   "org.apache.httpcomponents" % "httpclient" % "4.5.2",
   "com.squareup.okhttp" % "okhttp" % "2.7.5",
-  "org.testng" % "testng" % "6.9.10",
+  "org.testng" % "testng" % "6.10",
   "org.aspectj" % "aspectjweaver" % "1.8.9" % AspectJWeaver.cfg,
   "ru.yandex.qatools.allure" % "allure-testng-adaptor" % "1.4.23",
   "org.apache.maven.plugins" % "maven-surefire-plugin" % "2.19.1",
