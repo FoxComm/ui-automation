@@ -42,7 +42,6 @@ public class PaymentMethodTest extends DataProvider {
         p.clickNewPayMethodBtn();
         p.selectPaymentType("Credit Card");
         p.addNewCreditCard("John Doe", "5555555555554444", "777", "2", "2020");
-        shouldBeVisible($(xpath("//strong")), "Payment method wasn't applied");
         p.clickDoneBtn("Payment Method");
 
         p.assertCardAdded();
@@ -131,41 +130,43 @@ public class PaymentMethodTest extends DataProvider {
 
     }
 
-    @Test(priority = 6)
-    public void addSC_onHoldState() throws IOException {
+//    TODO: Move test to API level
+//    @Test(priority = 6)
+//    public void addSC_onHoldState() throws IOException {
+//
+//        provideTestData("cart with 1 item && SC onHold");
+//        // workaround for possible bug with data sync
+////        refresh();
+//        p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
+//
+//        p.clickEditBtn("Payment Method");
+//        p.clickNewPayMethodBtn();
+//        p.selectPaymentType("Store Credit");
+//        p.setAmountToUse(String.valueOf(p.grandTotal()));
+//
+//        p.gcAvailableBalance().shouldHave(text("$0.00")
+//                .because("A store credit with 'onHold' state can be used as a payment method."));
+//
+//    }
 
-        provideTestData("cart with 1 item && SC onHold");
-        // workaround for possible bug with data sync
-//        refresh();
-        p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
-
-        p.clickEditBtn("Payment Method");
-        p.clickNewPayMethodBtn();
-        p.selectPaymentType("Store Credit");
-        p.setAmountToUse(String.valueOf(p.grandTotal()));
-
-        p.gcAvailableBalance().shouldHave(text("$0.00")
-                .because("A store credit with 'onHold' state can be used as a payment method."));
-
-    }
-
-    @Test(priority = 7)
-    public void addSC_canceledState() throws IOException {
-
-        provideTestData("cart with 1 item && SC canceled");
-        // workaround for possible bug with data sync
-//        refresh();
-        p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
-
-        click( p.editBtn_payment() );
-        click( p.newPaymentBtn() );
-        p.selectPaymentType("Store Credit");
-        setFieldVal( p.amountToUseFld(), String.valueOf(p.grandTotal()) );
-        p.setAmountToUse(String.valueOf(p.grandTotal()));
-
-        p.gcAvailableBalance().shouldHave(text("$0.00")
-                .because("A store credit with 'canceled' state can be used as a payment method."));
-
-    }
+//    TODO: Move test to API level
+//    @Test(priority = 7)
+//    public void addSC_canceledState() throws IOException {
+//
+//        provideTestData("cart with 1 item && SC canceled");
+//        // workaround for possible bug with data sync
+////        refresh();
+//        p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
+//
+//        click( p.editBtn_payment() );
+//        click( p.newPaymentBtn() );
+//        p.selectPaymentType("Store Credit");
+//        setFieldVal( p.amountToUseFld(), String.valueOf(p.grandTotal()) );
+//        p.setAmountToUse(String.valueOf(p.grandTotal()));
+//
+//        p.gcAvailableBalance().shouldHave(text("$0.00")
+//                .because("A store credit with 'canceled' state can be used as a payment method."));
+//
+//    }
 
 }

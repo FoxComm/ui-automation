@@ -13,7 +13,7 @@ public class InventoryPage extends BasePage {
     //----------------------------------- ELEMENTS -------------------------------------//
 
     public SelenideElement onHandFld(String type) {
-        return $(xpath("//td[text()='" + type + "']/following-sibling::*[1]/div/input"));
+        return $(xpath("//*[@id='" + type + "']//input"));
     }
 
     private SelenideElement warehouseTitle(String warehouse) {
@@ -40,32 +40,18 @@ public class InventoryPage extends BasePage {
         return $(xpath("//td[text()='" + warehouse + "']/following-sibling::*[5]"));
     }
 
-    public SelenideElement arrowBtn(String direction, String type) {
-        SelenideElement arrowBtnElem = null;
-        switch (type) {
-            case "Sellable":
-                arrowBtnElem = $$(xpath("//div[text()='Adjust Quantity']/following-sibling::*//i[@class='icon-chevron-" + direction.toLowerCase() + "']")).get(0);
-                break;
-
-            case "Non-sellable":
-                arrowBtnElem = $$(xpath("//div[text()='Adjust Quantity']/following-sibling::*//i[@class='icon-chevron-" + direction.toLowerCase() + "']")).get(1);
-                break;
-
-            case "Backorder":
-                arrowBtnElem = $$(xpath("//div[text()='Adjust Quantity']/following-sibling::*//i[@class='icon-chevron-" + direction.toLowerCase() + "']")).get(2);
-                break;
-
-            case "Preorder":
-                arrowBtnElem = $$(xpath("//div[text()='Adjust Quantity']/following-sibling::*//i[@class='icon-chevron-" + direction.toLowerCase() + "']")).get(3);
-                break;
-        }
-        return arrowBtnElem;
+    public SelenideElement arrowBtn(String type, String direction) {
+        type = type.toLowerCase();
+        direction = direction.toLowerCase();
+        return $(xpath("//*[@id='" + type + "-counter']//button[contains(@class, '" + direction + "')]"));
     }
 
     private SelenideElement transactionsTab() {
         return $(xpath("//a[text()='Transactions']"));
     }
 
+
+    //TODO: Add IDs to Transactions table after bug about it will be fixed
 
 
     //----------------------------------- HELPERS -------------------------------------//
@@ -85,7 +71,7 @@ public class InventoryPage extends BasePage {
     public void increaseOnHand_arrowBtn(String type, int amount) {
         click(onHandFld(type));
         for (int i = 0; i < amount; i++) {
-            click(arrowBtn("up", type));
+            click(arrowBtn(type, "increment"));
         }
     }
 
@@ -93,7 +79,7 @@ public class InventoryPage extends BasePage {
     public void decreaseOnHand_arrowBtn(String type, int amount) {
         click(onHandFld(type));
         for (int i = 0; i < amount; i++) {
-            click(arrowBtn("down", type));
+            click(arrowBtn(type, "decrement"));
         }
     }
 

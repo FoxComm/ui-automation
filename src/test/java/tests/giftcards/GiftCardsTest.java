@@ -29,7 +29,7 @@ public class GiftCardsTest extends DataProvider {
     }
 
     @Test(priority = 1)
-    public void addGiftCard() {
+    public void issueGiftCard() {
         p = openPage(adminUrl + "/gift-cards", GiftCardsPage.class);
 
         p.clickAddMewGCBtn();
@@ -42,7 +42,7 @@ public class GiftCardsTest extends DataProvider {
     }
 
     @Test(priority = 2)
-    public void addGiftCard_presetValues() {
+    public void issueGiftCard_presetValues() {
         p = openPage(adminUrl + "/gift-cards", GiftCardsPage.class);
 
         p.clickAddMewGCBtn();
@@ -208,22 +208,21 @@ public class GiftCardsTest extends DataProvider {
 
     }
 
-    @Test(priority = 12)
-    public void addNewGC_issueToCustomer() throws IOException {
-
-        provideTestData("a customer");
-        p = openPage(adminUrl + "/gift-cards", GiftCardsPage.class);
-
-        p.clickAddMewGCBtn();
-        p.setType("Appeasement");
-        p.setValue("123.78");
-        p.issueGCToCustomer(customerName, "Test message for customer");
-        click( p.issueGCBtn() );
-
-        p.gcAvailableBalance().shouldHave(text("$123.78")
-                .because("Failed to issue new GC"));
-
-    }
+    //Feature got removed temporarily
+//    @Test(priority = 12)
+//    public void addNewGC_issueToCustomer() throws IOException {
+//        provideTestData("a customer");
+//        p = openPage(adminUrl + "/gift-cards", GiftCardsPage.class);
+//
+//        p.clickAddMewGCBtn();
+//        p.setType("Appeasement");
+//        p.setValue("123.78");
+//        p.issueGCToCustomer(customerName, "Test message for customer");
+//        click( p.issueGCBtn() );
+//
+//        p.gcAvailableBalance().shouldHave(text("$123.78")
+//                .because("Failed to issue new GC"));
+//    }
 
     @Test(priority = 13)
     public void issueMultipleGCs() {
@@ -241,6 +240,7 @@ public class GiftCardsTest extends DataProvider {
 
         assertTwice(p.counter(), "should have text", expectedResult,
                 "Incorrect GCs amount counter - either GCs creation has failed or counter value isn't updated");
+        //TODO: add findItemOnList("$123.78") to check if a jut issued GCs are displayed on the table
 
     }
 

@@ -8,6 +8,7 @@ import ru.yandex.qatools.allure.annotations.Step;
 
 import java.util.List;
 
+import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
 import static org.openqa.selenium.By.xpath;
@@ -201,6 +202,14 @@ public class BasePage extends ConciseAPI {
 
 
     //---------------------------------------- SEARCH ------------------------------------------//
+
+    //TODO: test out this method
+    public void findItemOnList(String expectedParamVal) {
+        int totalItemsOnTable = $$(xpath("//a[@class='fc-table-tr']")).size();
+        for (int i = 0; i < totalItemsOnTable; i++) {
+            $(xpath("//tbody/a[" + i + "]//*")).shouldHave(text(expectedParamVal));
+        }
+    }
 
     public SelenideElement searchFld() {
         return $(xpath("//input[@placeholder='filter or keyword search']"));

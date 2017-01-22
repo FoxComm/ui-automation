@@ -35,7 +35,7 @@ public class PromotionsTest_NoAPI extends DataProvider {
         p = openPage(adminUrl + "/promotions", PromotionsPage.class);
         String randomId = generateRandomID();
 
-        p.createNewPromo("Coupon", randomId);
+        p.fillOutNewPromoForm("Coupon", randomId);
         promoId = p.promotionIdVal().text();
         p.navigateTo("Marketing", "Promotions");
         p.search(randomId);
@@ -50,7 +50,7 @@ public class PromotionsTest_NoAPI extends DataProvider {
         p = openPage(adminUrl + "/promotions", PromotionsPage.class);
         String randomId = generateRandomID();
 
-        p.createNewPromo("Coupon", randomId);
+        p.fillOutNewPromoForm("Coupon", randomId);
         promoId = p.promotionIdVal().text();
         p.navigateTo("Marketing", "Promotions");
         p.search(promoId);
@@ -65,7 +65,7 @@ public class PromotionsTest_NoAPI extends DataProvider {
         p = openPage(adminUrl + "/promotions", PromotionsPage.class);
         String randomId = generateRandomID();
 
-        p.createNewPromo("Coupon", randomId);
+        p.fillOutNewPromoForm("Coupon", randomId);
         promoId = p.promotionIdVal().text();
         p.navigateTo("Marketing", "Promotions");
         p.search(promoId);
@@ -80,7 +80,7 @@ public class PromotionsTest_NoAPI extends DataProvider {
         //Preconditions
         p = openPage(adminUrl + "/promotions", PromotionsPage.class);
         String randomId = generateRandomID();
-        p.createNewPromo("Coupon", randomId);
+        p.fillOutNewPromoForm("Coupon", randomId);
         promoId = p.promotionIdVal().text();
         p.clickSave_wait();
 
@@ -105,7 +105,7 @@ public class PromotionsTest_NoAPI extends DataProvider {
         //Preconditions
         p = openPage(adminUrl + "/promotions", PromotionsPage.class);
         String randomId = generateRandomID();
-        p.createNewPromo("Coupon", randomId);
+        p.fillOutNewPromoForm("Coupon", randomId);
         promoId = p.promotionIdVal().text();
         p.clickSave_wait();
 
@@ -131,7 +131,7 @@ public class PromotionsTest_NoAPI extends DataProvider {
         //Preconditions
         p = openPage(adminUrl + "/promotions", PromotionsPage.class);
         String randomId = generateRandomID();
-        p.createNewPromo("Coupon", randomId);
+        p.fillOutNewPromoForm("Coupon", randomId);
         promoId = p.promotionIdVal().text();
         p.clickSave_wait();
 
@@ -155,7 +155,7 @@ public class PromotionsTest_NoAPI extends DataProvider {
         //Preconditions
         p = openPage(adminUrl + "/promotions", PromotionsPage.class);
         String randomId = generateRandomID();
-        p.createNewPromo("Coupon", randomId);
+        p.fillOutNewPromoForm("Coupon", randomId);
         promoId = p.promotionIdVal().text();
         p.clickSave_wait();
 
@@ -179,7 +179,7 @@ public class PromotionsTest_NoAPI extends DataProvider {
         //Preconditions
         p = openPage(adminUrl + "/promotions", PromotionsPage.class);
         String randomId = generateRandomID();
-        p.createNewPromo("Coupon", randomId);
+        p.fillOutNewPromoForm("Coupon", randomId);
         promoId = p.promotionIdVal().text();
         p.clickSave_wait();
 
@@ -235,7 +235,7 @@ public class PromotionsTest_NoAPI extends DataProvider {
         //Preconditions
         p = openPage(adminUrl + "/promotions", PromotionsPage.class);
         String randomId = generateRandomID();
-        p.createNewPromo("Auto", randomId);
+        p.fillOutNewPromoForm("Auto", randomId);
         promoId = p.promotionIdVal().text();
         p.clickSave_wait();
 
@@ -261,7 +261,7 @@ public class PromotionsTest_NoAPI extends DataProvider {
         //Preconditions
         p = openPage(adminUrl + "/promotions", PromotionsPage.class);
         String randomId = generateRandomID();
-        p.createNewPromo("Coupon", randomId);
+        p.fillOutNewPromoForm("Coupon", randomId);
         promoId = p.promotionIdVal().text();
         p.clickSave_wait();
 
@@ -284,7 +284,7 @@ public class PromotionsTest_NoAPI extends DataProvider {
         //Preconditions
         p = openPage(adminUrl + "/promotions", PromotionsPage.class);
         String randomId = generateRandomID();
-        p.createNewPromo("Coupon", randomId);
+        p.fillOutNewPromoForm("Coupon", randomId);
         promoId = p.promotionIdVal().text();
         p.clickSave_wait();
 

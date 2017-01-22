@@ -25,7 +25,7 @@ public class DataProvider extends BaseTest {
     private static String jwt;
 
     protected static String customerName;       // stored from viewCustomer()
-    protected static String customerEmail;      // stored from viewCustomer()
+    public static String customerEmail;      // stored from viewCustomer()
     protected static int addressId1;              // stored from listCustomerAddresses()
     private static int addressId2;              // stored from listCustomerAddresses()
     private static String addressPayload;   // stored from listCustomerAddresses()
@@ -113,7 +113,7 @@ public class DataProvider extends BaseTest {
     }
 
     @Step("[API] Create new customer")
-    private static void createNewCustomer() throws IOException {
+    private static void createCustomer() throws IOException {
 
         System.out.println("Creating a new customer...");
 
@@ -2189,31 +2189,31 @@ public class DataProvider extends BaseTest {
             //------------------------------------- SEARCH FILTERS ------------------------------------//
 
             case "a customer":
-                createNewCustomer();
+                createCustomer();
                 break;
 
             //----------------------------------------- CART ITEMS -----------------------------------------//
 
             case "empty cart":
-                createNewCustomer();
+                createCustomer();
                 createCart(customerId);
                 break;
 
             case "cart with 1 item":
-                createNewCustomer();
+                createCustomer();
                 createCart(customerId);
                 updLineItems(cartId, "SKU-TRL", 1);
                 break;
 
             case "cart with 2 items":
-                createNewCustomer();
+                createCustomer();
                 createCart(customerId);
                 updLineItems(cartId, "SKU-TRL", 1);
                 updLineItems(cartId, "SKU-TRL", 3);
                 break;
 
             case "cart with 3 items":
-                createNewCustomer();
+                createCustomer();
                 createCart(customerId);
                 updLineItems(cartId, "SKU-TRL", 3);
                 updLineItems(cartId, "SKU-BRO", 2);
@@ -2221,7 +2221,7 @@ public class DataProvider extends BaseTest {
                 break;
 
             case "cart with 1 item, qty: 3":
-                createNewCustomer();
+                createCustomer();
                 createCart(customerId);
                 updLineItems(cartId, "SKU-TRL", 3);
                 break;
@@ -2229,31 +2229,31 @@ public class DataProvider extends BaseTest {
             //------------------------------------- CART SHIPPING ADDRESS -------------------------------------//
 
             case "cart with empty address book":
-                createNewCustomer();
+                createCustomer();
                 createCart(customerId);
                 break;
 
             case "cart with non-empty address book":
-                createNewCustomer();
+                createCustomer();
                 createCart(customerId);
                 createAddress(customerId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 break;
 
             case "cart with chosen shipping address":
-                createNewCustomer();
+                createCustomer();
                 createCart(customerId);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 break;
 
             case "cart with 2 addresses in address book":
-                createNewCustomer();
+                createCustomer();
                 createCart(customerId);
                 createAddress(customerId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 createAddress(customerId, "Paul Puga", 4177, 234, "Washington", "2101 Green Valley", "200 Suite", "Seattle", "98101", "5551237575", false);
                 break;
 
             case "cart with 2 addresses and defined default shipping address":
-                createNewCustomer();
+                createCustomer();
                 createCart(customerId);
                 createAddress(customerId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 createAddress(customerId, "Paul Puga", 4177, 234, "Washington", "2101 Green Valley", "200 Suite", "Seattle", "98101", "5551237575", false);
@@ -2269,10 +2269,12 @@ public class DataProvider extends BaseTest {
 //                generateSingleCode(couponId);
 //                break;
 
-            case "a cart with a single code coupon applied":
+            case "a cart with 1 SKU and single code coupon applied":
+                createCustomer();
                 createCart(customerId);
+                updLineItems(cartId, "SKU-TRL", 3);
                 createPromotion_coupon();
-                sleep(5000);
+//                sleep(5000);
                 createCoupon(promotionId);
                 generateSingleCode(couponId);
                 applyCouponCode(cartId, singleCouponCode);
@@ -2299,28 +2301,28 @@ public class DataProvider extends BaseTest {
             //------------------------------------- CART PAYMENT METHOD -------------------------------------//
 
             case "cart with 1 item and chosen shipping address":
-                createNewCustomer();
+                createCustomer();
                 createCart(customerId);
                 updLineItems(cartId, "SKU-BRO", 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 break;
 
             case "cart with 1 item && customer with GC":
-                createNewCustomer();
+                createCustomer();
                 createCart(customerId);
                 updLineItems(cartId, "SKU-BRO", 1);
                 issueGiftCard(50000, 1);
                 break;
 
             case "cart with 1 item && customer with SC":
-                createNewCustomer();
+                createCustomer();
                 createCart(customerId);
                 updLineItems(cartId, "SKU-BRO", 1);
                 issueStoreCredit(customerId, 50000);
                 break;
 
             case "cart with 1 item, shipping method, and credit card payment":
-                createNewCustomer();
+                createCustomer();
                 createCart(customerId);
                 updLineItems(cartId, "SKU-YAX", 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
@@ -2333,7 +2335,7 @@ public class DataProvider extends BaseTest {
                 break;
 
             case "cart with 1 item, shipping method and issued SC":
-                createNewCustomer();
+                createCustomer();
                 createCart(customerId);
                 updLineItems(cartId, "SKU-YAX", 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
@@ -2343,7 +2345,7 @@ public class DataProvider extends BaseTest {
                 break;
 
             case "cart with 1 item, shipping method and issued GC":
-                createNewCustomer();
+                createCustomer();
                 createCart(customerId);
                 updLineItems(cartId, "SKU-YAX", 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
@@ -2353,7 +2355,7 @@ public class DataProvider extends BaseTest {
                 break;
 
             case "cart with 1 item, shipping method, credit card payment and issued SC":
-                createNewCustomer();
+                createCustomer();
                 createCart(customerId);
                 updLineItems(cartId, "SKU-YAX", 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
@@ -2367,7 +2369,7 @@ public class DataProvider extends BaseTest {
                 break;
 
             case "cart with 1 item, shipping method, credit card payment and issued GC":
-                createNewCustomer();
+                createCustomer();
                 createCart(customerId);
                 updLineItems(cartId, "SKU-YAX", 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
@@ -2392,7 +2394,7 @@ public class DataProvider extends BaseTest {
                 break;
 
             case "cart with 1 item && SC onHold":
-                createNewCustomer();
+                createCustomer();
                 createCart(customerId);
                 updLineItems(cartId, "SKU-YAX", 1);
                 issueStoreCredit(customerId, 50000);
@@ -2400,7 +2402,7 @@ public class DataProvider extends BaseTest {
                 break;
 
             case "cart with 1 item && SC canceled":
-                createNewCustomer();
+                createCustomer();
                 createCart(customerId);
                 updLineItems(cartId, "SKU-YAX", 1);
                 issueStoreCredit(customerId, 50000);
@@ -2413,7 +2415,7 @@ public class DataProvider extends BaseTest {
                 createSKU_active();
                 createProduct_active(sku, "sunglasses");
                 increaseOnHandQty(sku, "Sellable", 20);
-                createNewCustomer();
+                createCustomer();
                 issueStoreCredit(customerId, 20000);
 
                 createCart(customerId);
@@ -2428,7 +2430,7 @@ public class DataProvider extends BaseTest {
                 createSKU_active();
                 createProduct_active(sku, "sunglasses");
                 increaseOnHandQty(sku, "Sellable", 20);
-                createNewCustomer();
+                createCustomer();
                 issueGiftCard(200, 1);
 
                 createCart(customerId);
@@ -2443,7 +2445,7 @@ public class DataProvider extends BaseTest {
                 createSKU_active();
                 createProduct_active(sku, "sunglasses");
                 increaseOnHandQty(sku, "Sellable", 20);
-                createNewCustomer();
+                createCustomer();
 
                 createCart(customerId);
                 updLineItems(cartId, sku, 1);
@@ -2460,7 +2462,7 @@ public class DataProvider extends BaseTest {
                 createSKU_active();
                 createProduct_active(sku, "sunglasses");
                 increaseOnHandQty(sku, "Sellable", 20);
-                createNewCustomer();
+                createCustomer();
 
                 createCart(customerId);
                 updLineItems(cartId, sku, 1);
@@ -2476,7 +2478,7 @@ public class DataProvider extends BaseTest {
             //------------------------------------- ORDER STATE -------------------------------------//
 
             case "order in remorse hold":
-                createNewCustomer();
+                createCustomer();
                 createCart(customerId);
                 increaseOnHandQty("SKU-YAX", "Sellable", 1);
                 updLineItems(cartId, "SKU-YAX", 1);
@@ -2491,7 +2493,7 @@ public class DataProvider extends BaseTest {
                 break;
 
             case "order in remorse hold payed with SC":
-                createNewCustomer();
+                createCustomer();
                 createCart(customerId);
                 createSKU_active();
                 createProduct_active(sku, "sunglasses");
@@ -2508,14 +2510,14 @@ public class DataProvider extends BaseTest {
             //--------------------------------- CUSTOMER ADDRESS BOOK ---------------------------------//
 
             case "customer with a shipping address":
-                createNewCustomer();
+                createCustomer();
                 createAddress(customerId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 break;
 
             //--------------------------------- CUSTOMER CREDIT CARDS ---------------------------------//
 
             case "customer with a credit card":
-                createNewCustomer();
+                createCustomer();
                 createAddress(customerId, customerName, 4177, 234, "Washington", "2101 Green Valley", "Suite 300", "Seattle", "98101", "9879879876", false);
                 listCustomerAddresses(customerId);
                 getCustomerAddress(customerId, addressId1);
@@ -2523,7 +2525,7 @@ public class DataProvider extends BaseTest {
                 break;
 
             case "customer with a credit card and 2 addresses":
-                createNewCustomer();
+                createCustomer();
                 createAddress(customerId, customerName, 4164, 234, "New York", "545 Narrow Ave", "Suite 15", "New Jersey", "10201", "5551118888", false);
                 createAddress(customerId, customerName, 4177, 234, "Washington", "2101 Green Valley", "Suite 300", "Seattle", "98101", "9879879876", false);
                 listCustomerAddresses(customerId);
@@ -2535,7 +2537,7 @@ public class DataProvider extends BaseTest {
 
             case "customer with 2 orders in remorse hold":
 
-                createNewCustomer();
+                createCustomer();
                 createCart(customerId);
                 increaseOnHandQty("SKU-YAX", "Sellable", 1);
                 updLineItems(cartId, "SKU-YAX", 1);
@@ -2561,7 +2563,7 @@ public class DataProvider extends BaseTest {
                 break;
 
             case "customer with 2 orders in remorse hold and fulfillment started":
-                createNewCustomer();
+                createCustomer();
                 createCart(customerId);
                 increaseOnHandQty("SKU-YAX", "Sellable", 1);
                 updLineItems(cartId, "SKU-YAX", 1);
@@ -2590,17 +2592,17 @@ public class DataProvider extends BaseTest {
             //----------------------------------- STORE CREDITS -----------------------------------//
 
             case "a customer with issued SC":
-                createNewCustomer();
+                createCustomer();
                 issueStoreCredit(customerId, 50000);
                 break;
 
             case "a customer && GC":
-                createNewCustomer();
+                createCustomer();
                 issueGiftCard(12500, 1);
                 break;
 
             case "order in Remorse Hold, payed with SC (CSR Appeasement)":
-                createNewCustomer();
+                createCustomer();
                 createCart(customerId);
                 increaseOnHandQty("SKU-YAX", "Sellable", 1);
                 updLineItems(cartId, "SKU-YAX", 1);
@@ -2614,7 +2616,7 @@ public class DataProvider extends BaseTest {
                 break;
 
             case "order in Remorse Hold, payed with SC (GC Transfer)":
-                createNewCustomer();
+                createCustomer();
                 createCart(customerId);
                 increaseOnHandQty("SKU-YAX", "Sellable", 1);
                 updLineItems(cartId, "SKU-YAX", 1);
@@ -2666,7 +2668,7 @@ public class DataProvider extends BaseTest {
                 createCoupon(promotionId);
                 generateSingleCode(couponId);
 
-                createNewCustomer();
+                createCustomer();
                 createCart(customerId);
                 updLineItems(cartId, "SKU-YAX", 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
@@ -2765,7 +2767,7 @@ public class DataProvider extends BaseTest {
                 break;
 
             case "cart with backorder SKU":
-                createNewCustomer();
+                createCustomer();
                 createCart(customerId);
                 createSKU_active();
                 createProduct_active(sku, "sunglasses");
@@ -2781,7 +2783,7 @@ public class DataProvider extends BaseTest {
                 break;
 
             case "cart with backorder and sellable SKUs":
-                createNewCustomer();
+                createCustomer();
                 createCart(customerId);
                 createSKU_active();
                 createProduct_active(sku, "sunglasses");
@@ -2798,7 +2800,7 @@ public class DataProvider extends BaseTest {
                 break;
 
             case "cart with backorder and sellable items of two SKUs":
-                createNewCustomer();
+                createCustomer();
                 createCart(customerId);
                 createSKU_active();
                 createProduct_active(sku, "sunglasses");
@@ -2825,7 +2827,7 @@ public class DataProvider extends BaseTest {
 
             case "used gift card":
                 issueGiftCard(20000, 1);
-                createNewCustomer();
+                createCustomer();
                 createCart(customerId);
                 increaseOnHandQty("SKU-YAX", "Sellable", 1);
                 updLineItems(cartId, "SKU-YAX", 1);
@@ -2855,7 +2857,7 @@ public class DataProvider extends BaseTest {
             //--------------------------------- SEARCH FILTERS ---------------------------------//
 
             case "order state: remorse hold":
-                createNewCustomer();
+                createCustomer();
                 createCart(customerId);
                 updLineItems(cartId, "SKU-YAX", 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
@@ -2869,7 +2871,7 @@ public class DataProvider extends BaseTest {
                 break;
 
             case "order state: manual hold":
-                createNewCustomer();
+                createCustomer();
                 createCart(customerId);
                 updLineItems(cartId, "SKU-YAX", 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
@@ -2884,7 +2886,7 @@ public class DataProvider extends BaseTest {
                 break;
 
             case "order state: fraud hold":
-                createNewCustomer();
+                createCustomer();
                 createCart(customerId);
                 updLineItems(cartId, "SKU-YAX", 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
@@ -2899,7 +2901,7 @@ public class DataProvider extends BaseTest {
                 break;
 
             case "order state: fulfilment started":
-                createNewCustomer();
+                createCustomer();
                 createCart(customerId);
                 updLineItems(cartId, "SKU-YAX", 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
@@ -2914,7 +2916,7 @@ public class DataProvider extends BaseTest {
                 break;
 
             case "order state: shipped":
-                createNewCustomer();
+                createCustomer();
                 createCart(customerId);
                 updLineItems(cartId, "SKU-YAX", 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
@@ -2929,7 +2931,7 @@ public class DataProvider extends BaseTest {
                 break;
 
             case "order state: partially shipped":
-                createNewCustomer();
+                createCustomer();
                 createCart(customerId);
                 updLineItems(cartId, "SKU-YAX", 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
@@ -2944,7 +2946,7 @@ public class DataProvider extends BaseTest {
                 break;
 
             case "order state: canceled":
-                createNewCustomer();
+                createCustomer();
                 createCart(customerId);
                 updLineItems(cartId, "SKU-YAX", 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
@@ -2959,7 +2961,7 @@ public class DataProvider extends BaseTest {
                 break;
 
             case "customer with a billing address":
-                createNewCustomer();
+                createCustomer();
                 createAddress(customerId, customerName, 4164, 234, "Oregon", "2101 Green Valley", "Suite 777", "Portland", "07097", "5557778686", false);
                 listCustomerAddresses(customerId);
                 getCustomerAddress(customerId, addressId1);

@@ -4,6 +4,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import pages.LoginPage;
 import pages.SkusPage;
+import ru.yandex.qatools.allure.annotations.Description;
 import testdata.DataProvider;
 
 import java.io.IOException;
@@ -78,6 +79,7 @@ public class SkusTests extends DataProvider {
 
     }
 
+    //TODO: Split test into 2 -- PDP and category_view specific checks
     @Test(priority = 4)
     public void editTitle() throws IOException {
 
@@ -134,9 +136,7 @@ public class SkusTests extends DataProvider {
 
     }
 
-    /*
-     * Split test into 2: PDP and category checks
-     */
+    //TODO: Split test into 2 -- PDP and category_view specific checks
     @Test(priority = 7)
     public void editRetailPrice() throws IOException {
 
@@ -156,6 +156,7 @@ public class SkusTests extends DataProvider {
 
     }
 
+    //TODO: Split test into 2 -- PDP and category_view specific checks
     @Test(priority = 8)
     public void editSalePrice() throws IOException {
 
@@ -174,6 +175,7 @@ public class SkusTests extends DataProvider {
 
     }
 
+    //TODO: Split test into 2 -- PDP and category_view specific checks
     @Test(priority = 9)
     public void editState() throws IOException {
 
@@ -191,8 +193,11 @@ public class SkusTests extends DataProvider {
 
     }
 
+    //--------------------------------- REGRESSION TESTS ---------------------------------//
+
     @Test(priority = 10)
-    public void titleReset_regressionTest() throws IOException {
+    @Description("Title isn't reset after creating a product with a pre-created SKU")
+    public void titleReset() throws IOException {
 
         provideTestData("active SKU");
         p = openPage(adminUrl + "/skus/" + sku, SkusPage.class);
@@ -203,7 +208,8 @@ public class SkusTests extends DataProvider {
     }
 
     @Test(priority = 11)
-    public void useExistingSKUCode_regressionTest() throws IOException {
+    @Description("Can't use skuCode of an existing SKU to create a new one")
+    public void useExistingSKUCode() throws IOException {
 
         provideTestData("active SKU");
         p = openPage(adminUrl + "/skus", SkusPage.class);

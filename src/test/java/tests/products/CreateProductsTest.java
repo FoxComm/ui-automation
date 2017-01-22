@@ -5,6 +5,7 @@ import org.testng.annotations.Test;
 import pages.LoginPage;
 import pages.ProductsPage;
 import pages.StorefrontCategoryPage;
+import ru.yandex.qatools.allure.annotations.Description;
 import testdata.DataProvider;
 
 import java.io.IOException;
@@ -59,7 +60,9 @@ public class CreateProductsTest extends DataProvider {
                 .because("'No SKUs.' msg is displayed - SKU wasn't applied, product won't be displayed on storefront."));
 
     }
-    // SPLIT THIS TEST
+
+    //TODO: Split this test
+    //TODO: Move test to API level
     @Test(priority = 3)
     public void activeProductWithTag_isDisplayed_storefront() throws IOException {
 
@@ -239,6 +242,7 @@ public class CreateProductsTest extends DataProvider {
     //------------------------
 
     @Test(priority = 14)
+    @Description("A just created product is displayed in category_view, its PDP can be accessed")
     public void createProduct_SKU_inactive() throws IOException {
 
         provideTestData("inactive SKU");
@@ -259,7 +263,9 @@ public class CreateProductsTest extends DataProvider {
 
     }
 
+    //TODO: Move test to API level
     @Test(priority = 15)
+    @Description("A just created product is displayed in category_view, its PDP can be accessed")
     public void createProduct_SKU_noTitle() throws IOException {
 
         provideTestData("SKU with no title");
@@ -280,6 +286,8 @@ public class CreateProductsTest extends DataProvider {
 
     }
 
+    //TODO: Move test to API level
+    //Is this test even needed?
     @Test(priority = 16)
     public void createProduct_SKU_noDescription() throws IOException {
 
@@ -298,6 +306,8 @@ public class CreateProductsTest extends DataProvider {
 
     }
 
+    //TODO: Move test to API level
+    //Is this test even needed?
     @Test(priority = 17)
     public void createProduct_SKU_noPrices() throws IOException {
 
@@ -318,5 +328,9 @@ public class CreateProductsTest extends DataProvider {
         p.sku(sku).shouldBe(visible);
 
     }
+
+    //TODO: Add coverage for custom properties (storefront specific tests)
+
+    //TODO: Add coverage for custom properties to cover TPG requirements (storefront specific tests)
 
 }

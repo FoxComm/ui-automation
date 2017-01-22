@@ -24,36 +24,34 @@ public class CustomersPage extends BasePage {
 
     @Step("Get <{1}> parameter value of <{0}th> customer on the list")
     public String getCustomerParamVal(int customerIndex, String paramName) {
-
         String customerParamVal = "";
         waitForDataToLoad();
 
         switch (paramName) {
             case "Customer ID":
-                customerParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + customerIndex + "]/td[2]")).getText();
+                customerParamVal = $(By.xpath("//tbody/a[" + customerIndex + "]/td[contains(@class, 'id')]")).getText();
                 break;
             case "Name":
-                customerParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + customerIndex + "]/td[3]")).getText();
+                customerParamVal = $(By.xpath("//tbody/a[" + customerIndex + "]/td[contains(@class, 'name')]")).getText();
                 break;
             case "Email":
-                customerParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + customerIndex + "]/td[4]")).getText();
+                customerParamVal = $(By.xpath("//tbody/a[" + customerIndex + "]/td[contains(@class, 'email')]")).getText();
                 break;
             case "Ship To Region":
-                customerParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + customerIndex + "]/td[5]")).getText();
+                customerParamVal = $(By.xpath("//tbody/a[" + customerIndex + "]/td[contains(@class, 'ship-region')]")).getText();
                 break;
             case "Bill To Region":
-                customerParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + customerIndex + "]/td[6]")).getText();
+                customerParamVal = $(By.xpath("//tbody/a[" + customerIndex + "]/td[contains(@class, 'bill-region')]")).getText();
                 break;
             case "Rank":
-                customerParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + customerIndex + "]/td[7]")).getText();
+                customerParamVal = $(By.xpath("//tbody/a[" + customerIndex + "]/td[contains(@class, 'rank')]")).getText();
                 break;
             case "Date/Time Joined":
-                customerParamVal = $(By.xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a[" + customerIndex + "]/td[8]/time")).getText();
+                customerParamVal = $(By.xpath("//tbody/a[" + customerIndex + "]//time")).getText();
                 break;
         }
 
         return customerParamVal;
-
     }
 
     //-------------------- G E N E R A L    E L E M E N T S ------------------//
@@ -92,28 +90,32 @@ public class CustomersPage extends BasePage {
     //------------------------------ ELEMENTS --------------------------------//
 
     private SelenideElement addNewAddressBtn() {
-        return $(By.xpath("//div[text()= 'Address Book']/following-sibling::*/button"));
+        return $(By.xpath("//button[@id='customer-add-new-address-btn']"));
     }
 
     public SelenideElement editAddressBtn(String addressIndex) {
-        return $(By.xpath("//ul[contains(@class, 'addresses-list')]/li[" + addressIndex + "]/div[2]/div/button[2]"));
+        return $(By.xpath("//ul[@id='customer-addresses-list']/li[" + addressIndex + "]//button[contains(@class, 'edit')]"));
     }
 
     public SelenideElement deleteAddressBtn(String addressIndex) {
-        return $(By.xpath("//ul[contains(@class, 'addresses-list')]/li[" + addressIndex + "]/div[2]/div/button[1]"));
+        return $(By.xpath("//ul[@id='customer-addresses-list']/li[" + addressIndex + "]//button[contains(@class, 'trash')]"));
     }
 
     private SelenideElement confirmDeletionBtn() {
-        return $(By.xpath("//span[text()='Yes, Delete']/.."));
+        return $(By.xpath("//button[@id='modal-confirm-btn']"));
     }
 
     private SelenideElement cancelDeletionBtn() {
-        return $(By.xpath("//div[@class='fc-modal-footer']/a"));
+        return $(By.xpath("//a[@id='modal-cancel-btn']"));
     }
 
-    public SelenideElement defaultShipAddressChbx(String addressIndex) {
-        //xpath may be wrong
-        return $(By.xpath("//ul[contains(@class, 'addresses-list')]/li[" + addressIndex + "]div/label/div/input"));
+    public SelenideElement defaultShipAddressChbx_byIndex(String addressIndex) {
+        //xpath might be wrong
+        return $(By.xpath("//*[@id='customer-addresses-list']/li[" + addressIndex + "]//input[contains(@id, 'is-default')]"));
+    }
+
+    public SelenideElement defaultShipAddressChbx_byId(String addressId) {
+        return $(xpath("//input[@id='address-" + addressId + "-is-default'"));
     }
 
     public ElementsCollection addressBook() {
@@ -121,32 +123,32 @@ public class CustomersPage extends BasePage {
     }
 
     public SelenideElement nameFldVal(String addressIndex) {
-        return $(By.xpath("//ul[contains(@class, 'addresses-list')]/li[" + addressIndex + "]/div[3]/div/ul/li[1]"));
+        return $(By.xpath("//ul[@id='customer-addresses-list']/li[" + addressIndex + "]//li[@class='name']"));
     }
 
     public SelenideElement address1FldVal(String addressIndex) {
-        return $(By.xpath("//ul[contains(@class, 'addresses-list')]/li[" + addressIndex + "]/div[3]/div/ul/li[2]"));
+        return $(By.xpath("//ul[@id='customer-addresses-list']/li[" + addressIndex + "]//li[@class='address1']"));
     }
 
     public SelenideElement address2FldVal(String addressIndex) {
-         return $(By.xpath("//ul[contains(@class, 'addresses-list')]/li[" + addressIndex + "]/div[3]/div/ul/li[3]"));
+        return $(By.xpath("//ul[@id='customer-addresses-list']/li[" + addressIndex + "]//li[@class='address2']"));
     }
 
     public SelenideElement cityFldVal(String addressIndex) {
-        return $(By.xpath("//ul[contains(@class, 'addresses-list')]/li[" + addressIndex + "]/div[3]/div/ul/li[4]"));
+        return $(By.xpath("//ul[@id='customer-addresses-list']/li[" + addressIndex + "]//li[@class='city']"));
     }
 
     public SelenideElement stateVal(String addressIndex) {
-        return $(By.xpath("//ul[contains(@class, 'addresses-list')]/li[" + addressIndex + "]/div[3]/div/ul/li[4]/span[1]"));
+        return $(By.xpath("//ul[@id='customer-addresses-list']/li[" + addressIndex + "]//span[@class='region']"));
     }
 
     public SelenideElement zipFldVal(String addressIndex) {
-        return $(By.xpath("//ul[contains(@class, 'addresses-list')]/li[" + addressIndex + "]/div[3]/div/ul/li[4]/span[2]"));
+        return $(By.xpath("//ul[@id='customer-addresses-list']/li[" + addressIndex + "]//span[@class='zip']"));
 
     }
 
     public SelenideElement phoneNumberFldVal(String addressIndex) {
-        return $(By.xpath("//ul[contains(@class, 'addresses-list')]/li[" + addressIndex + "]/div[3]/div/ul/li[6]/span"));
+        return $(By.xpath("//ul[@id='customer-addresses-list']/li[" + addressIndex + "]//span[@class='phone']"));
     }
 
     public SelenideElement phoneNumbErrorMsg() {
@@ -171,11 +173,7 @@ public class CustomersPage extends BasePage {
     }
 
     private SelenideElement stateDd() {
-        return $(By.xpath("//ul[@class='fc-address-form-fields']/li[6]/div/div/div[2]/button"));
-    }
-
-    private SelenideElement stateDdValue(String stateName) {
-        return $(By.xpath("//li[text()='" + stateName + "']"));
+        return $(By.xpath("//div[@id='region-dd']"));
     }
 
     public SelenideElement zipCodeFld() {
@@ -187,7 +185,7 @@ public class CustomersPage extends BasePage {
     }
 
     private SelenideElement cancelBtn_addressForm() {
-        return $(By.xpath("//a[text()='Cancel']"));
+        return $(By.xpath("//button[@id='modal-cancel-btn']"));
     }
     // -----------
 
@@ -438,7 +436,7 @@ public class CustomersPage extends BasePage {
 
     @Step("Check if credit card is created")
     public void assertCardAdded(String customerName) {
-        $(By.xpath("//dd[text()='" + customerName + "']")).shouldBe(visible
+        $(By.xpath("//*[@id='customer-credit-cards-list']//dd[text()='" + customerName + "']")).shouldBe(visible
                 .because("Failed to create a new credit card."));
     }
 

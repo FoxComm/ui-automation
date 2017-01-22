@@ -38,7 +38,7 @@ public class PromotionsTest extends DataProvider {
         p = open(adminUrl + "/promotions/new", PromotionsPage.class);
         String randomId = generateRandomID();
 
-        p.createNewPromo("Coupon", randomId);
+        p.fillOutNewPromoForm("Coupon", randomId);
         p.clickSave_wait();
         shouldNotHaveText(p.promotionIdVal(), "new", "\"new\" isn't changed to promoId value of a just created promo");
         String promotionId = p.promotionIdVal().text();
@@ -68,7 +68,7 @@ public class PromotionsTest extends DataProvider {
         p = open(adminUrl + "/promotions/new", PromotionsPage.class);
         String randomId = generateRandomID();
 
-        p.createNewPromo("Coupon", randomId);
+        p.fillOutNewPromoForm("Coupon", randomId);
         p.clickSave_wait();
         shouldNotHaveText(p.promotionIdVal(), "new", "\"new\" isn't changed to promoId value of a just created promo");
         p.navigateTo("Marketing", "Promotions");

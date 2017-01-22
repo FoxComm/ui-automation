@@ -152,7 +152,7 @@ public class EditProductTest extends DataProvider {
     }
 
     @Test(priority = 8)
-    public void editState_admin_list() throws IOException {
+    public void editState_admin_category() throws IOException {
 
         provideTestData("product in active state");
         p = openPage(adminUrl + "/products/default/" + productId, ProductsPage.class);

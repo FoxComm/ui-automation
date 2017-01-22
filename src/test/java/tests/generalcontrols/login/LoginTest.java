@@ -8,6 +8,7 @@ import pages.LoginPage;
 
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.refresh;
+import static testdata.DataProvider.customerEmail;
 
 public class LoginTest extends BaseTest {
 
@@ -31,6 +32,15 @@ public class LoginTest extends BaseTest {
         p.userMenuBtn().shouldBe(visible.because("Log in has failed."));
         p.logout();
     }
+
+    /**
+     * TODO: finish the test below
+     */
+//    @Test(priority = 3)
+//    public void login_userHasNoRolesTest() {
+//        p.login("tenant", customerEmail, "78qa22");
+//        p.noRolesErrorMsg().shouldBe(visible);    //*[text()='User has no roles in the organization']
+//    }
 
     @AfterTest
     public void cleanUp() {

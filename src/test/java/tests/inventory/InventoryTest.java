@@ -139,7 +139,7 @@ public class InventoryTest extends DataProvider {
         p.expandWarehouse("default");
         p.setOnHand("Preorder", "1");
 
-        p.arrowBtn("up", "Preorder").shouldBe(visible
+        p.arrowBtn("Preorder", "increment").shouldBe(visible
                 .because("\"Adjust Quantity\" block isn't visible"));
 
     }

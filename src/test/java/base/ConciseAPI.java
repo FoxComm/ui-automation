@@ -85,7 +85,7 @@ public class ConciseAPI implements IHookable {
 
     protected void setDdVal(SelenideElement ddElement, String ddValue) {
         click( ddElement, "Dropdown isn't visible" );
-        SelenideElement option = $(By.xpath("//li[text()='" + ddValue + "']"));
+        SelenideElement option = $(By.xpath("//*[text()='" + ddValue + "']"));
         click( option, "Option <" + ddValue + "> on dd list isn't visible" );
     }
 

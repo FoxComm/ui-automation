@@ -16,66 +16,66 @@ public class PromotionsPage extends BasePage {
     }
 
     public SelenideElement applyTypeDd() {
-        return $(By.xpath("//label[text()='Apply Type']/following-sibling::*[1]/div/div[2]/button"));
+        return $(By.xpath("div[@id='apply-type-dd']"));
     }
 
     public SelenideElement nameFld() {
         return $(By.xpath("//input[@name='name']"));
     }
 
+    //TODO: Add id in Ashes (Storefrot Name, richtext)
     public SelenideElement storefrontNameFld() {
         return $(By.xpath(".//*[@id='foxcom']/div/div[1]/main/div/div[3]/form/div[1]/div[1]/div/div[2]/div[2]/div/div[3]/div/div/div"));
     }
 
     public SelenideElement descriptionFld() {
-        return $(By.xpath(".//*[@id='foxcom']/div/div[1]/main/div/div[3]/form/div[1]/div[1]/div/div[2]/div[3]/div/div[3]/div/div/div"));
+        return $(By.xpath("//*[@name='description']"));
     }
 
+    //TODO: Add id in Ashes (Details, richtext)
     public SelenideElement detailsFld() {
         return $(By.xpath(".//*[@id='foxcom']/div/div[1]/main/div/div[3]/form/div[1]/div[1]/div/div[2]/div[4]/div/div[3]/div/div/div"));
     }
 
     public SelenideElement qualifierTypeDd() {
-        return $(By.xpath("//div[text()='Qualifier Type']/following-sibling::*/div/div/div/div[2]/button/i"));
+        return $(By.xpath("//div[@id='promo-qualifier-dd']"));
     }
 
     public SelenideElement offerTypeDd() {
-        return $(By.xpath("//div[text()='Offer Type']/following-sibling::*/div/div/div/div[2]/button"));
+        return $(By.xpath("//div[@id='promo-offer-dd']"));
     }
 
-    public SelenideElement offerGetFld() {
+    //TODO: Something's fucky - ashes renders different types of <input>'s.
+    // Might need to expand logic in tests and add ids in ashes
+    private SelenideElement offerGetFld() {
         return $(By.xpath("//input[@class='fc-append-input__input-field']"));
     }
 
     public SelenideElement promotionIdVal() {
-        return $(By.xpath("//div[@class='fc-breadcrumbs']/ul/li[5]/a"));
+        return $(By.xpath("//a[@id='item-id']"));
     }
 
     public SelenideElement stateDd() {
-        return $(By.xpath("//div[text()='State']/../following-sibling::*/div[2]/button"));
-    }
-
-    private SelenideElement stateListVal(String state) {
-        return $(By.xpath("//li[text()='" + state + "']"));
+        return $(By.xpath("//div[@id='state-dd']"));
     }
 
     public SelenideElement stateVal() {
-        return $(By.xpath("//div[text()='State']/../following-sibling::*[1]/div[2]/div"));
+        return $(By.xpath("//div[@id='state-dd--value']"));
     }
 
     private SelenideElement removeStartDateBtn() {
-        return $(By.xpath("//a[@class='fc-date-time-picker__close']"));
+        return $(By.xpath("//a[@id='remove-start-date-btn']"));
     }
 
     public SelenideElement promotion(String idOrName) {
-        return $(By.xpath("//tbody[@class='fc-table-body']/a/td[text()='" + idOrName + "']"));
+        return $(By.xpath("//tbody/a//td[text()='" + idOrName + "']"));
     }
 
 
     //--------------------------------------- HELPERS ----------------------------------------//
 
     @Step("Create a new promotion with <{0}> apply type")
-    public void createNewPromo(String applyType, String id) {
+    public void fillOutNewPromoForm(String applyType, String id) {
         setApplyType(applyType);
         setPromoName("Test Promo " + id);
         setStorefrontName("sf name");
@@ -153,28 +153,29 @@ public class PromotionsPage extends BasePage {
         waitForDataToLoad();
         switch (paramName) {
             case "Promotion ID":
-                promoParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + promoIndex + "]/td[2]"));
+                promoParamVal = $(By.xpath("//tbody/a[" + promoIndex + "]/td[contains(@class, 'id')]"));
                 break;
             case "Name":
-                promoParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + promoIndex + "]/td[3]"));
+                //TODO: append class in ashes
+                promoParamVal = $(By.xpath("//tbody/a[" + promoIndex + "]/td[contains(@class, 'promo-name')]"));
                 break;
             case "Storefront Name":
-                promoParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + promoIndex + "]/td[4]"));
+                promoParamVal = $(By.xpath("//tbody/a[" + promoIndex + "]/td[contains(@class, 'storefront-name')]"));
                 break;
             case "Apply Type":
-                promoParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + promoIndex + "]/td[5]"));
+                promoParamVal = $(By.xpath("//tbody/a[" + promoIndex + "]/td[contains(@class, 'apply-type')]"));
                 break;
             case "Total Uses":
-                promoParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + promoIndex + "]/td[6]"));
+                promoParamVal = $(By.xpath("//tbody/a[" + promoIndex + "]/td[contains(@class, 'total-uses')]"));
                 break;
             case "Current Carts":
-                promoParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + promoIndex + "]/td[7]"));
+                promoParamVal = $(By.xpath("//tbody/a[" + promoIndex + "]/td[contains(@class, 'current-carts')]"));
                 break;
             case "Date/Time Created":
-                promoParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + promoIndex + "]/td[8]/time"));
+                promoParamVal = $(By.xpath("//tbody/a[" + promoIndex + "]//time"));
                 break;
             case "State":
-                promoParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + promoIndex + "]/td[9]/div/div"));
+                promoParamVal = $(By.xpath("//tbody/a[" + promoIndex + "]/td[contains(@class, 'state')]"));
                 break;
         }
         return promoParamVal;
@@ -187,8 +188,7 @@ public class PromotionsPage extends BasePage {
                 click( removeStartDateBtn() );
                 break;
             case "Active":
-                click( stateDd() );
-                click( stateListVal(state) );
+                setDdVal(stateDd(), state);
                 break;
         }
     }

@@ -10,7 +10,11 @@ import testdata.DataProvider;
 import java.io.IOException;
 import java.util.Objects;
 
+import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
+import static org.openqa.selenium.By.xpath;
 
 public class OrderCouponsTest extends DataProvider {
 
@@ -39,36 +43,29 @@ public class OrderCouponsTest extends DataProvider {
         p.clickApplyBtn();
         p.clickDoneBtn("Coupons");
 
-//        assertTrue( p. )
-        // assert that coupon is displayed in 'Discounts' block
+        p.appliedCoupon("newcpn-12345").shouldBe(visible);
 
     }
 
     @Test(priority = 2)
     public void addCoupon_checkTotal() throws IOException {
-
-        // add coupon to order through the API
-        provideTestData("cart with single code coupon");
+        provideTestData("a cart with 1 SKU and single code coupon applied");
         p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
 
-        //assert that coupon affects order's grand total
-
+        p.grandTotal().shouldHave(text("$270.00"));
     }
 
     @Test(priority = 2)
     public void removeCoupon() throws IOException {
-
-        // add coupon to order through the API
-        provideTestData("cart with single code coupon");
+        provideTestData("a cart with 1 SKU and single code coupon applied");
         p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
 
-//        click( p.editBtn_coupons() );
-//        click( p.deleteBtn_coupons() );
-//        click( p.doneBtn_coupons() );
+        p.clickEditBtn("Coupons");
+        p.clickRemoveCouponBtn();
+        p.clickDoneBtn("Coupons");
 
-        // assert order's Grand Total
-        // assert that 'Discounts' is cleared
-
+        p.noCouponMsg().shouldBe(visible);
+        p.grandTotal().shouldHave(text("$300.00"));
     }
 
 

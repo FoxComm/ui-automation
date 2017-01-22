@@ -45,6 +45,7 @@ public class NewProductFormTest extends DataProvider {
     }
 
     // TODO: change error message after it'll be changed with something more user friendly
+    //"Title" seems to be not a required field anymore (check if it's not a bug)
     @Test(priority = 2)
     public void titleIsRequired() throws IOException {
 

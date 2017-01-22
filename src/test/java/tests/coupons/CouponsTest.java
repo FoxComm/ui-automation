@@ -42,7 +42,7 @@ public class CouponsTest extends DataProvider {
         p.setDetails("get 10% off for any order");
         p.generateCodes_single("NWCPN-" + randomId);
         p.clickSave();
-        shouldNotHaveText(p.couponNumber(), "new", "Failed to create new coupon");
+        shouldNotHaveText(p.couponIdVal(), "new", "Failed to create new coupon");
 
         p.navigateTo("Marketing", "Coupons");
         p.waitForDataToLoad();
@@ -68,7 +68,7 @@ public class CouponsTest extends DataProvider {
         p.generateCodes_bulk(4, "BULKCPN_" + randomId + "-", 5);
         p.setState("Active");
         p.clickSave();
-        shouldNotHaveText(p.couponNumber(), "new", "Failed to create new coupon");
+        shouldNotHaveText(p.couponIdVal(), "new", "Failed to create new coupon");
 
         p.navigateTo("Marketing", "Coupons");
         p.waitForDataToLoad();
@@ -143,7 +143,7 @@ public class CouponsTest extends DataProvider {
         p.navigateTo("Marketing", "Coupons");
         p.search(couponId);
 //        System.out.println("Coupon name: <" + couponName + ">");
-        p.openCoupon(couponName);
+        p.openCoupon(couponId);
 
         p.descriptionFld().shouldHave(text("edited description")
                 .because("Failed to edit 'Description'."));
@@ -161,7 +161,7 @@ public class CouponsTest extends DataProvider {
         p.clickSave();
         p.navigateTo("Marketing", "Coupons");
         p.search(couponId);
-        p.openCoupon(couponName);
+        p.openCoupon(couponId);
 
         p.detailsFld().shouldHave(text("edited details")
                 .because("Failed to edit 'Details'."));

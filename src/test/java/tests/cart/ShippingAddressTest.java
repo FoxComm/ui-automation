@@ -61,7 +61,7 @@ public class ShippingAddressTest extends DataProvider {
         p.successIcon_shipAddress().shouldBe(visible
                 .because("'Success' icon is not displayed"));
         p.shipAddressWarn().shouldNotBe(visible
-                .because("'No shipping address' warning is displayed."));
+                .because("'Shipping address' warning is displayed."));
 
     }
 
@@ -78,7 +78,7 @@ public class ShippingAddressTest extends DataProvider {
         p.clickDoneBtn("Shipping Address");
         shouldNotBeVisible(p.nameFld(), "\"New Address\" form isn't closed after clicking 'Save'");
 
-        p.addressDetails().shouldBe(visible
+        p.chosenShippingAddressBlock().shouldBe(visible
                 .because("A chosen address isn't displayed as a chosen shipping address."));
         p.shipAddressWarn().shouldNotBe(visible
                 .because("'No shipping address' warning is displayed."));

@@ -16,8 +16,8 @@ public class CouponsPage extends BasePage {
 
     //--------------------------------- ELEMENTS -----------------------------//
 
-    private SelenideElement coupon(String nameOrId) {
-        return $(xpath("//tbody[@class='fc-table-body']/a[1]/td[text()='" + nameOrId + "']"));
+    private SelenideElement coupon(String id) {
+        return $(xpath("//a[@href='/coupons/" + id + "']"));
     }
 
     private SelenideElement addNewCouponBtn() {
@@ -28,13 +28,14 @@ public class CouponsPage extends BasePage {
         return $(xpath("//input[@name='name']"));
     }
 
+    //TODO: add IDs to all rich text fileds on this page
     // may fail, as well as other rich text fields
     public SelenideElement storefrontNameFld() {
         return $(xpath("//div[@class='fc-object-form']/div[2]/div[1]/div[3]/div/div/div"));
     }
 
     public SelenideElement descriptionFld() {
-        return $(xpath("//div[@class='fc-object-form']/div[3]/div[1]/div[3]/div/div/div"));
+        return $(xpath("//textarea[@name='description']"));
     }
 
     public SelenideElement detailsFld() {
@@ -42,12 +43,13 @@ public class CouponsPage extends BasePage {
     }
 
     private SelenideElement promotionDd() {
-        return $(xpath("//input[@name='promotion']/../following-sibling::*"));
+        return $(xpath("//*[@id='promotionSelector']"));
     }
 
-    private SelenideElement promotionListVal(String promotionId) {
-        return $(xpath("//span[text()='" + promotionId + "']"));
-    }
+    //TODO: Remove if locator //*[text()='" + ddValue + "'] at setDdVal() works
+//    private SelenideElement promotionListVal(String promotionId) {
+//        return $(xpath("//span[text()='" + promotionId + "']"));
+//    }
 
     private SelenideElement generateCodesRadio(String type) {
         return $(xpath("//input[@id='" + type + "CouponCodeRadio']"));
@@ -62,15 +64,15 @@ public class CouponsPage extends BasePage {
     }
 
     public SelenideElement couponIdVal() {
-        return $(xpath("//div[@class='fc-breadcrumbs']/ul/li[5]/a"));
+        return $(xpath("//a[@id='item-id']"));
     }
 
     private SelenideElement qtyDecrBtn() {
-        return $(xpath("//input[@id='codesQuantity']/preceding-sibling::*/button"));
+        return $(xpath("//div[@id='code-quantity-counter']//button[contains(@class, 'decrement')]"));
     }
 
     private SelenideElement qtyIncrBtn() {
-        return $(xpath("//input[@id='codesQuantity']/following-sibling::*/button"));
+        return $(xpath("//div[@id='code-quantity-counter']//button[contains(@class, 'increment')]"));
     }
 
     private SelenideElement codePrefixFld() {
@@ -78,11 +80,11 @@ public class CouponsPage extends BasePage {
     }
 
     private SelenideElement codeLengthDecrBtn() {
-        return $(xpath("//input[@id='codesLength']/preceding-sibling::*/button"));
+        return $(xpath("//div[@id='code-character-length-counter']//button[contains(@class, 'decrement')]"));
     }
 
     private SelenideElement codeLengthIncrBtn() {
-        return $(xpath("//input[@id='codesLength']/following-sibling::*/button"));
+        return $(xpath("//div[@id='code-character-length-counter']//button[contains(@class, 'increment')]"));
     }
 
     private SelenideElement generateCodesBtn() {
@@ -90,31 +92,23 @@ public class CouponsPage extends BasePage {
     }
 
     private SelenideElement submitBtn() {
-        return $(xpath("//div[@class='fc-modal-footer']/button"));
-    }
-
-    public SelenideElement couponCodesTab() {
-        return $(xpath("//a[text()='Coupon Codes']/.."));
+        return $(xpath("//button[@id='modal-confirm-btn']"));
     }
 
     private SelenideElement stateDd() {
         return $(xpath("//div[@class='fc-product-state']//following-sibling::*/div[2]/button"));
     }
 
-    private SelenideElement stateListVal(String state) {
-        return $(xpath("//li[text()='" + state + "']"));
-    }
-
     private SelenideElement stateVal() {
-        return $(xpath("//div[@class='fc-product-state']/div[2]/div[2]/div"));
+        return $(xpath("//div[@id='state-dd']//div[@class='fc-dropdown__value']"));
     }
 
     private SelenideElement deleteStartDateBtn() {
-        return $(xpath("//div[text()='Start']/following-sibling::*/div[2]/a"));
+        return $(xpath("//div[@id='state-dd']"));
     }
 
-    public SelenideElement couponNumber() {
-        return $$(xpath("//a[@class='fc-breadcrumbs__link is-active']")).get(2);
+    public SelenideElement couponCodesTab() {
+        return $(xpath("//a[text()='Coupon Codes']/.."));
     }
 
 
@@ -147,8 +141,9 @@ public class CouponsPage extends BasePage {
 
     @Step("Select promotion with id <{0}>")
     public void setPromotion(String promotionId) {
-        click(promotionDd());
-        click(promotionListVal(promotionId));
+//        click(promotionDd());
+//        click(promotionListVal(promotionId));
+        setDdVal(promotionDd(), promotionId);
     }
 
     @Step("Set \"Code\" fld val to <{0}>")
@@ -241,27 +236,31 @@ public class CouponsPage extends BasePage {
     public SelenideElement getCouponParamVal(String couponIndex, String paramName) {
         SelenideElement couponParamVal = null;
         waitForDataToLoad();
+
         switch (paramName) {
             case "Name":
-                couponParamVal = $(xpath("//tbody[@class='fc-table-body']/a[" + couponIndex + "]/td[2]"));
+                couponParamVal = $(xpath("//tbody/a[" + couponIndex + "]/td[contains(@class, 'item-name')]"));
                 break;
             case "Storefront Name":
-                couponParamVal = $(xpath("//tbody[@class='fc-table-body']/a[" + couponIndex + "]/td[3]"));
+                couponParamVal = $(xpath("//tbody/a[" + couponIndex + "]/td[contains(@class, 'storefront-name')]"));
                 break;
-            case "Code":
-                couponParamVal = $(xpath("//tbody[@class='fc-table-body']/a[" + couponIndex + "]/td[4]"));
+            case "Codes":
+                couponParamVal = $(xpath("//tbody/a[" + couponIndex + "]/td[contains(@class, 'coupon-codes')]/span"));
+                break;
+            case "Additional Codes":
+                couponParamVal = $(xpath("//tbody/a[" + couponIndex + "]/td[contains(@class, 'coupon-codes')]/span/span"));
                 break;
             case "Total Uses":
-                couponParamVal = $(xpath("//tbody[@class='fc-table-body']/a[" + couponIndex + "]/td[5]"));
+                couponParamVal = $(xpath("//tbody/a[" + couponIndex + "]/td[contains(@class, 'total-uses')]"));
                 break;
             case "Current Carts":
-                couponParamVal = $(xpath("//tbody[@class='fc-table-body']/a[" + couponIndex + "]/td[6]"));
+                couponParamVal = $(xpath("//tbody/a[" + couponIndex + "]/td[contains(@class, 'current-carts')]"));
                 break;
             case "Date/Time Created":
-                couponParamVal = $(xpath("//tbody[@class='fc-table-body']/a[" + couponIndex + "]/td[7]/time"));
+                couponParamVal = $(xpath("//tbody/a[" + couponIndex + "]//time"));
                 break;
             case "State":
-                couponParamVal = $(xpath("//tbody[@class='fc-table-body']/a[" + couponIndex + "]/td[8]/div/div"));
+                couponParamVal = $(xpath("//tbody/a[" + couponIndex + "]/td[contains(@class, 'state')]//div[contains(text(), 'ctive')]"));
                 break;
         }
         return couponParamVal;

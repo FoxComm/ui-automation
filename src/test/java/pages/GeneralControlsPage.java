@@ -18,6 +18,7 @@ public class GeneralControlsPage extends BasePage {
         return $(xpath("//div[@title='" + filterTitle + "']"));
     }
 
+    //TODO: add id in Ashes
     private SelenideElement searchContextMenuBtn() {
         return $(xpath("//div[@class='_common_button_with_menu__controls']/button[2]"));
     }

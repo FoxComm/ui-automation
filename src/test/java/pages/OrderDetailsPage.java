@@ -8,6 +8,7 @@ import java.util.Objects;
 
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
+import static org.openqa.selenium.By.xpath;
 import static org.testng.Assert.assertTrue;
 
 public class OrderDetailsPage extends CartPage {
@@ -17,15 +18,15 @@ public class OrderDetailsPage extends CartPage {
     //------------------------------ ELEMENTS --------------------------------//
 
     private SelenideElement orderStateDd() {
-        return $(By.xpath("//div[text()='Order State']/following-sibling::*/div/div[2]/button"));
+        return $(xpath("//div[@id='order-state-dd']"));
     }
 
     public SelenideElement addTimeBtn() {
-        return $(By.xpath("//button[@class='fc-btn fc-remorse-timer-extend']"));
+        return $(xpath("//button[@id='remorse-timer-extend-btn']"));
     }
 
     public SelenideElement timer() {
-        return $(By.xpath("//div[@class='fc-countdown']"));
+        return $(xpath("//div[@class='fc-countdown']"));
     }
 
     //------------------------------- HELPERS --------------------------------//
@@ -51,24 +52,9 @@ public class OrderDetailsPage extends CartPage {
 
     @Step("Assert that order's state is '{0}'.")
     public void assertOrderState(String expectedState) {
+        orderOverviewPanel().waitUntil(visible, 10000);
 
-        System.out.println(orderOverviewPanel().waitUntil(visible, 10000));
-
-        if (Objects.equals( expectedState, "Remorse Hold" ) ||
-            Objects.equals( expectedState, "Manual Hold" ) ||
-            Objects.equals( expectedState, "Fraud Hold" )) {
-
-            $(By.xpath("//div[text()='" + expectedState + "']")).shouldBe(visible
-                    .because("Order is not on " + expectedState + "."));
-
-        } else if (Objects.equals( expectedState, "Fulfillment Started" ) ||
-                    Objects.equals( expectedState, "Canceled" )) {
-
-            $(By.xpath("//div[@class=' fc-panel-list']/div[1]/div/span[text()='" + expectedState + "']")).shouldBe(visible
-                    .because("Order is not in '" + expectedState + "' state"));
-
-        }
-
+        shouldHaveText($(xpath("//*[@id='order-state-value']")), expectedState,
+                "Order state is not \"" + expectedState + "\".");
     }
-
 }

@@ -20,32 +20,32 @@ public class CartPage extends BasePage {
     }
 
     public double subtotalVal() {
-        String subtotal = $(xpath("//dl[@class='rma-totals']/dd[1]/span")).getText();
+        String subtotal = $(xpath("//span[@id='subtotal']")).getText();
         return Double.valueOf(subtotal.substring(1, subtotal.length()));
     }
 
     public double discountsVal() {
-        String discounts = $(xpath("//dl[@class='rma-totals']/div[1]/dd[1]/span")).getText();
+        String discounts = $(xpath("//span[@id='discounts-total']")).getText();
         return Double.valueOf(discounts.substring(1, discounts.length()));
     }
 
     public double newSubtotal() {
-        String newSubtotal = $(xpath("//dl[@class='rma-totals']/div/dd[2]/span")).getText();
+        String newSubtotal = $(xpath("//span[@id='new-subtotal']")).getText();
         return Double.valueOf(newSubtotal.substring(1, newSubtotal.length()));
     }
 
     public double shipping() {
-        String shipping = $(xpath("//dl[@class='rma-totals']/div[2]/dd/span")).getText();
+        String shipping = $(xpath("//span[@id='shipping-total']")).getText();
         return Double.valueOf(shipping.substring(1, shipping.length()));
     }
 
     public double tax() {
-        String tax = $(xpath("//dl[@class='rma-totals']/dd[2]/span")).getText();
+        String tax = $(xpath("//span[@id='tax-total']")).getText();
         return Double.valueOf(tax.substring(1, tax.length()));
     }
 
     public SelenideElement grandTotal() {
-        return $(xpath("//dt[text()='Grand Total']/following-sibling::*/span"));
+        return $(xpath("//span[@id='grand-total']"));
     }
 
     public double grandTotalVal() {
@@ -69,33 +69,27 @@ public class CartPage extends BasePage {
     }
 
     public SelenideElement orderOverviewPanel() {
-        return $(xpath("//div[@class=' fc-panel-list']"));
+        return $(xpath("//div[@class='fc-panel-list']"));
     }
 
     // assignees, watchers, customer info will be listed here
 
-    /**
-     * new locator: //*[@id='" + blockName + "-edit-btn']
-     * where blockName is given in format like "shipping-address"
-     */
     private SelenideElement editBtn(String blockName) {
-        return $(xpath("//div[text()='" + blockName + "']/../../following-sibling::*/button"));
+        blockName = blockName.toLowerCase().replaceAll(" ", "-");
+        return $(xpath("//*[@id='" + blockName + "-edit-btn']"));
     }
 
-    /**
-     * new locator: //*[@id='" + blockName + "-done-btn']
-     * where blockName is given in format like "shipping-address"
-     */
     private SelenideElement doneBtn(String blockName) {
-        return $(xpath("//div[text()='" + blockName + "']/../../../following-sibling::*//span[text()='Done']"));
+        blockName = blockName.toLowerCase().replaceAll(" ", "-");
+        return $(xpath("//button[@id='" + blockName + "-done-btn']"));
     }
 
     public SelenideElement placeOrderBtn() {
-        return $(xpath("//div[contains(@class, 'order-checkout')]/button"));
+        return $(xpath("//button[@id='place-order-btn']"));
     }
 
     public SelenideElement orderState() {
-        return $(xpath("//div[text()='Order State']/following-sibling::*/div/div[2]/div"));
+        return $(xpath("//*[@id='order-state-value']"));
     }
 
     //---------------------------------------- HELPERS ----------------------------------------//
@@ -150,11 +144,9 @@ public class CartPage extends BasePage {
     //----------------------------------- ELEMENTS -------------------------------------//
 
     public SelenideElement itemQty(String itemIndex) {
-
 //        if (itemsInEditMode()) {
 //            clickDoneBtn("Items");
 //        }
-
         return $(xpath("//table[@class='fc-table']/tbody/tr[" + itemIndex + "]/td[5]"));
     }
 
@@ -193,11 +185,11 @@ public class CartPage extends BasePage {
     }
 
     private SelenideElement confirmDeletionBtn() {
-        return $(xpath("//span[text()='Yes, Delete']/.."));
+        return $(xpath("//button[@id='modal-confirm-btn']"));
     }
 
     private SelenideElement cancelDeletionBtn() {
-        return $(xpath("//div[@class='fc-modal-footer']/a"));
+        return $(xpath("//a[@id='modal-cancel-btn']"));
     }
 
     private SelenideElement lineItemSearchView_byName(String itemName) {
@@ -226,7 +218,7 @@ public class CartPage extends BasePage {
     @Step("Add item to cart, searchQuery: {0}")
     public void addItemToCart(String searchQuery) {
         if ( !(itemsInEditMode()) ) {
-            clickEditBtn("Items");
+            clickEditBtn("Line Items");
         }
         shouldBeVisible(lineItemSearchFld(),
                 "Failed to enter 'Edit' mode for line items");
@@ -238,7 +230,7 @@ public class CartPage extends BasePage {
         addFoundItem(searchQuery);
         lineItem_byName(searchQuery).shouldBe(visible
                 .because("Failed to add line, used search query: <" + searchQuery + ">"));
-        clickDoneBtn("Items");
+        clickDoneBtn("Line Items");
         lineItem_byName(searchQuery).shouldBe(visible
                 .because("Line item isn't displayed after clicking 'Done' btn."));
     }
@@ -273,7 +265,7 @@ public class CartPage extends BasePage {
         System.out.println("Deleting items... expectedItemsAmount: " + expectedItemsAmount);
 
         if ( !(itemsInEditMode()) ) {
-            clickEditBtn("Items");
+            clickEditBtn("Line Items");
         }
 
         click(deleteBtn_item(itemIndex));
@@ -286,7 +278,7 @@ public class CartPage extends BasePage {
     @Step("Remove all line items from cart")
     public void clearCart() {
         if ( !(itemsInEditMode()) ) {
-            clickEditBtn("Items");
+            clickEditBtn("Line Items");
         }
         int timesToIterate = itemsInCartAmount();
         String itemIndex;
@@ -294,7 +286,7 @@ public class CartPage extends BasePage {
             itemIndex = String.valueOf(i);
             removeItem(itemIndex);
         }
-        clickDoneBtn("Items");
+        clickDoneBtn("Line Items");
     }
 
     public String getItemName(String index) {
@@ -302,7 +294,7 @@ public class CartPage extends BasePage {
     }
 
     private boolean itemsInEditMode() {
-        return doneBtn("Items").isDisplayed();
+        return doneBtn("Line Items").isDisplayed();
     }
 
     @Step("Increase {0}th item in cart qty by {1}")
@@ -363,10 +355,10 @@ public class CartPage extends BasePage {
     @Step("Edit QTY of <{0}th> line item using input fld; <newQTY:{1}>")
     public void editItemQty(String itemIndex, String newQuantity) {
         if ( !(itemsInEditMode()) ) {
-            clickEditBtn("Items");
+            clickEditBtn("Line Items");
         }
         setLineItemQty(itemIndex, newQuantity);
-        clickDoneBtn("Items");
+        clickDoneBtn("Line Items");
     }
 
         @Step("Set line item QTY to <{0}> using direct input")
@@ -381,12 +373,11 @@ public class CartPage extends BasePage {
     //----------------------------------- ELEMENTS -------------------------------------//
 
     public SelenideElement customerName_chosenShipAddress() {
-        return $(xpath("//*[@class='fc-card-container fc-address is-active']//li[@class='name']"));
+        return $(xpath("//li[contains(@class, 'is-active')]//li[@class='name']"));
     }
-    //*[@class='fc-card-container fc-address is-active']
 
     public SelenideElement successIcon_shipAddress() {
-        return $(xpath("//div[text()='Shipping Address']/preceding-sibling::*/i[contains(@class, 'success')]"));
+        return $(xpath("//div[@id='cart-shipping-address-block']//i[contains(@class, 'success')]"));
     }
 
     public SelenideElement warningIcon_shipAddress() {
@@ -409,9 +400,8 @@ public class CartPage extends BasePage {
         return $(xpath("//*[@class='fc-tile-selector__items']/div[" + addressIndex + "]//button[contains(@class, 'icon-edit')]"));
     }
 
-    //TODO: [Ashes] Can't find the place where <AddButton> is rendered for a specific block at cart details page
     private SelenideElement addNewAddressBtn() {
-        return $(xpath("//div[text()='Address Book']/following-sibling::*"));
+        return $(xpath("//button[@id='shipping-address-add-new-address-btn']"));
     }
 
     public SelenideElement chosenAddress() {
@@ -447,9 +437,6 @@ public class CartPage extends BasePage {
     }
 
     // ----------- >> NEW ADDRESS FORM
-    public SelenideElement editAddressBtn() {
-        return $(xpath("//div[@class='fc-content-box fc-editable-content-box fc-shipping-methods']/header/div[2]/button"));
-    }
 
     public SelenideElement nameFld() {
         return $(xpath("//input[@name='name']"));
@@ -467,9 +454,8 @@ public class CartPage extends BasePage {
         return $(xpath("//input[@name='city']"));
     }
 
-    //TODO: [Ashes] Add new shipping address form. IDs for "State" and "Country" dropdowns
     private SelenideElement stateDd() {
-        return $(xpath("//label[text()='State']/following-sibling::*[1]/div[2]/button"));
+        return $(xpath("//div[@id='country-dd']"));
     }
 
     private SelenideElement stateDdValue(String stateName) {
@@ -488,8 +474,8 @@ public class CartPage extends BasePage {
         return $(xpath("//a[text()='Cancel']"));
     }
 
-    public SelenideElement addressDetails() {
-        return $(xpath("//ul[@class='fc-address-details']"));
+    public SelenideElement chosenShippingAddressBlock() {
+        return $(xpath("//li[contains(@class, 'is-active')]"));
     }
 
 
@@ -508,13 +494,11 @@ public class CartPage extends BasePage {
 
     @Step("Choose existing shipping address")
     public void chooseShipAddress(int addressIndex) {
-
         String expectedResult = nameOnAddressCard(addressIndex).text();
         click( chooseAddressBtns(), 1 );
 
         customerName_chosenShipAddress().shouldHave(text(expectedResult)
                 .because("Failed to choose shipping address from address book."));
-
     }
 
     @Step("Set <{0}th> shipping address as default")
@@ -622,7 +606,6 @@ public class CartPage extends BasePage {
         for (int i = 0; i < addressesAmount; i++) {
             click( deleteBtn_inAddressBook("1") );
             click( confirmDeletionBtn() );
-//            sleep(750);
             shouldNotBeVisible(confirmDeletionBtn(), "Confirmation modal window isn't auto-hidden");
         }
 
@@ -643,30 +626,21 @@ public class CartPage extends BasePage {
     //----------------------------------------------------------------------------------//
     //----------------------------------- ELEMENTS -------------------------------------//
 
-    /**
-     * new locator: //*[@id='cart-shipping-method-block']//tr[" + index + "]//input
-     */
     // should be clicked with 'jsClick(element)'
     private SelenideElement shipMethodRdbtn(String index) {
-        return $(xpath("//table[@class='fc-table']/tbody/tr[" + index + "]//input"));
+        return $(xpath("//*[@id='cart-shipping-method-block']//tr[" + index + "]//input"));
     }
 
     public SelenideElement editSelectedShipMethodBtn() {
         return $(xpath("//div[@class='fc-right']/button"));
     }
 
-    /**
-     * new locator: //*[@id='cart-shipping-method-block']//i[contains(@class, 'success')]
-     */
     private SelenideElement successIcon_shipMethod() {
-        return $(xpath("//div[text()='Shipping Method']/preceding-sibling::*/i[contains(@class, 'success')]"));
+        return $(xpath("//*[@id='cart-shipping-method-block']//i[contains(@class, 'success')]"));
     }
 
-    /**
-     * new locator: //*[@id='cart-shipping-method-block']//i[contains(@class, 'warning')]
-     */
     private SelenideElement warningIcon_shipMethod() {
-        return $(xpath("//div[text()='Shipping Method']/preceding-sibling::*/i[contains(@class, 'warning')]"));
+        return $(xpath("//*[@id='cart-shipping-method-block']//i[contains(@class, 'warning')]"));
     }
 
 
@@ -703,11 +677,19 @@ public class CartPage extends BasePage {
     }
 
     private SelenideElement applyBtn() {
-        return $(xpath("//span[text()='Apply']/.."));
+        return $(xpath("//button[@id='apply-coupon-btn']"));
     }
 
-    private SelenideElement removeCouponBtn() {
+    public SelenideElement removeCouponBtn() {
         return $(xpath("//*[@id='cart-coupons-block']//button[contains(@class, 'remove')]"));
+    }
+
+    public SelenideElement appliedCoupon(String couponCode) {
+        return $(xpath("//div[@id='cart-coupons-block']//td[contains(@class, 'code') and text()='" + couponCode + "']"));
+    }
+
+    public SelenideElement noCouponMsg() {
+        return $(xpath("//div[text()='No coupons applied.']"));
     }
 
 
@@ -734,20 +716,15 @@ public class CartPage extends BasePage {
     //----------------------------------- ELEMENTS -------------------------------------//
 
     public SelenideElement editBtn_payment() {
-        return $(xpath("//div[contains(@class, 'order-payment')]/header/div[2]/button"));
+        return $(xpath("//button[@id='payment-methods-edit-btn']"));
     }
 
     public SelenideElement newPaymentBtn() {
-        return $(xpath("//div[contains(@class, 'order-payment')]/header/div[2]/button"));
+        return $(xpath("//button[@id='payment-methods-add-method-btn']"));
     }
 
-    //TODO: [Ashes] Add ID to "Payment Type" dd
     private SelenideElement paymentTypeDd() {
-        return $(xpath("//label[contains(@class, 'payment-type')]/following-sibling::*/div[2]/div"));
-    }
-
-    private SelenideElement paymentTypeVal(String paymentType) {
-        return $(xpath("//li[text()='"+ paymentType + "']"));
+        return $(xpath("//*[@id='payment-type-dd']"));
     }
 
     public SelenideElement appliedAmount() {
@@ -759,9 +736,8 @@ public class CartPage extends BasePage {
     }
 
     // ----------- >> NEW CREDIT CARD FORM
-    //TODO: [Ashes] AddButton at "Payment Method" (adds new credit card) and "Shipping Address" (adds new shipping address) blocks shares the same id
     private SelenideElement newCreditCardBtn() {
-        return $(xpath("//div[contains(@class, 'new-order-payment')]/following-sibling::*/div/div/button"));
+        return $(xpath("//button[@id='payment-methods-create-credit-cart']"));
     }
 
     private SelenideElement holderNameFld() {
@@ -788,12 +764,8 @@ public class CartPage extends BasePage {
         return $(xpath("//*[@id='expYear']"));
     }
 
-    private SelenideElement yearVal(String year) {
-        return $(xpath("//*[@id='expYear']//li[text()='" + year + "']"));
-    }
-
     private SelenideElement chooseBtn(String index) {
-        return $(xpath("//div[@class='fc-address-select-list']/div[" + index + "]//button"));
+        return $(xpath("//*[@id='address-select-list']/div[" + index + "]//button"));
     }
 
     private SelenideElement addPaymentBtn() {
@@ -805,7 +777,6 @@ public class CartPage extends BasePage {
         return $(xpath("//input[@name='giftCardCode']"));
     }
 
-    //TODO: BLOCKED -- "Amount to use" input field doesn't appear: https://trello.com/c/0koiOypP
     public SelenideElement amountToUseFld() {
         return $(xpath("//input[@name='currencyInput']"));
     }
@@ -818,6 +789,7 @@ public class CartPage extends BasePage {
         return $(xpath("//td[contains(@class, 'orders_payments')]/button[2]"));
     }
 
+    //TODO: Add IDs in Ashes
     public SelenideElement gcAvailableBalance() {
         return $(xpath("//div[text()='Available Balance']/following-sibling::*/span"));
     }
@@ -886,10 +858,8 @@ public class CartPage extends BasePage {
 
         @Step("Set expiration date: <{0}/{1}>")
         private void setExpirationDate(String month, String year) {
-            click( monthDd() );
-            click( monthVal(month) );
-            click( yearDd() );
-            click( yearVal(year) );
+            setDdVal(monthDd(), month);
+            setDdVal(yearDd(), year);
         }
 
         @Step("Click \"Choose\" at existing shipping address")
@@ -900,7 +870,7 @@ public class CartPage extends BasePage {
         @Step("Click \"Add Payment Method\" btn")
         public void clickAddPayMethodBtn() {
             click( addPaymentBtn() );
-            shouldBeVisible($(xpath("//strong")), "Payment method wasn't applied");
+            shouldBeVisible($(xpath("//strong[contains(text(), 'xxxx'")), "Payment method wasn't applied");
         }
 
     @Step("Assert that credit card is added")

@@ -97,9 +97,9 @@ public class CartValidationTest extends DataProvider {
         provideTestData("filled out cart, SC as a payment method");
 
         p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
-        p.clickEditBtn("Items");
+        p.clickEditBtn("Line Items");
         p.increaseItemQty("1", 10);
-        p.clickDoneBtn("Items");
+        p.clickDoneBtn("Line Items");
 
         p.fundsWarn().shouldBe(visible);
         p.placeOrderBtn().shouldBe(disabled);
