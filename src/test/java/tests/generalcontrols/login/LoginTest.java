@@ -6,6 +6,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import pages.LoginPage;
 
+import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.refresh;
 import static testdata.DataProvider.customerEmail;
@@ -22,7 +23,7 @@ public class LoginTest extends BaseTest {
     @Test(priority = 1)
     public void incorrect_credentials_test() {
         p.login("sticks and stones", "wrong@email.com", "wrongpassword");
-        p.loginErrorMsg().shouldBe(visible
+        p.loginErrorMsg().shouldHave(text("Invalid credentials")
                 .because("'Incorrect credentials' error msg isn't shown."));
     }
 
@@ -33,9 +34,8 @@ public class LoginTest extends BaseTest {
         p.logout();
     }
 
-    /**
-     * TODO: finish the test below
-     */
+
+    //TODO: finish the test below
 //    @Test(priority = 3)
 //    public void login_userHasNoRolesTest() {
 //        p.login("tenant", customerEmail, "78qa22");

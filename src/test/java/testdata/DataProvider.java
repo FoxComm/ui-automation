@@ -119,7 +119,7 @@ public class DataProvider extends BaseTest {
 
         String randomID = generateRandomID();
         customerName = "Test Buddy-" + randomID;
-        customerEmail = "testbuddy" + randomID + "@mail.com";
+        customerEmail = "qatest2278+" + randomID + "@mail.com";
 
         OkHttpClient client = new OkHttpClient();
 

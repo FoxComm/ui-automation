@@ -13,16 +13,15 @@ public class BaseTest extends ConciseAPI {
     protected String getUrl() {
         return getWebDriver().getCurrentUrl();
     }
-    protected static String apiUrl = "https://stage.foxcommerce.com/api";
-    protected static String adminUrl = "https://localhost:4000";
+    protected static String apiUrl = "https://stage-tpg.foxcommerce.com/api";
+    protected static String adminUrl = "http://localhost:4000";
     protected static String storefrontUrl = "https://stage.foxcommerce.com";
-    public static String browser = System.getProperty("selenide.browser", System.getProperty("browser", CHROME));
 
     @BeforeSuite
     public void browserConfig() {
         String driverPath = Optional.ofNullable(System.getenv("WEBDRIVER_PATH")).orElse("bin/chromedriver");
         System.setProperty("webdriver.chrome.driver", driverPath);
-        Configuration.browser = browser;
+        Configuration.browser = "chrome";
         Configuration.timeout = 10000;
     }
 
