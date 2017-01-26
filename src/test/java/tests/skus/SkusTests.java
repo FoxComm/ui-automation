@@ -30,10 +30,9 @@ public class SkusTests extends DataProvider {
 
     @Test(priority = 1)
     public void createSKU() {
-
         p = openPage(adminUrl + "/skus", SkusPage.class);
-        String randomId = generateRandomID();
 
+        String randomId = generateRandomID();
         p.clickAddNewSKU();
         p.createNewSKU(randomId, "Active");
         p.clickSave_wait();
@@ -41,9 +40,7 @@ public class SkusTests extends DataProvider {
         p.navigateTo("Catalog", "SKUs");
 
         p.search(randomId);
-        p.getSKUParamVal("1", "Code").shouldHave(text("SKU-" + randomId)
-                .because("A just created SKU isn't displayed on the list."));
-
+        p.getSKUParamVal("1", "Code").shouldHave(text("SKU-" + randomId));
     }
 
     @Test(priority = 2)
