@@ -23,90 +23,70 @@ public class ContactInformationTest extends DataProvider {
 
     @BeforeClass(alwaysRun = true)
     public void setUp() {
-
         open(adminUrl);
         if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
             LoginPage loginPage = openPage(adminUrl + "/login", LoginPage.class);
             loginPage.login("tenant", "admin@admin.com", "password");
             shouldBeVisible(loginPage.userMenuBtn(), "Failed to log in");
         }
-
     }
 
     @Test(priority = 1)
     public void assertDefaultValues() throws IOException {
-
         provideTestData("a customer");
+
         p = openPage(adminUrl + "/customers/" + customerId, CustomersPage.class);
-
-        p.nameVal_contactInfo().shouldHave(text(customerName)
-                .because("Incorrect name is displayed in 'Contact Information'."));
-        p.emailVal_contactInfo().shouldHave(text(customerEmail)
-                .because("Incorrect email is displayed in 'Contact Information'."));
-
+        p.nameVal_contactInfo().shouldHave(text(customerName));
+        p.emailVal_contactInfo().shouldHave(text(customerEmail));
     }
 
     @Test(priority = 2)
     public void addPhoneNumber() throws IOException {
-
         provideTestData("a customer");
-        p = openPage(adminUrl + "/customers/" + customerId, CustomersPage.class);
 
+        p = openPage(adminUrl + "/customers/" + customerId, CustomersPage.class);
         p.clickEditBtn_contactInfo();
         p.setPhoneNumber_contactInfo("7779994242");
         p.clickSave();
 
-        p.phoneNumberVal_contactInfo().shouldHave(text("7779994242")
-                .because("Failed to set customer's phone number."));
-
+        p.phoneNumberVal_contactInfo().shouldHave(text("7779994242"));
     }
 
     @Test(priority = 3)
     public void editName() throws IOException {
-
         provideTestData("a customer");
-        p = openPage(adminUrl + "/customers/" + customerId, CustomersPage.class);
 
+        p = openPage(adminUrl + "/customers/" + customerId, CustomersPage.class);
         p.clickEditBtn_contactInfo();
         p.setPhoneNumber_contactInfo("7779994242");
         p.setName_contactInfo(newName);
         p.clickSave();
 
-        p.nameVal_contactInfo().shouldHave(text(newName)
-                .because("Failed to edit customer's name."));
-        p.nameVal_overview().shouldHave(text(newName)
-                .because("Failed to update name value at customer overview block."));
-
+        p.nameVal_contactInfo().shouldHave(text(newName));
+        p.nameVal_overview().shouldHave(text(newName));
     }
 
     @Test(priority = 4)
     public void editEmail() throws IOException {
-
         provideTestData("a customer");
-        p = openPage(adminUrl + "/customers/" + customerId, CustomersPage.class);
 
+        p = openPage(adminUrl + "/customers/" + customerId, CustomersPage.class);
         p.clickEditBtn_contactInfo();
         p.setPhoneNumber_contactInfo("7779994242");
         p.setEmail_contactInfo(newEmail);
         p.clickSave();
 
-        p.emailVal_contactInfo().shouldHave(text(newEmail)
-                .because("Failed to edit customer's email."));
-        p.emailVal_overview().shouldHave(text(newEmail)
-                .because("Failed to update email value at customer overview block."));
+        p.emailVal_contactInfo().shouldHave(text(newEmail));
+        p.emailVal_overview().shouldHave(text(newEmail));
 
     }
 
     @Description("Phone number from billing address should be transmitted to \"Contact Info\"")
     @Test(priority = 5)
     public void phoneNumbFromBillAddress() throws IOException {
-
         provideTestData("customer with a credit card");
         p = openPage(adminUrl + "/customers/" + customerId, CustomersPage.class);
-
-        p.phoneNumberVal_contactInfo().shouldHave(text("9879879876")
-                .because("Phone number from billing address isn't displayed in customer contact information."));
-
+        p.phoneNumberVal_contactInfo().shouldHave(text("9879879876"));
 //      move this assertion to overview-related test
 //      assertEquals( p.phoneNumberVal_overview(),  "9879879876",
 //                "Phone number from billing address isn't displayed in customer overview.");

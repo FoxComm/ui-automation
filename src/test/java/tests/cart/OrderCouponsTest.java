@@ -1,10 +1,12 @@
 package tests.cart;
 
+import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import pages.CartPage;
 import pages.LoginPage;
 import pages.OrderDetailsPage;
+import ru.yandex.qatools.allure.annotations.Description;
 import testdata.DataProvider;
 
 import java.io.IOException;
@@ -18,55 +20,108 @@ import static org.openqa.selenium.By.xpath;
 
 public class OrderCouponsTest extends DataProvider {
 
-    private CartPage p = openPage(adminUrl + "/orders/" + orderId, CartPage.class);
+    private CartPage p;
 
     @BeforeClass(alwaysRun = true)
     public void setUp() {
-
         open(adminUrl);
         if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
             LoginPage loginPage = openPage(adminUrl + "/login", LoginPage.class);
             loginPage.login("tenant", "admin@admin.com", "password");
             shouldBeVisible(loginPage.userMenuBtn(), "Failed to log in");
         }
-
     }
 
     @Test(priority = 1)
-    public void addCoupon() throws IOException {
-
-        provideTestData("a cart and a single code coupon");
-        p = openPage(adminUrl + "/orders/" + orderId, CartPage.class);
+    public void applyCoupon_singleCode() throws IOException {
+        provideTestData("cart<1 SKU>, coupon<any, single code>");
+        p = openPage(adminUrl + "/carts/" + cartId, OrderDetailsPage.class);
 
         p.clickEditBtn("Coupons");
-        p.addCouponCode("newcpn-12345");
+        p.addCouponCode(singleCouponCode);
         p.clickApplyBtn();
-        p.clickDoneBtn("Coupons");
 
-        p.appliedCoupon("newcpn-12345").shouldBe(visible);
-
-    }
-
-    @Test(priority = 2)
-    public void addCoupon_checkTotal() throws IOException {
-        provideTestData("a cart with 1 SKU and single code coupon applied");
-        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
-
-        p.grandTotal().shouldHave(text("$270.00"));
+        p.appliedCoupon(singleCouponCode).shouldBe(visible);
+        p.grandTotal().shouldHave(text("$135.00"));
     }
 
     @Test(priority = 2)
     public void removeCoupon() throws IOException {
-        provideTestData("a cart with 1 SKU and single code coupon applied");
-        p = open(adminUrl + "/orders/" + orderId, OrderDetailsPage.class);
+        provideTestData("cart<1 SKU, coupon applied>; coupon<any, single code>");
+        p = openPage(adminUrl + "/carts/" + cartId, OrderDetailsPage.class);
 
         p.clickEditBtn("Coupons");
         p.clickRemoveCouponBtn();
         p.clickDoneBtn("Coupons");
 
         p.noCouponMsg().shouldBe(visible);
-        p.grandTotal().shouldHave(text("$300.00"));
+        p.noDiscountsMsg().shouldBe(visible);
+        p.grandTotal().shouldHave(text("$150.00"));
     }
 
+    @Test(priority = 3)
+    @Description("Assert that coupon code is automatically removed from cart after checkout")
+    public void couponRemovedAfterCheckout() throws IOException {
+        provideTestData("cart<1 SKU in stock, shipAddress, shipMethod, coupon applied, payMethod[SC]>; coupon<any, single code>");
+        p = openPage(adminUrl + "/carts/" + cartId, OrderDetailsPage.class);
+
+        p.clickEditBtn("Coupons");
+        p.addCouponCode(singleCouponCode);
+        p.clickApplyBtn();
+        p.clickDoneBtn("Coupons");
+        p.clickPlaceOderBtn();
+        shouldHaveText(p.orderState(), "Remorse Hold", "Checkout failed");
+        open(adminUrl + "/customers/" + customerId + "/cart");
+        p.clickEditCartBtn();
+
+        p.noCouponMsg().shouldBe(visible);
+        p.noDiscountsMsg().shouldBe(visible);
+    }
+
+//    @Test(priority = 4)
+//    public void applyCoupon_fail() throws IOException {
+//        provideTestData("empty cart");
+//        p = openPage(adminUrl + "/carts/" + cartId, OrderDetailsPage.class);
+//
+//        p.clickEditBtn("Coupons");
+//        p.addCouponCode("incorrect-coupon-code");
+//        p.clickApplyBtn();
+//
+//        p.couponErrorMsg().shouldBe(visible);
+//    }
+
+    @Test(priority = 5)
+    public void applyCoupon_bulkGenerated() throws IOException {
+        provideTestData("cart<1 SKU>; coupon<any, bulk generated codes>");
+        p = openPage(adminUrl + "/carts/" + cartId, OrderDetailsPage.class);
+
+        p.clickEditBtn("Coupons");
+        p.addCouponCode(bulkCodes.get(0));
+        p.clickApplyBtn();
+
+        p.appliedCoupon(bulkCodes.get(0)).shouldBe(visible);
+        p.grandTotal().shouldHave(text("$135.00"));
+    }
+
+    @Test(priority = 6)
+    public void applyCoupon_itemsQualifier() throws IOException {
+        provideTestData("cart<1 SKU>; coupon<items -- no qualifier/percent off, single code>");
+        p = openPage(adminUrl + "/carts/" + cartId, OrderDetailsPage.class);
+
+        p.clickEditBtn("Coupons");
+        p.addCouponCode(singleCouponCode);
+        p.clickApplyBtn();
+
+        p.appliedCoupon(singleCouponCode).shouldBe(visible);
+        p.grandTotal().shouldHave(text("45.00"));
+    }
+
+    @AfterTest
+    public void cleanUp() throws IOException {
+        if (searchCode != null) {
+            deleteSearch(searchCode);
+            searchCode = "";
+        }
+    }
 
 }

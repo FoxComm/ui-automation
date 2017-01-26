@@ -33,103 +33,94 @@ public class ShippingAddressTest extends DataProvider {
 
     @Test(priority = 1)
     public void addNewAddress_emptyAddressBook() throws IOException {
-
         provideTestData("cart with empty address book");
+
         p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
-
         p.clickEditBtn("Shipping Address");
-        p.clearAddressBook();
-        p.addNewAddress("John Doe", "2101 Green Valley #320", "Suite 300", "Seattle", "Washington", "98101", "9879879876");
+        p.addNewAddress("Test Buddy", "1124 Random Rd", "Suite 300", "El Cajon", "California", "92020", "9879879876");
 
-        p.addressBookHeader().shouldBe(visible
-                .because("A just added address isn't displayed in address book."));
+        p.addressBook().shouldHaveSize(1);
         p.chosenAddress().shouldBe(visible
                 .because("A just added address isn't set as a chosen shipping address."));
-
     }
 
     @Test(priority = 2)
     public void addNewAddress_nonEmptyAddressBook() throws IOException {
-
         provideTestData("cart with non-empty address book");
         p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
 
         p.clickEditBtn("Shipping Address");
-        p.addNewAddress("John Doe", "2101 Green Valley #320", "Suite 300", "Seattle", "Washington", "98101", "9879879876");
+        p.addNewAddress("Test Buddy", "1124 Random Rd", "Suite 300", "El Cajon", "California", "92020", "9879879876");
+        p.addressBook().shouldHaveSize(2);
+        p.customerName_chosenShipAddress().shouldHave(text("Test Buddy"));
+
         p.clickDoneBtn("Shipping Address");
-
-        p.successIcon_shipAddress().shouldBe(visible
-                .because("'Success' icon is not displayed"));
-        p.shipAddressWarn().shouldNotBe(visible
-                .because("'Shipping address' warning is displayed."));
-
+        p.appliedShipAddress_name().shouldHave(text("Test Buddy"));
     }
 
     @Test(priority = 3)
     public void chooseShippingAddress() throws IOException {
-
         provideTestData("cart with non-empty address book");
         p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
 
         p.clickEditBtn("Shipping Address");
         p.chooseShipAddress(1);
-        p.chosenAddress().shouldBe(visible
-                .because("A chosen address isn't displayed as a chosen shipping address."));
+        shouldBeVisible(p.chosenAddress(), "A chosen shipping address isn't displayed as a chosen shipping address.");
+
         p.clickDoneBtn("Shipping Address");
-        shouldNotBeVisible(p.nameFld(), "\"New Address\" form isn't closed after clicking 'Save'");
-
-        p.chosenShippingAddressBlock().shouldBe(visible
-                .because("A chosen address isn't displayed as a chosen shipping address."));
-        p.shipAddressWarn().shouldNotBe(visible
-                .because("'No shipping address' warning is displayed."));
-
-    }
-
-    @Test(priority = 3)
-    public void editChosenShippingAddress() {
-
-        p.clickEditBtn("Shipping Address");
-        p.clickEditBtn_chosenAddress();
-        p.setName("Edited Customer Name");
-        p.clickSave();
-        shouldNotBeVisible(p.nameFld(), "'New Address' form isn't closed after clicking 'Save'");
-
-        p.customerName_chosenShipAddress().shouldHave(text("Edited Customer Name")
-                .because("Chosen address has failed to get updated."));
-
+        p.appliedShipAddress_name().shouldHave(text("John Doe"));
     }
 
     @Test(priority = 4)
-    public void deleteChosenShippingAddress() throws IOException {
+    public void editChosenShippingAddress() throws IOException {
+        provideTestData("cart with chosen shipping address");
+        p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
 
+        p.clickEditBtn("Shipping Address");
+        p.clickEditBtn_chosenAddress();
+        p.setName("Edited Name");
+        p.clickSave();
+        shouldNotBeVisible(p.nameFld(), "'New Address' form isn't closed after clicking 'Save'");
+
+        p.customerName_chosenShipAddress().shouldHave(text("Edited Name")
+                .because("Chosen address has failed to get updated."));
+        p.clickDoneBtn("Shipping Address");
+        p.appliedShipAddress_name().shouldHave(text("Edited Name"));
+    }
+
+    @Test(priority = 5)
+    public void deleteChosenShippingAddress() throws IOException {
         provideTestData("cart with chosen shipping address");
         p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
 
         p.clickEditBtn("Shipping Address");
         p.removeChosenAddress();
-
         p.chosenAddress().shouldNotBe(visible
                 .because("Failed to delete chosen shipping address."));
-
     }
 
     @Test(priority = 6)
     public void setDefaultShippingAddress() throws IOException {
-
-        provideTestData("cart with 2 addresses in address book");
+        provideTestData("filled out cart 2 addresses in address book");
         p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
 
         p.clickEditBtn("Shipping Address");
         p.setAddressAsDefault("1");
-        sleep(750);
-        p.defaultShipAddressChkbox_input("1").shouldBe(selected
-                .because("Failed to set address in address book as default shipping address."));
+        p.chooseShipAddress(1);
+        p.defaultShipAddressChkbox_input("1").shouldBe(selected);
+        p.clickDoneBtn("Shipping Address");
+        p.assertNoWarnings();
+        p.clickPlaceOderBtn();
+        shouldHaveText(p.orderState(), "Remorse Hold", "Failed to place order");
+        open(adminUrl + "/customers/" + customerId + "/cart");
+        p.clickEditCartBtn();
 
+        p.appliedShipAddress_name().shouldHave(text("John Doe"));
+        p.shipAddressWarn().shouldNotBe(visible);
     }
 
     @Test(priority = 7)
     public void changeDefaultShippingAddress() throws IOException {
-
         provideTestData("cart with 2 addresses and defined default shipping address");
         p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
 
@@ -138,7 +129,6 @@ public class ShippingAddressTest extends DataProvider {
         sleep(750);
         p.defaultShipAddressChkbox_input("1").shouldBe(selected
                 .because("Failed to set different address as default shipping address."));
-
     }
 
 }

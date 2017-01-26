@@ -1,0 +1,82 @@
+{
+  "result": {
+    "referenceNumber": "BR11274",
+    "paymentState": "cart",
+    "lineItems": {
+      "skus": [
+        {
+          "imagePath": "https://s3-us-west-2.amazonaws.com/fc-firebird-public/images/product/Granger_Three_Quarter.jpg",
+          "referenceNumbers": [
+            "f7f0b151-f828-6ef1-5655-0667f3172e19"
+          ],
+          "name": "Donkey",
+          "sku": "SKU-YAX",
+          "price": 3300,
+          "quantity": 1,
+          "totalPrice": 3300,
+          "productFormId": 1,
+          "trackInventory": true,
+          "state": "cart"
+        }
+      ]
+    },
+    "lineItemAdjustments": [],
+    "totals": {
+      "subTotal": 3300,
+      "taxes": 0,
+      "shipping": 1500,
+      "adjustments": 0,
+      "total": 4800,
+      "customersExpenses": 1073
+    },
+    "customer": {
+      "id": 1186,
+      "email": "qatest2278+9321913@mail.com",
+      "name": "Test Buddy-9321913",
+      "createdAt": "2017-01-26T02:51:08.720Z",
+      "disabled": false,
+      "isGuest": false,
+      "isBlacklisted": false,
+      "totalSales": 0,
+      "storeCreditTotals": {
+        "availableBalance": 0,
+        "currentBalance": 0
+      }
+    },
+    "shippingMethod": {
+      "id": 3,
+      "name": "2-3 day express (FedEx)",
+      "code": "EXPRESS",
+      "price": 1500,
+      "isEnabled": true
+    },
+    "shippingAddress": {
+      "id": 1180,
+      "region": {
+        "id": 4164,
+        "countryId": 234,
+        "name": "Oregon"
+      },
+      "name": "John Doe",
+      "address1": "757 Foggy Crow Isle",
+      "address2": "200 Suite",
+      "city": "Portland",
+      "zip": "97201",
+      "isDefault": false,
+      "phoneNumber": "5038234000"
+    },
+    "paymentMethods": [
+      {
+        "id": 1327,
+        "amount": 3727,
+        "currentBalance": 50000,
+        "availableBalance": 50000,
+        "createdAt": "2017-01-26T02:51:22.620Z",
+        "type": "storeCredit"
+      }
+    ]
+  },
+  "warnings": [
+    "order with referenceNumber=BR11274 has insufficient funds"
+  ]
+}

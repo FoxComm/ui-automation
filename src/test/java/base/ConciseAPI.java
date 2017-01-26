@@ -24,6 +24,7 @@ import java.net.URLConnection;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -64,17 +65,20 @@ public class ConciseAPI implements IHookable {
 
     public void click(SelenideElement element) {
         shouldBeVisible(element, "Element is not visible");
+        shouldBeEnabled(element, "Element is not enabled");
         element.click();
     }
 
     public void click(SelenideElement element, String errorMsg) {
         shouldBeVisible(element, errorMsg);
+        shouldBeEnabled(element, "Element is not enabled");
         element.click();
     }
 
     protected void click(List<SelenideElement> listOfElements, int index) {
         SelenideElement element = listOfElements.get(index - 1);
         shouldBeVisible(element, "Element is not visible");
+        shouldBeEnabled(element, "Element is not enabled");
         element.click();
     }
 
@@ -129,7 +133,7 @@ public class ConciseAPI implements IHookable {
         try {
             element.shouldBe(visible);
         } catch (ElementNotFound | ElementShould | NullPointerException e) {
-            System.err.println(e.getStackTrace());
+            System.err.println(Arrays.toString(e.getStackTrace()));
             e.printStackTrace();
             throw new RuntimeException(errorMsg);
         }

@@ -1,12 +1,12 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="test" verbose="1">
-    <!--&lt;!&ndash;<test name="ES Tests">&ndash;&gt;-->
-        <!--&lt;!&ndash;<classes>&ndash;&gt;-->
-            <!--&lt;!&ndash;<class name="tests.generalcontrols.search.CustomersSearchTest" />&ndash;&gt;-->
-            <!--&lt;!&ndash;<class name="tests.generalcontrols.search.ProductsSearchTest" />&ndash;&gt;-->
-            <!--&lt;!&ndash;<class name="tests.generalcontrols.search.SKUTest" />&ndash;&gt;-->
-        <!--&lt;!&ndash;</classes>&ndash;&gt;-->
-    <!--&lt;!&ndash;</test>&ndash;&gt;-->
+    <!--<test name="ES Tests">-->
+        <!--<classes>-->
+            <!--<class name="tests.generalcontrols.search.CustomersSearchTest" />-->
+            <!--<class name="tests.generalcontrols.search.ProductsSearchTest" />-->
+            <!--<class name="tests.generalcontrols.search.SKUTest" />-->
+        <!--</classes>-->
+    <!--</test>-->
     <test name="Authentication">
         <classes>
             <class name="tests.generalcontrols.login.LoginTest" />

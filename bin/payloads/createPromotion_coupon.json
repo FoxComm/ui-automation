@@ -1,0 +1,43 @@
+{
+  "id": null,
+  "createdAt": null,
+  "attributes": {
+    "name": {
+      "t": "string",
+      "v": "Test Promo 775"
+    },
+    "storefrontName": {
+      "t": "richText",
+      "v": "<p>SF Test Promo 775</p>"
+    },
+    "description": {
+      "t": "text",
+      "v": "Test Promo 775 Description"
+    },
+    "details": {
+      "t": "richText",
+      "v": "<p>Test Promo 775 Details</p>"
+    }
+  },
+  "discounts": [{
+    "id": null,
+    "createdAt": null,
+    "attributes": {
+      "qualifier": {
+        "t": "qualifier",
+        "v": {
+          "orderAny": {}
+        }
+      },
+      "offer": {
+        "t": "offer",
+        "v": {
+          "orderPercentOff": {
+            "discount": 10
+          }
+        }
+      }
+    }
+  }],
+  "applyType": "coupon"
+}

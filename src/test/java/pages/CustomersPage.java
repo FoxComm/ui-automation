@@ -198,8 +198,6 @@ public class CustomersPage extends BasePage {
 
     @Step("Add new address to customer's address book")
     public void addNewAddress(String name, String streetAddress1, String streetAddress2, String city, String state, String zipCode, String phoneNumber) {
-
-        clickNewAddressBtn();
         setName(name);
         setAddress1(streetAddress1);
         setAddress2(streetAddress2);
@@ -209,8 +207,6 @@ public class CustomersPage extends BasePage {
         setZip(zipCode);
         setPhoneNumber(phoneNumber);
         assertStateIsntReset();         // regression assertion
-        clickSave_();
-
     }
 
         @Step("Click \"New Address\" button")
@@ -676,7 +672,7 @@ public class CustomersPage extends BasePage {
         return $(By.xpath("//button[@type='submit']"));
     }
 
-    public SelenideElement availableBalanceVal() {
+    public SelenideElement availableBalance() {
          return $(By.xpath("//div[text()='Total Available Balance']/following-sibling::*/div/span"));
     }
 

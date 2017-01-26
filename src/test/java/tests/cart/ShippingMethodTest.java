@@ -29,7 +29,6 @@ public class ShippingMethodTest extends DataProvider {
 
     @Test(priority = 1)
     public void setShippingMethod() throws IOException {
-
         provideTestData("cart with chosen shipping address");
         p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
 
@@ -37,7 +36,6 @@ public class ShippingMethodTest extends DataProvider {
         p.selectShipMethod("1");
         p.clickDoneBtn("Shipping Method");
         p.assertShipMethodDefined();
-
     }
 
 }

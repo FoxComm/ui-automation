@@ -18,72 +18,62 @@ public class StoreCreditsTest extends DataProvider {
 
     @BeforeClass(alwaysRun = true)
     public void setUp() {
-
         open(adminUrl);
         if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
             LoginPage loginPage = openPage(adminUrl + "/login", LoginPage.class);
             loginPage.login("tenant", "admin@admin.com", "password");
             shouldBeVisible(loginPage.userMenuBtn(), "Failed to log in");
         }
-
     }
 
     @Test(priority = 1)
     public void issueSC_csrAppeasement() throws IOException {
-
         provideTestData("a customer");
-        p = openPage(adminUrl + "/customers/" + customerId, CustomersPage.class);
 
+        p = openPage(adminUrl + "/customers/" + customerId, CustomersPage.class);
         p.navToSCTab();
         p.clickNewSCBtn();
         p.selectType("Csr Appeasement");
         p.setValue("50");
         p.clickIssueSCButton();
 
-        p.totalAvailableBalance().shouldHave(text("$50.00")
-                .because("Current available balance value is incorrect."));
-
+        p.totalAvailableBalance().shouldHave(text("$50.00"));
     }
 
     @Test(priority = 2)
     public void issueSC_presetValues() throws IOException {
-
         provideTestData("a customer");
-        p = openPage(adminUrl + "/customers/" + customerId, CustomersPage.class);
 
+        p = openPage(adminUrl + "/customers/" + customerId, CustomersPage.class);
         p.navToSCTab();
         p.clickNewSCBtn();
         p.selectType("Csr Appeasement");
         p.setValue("100");
         p.clickIssueSCButton();
-        shouldHaveText(p.availableBalanceVal(), "$100.00",
-                "Current available balance value is incorrect.");
 
+        p.availableBalance().shouldHave(text("$100.00"));
     }
 
     @Test(priority = 3)
     public void issueSC_gcTransfer() throws IOException {
-
         provideTestData("a customer && GC");
-        p = openPage(adminUrl + "/customers/" + customerId, CustomersPage.class);
 
+        p = openPage(adminUrl + "/customers/" + customerId, CustomersPage.class);
         p.navToSCTab();
         p.clickNewSCBtn();
         p.selectType("Gift Card Transfer");
         p.setGCNumber(gcCode);
-        shouldHaveText(p.gcAvailableBalanceVal(), "$125.00", "GC available balance isn't displayed.");
+        shouldHaveText(p.gcAvailableBalanceVal(), "$125.00", "GC available balance isn't displayed/refreshed.");
         p.clickIssueSCButton();
-        p.availableBalanceVal().shouldHave(text("$125.00")
-                .because("Current available balance value is incorrect."));
 
+        p.availableBalance().shouldHave(text("$125.00"));
     }
 
     @Test(priority = 4)
     public void issuedSC_displayedOnList() throws IOException {
-
         provideTestData("a customer");
-        p = openPage(adminUrl + "/customers/" + customerId, CustomersPage.class);
 
+        p = openPage(adminUrl + "/customers/" + customerId, CustomersPage.class);
         p.navToSCTab();
         p.clickNewSCBtn();
         p.selectType("Csr Appeasement");
@@ -92,50 +82,42 @@ public class StoreCreditsTest extends DataProvider {
         waitForDataToLoad();
 
         p.storeCreditsOnList().shouldHaveSize(1);
-
     }
 
-    @Test(priority = 5)
+    @Test(priority = 5, dependsOnMethods = "issuedSC_displayedOnList")
     public void setState_onHold() throws IOException {
-
         provideTestData("a customer with issued SC");
-        p = openPage(adminUrl + "/customers/" + customerId, CustomersPage.class);
 
+        p = openPage(adminUrl + "/customers/" + customerId, CustomersPage.class);
         p.navToSCTab();
         waitForDataToLoad();
         p.changeSet("1", "On Hold");
 
-        p.getSCParamVal("1", "State").shouldHave(text("On Hold")
-                .because("Failed to change SC state."));
-
+        p.getSCParamVal("1", "State").shouldHave(text("On Hold"));
     }
 
-    @Test(priority = 6)
+    @Test(priority = 6, dependsOnMethods = "issuedSC_displayedOnList")
     public void setState_canceled() throws IOException {
-
         provideTestData("a customer with issued SC");
-        p = openPage(adminUrl + "/customers/" + customerId, CustomersPage.class);
 
+        p = openPage(adminUrl + "/customers/" + customerId, CustomersPage.class);
         p.navToSCTab();
         waitForDataToLoad();
         p.changeSet("1", "Cancel Store Credit");
 
-        p.getSCParamVal("1", "State").shouldHave(text("Canceled")
-                .because("Failed to change SC state."));
-
+        p.getSCParamVal("1", "State").shouldHave(text("Canceled"));
     }
 
     @Test(priority = 7)
     public void checkTransaction_csrAppeasement() throws IOException {
-
         provideTestData("order in Remorse Hold, payed with SC (CSR Appeasement)");
-        p = openPage(adminUrl + "/customers/" + customerId, CustomersPage.class);
 
+        p = openPage(adminUrl + "/customers/" + customerId, CustomersPage.class);
         p.navToSCTab();
         p.navToTransactionTab();
         waitForDataToLoad();
-        p.getTransactionParamVal("1", "Amount").shouldHave(text("-$36.00")
-                .because("Incorrect amount of funds was applied to order as a payment."));
+
+        p.getTransactionParamVal("1", "Amount").shouldHave(text("-$36.00"));
 //        p.getTransactionParamVal("1", "Transaction").shouldHave(text("CSR Appeasement")
 //                .because("Incorrect transaction type."));
 
@@ -143,18 +125,17 @@ public class StoreCreditsTest extends DataProvider {
 
     @Test(priority = 8)
     public void checkTransaction_gcTransfer() throws IOException {
-
         provideTestData("order in Remorse Hold, payed with SC (GC Transfer)");
-        p = openPage(adminUrl + "/customers/" + customerId, CustomersPage.class);
 
+        p = openPage(adminUrl + "/customers/" + customerId, CustomersPage.class);
         p.navToSCTab();
         p.navToTransactionTab();
         waitForDataToLoad();
+
         p.getTransactionParamVal("1", "Amount").shouldHave(text("-$36.00")
                 .because("Incorrect amount of funds was applied to order as a payment."));
 //        p.getTransactionParamVal("1", "Transaction").shouldHave(text("Gift Card Transfer")
 //                .because("Incorrect transaction type."));
-
     }
 
 }

@@ -220,7 +220,7 @@ public class GiftCardsTest extends DataProvider {
 //        p.issueGCToCustomer(customerName, "Test message for customer");
 //        click( p.issueGCBtn() );
 //
-//        p.gcAvailableBalance().shouldHave(text("$123.78")
+//        p.availableBalance().shouldHave(text("$123.78")
 //                .because("Failed to issue new GC"));
 //    }
 

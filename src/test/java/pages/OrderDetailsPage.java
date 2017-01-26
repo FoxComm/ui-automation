@@ -6,8 +6,10 @@ import ru.yandex.qatools.allure.annotations.Step;
 
 import java.util.Objects;
 
+import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.sleep;
 import static org.openqa.selenium.By.xpath;
 import static org.testng.Assert.assertTrue;
 
@@ -31,10 +33,18 @@ public class OrderDetailsPage extends CartPage {
 
     //------------------------------- HELPERS --------------------------------//
 
+    @Step("Click \"Add Remorse Time\" btn <{0}> times")
+    public void clickAddTimeBtn_times(int times) {
+        for (int i = 0; i < times; i++) {
+            click(addTimeBtn());
+            sleep(100);
+        }
+    }
+
     @Step("Change order state to {0}")
     public void setOrderState(String state) {
         setDdVal(orderStateDd(), state);
-        click( yesBtn() );
+        click(yesBtn());
     }
 
     @Step("Check if remorse hold time has been increased.")
@@ -52,9 +62,6 @@ public class OrderDetailsPage extends CartPage {
 
     @Step("Assert that order's state is '{0}'.")
     public void assertOrderState(String expectedState) {
-        orderOverviewPanel().waitUntil(visible, 10000);
-
-        shouldHaveText($(xpath("//*[@id='order-state-value']")), expectedState,
-                "Order state is not \"" + expectedState + "\".");
+        orderState().shouldHave(text(expectedState));
     }
 }
