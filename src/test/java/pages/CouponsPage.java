@@ -239,28 +239,28 @@ public class CouponsPage extends BasePage {
 
         switch (paramName) {
             case "Name":
-                couponParamVal = $(xpath("//tbody/a[" + couponIndex + "]/td[contains(@class, 'item-name')]"));
+                couponParamVal = $(xpath("//tbody/a[" + couponIndex + "]/td[contains(@class, 'fct-name')]"));
                 break;
             case "Storefront Name":
-                couponParamVal = $(xpath("//tbody/a[" + couponIndex + "]/td[contains(@class, 'storefront-name')]"));
+                couponParamVal = $(xpath("//tbody/a[" + couponIndex + "]/td[contains(@class, 'fct-storefrontName')]"));
                 break;
             case "Codes":
-                couponParamVal = $(xpath("//tbody/a[" + couponIndex + "]/td[contains(@class, 'coupon-codes')]/span"));
+                couponParamVal = $(xpath("//tbody/a[" + couponIndex + "]/td[contains(@class, 'fct-codes')]/span"));
                 break;
             case "Additional Codes":
-                couponParamVal = $(xpath("//tbody/a[" + couponIndex + "]/td[contains(@class, 'coupon-codes')]/span/span"));
+                couponParamVal = $(xpath("//tbody/a[" + couponIndex + "]/td[contains(@class, 'fct-codes')]/span/span"));
                 break;
             case "Total Uses":
-                couponParamVal = $(xpath("//tbody/a[" + couponIndex + "]/td[contains(@class, 'total-uses')]"));
+                couponParamVal = $(xpath("//tbody/a[" + couponIndex + "]/td[contains(@class, 'fct-totalUsed')]"));
                 break;
             case "Current Carts":
-                couponParamVal = $(xpath("//tbody/a[" + couponIndex + "]/td[contains(@class, 'current-carts')]"));
+                couponParamVal = $(xpath("//tbody/a[" + couponIndex + "]/td[contains(@class, 'fct-curentCarts')]"));
                 break;
             case "Date/Time Created":
                 couponParamVal = $(xpath("//tbody/a[" + couponIndex + "]//time"));
                 break;
             case "State":
-                couponParamVal = $(xpath("//tbody/a[" + couponIndex + "]/td[contains(@class, 'state')]//div[contains(text(), 'ctive')]"));
+                couponParamVal = $(xpath("//tbody/a[" + couponIndex + "]/td[contains(@class, 'fct-state')]//div[contains(text(), 'ctive')]"));
                 break;
         }
         return couponParamVal;

@@ -21,7 +21,7 @@ public class ProductsPage extends BasePage {
     }
 
     public SelenideElement product(String name) {
-        return $(xpath("//tbody/a/td[contains(@class, 'product-name') and text()='" + name + "']"));
+        return $(xpath("//tbody/a/td[contains(@class, 'fct-title') and text()='" + name + "']"));
     }
 
     //-------------------------- NEW PRODUCT
@@ -224,24 +224,24 @@ public class ProductsPage extends BasePage {
 
     @Step("Get '{1}' parameter value of {0}th product on the list")
     public SelenideElement getProductParamVal(String productIndex, String paramName) {
-        SelenideElement productParamVal = null;
+        SelenideElement paramVal = null;
         waitForDataToLoad();
         switch (paramName) {
             case "Product ID":
-                productParamVal = $(xpath("//tbody/a[" + productIndex + "]//td[contains(@class, 'product-id')]"));
+                paramVal = $(xpath("//tbody/a[" + productIndex + "]//td[contains(@class, 'productId')]"));
                 break;
 //            case "Image":
-//                productParamVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + productIndex + "]/td[3]/img")).getAttribute("src");
+//                paramVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + productIndex + "]/td[3]/img")).getAttribute("src");
 //                break;
             case "Name":
-                productParamVal = $(xpath("//tbody/a[" + productIndex + "]//td[contains(@class, 'product-name')]"));
+                paramVal = $(xpath("//tbody/a[" + productIndex + "]//td[contains(@class, 'title')]"));
                 break;
             case "State":
-                productParamVal = $(xpath("//tbody/a[" + productIndex + "]//td[contains(@class, 'state')]"));
+                paramVal = $(xpath("//tbody/a[" + productIndex + "]//td[contains(@class, 'state')]//div[contains(text(), 'ctive')]"));
                 break;
 
         }
-        return productParamVal;
+        return paramVal;
     }
 
 //    private void selectLine(int index) {

@@ -1,32 +1,32 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="e2e" verbose="1">
-    <test name="ES Tests">
-        <classes>
-            <class name="tests.generalcontrols.search.CustomersSearchTest" />
-            <class name="tests.generalcontrols.search.ProductsSearchTest" />
-            <class name="tests.generalcontrols.search.SKUTest" />
-        </classes>
-    </test>
-    <test name="Authentication">
-        <classes>
-            <class name="tests.generalcontrols.login.LoginTest" />
-        </classes>
-    </test>
-    <test name="Search Controls > Saved Search">
-        <classes>
-            <class name="tests.generalcontrols.search.SavedSearchTest" />
-        </classes>
-    </test>
-    <test name="Search Controls > Search Field">
-        <classes>
-            <class name="tests.orders.SearchTest" />
-        </classes>
-    </test>
-    <test name="Shared Search">
-        <classes>
-            <class name="tests.generalcontrols.search.SharedSearchTest" />
-        </classes>
-    </test>
+    <!--<test name="ES Tests">-->
+        <!--<classes>-->
+            <!--<class name="tests.generalcontrols.search.CustomersSearchTest" />-->
+            <!--<class name="tests.generalcontrols.search.ProductsSearchTest" />-->
+            <!--<class name="tests.generalcontrols.search.SKUTest" />-->
+        <!--</classes>-->
+    <!--</test>-->
+    <!--<test name="Authentication">-->
+        <!--<classes>-->
+            <!--<class name="tests.generalcontrols.login.LoginTest" />-->
+        <!--</classes>-->
+    <!--</test>-->
+    <!--<test name="Search Controls > Saved Search">-->
+        <!--<classes>-->
+            <!--<class name="tests.generalcontrols.search.SavedSearchTest" />-->
+        <!--</classes>-->
+    <!--</test>-->
+    <!--<test name="Search Controls > Search Field">-->
+        <!--<classes>-->
+            <!--<class name="tests.orders.SearchTest" />-->
+        <!--</classes>-->
+    <!--</test>-->
+    <!--<test name="Shared Search">-->
+        <!--<classes>-->
+            <!--<class name="tests.generalcontrols.search.SharedSearchTest" />-->
+        <!--</classes>-->
+    <!--</test>-->
 
     <test name="Cart > Items">
         <classes>
@@ -97,45 +97,48 @@
         </classes>
     </test>
 
+    <!--<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<-->
     <test name="Create Product">
         <classes>
             <class name="tests.products.CreateProductsTest" />
         </classes>
     </test>
-    <test name="Edit Product">
-        <classes>
-            <class name="tests.products.EditProductTest" />
-        </classes>
-    </test>
-    <test name="New Product Form">
-        <classes>
-            <class name="tests.products.NewProductFormTest" />
-        </classes>
-    </test>
+    <!-->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>-->
 
-    <test name="Promotions">
-        <classes>
-            <class name="tests.promotions.PromotionsTest" />
-        </classes>
-    </test>
+    <!--<test name="Edit Product">-->
+        <!--<classes>-->
+            <!--<class name="tests.products.EditProductTest" />-->
+        <!--</classes>-->
+    <!--</test>-->
+    <!--<test name="New Product Form">-->
+        <!--<classes>-->
+            <!--<class name="tests.products.NewProductFormTest" />-->
+        <!--</classes>-->
+    <!--</test>-->
 
-    <test name="Coupons" >
-        <classes>
-            <class name="tests.coupons.CouponsTest" />
-        </classes>
-    </test>
+    <!--<test name="Promotions">-->
+        <!--<classes>-->
+            <!--<class name="tests.promotions.PromotionsTest" />-->
+        <!--</classes>-->
+    <!--</test>-->
 
-    <test name="Gift Cards">
-        <classes>
-            <class name="tests.giftcards.GiftCardsTest" />
-        </classes>
-    </test>
+    <!--<test name="Coupons" >-->
+        <!--<classes>-->
+            <!--<class name="tests.coupons.CouponsTest" />-->
+        <!--</classes>-->
+    <!--</test>-->
 
-    <test name="Inventory">
-        <classes>
-            <class name="tests.inventory.InventoryTest" />
-        </classes>
-    </test>
+    <!--<test name="Gift Cards">-->
+        <!--<classes>-->
+            <!--<class name="tests.giftcards.GiftCardsTest" />-->
+        <!--</classes>-->
+    <!--</test>-->
+
+    <!--<test name="Inventory">-->
+        <!--<classes>-->
+            <!--<class name="tests.inventory.InventoryTest" />-->
+        <!--</classes>-->
+    <!--</test>-->
     <!--<test name="test test">-->
         <!--<classes>-->
             <!--<class name="TestClass"/>-->

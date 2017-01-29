@@ -158,10 +158,8 @@ public class CartPage extends BasePage {
         return $(xpath("//*[@id='cart-items-block']//*[text()='No items yet.']"));
     }
 
+    // Works when cart is not in edit mode
     public SelenideElement itemQty(String itemIndex) {
-//        if (itemsInEditMode()) {
-//            clickDoneBtn("Items");
-//        }
         return $(xpath("//tbody[@id='cart-line-items']/tr[" + itemIndex + "]/td[5]"));
     }
 
@@ -169,7 +167,6 @@ public class CartPage extends BasePage {
         return $(xpath("//input[@name='typeahead']"));
     }
 
-    //TODO: [Ashes] Append className of DecrementButton and IncrementButton with "decrement-btn" or "increment-btn" (line items, Qty)
     private SelenideElement decreaseItemQtyBtn(String itemIndex) {
         return $(xpath("//tbody[@id='cart-line-items']/tr[" + itemIndex + "]//button[contains(@class, 'decrement')]"));
     }
@@ -178,18 +175,16 @@ public class CartPage extends BasePage {
         return $(xpath("//tbody[@id='cart-line-items']/tr[" + itemIndex + "]//button[contains(@class, 'increment')]"));
     }
 
-    public SelenideElement itemQtyInput_byIndex(String itemIndex) {
+    private SelenideElement itemQtyInput_byIndex(String itemIndex) {
         return $(xpath("//tbody[@id='cart-line-items']/tr[" + itemIndex + "]//input"));
     }
 
     private SelenideElement itemQtyInput_bySKU(String skuCode) {
+        skuCode = skuCode.replaceAll(" ", "-").toLowerCase();
         return $(xpath("//input[@id='item-quantity-input-" + skuCode + "']"));
     }
 
-    /**
-     * new locator: //*[@id='cart-items-block']//tr[" + itemIndex + "]//button[contains(@class, 'remove')]
-     */
-    public SelenideElement deleteBtn_item(String itemIndex) {
+    private SelenideElement deleteBtn_item(String itemIndex) {
         return $(xpath("//tbody[@id='cart-line-items']/tr[" + itemIndex + "]//button[contains(@class, 'remove')]"));
     }
 
@@ -201,15 +196,15 @@ public class CartPage extends BasePage {
         return $(xpath("//a[@id='modal-cancel-btn']"));
     }
 
-    private SelenideElement lineItem_byName(String itemName) {
-        return $(xpath("//tbody[@class='fc-table-body']/tr/td[text()='" + itemName + "']"));
+    public SelenideElement lineItem_byName(String itemName) {
+        return $(xpath("//tbody[@id='cart-line-items']/tr/td[text()='" + itemName + "']"));
     }
 
     public ElementsCollection cart() {
         return $$(xpath("//tbody[@id='cart-line-items']/tr"));
     }
 
-    public int itemsInCartAmount() {
+    private int itemsInCartAmount() {
         return cart().size();
     }
 
@@ -240,8 +235,6 @@ public class CartPage extends BasePage {
         lineItem_byName(searchQuery).shouldBe(visible
                 .because("Failed to add line, used search query: <" + searchQuery + ">"));
         clickDoneBtn("Line Items");
-        lineItem_byName(searchQuery).shouldBe(visible
-                .because("Line item isn't displayed after clicking 'Done' btn."));
     }
 
     @Step("Set \"Search\" field val to <{0}>")
@@ -361,11 +354,10 @@ public class CartPage extends BasePage {
     }
 
     @Step("Set QTY of <{0}th> line item using input fld; <newQTY:{1}>")
-    public void setItemQty(String itemIndex, String qty) {
-        setFieldVal(itemQtyInput_byIndex(itemIndex), qty);
-        shouldHaveValue(itemQtyInput_byIndex(itemIndex), qty, "Failed to edit \"Qty\" input field value");
+    public void setItemQty(String sku, String qty) {
+        setFieldVal(itemQtyInput_bySKU(sku), qty);
+        shouldHaveValue(itemQtyInput_bySKU(sku), qty, "Failed to edit \"Qty\" input field value");
     }
-
 
 
     //------------------------ S H I P P I N G    A D D R E S S ------------------------//
@@ -397,11 +389,11 @@ public class CartPage extends BasePage {
     }
 
     private SelenideElement deleteBtn_inAddressBook(String addressIndex) {
-        return $(xpath("//*[@class='fc-tile-selector__items']/div[" + addressIndex + "]//button[contains(@class, 'icon-trash')]"));
+        return $(xpath("//*[@class='fc-tile-selector__items']/div[" + addressIndex + "]//button[contains(@class, 'trash')]"));
     }
 
     private SelenideElement editBtn_inAddressBook(String addressIndex) {
-        return $(xpath("//*[@class='fc-tile-selector__items']/div[" + addressIndex + "]//button[contains(@class, 'icon-edit')]"));
+        return $(xpath("//*[@class='fc-tile-selector__items']/div[" + addressIndex + "]//button[contains(@class, 'edit')]"));
     }
 
     private SelenideElement addNewAddressBtn() {
@@ -504,8 +496,8 @@ public class CartPage extends BasePage {
         String expectedResult = nameOnAddressCard(addressIndex).text();
         click(chooseAddressBtns(), 1);
 
-        customerName_chosenShipAddress().shouldHave(text(expectedResult)
-                .because("Failed to choose shipping address from address book."));
+        shouldHaveText(customerName_chosenShipAddress(), expectedResult,
+                "Failed to choose shipping address from address book.");
     }
 
     @Step("Set <{0}th> shipping address as default")
@@ -586,7 +578,6 @@ public class CartPage extends BasePage {
 
 //    @Step
 //    public void restorePageDefaultState() {
-//
 //        while ( !(editBtn("Items").is(visible)) ) {
 //
 //            if ( confirmDeletionBtn().is(visible) ) {
@@ -598,14 +589,11 @@ public class CartPage extends BasePage {
 //            if ( doneBtn("Shipping Address").is(visible) ) {
 //                click( doneBtn("Shipping Address") );
 //            }
-//
 //        }
-//
 //    }
 
     @Step("Remove all addresses from address book")
     public void clearAddressBook() {
-
         ElementsCollection addressBook = $$(xpath("//div[@class='fc-tile-selector__items']/div/li/div[2]/div/button[1]"));
         int addressesAmount = addressBook.size();
         System.out.println("Addresses in AB: " + addressesAmount);
@@ -615,16 +603,13 @@ public class CartPage extends BasePage {
             click( confirmDeletionBtn() );
             shouldNotBeVisible(confirmDeletionBtn(), "Confirmation modal window isn't auto-hidden");
         }
-
     }
 
     @Step("Set an address from address book as a shipping address")
     public void setShipAddress() {
-
-        click( editBtn("Shipping Address") );
+        clickEditBtn("Shipping Address");
         chooseShipAddress(1);
-        click( doneBtn("Shipping Address") );
-
+        clickDoneBtn("Shipping Address");
     }
 
 

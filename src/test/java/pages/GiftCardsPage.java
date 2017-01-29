@@ -192,16 +192,16 @@ public class GiftCardsPage extends BasePage {
                 gcParamVal = $(xpath("//tbody/a[" + gcIndex + "]/td[contains(@class, 'code')]"));
                 break;
             case "Type":
-                gcParamVal = $(xpath("//tbody/a[" + gcIndex + "]//div[contains(@class, 'gift-card-type')]"));
+                gcParamVal = $(xpath("//tbody/a[" + gcIndex + "]//div[contains(@class, 'originType')]"));
                 break;
             case "Original Balance":
-                gcParamVal = $(xpath("//tbody/a[" + gcIndex + "]/td[contains(@class, 'original-balance')]"));
+                gcParamVal = $(xpath("//tbody/a[" + gcIndex + "]/td[contains(@class, 'originalBalance')]"));
                 break;
             case "Current Balance":
-                gcParamVal = $(xpath("//tbody/a[" + gcIndex + "]/td[contains(@class, 'current-balance')]"));
+                gcParamVal = $(xpath("//tbody/a[" + gcIndex + "]/td[contains(@class, 'currentBalance')]"));
                 break;
             case "Available Balance":
-                gcParamVal = $(xpath("//tbody/a[" + gcIndex + "]/td[contains(@class, 'available-balance')]"));
+                gcParamVal = $(xpath("//tbody/a[" + gcIndex + "]/td[contains(@class, 'availableBalance')]"));
                 break;
             case "State":
                 gcParamVal = $(xpath("//tbody/a[" + gcIndex + "]/td[contains(@class, 'state')]//div[contains(text(), 'ctive')]"));

@@ -23,35 +23,35 @@ public class CustomersPage extends BasePage {
     //------------------------------- HELPERS ---------------------------------//
 
     @Step("Get <{1}> parameter value of <{0}th> customer on the list")
-    public String getCustomerParamVal(int customerIndex, String paramName) {
-        String customerParamVal = "";
+    public SelenideElement getCustomerParamVal(int customerIndex, String paramName) {
+        SelenideElement paramVal = null;
         waitForDataToLoad();
 
         switch (paramName) {
             case "Customer ID":
-                customerParamVal = $(By.xpath("//tbody/a[" + customerIndex + "]/td[contains(@class, 'id')]")).getText();
+                paramVal = $(By.xpath("//tbody/a[" + customerIndex + "]/td[contains(@class, 'id')]"));
                 break;
             case "Name":
-                customerParamVal = $(By.xpath("//tbody/a[" + customerIndex + "]/td[contains(@class, 'name')]")).getText();
+                paramVal = $(By.xpath("//tbody/a[" + customerIndex + "]/td[contains(@class, 'name')]"));
                 break;
             case "Email":
-                customerParamVal = $(By.xpath("//tbody/a[" + customerIndex + "]/td[contains(@class, 'email')]")).getText();
+                paramVal = $(By.xpath("//tbody/a[" + customerIndex + "]/td[contains(@class, 'email')]"));
                 break;
             case "Ship To Region":
-                customerParamVal = $(By.xpath("//tbody/a[" + customerIndex + "]/td[contains(@class, 'ship-region')]")).getText();
+                paramVal = $(By.xpath("//tbody/a[" + customerIndex + "]/td[contains(@class, 'shipRegion')]"));
                 break;
             case "Bill To Region":
-                customerParamVal = $(By.xpath("//tbody/a[" + customerIndex + "]/td[contains(@class, 'bill-region')]")).getText();
+                paramVal = $(By.xpath("//tbody/a[" + customerIndex + "]/td[contains(@class, 'billRegion')]"));
                 break;
             case "Rank":
-                customerParamVal = $(By.xpath("//tbody/a[" + customerIndex + "]/td[contains(@class, 'rank')]")).getText();
+                paramVal = $(By.xpath("//tbody/a[" + customerIndex + "]/td[contains(@class, 'rank')]"));
                 break;
             case "Date/Time Joined":
-                customerParamVal = $(By.xpath("//tbody/a[" + customerIndex + "]//time")).getText();
+                paramVal = $(By.xpath("//tbody/a[" + customerIndex + "]//time"));
                 break;
         }
 
-        return customerParamVal;
+        return paramVal;
     }
 
     //-------------------- G E N E R A L    E L E M E N T S ------------------//
@@ -295,8 +295,8 @@ public class CustomersPage extends BasePage {
         return $(By.xpath("//div[text()='Credit Cards']/following-sibling::*/button"));
     }
 
-    private SelenideElement billName() {
-        return $(By.xpath("//label[contains(@class, 'credit-card')]/following-sibling::*/li[1]"));
+    private SelenideElement billingName() {
+        return $(By.xpath("//li[contains(@class, 'fc-credit-cards-new')]//li[@class='name']"));
     }
 
     public SelenideElement editCreditCardBtn(String ccIndex) {
@@ -354,12 +354,12 @@ public class CustomersPage extends BasePage {
     }
 
     public SelenideElement billCityVal(String ccIndex) {
-        return $(By.xpath("//div[contains(@class, 'credit-cards')]/div/ul/li[" + ccIndex + "]/div[3]/div/dl[2]/dd/ul/li[4]"));
+        return $(By.xpath("//ul[@id='customer-credit-cards-list']/li[" + ccIndex + "]//li[@class='city']"));
 //        billCityVal.substring(0, billCityVal.indexOf(","));
     }
 
     public SelenideElement nameFldVal_billAddress(String ccIndex) {
-        return $(By.xpath("//div[contains(@class, 'credit-cards')]/div/ul/li[" + ccIndex + "]/div[3]/div/dl[2]/dd/ul/li[1]"));
+        return $(By.xpath("//ul[@id='customer-credit-cards-list']/li[" + ccIndex + "]//li[@class='name']"));
     }
 
 
@@ -416,8 +416,8 @@ public class CustomersPage extends BasePage {
         clickSave_();
         shouldHaveSize(addressBook(), 1, "Failed to create a new address.");
         chooseAddress("1");
-        billName().shouldHave(text(name)
-                .because("Incorrect address seems to be set as a billing address; expected name: <" + name + ">, actual: <" + billName() + ">."));
+        billingName().shouldHave(text(name)
+                .because("Incorrect address seems to be set as a billing address; expected name: <" + name + ">, actual: <" + billingName() + ">."));
     }
 
         @Step("Click \"Add New Billing Address\" btn")

@@ -203,16 +203,16 @@ public class SkusPage extends BasePage {
         waitForDataToLoad();
         switch (paramName) {
             case "Code":
-                skuParamVal = $(xpath("//tbody/a[" + skuIndex + "]/td[contains(@class, 'sku-code')]"));
+                skuParamVal = $(xpath("//tbody/a[" + skuIndex + "]/td[contains(@class, 'skuCode')]"));
                 break;
             case "Title":
-                skuParamVal = $(xpath("//tbody/a[" + skuIndex + "]/td[contains(@class, 'product-name')]"));
+                skuParamVal = $(xpath("//tbody/a[" + skuIndex + "]/td[contains(@class, 'title')]"));
                 break;
             case "Sale Price":
-                skuParamVal = $(xpath("//tbody/a[" + skuIndex + "]/td[contains(@class, 'sale-price')]"));
+                skuParamVal = $(xpath("//tbody/a[" + skuIndex + "]/td[contains(@class, 'salePrice')]"));
                 break;
             case "Retail Price":
-                skuParamVal = $(xpath("//tbody/a[" + skuIndex + "]/td[contains(@class, 'retail-price')]"));
+                skuParamVal = $(xpath("//tbody/a[" + skuIndex + "]/td[contains(@class, 'retailPrice')]"));
                 break;
         }
         return skuParamVal;
@@ -222,7 +222,7 @@ public class SkusPage extends BasePage {
     public void openSKU(String skuCode) {
         waitForDataToLoad();
         shouldBeVisible(itemsOnList(), "Data isn't displayed at the category view table");
-        click($(xpath("//tbody/a/td[contains(@class, 'sku-code') and text()='" + skuCode + "']")));
+        click($(xpath("//tbody/a/td[contains(@class, 'skuCode') and text()='" + skuCode + "']")));
         shouldBeVisible(saveBtn(), "Failed to open <" + skuCode + "> SKU");
     }
 

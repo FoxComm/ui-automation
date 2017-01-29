@@ -6,69 +6,70 @@ import org.openqa.selenium.By;
 import ru.yandex.qatools.allure.annotations.Step;
 
 import static com.codeborne.selenide.Selenide.$;
+import static org.openqa.selenium.By.xpath;
 
 public class PromotionsPage extends BasePage {
 
     //--------------------------------------- ELEMENTS ---------------------------------------//
 
     public SelenideElement addNewPromoBtn() {
-        return $(By.xpath("//span[text()='Promotion']/.."));
+        return $(xpath("//span[text()='Promotion']/.."));
     }
 
     public SelenideElement applyTypeDd() {
-        return $(By.xpath("div[@id='apply-type-dd']"));
+        return $(xpath("div[@id='apply-type-dd']"));
     }
 
     public SelenideElement nameFld() {
-        return $(By.xpath("//input[@name='name']"));
+        return $(xpath("//input[@name='name']"));
     }
 
     //TODO: Add id in Ashes (Storefrot Name, richtext)
     public SelenideElement storefrontNameFld() {
-        return $(By.xpath(".//*[@id='foxcom']/div/div[1]/main/div/div[3]/form/div[1]/div[1]/div/div[2]/div[2]/div/div[3]/div/div/div"));
+        return $(xpath(".//*[@id='foxcom']/div/div[1]/main/div/div[3]/form/div[1]/div[1]/div/div[2]/div[2]/div/div[3]/div/div/div"));
     }
 
     public SelenideElement descriptionFld() {
-        return $(By.xpath("//*[@name='description']"));
+        return $(xpath("//*[@name='description']"));
     }
 
     //TODO: Add id in Ashes (Details, richtext)
     public SelenideElement detailsFld() {
-        return $(By.xpath(".//*[@id='foxcom']/div/div[1]/main/div/div[3]/form/div[1]/div[1]/div/div[2]/div[4]/div/div[3]/div/div/div"));
+        return $(xpath(".//*[@id='foxcom']/div/div[1]/main/div/div[3]/form/div[1]/div[1]/div/div[2]/div[4]/div/div[3]/div/div/div"));
     }
 
     public SelenideElement qualifierTypeDd() {
-        return $(By.xpath("//div[@id='promo-qualifier-dd']"));
+        return $(xpath("//div[@id='promo-qualifier-dd']"));
     }
 
     public SelenideElement offerTypeDd() {
-        return $(By.xpath("//div[@id='promo-offer-dd']"));
+        return $(xpath("//div[@id='promo-offer-dd']"));
     }
 
     //TODO: Something's fucky - ashes renders different types of <input>'s.
     // Might need to expand logic in tests and add ids in ashes
     private SelenideElement offerGetFld() {
-        return $(By.xpath("//input[@class='fc-append-input__input-field']"));
+        return $(xpath("//input[@class='fc-append-input__input-field']"));
     }
 
     public SelenideElement promotionIdVal() {
-        return $(By.xpath("//a[@id='item-id']"));
+        return $(xpath("//a[@id='item-id']"));
     }
 
     public SelenideElement stateDd() {
-        return $(By.xpath("//div[@id='state-dd']"));
+        return $(xpath("//div[@id='state-dd']"));
     }
 
     public SelenideElement stateVal() {
-        return $(By.xpath("//div[@id='state-dd--value']"));
+        return $(xpath("//div[@id='state-dd--value']"));
     }
 
     private SelenideElement removeStartDateBtn() {
-        return $(By.xpath("//a[@id='remove-start-date-btn']"));
+        return $(xpath("//a[@id='remove-start-date-btn']"));
     }
 
     public SelenideElement promotion(String idOrName) {
-        return $(By.xpath("//tbody/a//td[text()='" + idOrName + "']"));
+        return $(xpath("//tbody/a//td[text()='" + idOrName + "']"));
     }
 
 
@@ -149,36 +150,35 @@ public class PromotionsPage extends BasePage {
 
     @Step("Get <{1}> parameter value of <{0}th> promotion on the list")
     public SelenideElement getPromoParamVal(String promoIndex, String paramName) {
-        SelenideElement promoParamVal = null;
+        SelenideElement paramVal = null;
         waitForDataToLoad();
         switch (paramName) {
             case "Promotion ID":
-                promoParamVal = $(By.xpath("//tbody/a[" + promoIndex + "]/td[contains(@class, 'id')]"));
+                paramVal = $(xpath("//tbody/a[" + promoIndex + "]/td[contains(@class, 'id')]"));
                 break;
             case "Name":
-                //TODO: append class in ashes
-                promoParamVal = $(By.xpath("//tbody/a[" + promoIndex + "]/td[contains(@class, 'promo-name')]"));
+                paramVal = $(xpath("//tbody/a[" + promoIndex + "]/td[contains(@class, 'promotionName')]"));
                 break;
             case "Storefront Name":
-                promoParamVal = $(By.xpath("//tbody/a[" + promoIndex + "]/td[contains(@class, 'storefront-name')]"));
+                paramVal = $(xpath("//tbody/a[" + promoIndex + "]/td[contains(@class, 'storefrontName')]"));
                 break;
             case "Apply Type":
-                promoParamVal = $(By.xpath("//tbody/a[" + promoIndex + "]/td[contains(@class, 'apply-type')]"));
+                paramVal = $(xpath("//tbody/a[" + promoIndex + "]/td[contains(@class, 'applyType')]"));
                 break;
             case "Total Uses":
-                promoParamVal = $(By.xpath("//tbody/a[" + promoIndex + "]/td[contains(@class, 'total-uses')]"));
+                paramVal = $(xpath("//tbody/a[" + promoIndex + "]/td[contains(@class, 'totalUsed')]"));
                 break;
             case "Current Carts":
-                promoParamVal = $(By.xpath("//tbody/a[" + promoIndex + "]/td[contains(@class, 'current-carts')]"));
+                paramVal = $(xpath("//tbody/a[" + promoIndex + "]/td[contains(@class, 'currentCarts')]"));
                 break;
             case "Date/Time Created":
-                promoParamVal = $(By.xpath("//tbody/a[" + promoIndex + "]//time"));
+                paramVal = $(xpath("//tbody/a[" + promoIndex + "]//time"));
                 break;
             case "State":
-                promoParamVal = $(By.xpath("//tbody/a[" + promoIndex + "]/td[contains(@class, 'state')]"));
+                paramVal = $(xpath("//tbody/a[" + promoIndex + "]/td[contains(@class, 'state')]//div[contains(text(), 'ctive')]"));
                 break;
         }
-        return promoParamVal;
+        return paramVal;
     }
 
     @Step("Set promotion \"State\" dd val to <{0}>")
