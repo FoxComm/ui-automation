@@ -143,7 +143,13 @@ public class BasePage extends ConciseAPI {
     @Step("Click \"Save\" and wait until it's re-enabled")
     public void clickSave_wait() {
         jsClick(saveBtn());
-        shouldBeEnabled(saveBtn(), "\"Save\" btn doesn't get re-enabled");
+//        shouldBeEnabled(saveBtn(), "\"Save\" btn doesn't get re-enabled");
+        shouldBeVisible($(xpath("//button[@id='primary-save-btn' and contains(@class, 'loading')]")),
+                "\"Save\" btn isn't clicked");
+        sleep(750);
+        shouldNotBeVisible($(xpath("//button[@id='primary-save-btn' and contains(@class, 'loading')]")),
+                "\"Save\" btn doesn't get re-enabled");
+        sleep(750);
     }
 
     private SelenideElement saveOptionsDd() {
@@ -160,6 +166,18 @@ public class BasePage extends ConciseAPI {
      */
     public SelenideElement errorMsg(String text) {
         return $(xpath("//*[contains(text(), '" + text + "')]"));
+    }
+
+    public SelenideElement firstItemOnList() {
+        return $(xpath("//tbody/a[1]"));
+    }
+
+    @Step("Open first item on the category table")
+    public void openFirstItemOnList() {
+        waitForDataToLoad();
+        shouldBeVisible(itemsOnList(), "Data isn't displayed at the category view table");
+        click(firstItemOnList());
+        shouldBeVisible(saveBtn(), "Failed to open first item on the list");
     }
 
 
@@ -378,9 +396,9 @@ public class BasePage extends ConciseAPI {
         waitForDataToLoad();
         setFieldVal(searchFld(), searchQuery);
         hitEnter();
-        shouldBeVisible(itemsOnList(), "Search request returned no results.");
         click(searchFld());
         click($(xpath("//h1")));
+        shouldBeVisible(itemsOnList(), "Search request returned no results.");
     }
 
     @Step("Remove all search filters from search field")

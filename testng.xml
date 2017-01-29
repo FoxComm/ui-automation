@@ -1,5 +1,5 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="test" verbose="1">
+<suite name="e2e" verbose="1">
     <test name="ES Tests">
         <classes>
             <class name="tests.generalcontrols.search.CustomersSearchTest" />
@@ -136,9 +136,9 @@
             <class name="tests.inventory.InventoryTest" />
         </classes>
     </test>
-    <test name="test test">
-        <classes>
-            <class name="TestClass"/>
-        </classes>
-    </test>
+    <!--<test name="test test">-->
+        <!--<classes>-->
+            <!--<class name="TestClass"/>-->
+        <!--</classes>-->
+    <!--</test>-->
 </suite>

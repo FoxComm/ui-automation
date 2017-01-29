@@ -42,7 +42,7 @@ public class ConciseAPI implements IHookable {
     //------------------------- ELEMENTS -------------------------//
 
     protected SelenideElement itemsOnList() {
-        return $(xpath("//td[@class='fc-table-td']"));
+        return $(xpath("//tbody/a"));
     }
 
     protected SelenideElement emptyList() {

@@ -31,96 +31,91 @@ public class SkusTests extends DataProvider {
     @Test(priority = 1)
     public void createSKU() {
         p = openPage(adminUrl + "/skus", SkusPage.class);
-
         String randomId = generateRandomID();
         p.clickAddNewSKU();
         p.createNewSKU(randomId, "Active");
         p.clickSave_wait();
         shouldHaveText(p.skuCodeVal(), "SKU-" + randomId, "Failed to create new SKU");
         p.navigateTo("Catalog", "SKUs");
-
         p.search(randomId);
+
         p.getSKUParamVal("1", "Code").shouldHave(text("SKU-" + randomId));
     }
 
     @Test(priority = 2)
     public void addCustomProp_text() throws IOException {
-
         provideTestData("active SKU");
-        p = openPage(adminUrl + "/skus/" + sku, SkusPage.class);
 
+        p = openPage(adminUrl + "/skus/" + sku, SkusPage.class);
         p.addCustomProp("Text", "text fld");
         p.setCustomProp_text("text fld", "test val");
         p.clickSave_wait();
         refresh();
 
-        p.customTextFld("text fld").shouldHave(value("test val")
-                .because("Customer property isn't saved."));
-
+        p.customTextFld("text fld").shouldHave(value("test val"));
     }
 
     // NOT FIXED
     @Test(priority = 3)
     public void addCustomProp_richText() throws IOException {
-
         provideTestData("active SKU");
-        p = openPage(adminUrl + "/skus/" + sku, SkusPage.class);
 
+        p = openPage(adminUrl + "/skus/" + sku, SkusPage.class);
         p.addCustomProp("Rich Text", "richtextfld");
         p.setCustomProp_richText("richtextfld", "test val");
         p.clickSave_wait();
         refresh();
 
-        p.customRichTextFldVal("richtextfld").shouldHave(text("test val")
-                .because("Customer property isn't saved."));
-
+        p.customRichTextFldVal("richtextfld").shouldHave(text("test val"));
     }
 
-    //TODO: Split test into 2 -- PDP and category_view specific checks
     @Test(priority = 4)
-    public void editTitle() throws IOException {
-
+    public void editTitle_categoryView() throws IOException {
         provideTestData("active SKU");
-        p = openPage(adminUrl + "/skus/" + sku, SkusPage.class);
 
+        p = openPage(adminUrl + "/skus/" + sku, SkusPage.class);
         p.setTitle("Edited SKU Title");
         p.clickSave_wait();
         p.navigateTo("Catalog", "SKUs");
-
-        // seraches for SKU by its uid
         p.search( sku.substring(4, sku.length()) );
-        shouldHaveText(p.getSKUParamVal("1", "Title"), "Edited SKU Title",
-                "SKU title isn't updated on the list.");
-        p.openSKU(sku);
 
-        p.titleFld().shouldHave(value("Edited SKU Title")
-                .because("Failed to edit SKU title."));
-
+        p.getSKUParamVal("1", "Title").shouldHave(text("Edited SKU Title"));
     }
 
     @Test(priority = 5)
-    public void editUPC() throws IOException {
-
+    public void editTitle_PDP() throws IOException {
         provideTestData("active SKU");
-        p = openPage(adminUrl + "/skus/" + sku, SkusPage.class);
 
+        p = openPage(adminUrl + "/skus/" + sku, SkusPage.class);
+        p.setTitle("Edited SKU Title");
+        p.clickSave_wait();
+        p.navigateTo("Catalog", "SKUs");
+        p.search( sku.substring(4, sku.length()) );
+        shouldHaveText(p.getSKUParamVal("1", "Title"), "Edited SKU Title", "SKU title isn't updated on the list.");
+        p.openSKU(sku);
+
+        p.titleFld().shouldHave(value("Edited SKU Title"));
+    }
+
+    @Test(priority = 6)
+    public void editUPC() throws IOException {
+        provideTestData("active SKU");
+
+        p = openPage(adminUrl + "/skus/" + sku, SkusPage.class);
         p.setUpc("Edited UPC");
         p.clickSave_wait();
         p.navigateTo("Catalog", "SKUs");
         p.search(sku.substring(4, sku.length()));
         p.openSKU(sku);
 
-        p.upcFld().shouldHave(value("Edited UPC")
-                .because("Failed to edit UPC field."));
-
+        p.upcFld().shouldHave(value("Edited UPC"));
     }
 
-    @Test(priority = 6)
+    @Test(priority = 7)
     public void editDescription() throws IOException {
-
         provideTestData("active SKU");
-        p = openPage(adminUrl + "/skus/" + sku, SkusPage.class);
 
+        p = openPage(adminUrl + "/skus/" + sku, SkusPage.class);
         clearField( p.descriptionFld() );
         p.setDescription("Edited description");
         p.clickSave_wait();
@@ -128,38 +123,55 @@ public class SkusTests extends DataProvider {
         p.search( sku.substring(4, sku.length()) );
         p.openSKU(sku);
 
-        p.descriptionFld().shouldHave(text("Edited description")
-                .because("Failed to edit description."));
-
+        p.descriptionFld().shouldHave(text("Edited description"));
     }
 
-    //TODO: Split test into 2 -- PDP and category_view specific checks
-    @Test(priority = 7)
-    public void editRetailPrice() throws IOException {
-
+    @Test(priority = 8)
+    public void editRetailPrice_categoryView() throws IOException {
         provideTestData("active SKU");
-        p = openPage(adminUrl + "/skus/" + sku, SkusPage.class);
 
+        p = openPage(adminUrl + "/skus/" + sku, SkusPage.class);
         p.setRetailPrice("70.00");
         p.clickSave_wait();
         p.navigateTo("Catalog", "SKUs");
         p.search(sku.substring(4, sku.length()));
-        p.getSKUParamVal("1", "Retail Price").shouldHave(text("70.00")
-                .because("Retail price isn't updated on the list."));
-        p.openSKU(sku);
 
-        p.retailPriceFld().shouldHave(value("70.00")
-                .because("Failed to edit retail price."));
-
+        p.getSKUParamVal("1", "Retail Price").shouldHave(text("70.00"));
     }
 
-    //TODO: Split test into 2 -- PDP and category_view specific checks
-    @Test(priority = 8)
-    public void editSalePrice() throws IOException {
-
+    @Test(priority = 9)
+    public void editRetailPrice_PDP() throws IOException {
         provideTestData("active SKU");
-        p = openPage(adminUrl + "/skus/" + sku, SkusPage.class);
 
+        p = openPage(adminUrl + "/skus/" + sku, SkusPage.class);
+        p.setRetailPrice("70.00");
+        p.clickSave_wait();
+        p.navigateTo("Catalog", "SKUs");
+        p.search(sku.substring(4, sku.length()));
+        p.getSKUParamVal("1", "Retail Price").shouldHave(text("70.00"));
+        p.openSKU(sku);
+
+        p.retailPriceFld().shouldHave(value("70.00"));
+    }
+
+    @Test(priority = 10)
+    public void editSalePrice_categoryView() throws IOException {
+        provideTestData("active SKU");
+
+        p = openPage(adminUrl + "/skus/" + sku, SkusPage.class);
+        p.setSalePrice("70.00");
+        p.clickSave_wait();
+        p.navigateTo("Catalog", "SKUs");
+        p.search(sku.substring(4, sku.length()));
+
+        p.getSKUParamVal("1", "Sale Price").shouldHave(text("70.00"));
+    }
+
+    @Test(priority = 11)
+    public void editSalePrice_PDP() throws IOException {
+        provideTestData("active SKU");
+
+        p = openPage(adminUrl + "/skus/" + sku, SkusPage.class);
         p.setSalePrice("70.00");
         p.clickSave_wait();
         p.navigateTo("Catalog", "SKUs");
@@ -167,54 +179,58 @@ public class SkusTests extends DataProvider {
         shouldHaveText(p.getSKUParamVal("1", "Sale Price"), "70.00", "Sale price isn't updated on the list.");
         p.openSKU(sku);
 
-        p.salePriceFld().shouldHave(value("70.00")
-                .because("Failed to edit sale price." ));
-
+        p.salePriceFld().shouldHave(value("70.00"));
     }
 
-    //TODO: Split test into 2 -- PDP and category_view specific checks
-    @Test(priority = 9)
-    public void editState() throws IOException {
-
+    @Test(priority = 12)
+    public void editState_PDP() throws IOException {
         provideTestData("active SKU");
-        p = openPage(adminUrl + "/skus/" + sku, SkusPage.class);
 
+        p = openPage(adminUrl + "/skus/" + sku, SkusPage.class);
         p.setState("Inactive");
         p.clickSave_wait();
         p.navigateTo("Catalog", "SKUs");
         p.search(sku.substring(4, sku.length()));
         p.openSKU(sku);
 
-        p.stateVal().shouldHave(text("Inactive")
-                .because("Failed to edit SKU state."));
-
+        p.stateVal().shouldHave(text("Inactive"));
     }
 
     //--------------------------------- REGRESSION TESTS ---------------------------------//
 
-    @Test(priority = 10)
-    @Description("Title isn't reset after creating a product with a pre-created SKU")
+    @Test(priority = 13)
+    @Description("Title isn't blanked after creating a product with a pre-created SKU")
     public void titleReset() throws IOException {
-
         provideTestData("active SKU");
         p = openPage(adminUrl + "/skus/" + sku, SkusPage.class);
-
-        p.titleFld().shouldHave(value(skuTitle)
-                .because("SKU Title has been wiped after a product with this SKU was created."));
-
+        p.titleFld().shouldHave(value(skuTitle));
     }
 
-    @Test(priority = 11)
+    @Test(priority = 14)
     @Description("Can't use skuCode of an existing SKU to create a new one")
-    public void useExistingSKUCode() throws IOException {
-
+    public void useExistingSKUCode_newSKU() throws IOException {
         provideTestData("active SKU");
-        p = openPage(adminUrl + "/skus", SkusPage.class);
 
+        p = openPage(adminUrl + "/skus", SkusPage.class);
         p.clickAddNewSKU();
         p.setSKUCode(sku);
         p.clickSave();
-        p.errorMsg("already exists").shouldBe(visible);
 
+        p.errorMsg("already exists").shouldBe(visible);
+    }
+
+    @Test(priority = 15)
+    @Description("Can't use skuCode of an existing SKU as a new skuCode for another SKU")
+    public void useExistingSKUCode_editSKU() throws IOException {
+        provideTestData("active SKU");
+        String skuToEdit = sku;
+        provideTestData("active SKU");
+
+        p = openPage(adminUrl + "/skus", SkusPage.class);
+        p.openSKU(skuToEdit);
+        p.setSKUCode(sku);
+        p.clickSave();
+
+        p.errorMsg("already exists").shouldBe(visible);
     }
 }

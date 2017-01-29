@@ -57,11 +57,11 @@ public class SkusPage extends BasePage {
     }
 
     private SelenideElement stateDd() {
-        return $(xpath("div[@id='state-dd'"));
+        return $(xpath("//div[@id='state-dd']"));
     }
 
     public SelenideElement stateVal() {
-        return $(xpath("div[@id='state-dd--value'"));
+        return $(xpath("//div[@id='state-dd--value']"));
     }
 
     public SelenideElement skuCodeVal() {
@@ -69,7 +69,7 @@ public class SkusPage extends BasePage {
     }
 
     private SelenideElement addCustomPropBtn() {
-        return $(xpath("//a[@id='add-custom-property-btn"));
+        return $(xpath("//a[@id='add-custom-property-btn']"));
     }
 
     private SelenideElement labelFld() {
@@ -81,7 +81,7 @@ public class SkusPage extends BasePage {
     }
 
     private SelenideElement saveAndApplyBtn() {
-        return $(xpath("//button[@id='modal-confirm-button']"));
+        return $(xpath("//button[@id='modal-confirm-btn']"));
     }
 
     public SelenideElement customTextFld(String label) {
@@ -164,6 +164,7 @@ public class SkusPage extends BasePage {
 
         @Step("Set \"Retail price\" fld val to <{0}>")
         public void setRetailPrice(String price) {
+            clearField(retailPriceFld());
             setFieldVal(retailPriceFld(), price);
         }
 
@@ -183,7 +184,7 @@ public class SkusPage extends BasePage {
         setDdVal(typeDd(), type);
         setFieldVal(labelFld(), label);
         click(saveAndApplyBtn());
-        shouldNotExist(saveAndApplyBtn(), "\"Save And Apply\" btn exists (it sholdn't)");
+        shouldNotExist(saveAndApplyBtn(), "\"Save And Apply\" btn exists (it shouldn't)");
     }
 
         @Step("Set val of custom text fld <{0}> to <{1}>")
@@ -217,27 +218,16 @@ public class SkusPage extends BasePage {
         return skuParamVal;
     }
 
-    //TODO: Remove commented code if the current one works well
     @Step("Open SKU with code <{0}>")
     public void openSKU(String skuCode) {
-//        click(findSKUOnList(skuCode));
+        waitForDataToLoad();
+        shouldBeVisible(itemsOnList(), "Data isn't displayed at the category view table");
         click($(xpath("//tbody/a/td[contains(@class, 'sku-code') and text()='" + skuCode + "']")));
+        shouldBeVisible(saveBtn(), "Failed to open <" + skuCode + "> SKU");
     }
 
-//    @Step("Find SKU with code <{0}> on the list.")
-//    private SelenideElement findSKUOnList(String skuCode) {
-//        waitForDataToLoad();
-//        List<SelenideElement> skusList = $$(xpath("//tbody/a/td[contains(@class, 'sku-code')]"));
-//        SelenideElement skuToClick = null;
-//        for(SelenideElement sku : skusList) {
-//            String skuCodeVal = sku.text();
-//            if (skuCodeVal.equals(skuCode)) {
-//                skuToClick = sku;
-//            }
-//
-//        }
-//        assertTrue( skuToClick != null, "Requested coupon isn't displayed on the list.");
-//        return skuToClick;
-//    }
+
+
+
 
 }
