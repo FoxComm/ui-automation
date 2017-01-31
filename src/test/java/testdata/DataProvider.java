@@ -1148,7 +1148,7 @@ public class DataProvider extends BaseTest {
         OkHttpClient client = new OkHttpClient();
 
         MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, "{\"form\":{\"id\":null,\"createdAt\":null,\"attributes\":{\"name\":\"new promo " + generateRandomID() + "\",\"storefrontName\":\"<p>sf name</p>\",\"description\":\"<p>descr</p>\",\"details\":\"<p>details</p>\"},\"discounts\":[{\"id\":null,\"createdAt\":null,\"attributes\":{\"qualifier\":{\"orderAny\":{}},\"offer\":{\"orderPercentOff\":{\"discount\":10}}}}]},\"shadow\":{\"id\":null,\"createdAt\":null,\"attributes\":{\"name\":{\"type\":\"string\",\"ref\":\"name\"},\"storefrontName\":{\"type\":\"richText\",\"ref\":\"storefrontName\"},\"description\":{\"type\":\"richText\",\"ref\":\"description\"},\"details\":{\"type\":\"richText\",\"ref\":\"details\"}},\"discounts\":[{\"id\":null,\"createdAt\":null,\"attributes\":{\"qualifier\":{\"type\":\"qualifier\",\"ref\":\"qualifier\"},\"offer\":{\"type\":\"offer\",\"ref\":\"offer\"}}}]},\"applyType\":\"auto\"}");
+        RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"createdAt\":null,\"attributes\":{\"name\":{\"t\":\"string\",\"v\":\"new promo " + generateRandomID() + "\"},\"storefrontName\":{\"t\":\"richText\",\"v\":\"<p>sf new promo</p>\"},\"description\":{\"t\":\"text\",\"v\":\"promo description\"},\"details\":{\"t\":\"richText\",\"v\":\"<p>promo details</p>\"}},\"discounts\":[{\"id\":null,\"createdAt\":null,\"attributes\":{\"qualifier\":{\"t\":\"qualifier\",\"v\":{\"orderAny\":{}}},\"offer\":{\"t\":\"offer\",\"v\":{\"orderPercentOff\":{\"discount\":10}}}}}],\"applyType\":\"auto\"}");
         Request request = new Request.Builder()
                 .url(apiUrl + "/v1/promotions/default")
                 .post(body)
@@ -1166,7 +1166,7 @@ public class DataProvider extends BaseTest {
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
             JSONObject jsonData = new JSONObject(responseBody);
-            promotionId = String.valueOf(jsonData.getJSONObject("form").getInt("id"));
+            promotionId = String.valueOf(jsonData.getInt("id"));
             System.out.println("Promotion ID: " + promotionId);
             System.out.println("---- ---- ---- ----");
         } else {
@@ -1183,7 +1183,7 @@ public class DataProvider extends BaseTest {
         OkHttpClient client = new OkHttpClient();
 
         MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, "{\"form\":{\"id\":null,\"createdAt\":null,\"attributes\":{\"name\":\"new promo " + generateRandomID() + "\",\"storefrontName\":\"\",\"description\":\"<p>descr</p>\",\"details\":\"<p>details</p>\",\"storefront Name\":\"<p>sf name</p>\",\"activeFrom\":\"2016-07-30T18:12:27.938Z\",\"activeTo\":null},\"discounts\":[{\"id\":null,\"createdAt\":null,\"attributes\":{\"qualifier\":{\"orderAny\":{}},\"offer\":{\"orderPercentOff\":{\"discount\":10}}}}]},\"shadow\":{\"id\":null,\"createdAt\":null,\"attributes\":{\"name\":{\"type\":\"string\",\"ref\":\"name\"},\"storefrontName\":{\"type\":\"richText\",\"ref\":\"storefrontName\"},\"description\":{\"type\":\"richText\",\"ref\":\"description\"},\"details\":{\"type\":\"richText\",\"ref\":\"details\"},\"storefront Name\":{\"type\":\"richText\",\"ref\":\"storefront Name\"},\"activeFrom\":{\"type\":\"2016-07-30T18:12:27.938Z\",\"ref\":\"activeFrom\"},\"activeTo\":{\"type\":null,\"ref\":\"activeTo\"}},\"discounts\":[{\"id\":null,\"createdAt\":null,\"attributes\":{\"qualifier\":{\"type\":\"qualifier\",\"ref\":\"qualifier\"},\"offer\":{\"type\":\"offer\",\"ref\":\"offer\"}}}]},\"applyType\":\"auto\"}");
+        RequestBody body = RequestBody.create(mediaType, "{\"id\": null,\"createdAt\": null,\"attributes\": {\"name\": {\"t\": \"string\",\"v\": \"new promo " + generateRandomID() + "\"},\"storefrontName\": {\"t\": \"richText\",\"v\": \"<p>sf name</p>\"},\"description\": {\"t\": \"text\",\"v\": \"promo description\"},\"details\": {\"t\": \"richText\",\"v\": \"<p>promo details</p>\"},\"activeFrom\": {\"v\": \"" + getDate() + "T13:53:00.092Z\",\"t\": \"datetime\"},\"activeTo\": {\"v\": null,\"t\": \"datetime\"}},\"discounts\": [{\"id\": null,\"createdAt\": null,\"attributes\": {\"qualifier\": {\"t\": \"qualifier\",\"v\": {\"orderAny\": {}}},\"offer\": {\"t\": \"offer\",\"v\": {\"orderPercentOff\": {\"discount\": 10}}}}}],\"applyType\": \"auto\"}");
         Request request = new Request.Builder()
                 .url(apiUrl + "/v1/promotions/default")
                 .post(body)
@@ -2113,7 +2113,7 @@ public class DataProvider extends BaseTest {
         int responseCode = response.code();
         String responseMsg = response.message();
 
-        if (responseCode == 200) {
+        if (responseCode == 204) {
             System.out.println(responseCode + " " + responseMsg);
             System.out.println("---- ---- ---- ----");
         } else {
@@ -2285,10 +2285,12 @@ public class DataProvider extends BaseTest {
                 createCart(customerId);
                 break;
 
-            case "cart with 1 item":
+            case "cart<1 SKU[active, qty: 1]>":
                 createCustomer();
                 createCart(customerId);
-                updLineItems(cartId, "SKU-TRL", 1);
+                createSKU_active();
+                createProduct_active(sku, "test");
+                updLineItems(cartId, sku, 1);
                 break;
 
             case "cart with 2 items":
@@ -2822,10 +2824,12 @@ public class DataProvider extends BaseTest {
                 sleep(5000);
                 createCoupon(promotionId);
                 generateSingleCode(couponId);
-
                 createCustomer();
                 createCart(customerId);
-                updLineItems(cartId, "SKU-YAX", 1);
+                createSKU_active();
+                createProduct_active(sku, "test");
+                increaseOnHandQty(sku, "Sellable", 1);
+                updLineItems(cartId, sku, 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
@@ -2984,8 +2988,10 @@ public class DataProvider extends BaseTest {
                 issueGiftCard(20000, 1);
                 createCustomer();
                 createCart(customerId);
-                increaseOnHandQty("SKU-YAX", "Sellable", 1);
-                updLineItems(cartId, "SKU-YAX", 1);
+                createSKU_active();
+                createProduct_active(sku, "test");
+                increaseOnHandQty(sku, "Sellable", 1);
+                updLineItems(cartId, sku, 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);

@@ -120,7 +120,7 @@ public class SkusTests extends DataProvider {
         p.setDescription("Edited description");
         p.clickSave_wait();
         p.navigateTo("Catalog", "SKUs");
-        p.search( sku.substring(4, sku.length()) );
+        p.search(sku.substring(4, sku.length()));
         p.openSKU(sku);
 
         p.descriptionFld().shouldHave(text("Edited description"));
@@ -227,6 +227,7 @@ public class SkusTests extends DataProvider {
         provideTestData("active SKU");
 
         p = openPage(adminUrl + "/skus", SkusPage.class);
+        p.search(skuToEdit);
         p.openSKU(skuToEdit);
         p.setSKUCode(sku);
         p.clickSave();

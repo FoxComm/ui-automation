@@ -5,8 +5,6 @@ import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.Keys;
 import ru.yandex.qatools.allure.annotations.Step;
 
-import java.util.List;
-
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 import static org.openqa.selenium.By.xpath;
@@ -221,7 +219,7 @@ public class SkusPage extends BasePage {
     @Step("Open SKU with code <{0}>")
     public void openSKU(String skuCode) {
         waitForDataToLoad();
-        shouldBeVisible(itemsOnList(), "Data isn't displayed at the category view table");
+        shouldBeVisible(contentOnList(), "Data isn't displayed at the category view table");
         click($(xpath("//tbody/a/td[contains(@class, 'skuCode') and text()='" + skuCode + "']")));
         shouldBeVisible(saveBtn(), "Failed to open <" + skuCode + "> SKU");
     }

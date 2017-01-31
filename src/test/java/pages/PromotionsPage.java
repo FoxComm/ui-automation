@@ -2,7 +2,6 @@ package pages;
 
 import base.BasePage;
 import com.codeborne.selenide.SelenideElement;
-import org.openqa.selenium.By;
 import ru.yandex.qatools.allure.annotations.Step;
 
 import static com.codeborne.selenide.Selenide.$;
@@ -12,25 +11,29 @@ public class PromotionsPage extends BasePage {
 
     //--------------------------------------- ELEMENTS ---------------------------------------//
 
-    public SelenideElement addNewPromoBtn() {
+    private SelenideElement addNewPromoBtn() {
         return $(xpath("//span[text()='Promotion']/.."));
     }
 
-    public SelenideElement applyTypeDd() {
-        return $(xpath("div[@id='apply-type-dd']"));
+    private SelenideElement applyTypeDd() {
+        return $(xpath("//div[@id='apply-type-dd']"));
+    }
+
+    public SelenideElement applyTypeVal() {
+        return $(xpath("//div[@id='apply-type-dd']//div[@class='fc-dropdown__value']"));
     }
 
     public SelenideElement nameFld() {
         return $(xpath("//input[@name='name']"));
     }
 
-    //TODO: Add id in Ashes (Storefrot Name, richtext)
+    //TODO: Add id in Ashes (Storefront Name, richText)
     public SelenideElement storefrontNameFld() {
-        return $(xpath(".//*[@id='foxcom']/div/div[1]/main/div/div[3]/form/div[1]/div[1]/div/div[2]/div[2]/div/div[3]/div/div/div"));
+        return $(xpath("//*[@id='foxcom']/div/div[1]/main/div/div[3]/form/div[1]/div[1]/div/div[2]/div[2]/div/div[3]/div/div/div"));
     }
 
     public SelenideElement descriptionFld() {
-        return $(xpath("//*[@name='description']"));
+        return $(xpath("//textarea[@name='description']"));
     }
 
     //TODO: Add id in Ashes (Details, richtext)
@@ -38,21 +41,47 @@ public class PromotionsPage extends BasePage {
         return $(xpath(".//*[@id='foxcom']/div/div[1]/main/div/div[3]/form/div[1]/div[1]/div/div[2]/div[4]/div/div[3]/div/div/div"));
     }
 
-    public SelenideElement qualifierTypeDd() {
+    private SelenideElement qualifierTypeDd() {
         return $(xpath("//div[@id='promo-qualifier-dd']"));
     }
 
-    public SelenideElement offerTypeDd() {
+    private SelenideElement spendFld_qualifier() {
+        return $(xpath("//*[@id='promo-qualifier-block']//div[contains(@class, 'promotions_attrs')]/input"));
+    }
+
+    private SelenideElement qtyFld_qualifier() {
+        return $(xpath("//*[@id='promo-qualifier-block']//input[contains(@class, 'adjust-quantity-input')]"));
+    }
+
+    private SelenideElement modifierDd_qualifier() {
+        return $(xpath("//*[@id='promo-qualifier-block']//div[contains(@class, 'modifier-dd')]"));
+    }
+
+    private SelenideElement productSearchDd_qualifier() {
+        return $(xpath("//*[@id='promo-qualifier-block']//div[contains(@class, 'select-product-search-dd')]"));
+    }
+
+    private SelenideElement offerTypeDd() {
         return $(xpath("//div[@id='promo-offer-dd']"));
     }
 
-    //TODO: Something's fucky - ashes renders different types of <input>'s.
-    // Might need to expand logic in tests and add ids in ashes
-    private SelenideElement offerGetFld() {
-        return $(xpath("//input[@class='fc-append-input__input-field']"));
+    private SelenideElement getFld_offer() {
+        return $(xpath("//*[@id='promo-offer-block']//div[contains(@class, 'promotions_attrs')]/input"));
     }
 
-    public SelenideElement promotionIdVal() {
+    private SelenideElement productDd_offer() {
+        return $(xpath("//*[@id='promo-offer-block']//div[contains(@class, 'select-product-dd')]"));
+    }
+
+    private SelenideElement modifierDd_offer() {
+        return $(xpath("//*[@id='promo-offer-block']//div[contains(@class, 'modifier-dd')]"));
+    }
+
+    private SelenideElement productSearchDd_offer() {
+        return $(xpath("//*[@id='promo-offer-block']//div[contains(@class, 'select-product-search-dd')]"));
+    }
+
+    public SelenideElement promoIdBreadcumb() {
         return $(xpath("//a[@id='item-id']"));
     }
 
@@ -88,7 +117,7 @@ public class PromotionsPage extends BasePage {
     }
 
         @Step("Click \"Create New Promotion\" btn")
-        public void clickAddNewPromoBtn() {
+        private void clickAddNewPromoBtn() {
             click(addNewPromoBtn());
         }
 
@@ -118,18 +147,18 @@ public class PromotionsPage extends BasePage {
         }
 
         @Step("Set \"Qualifyer Type\" dd val to <{0}>")
-        public void setQualifierType(String qualifierType) {
-            setDdVal(qualifierTypeDd(), qualifierType);
+        private void setQualifierType(String qualifierType) {
+            setDdVal_li(qualifierTypeDd(), qualifierType);
         }
 
         @Step("Set \"Offer Type\" dd val to <{0}>")
-        public void setOfferType(String offerType) {
-            setDdVal(offerTypeDd(), offerType);
+        private void setOfferType(String offerType) {
+            setDdVal_li(offerTypeDd(), offerType);
         }
 
         @Step("Set \"Offer Get\" fld val to <{0}>")
-        public void setOfferGet(String offerGet) {
-            setFieldVal(offerGetFld(), offerGet);
+        private void setOfferGet(String offerGet) {
+            setFieldVal(getFld_offer(), offerGet);
         }
 
     @Step("Create a new promotion with <{0}> apply type")
@@ -145,7 +174,47 @@ public class PromotionsPage extends BasePage {
         setOfferGet("10");
         setDdVal( stateDd(), "Active" );
         clickSave_wait();
-        shouldNotHaveText(promotionIdVal(), "new", "Failed to create a new promotion.");
+        shouldNotHaveText(promoIdBreadcumb(), "new", "Failed to create a new promotion.");
+    }
+
+    @Step("Set qualifier's \"Spend\" input fld to <{0}>")
+    public void setSpendFld_qualifier(String spend) {
+        setFieldVal(spendFld_qualifier(), spend);
+    }
+
+    @Step("Set qualifier's \"Items Qty\" input fld to <{0}>")
+    public void setItemsQtyFld_qualifier(String qty) {
+        setFieldVal(qtyFld_qualifier(), qty);
+    }
+
+    @Step("Select <{0}> value in modifier dd at \"Items for qualify\" block")
+    public void setModifierDd_qualifier(String modifer) {
+        setDdVal(modifierDd_qualifier(), modifer);
+    }
+
+    @Step("Select <{0}> value in \"Select Product Search\" dd at \"Items for qualify\" block")
+    public void setProductSearchDd_qualifier(String productSearchDd) {
+        setDdVal(productSearchDd_qualifier(), productSearchDd);
+    }
+
+    @Step("Set offer's \"Get\" input fld to <{0}>")
+    public void setGetFld_offer(String spend) {
+        setFieldVal(getFld_offer(), spend);
+    }
+
+    @Step("Select <{0}> value in \"Select Product\" dd at \"Offer-Get\" block")
+    public void setProductDd_offer(String qty) {
+        setDdVal((productDd_offer()), qty);
+    }
+
+    @Step("Select <{0}> value in modifier dd at \"Discount the Items\" block")
+    public void setModifierDd_offer(String modifer) {
+        setDdVal(modifierDd_offer(), modifer);
+    }
+
+    @Step("Select <{0}> value in \"Select Product Search\" dd at \"Discount the Items\" block")
+    public void setProductSearchDd_offer(String productSearchDd) {
+        setDdVal(productSearchDd_offer(), productSearchDd);
     }
 
     @Step("Get <{1}> parameter value of <{0}th> promotion on the list")

@@ -13,6 +13,7 @@ public class InventoryPage extends BasePage {
     //----------------------------------- ELEMENTS -------------------------------------//
 
     public SelenideElement onHandFld(String type) {
+        type = type.replaceAll(" ", "-").toLowerCase();
         return $(xpath("//*[@id='" + type + "']//input"));
     }
 
@@ -40,10 +41,10 @@ public class InventoryPage extends BasePage {
         return $(xpath("//td[text()='" + warehouse + "']/following-sibling::*[5]"));
     }
 
-    public SelenideElement arrowBtn(String type, String direction) {
+    public SelenideElement arrowBtn(String type, String action) {
         type = type.toLowerCase();
-        direction = direction.toLowerCase();
-        return $(xpath("//*[@id='" + type + "-counter']//button[contains(@class, '" + direction + "')]"));
+        action = action.toLowerCase();
+        return $(xpath("//*[@id='" + type + "-counter']//button[contains(@class, '" + action + "')]"));
     }
 
     private SelenideElement transactionsTab() {

@@ -11,6 +11,7 @@ import testdata.DataProvider;
 import java.io.IOException;
 import java.util.Objects;
 
+import static com.codeborne.selenide.CollectionCondition.size;
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
 
@@ -37,8 +38,7 @@ public class GiftCardsTest extends DataProvider {
         p.setValue("123.78");
         p.clickIssueGCBtn();
 
-        p.availableBalance().shouldHave(text("$123.78")
-                .because("Incorrect available balance value."));
+        p.availableBalance().shouldHave(text("$123.78"));
     }
 
     @Test(priority = 2)
@@ -50,8 +50,7 @@ public class GiftCardsTest extends DataProvider {
         p.setPresetValue("50");
         p.clickIssueGCBtn();
 
-        p.availableBalance().shouldHave(text("$50.00")
-                .because("Incorrect available balance value."));
+        p.availableBalance().shouldHave(text("$50.00"));
     }
 
     @Test(priority = 3)
@@ -65,57 +64,49 @@ public class GiftCardsTest extends DataProvider {
         p.clickIssueGCBtn();
         shouldBeVisible(p.availableBalance(), "Waiting for \"Available Balance\" to become visible has failed");
         String gcNumber = p.getGCNumber(getUrl(), adminUrl);
-
         p.navigateTo("Marketing", "Gift Cards");
         p.search(gcNumber);
-        p.getGCParamVal("1", "Gift Card Number").shouldHave(text(gcNumber)
-                .because("Search failed to find a just created GC."));
+
+        p.getGCParamVal("1", "Gift Card Number").shouldHave(text(gcNumber));
 
     }
 
     @Test(priority = 4)
     public void newGCIsActive() {
-
         p = openPage(adminUrl + "/gift-cards", GiftCardsPage.class);
 
         p.clickAddMewGCBtn();
         p.setType("Appeasement");
         p.setValue("123.78");
         p.clickIssueGCBtn();
-        shouldHaveText(p.stateVal(), "Active",
-                "Incorrect 'State' value is displayed on GC details page");
-
+        shouldHaveText(p.stateVal(), "Active", "Incorrect 'State' value is displayed on GC details page");
         String gcNumber = p.getGCNumber(getUrl(), adminUrl);
         p.navigateTo("Marketing", "Gift Cards");
         p.search(gcNumber);
-        p.getGCParamVal("1", "State").shouldHave(text("Active")
-                .because("A just created gift card isn't in 'Active state'."));
 
+        p.getGCParamVal("1", "State").shouldHave(text("Active"));
     }
 
     @Test(priority = 5)
     public void holdGC() throws IOException {
-
         provideTestData("gift card");
-        p = openPage(adminUrl + "/gift-cards/" + gcCode, GiftCardsPage.class);
 
+        p = openPage(adminUrl + "/gift-cards/" + gcCode, GiftCardsPage.class);
         p.setState("Hold");
         p.clickYes();
         shouldNotBeVisible(p.yesBtn(), "Failed to wait until yesBtn won't be visible");
         shouldHaveText(p.stateVal(), "On Hold",
                 "Failed to edit GC state - incorrect state value is displayed.");
         refresh();
-        p.stateVal().shouldHave(text("On Hold")
-                .because("Failed to edit GC state - incorrect state value is displayed."));
 
+        p.stateVal().shouldHave(text("On Hold"));
     }
 
     @Test(priority = 6)
     public void cancelNewGC() throws IOException {
-
         provideTestData("gift card");
-        p = openPage(adminUrl + "/gift-cards/" + gcCode, GiftCardsPage.class);
 
+        p = openPage(adminUrl + "/gift-cards/" + gcCode, GiftCardsPage.class);
         p.setState("Cancel Gift Card");
         p.setCancelReason("Other cancellation reason");
         p.clickYes();
@@ -124,30 +115,27 @@ public class GiftCardsTest extends DataProvider {
         refresh();
         shouldHaveText($(By.xpath("//span[@class='fc-model-state']")), "Canceled",
                 "GC is not in 'Canceled' state." );
-        p.stateDd().shouldNot(exist
-                .because("\"State\" dropdown is displayed"));
 
+        p.stateDd().shouldNot(exist);
     }
 
     @Description("Can't cancel used GC -- \"Cancel Gift Card\" option shouldn't be displayed in \"State\" dd")
     @Test(priority = 7)
     public void cantCancelUsedGC() throws IOException {
-
         provideTestData("used gift card");
-        p = openPage(adminUrl + "/gift-cards/" + gcCode, GiftCardsPage.class);
 
+        p = openPage(adminUrl + "/gift-cards/" + gcCode, GiftCardsPage.class);
         click( p.stateDd() );
+
         $(By.xpath("//div[text()='Cancel Gift Card']")).shouldNot(exist
                 .because("'Cancel Gift Card' option is available for select for used GC."));
-
     }
 
     @Test(priority = 8)
     public void editState_visibleOnList() throws IOException {
-
         provideTestData("gift card");
-        p = openPage(adminUrl + "/gift-cards/" + gcCode, GiftCardsPage.class);
 
+        p = openPage(adminUrl + "/gift-cards/" + gcCode, GiftCardsPage.class);
         p.setState("Hold");
         p.clickYes();
         p.yesBtn().shouldNotBe(visible);
@@ -155,17 +143,14 @@ public class GiftCardsTest extends DataProvider {
         p.navigateTo("Marketing", "Gift Cards");
         p.search(gcCode);
 
-        p.getGCParamVal("1", "State").shouldHave(text("On Hold")
-                .because("Failed to set GC's state to 'On Hold'."));
-
+        p.getGCParamVal("1", "State").shouldHave(text("On Hold"));
     }
 
     @Test(priority = 9)
     public void setStateToActive() throws IOException {
-
         provideTestData("gift card on hold");
-        p = openPage(adminUrl + "/gift-cards/" + gcCode, GiftCardsPage.class);
 
+        p = openPage(adminUrl + "/gift-cards/" + gcCode, GiftCardsPage.class);
         p.setState("Activate");
         p.clickYes();
         refresh();
@@ -182,30 +167,23 @@ public class GiftCardsTest extends DataProvider {
 
     @Test(priority = 10)
     public void cancelStateChange() throws IOException {
-
         provideTestData("gift card");
-        p = openPage(adminUrl + "/gift-cards/" + gcCode, GiftCardsPage.class);
 
+        p = openPage(adminUrl + "/gift-cards/" + gcCode, GiftCardsPage.class);
         p.setState("Hold");
         p.clickCancel();
         shouldHaveText(p.stateVal(), "Active", "\"State\" val isn't reverted back to initial value");
         refresh();
 
-        p.stateVal().shouldHave(text("Active")
-                .because("Failed to cancel GC \"State\" change"));
-
+        p.stateVal().shouldHave(text("Active"));
     }
 
     @Description("\"Amount to use\" should be cut down to order's grand total when applying GC as the only payment method with amount to use that exceeds order's GT")
     @Test(priority = 11)
     public void gcAsPaymentMethod_availableBalance() throws IOException {
-
         provideTestData("used gift card");
         p = openPage(adminUrl + "/gift-cards/" + gcCode, GiftCardsPage.class);
-
-        p.availableBalance().shouldHave(text("164.00")
-                .because("Incorrect available balance value after placing order with GC as a payment method."));
-
+        p.availableBalance().shouldHave(text("135.00"));
     }
 
     //Feature got removed temporarily
@@ -226,22 +204,19 @@ public class GiftCardsTest extends DataProvider {
 
     @Test(priority = 13)
     public void issueMultipleGCs() {
+        String balance = generateRandomBalanceVal();
 
         p = openPage(adminUrl + "/gift-cards", GiftCardsPage.class);
-
-        String expectedResult = addToString(p.counter().text(), 2);
         p.waitForDataToLoad();
         p.clickAddMewGCBtn();
         p.setType("Appeasement");
-        p.setValue("123.78");
+        p.setValue(balance);
         p.increaseQtyBy(1);
         p.clickIssueGCBtn();
         p.waitForDataToLoad();
+        p.addFilter("Gift Card : Original Balance", "=", balance);
 
-        assertTwice(p.counter(), "should have text", expectedResult,
-                "Incorrect GCs amount counter - either GCs creation has failed or counter value isn't updated");
-        //TODO: add findItemOnList("$123.78") to check if a jut issued GCs are displayed on the table
-
+        p.itemsOnList().shouldHave(size(2));
     }
 
 }

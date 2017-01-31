@@ -21,7 +21,7 @@ public class ProductsPage extends BasePage {
     }
 
     public SelenideElement product(String name) {
-        return $(xpath("//tbody/a/td[contains(@class, 'fct-title') and text()='" + name + "']"));
+        return $(xpath("//tbody/a/td[contains(@class, 'fct-row__title') and text()='" + name + "']"));
     }
 
     //-------------------------- NEW PRODUCT
@@ -39,27 +39,19 @@ public class ProductsPage extends BasePage {
     }
 
     private SelenideElement skuFld() {
-        return $(xpath("//input[@placeholder='SKU']"));
+        return $(xpath("//td[contains(@class, 'sku')]//input"));
     }
 
     private SelenideElement skuSearchView(String skuCode) {
         return $(xpath("//li[@id='search-view-" + skuCode + "']"));
     }
 
-    public SelenideElement retailPriceFld() {
-        return $(xpath("//td[contains(@class, 'retail-price')]//input"));
-    }
-
-    public SelenideElement salePriceFld() {
-        return $(xpath("//td[contains(@class, 'sale-price')]//input"));
-    }
-
     public SelenideElement stateDd() {
-        return $(xpath("//button[@id='state-dd]"));
+        return $(xpath("//div[@id='state-dd']"));
     }
 
     public SelenideElement stateVal() {
-        return $(xpath("//div[@id=state-dd--value']"));
+        return $(xpath("//div[@id='state-dd--value']"));
     }
 
     private SelenideElement removeStartDateBtn() {
@@ -102,6 +94,14 @@ public class ProductsPage extends BasePage {
      */
     public SelenideElement sku(String skuCode) {
         return $(xpath("//input[@placeholder='SKU' and @value='" + skuCode + "']"));
+    }
+
+    public SelenideElement skuRetailPriceFld(String index) {
+        return $(xpath("//tbody[@id='sku-list']/tr[" + index + "]/td[contains(@class, 'retailPrice')]//input"));
+    }
+
+    public SelenideElement skuSalePriceFld(String index) {
+        return $(xpath("//tbody[@id='sku-list']/tr[" + index + "]/td[contains(@class, 'salePrice')]//input"));
     }
 
     //TODO: rework the element locator - element should be searched by its index, not option values
@@ -173,8 +173,12 @@ public class ProductsPage extends BasePage {
         return $(xpath("//a[@id='" + optionValueName + "-value-delete-btn']"));
     }
 
-    private SelenideElement nameFld() {
-        return $(xpath("//input[@id='value-name-field']"));
+    private SelenideElement optionNameFld() {
+        return $(xpath("//input[@id='option-name-fld']"));
+    }
+
+    private SelenideElement valueNameField() {
+        return $(xpath("//input[@id='value-name-fld']"));
     }
 
     private SelenideElement saveValueBtn() {
@@ -233,7 +237,7 @@ public class ProductsPage extends BasePage {
 //            case "Image":
 //                paramVal = $(By.xpath("//tbody[@class='fc-table-body']/a[" + productIndex + "]/td[3]/img")).getAttribute("src");
 //                break;
-            case "Name":
+            case "Title":
                 paramVal = $(xpath("//tbody/a[" + productIndex + "]//td[contains(@class, 'title')]"));
                 break;
             case "State":
@@ -332,30 +336,31 @@ public class ProductsPage extends BasePage {
 
         @Step("Add SKU to a product: <{0}>, <salePr:{1}>, <retailPr:{2}>")
         private void addNewSKU(String SKU, String retailPrice, String salePrice) {
+            String lastSKUIndex = String.valueOf($$(xpath("//tbody[@id='sku-list']/tr")).size());
             setFieldVal(skuFld(), SKU);
             click(skuSearchView(SKU));
-            setFieldVal(retailPriceFld(), retailPrice);
-            setFieldVal(salePriceFld(), salePrice);
+            setFieldVal(skuRetailPriceFld(lastSKUIndex), retailPrice);
+            setFieldVal(skuSalePriceFld(lastSKUIndex), salePrice);
         }
 
-        @Step("Set \"Retail Price\" fld val to <{0}>")
-        public void setRetailPrice(String price) {
-            setFieldVal(retailPriceFld(), price);
+        @Step("Set \"Retail Price\" fld val of <{0}th> SKU to <{1}>")
+        public void setRetailPrice(String skuIndex, String price) {
+            clearField(skuRetailPriceFld(skuIndex));
+            setFieldVal(skuRetailPriceFld(skuIndex), price);
         }
 
-        @Step("Set \"Sale Price\" fld val to <{0}>")
-        public void setSalePrice(String price) {
-            setFieldVal(salePriceFld(), price);
+        @Step("Set \"Sale Price\" fld val of <{0}th> SKU to <{1}>")
+        public void setSalePrice(String skuIndex, String price) {
+            clearField(skuSalePriceFld(skuIndex));
+            setFieldVal(skuSalePriceFld(skuIndex), price);
         }
-
 
     @Step("Add <{0}> option")
     public void addOption(String optionVal) {
         clickAddBtn_option();
-        setName(optionVal);
-        clickSaveOptionBtn();
+        setOptionName(optionVal);
+        clickSaveBtn_modal();
     }
-
 
         @Step("Click \"+\" btn at \"Options\" block")
         public void clickAddBtn_option() {
@@ -363,20 +368,15 @@ public class ProductsPage extends BasePage {
         }
 
         @Step("Set \"Name\" to <{0}>")
-        public void setName(String nameVal) {
-            setFieldVal(nameFld(), nameVal);
-        }
-
-        @Step("Click \"Save option\" btn")
-        public void clickSaveOptionBtn() {
-            click( saveOptionBtn() );
+        public void setOptionName(String nameVal) {
+            setFieldVal(optionNameFld(), nameVal);
         }
 
     @Step("Add value <{1}> to the option <{0}>")
     public void addOptionValue(String optionVal, String nameVal) {
         clickAddBtn_optionValue(optionVal);
-        setName(nameVal);
-        clickSaveValueBtn();
+        setValueName(nameVal);
+        clickSaveBtn_modal();
     }
 
         @Step("Click \"+\" btn at <{0}> option")
@@ -384,9 +384,9 @@ public class ProductsPage extends BasePage {
             click(addOptionValueBtn(optionVal));
         }
 
-        @Step("Click \"Save value\" btn")
-        private void clickSaveValueBtn() {
-            click( saveValueBtn() );
+        @Step("Set \"Name\" to <{0}>")
+        public void setValueName(String nameVal) {
+            setFieldVal(valueNameField(), nameVal);
         }
 
     @Step("Assert that \"SKUs\" block has <{0}> SKU lines")
@@ -402,8 +402,8 @@ public class ProductsPage extends BasePage {
     @Step("Change value name to <{0}>")
     public void editValue(String optionValueVal, String newValueVal) {
         click(editOptionValueBtn(optionValueVal));
-        setName(newValueVal);
-        clickSaveValueBtn();
+        setValueName(newValueVal);
+        clickSaveBtn_modal();
     }
 
     @Step("Remove SKU with an option value combo <{0}> & <{1}>")
@@ -414,7 +414,7 @@ public class ProductsPage extends BasePage {
 
     @Step("Re-add SKU for option values combo <{0} & {1}>")
     public void reAddSKU(String firstValue, String secondValue) {
-        String availableOption = firstValue + ", " + secondValue;
+        String availableOption = firstValue + "-" + secondValue;
         click(addSKUBtn());
         jsClick(availableOptionChkbx(availableOption));
         click(addBtn());

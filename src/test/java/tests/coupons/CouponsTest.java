@@ -47,8 +47,7 @@ public class CouponsTest extends DataProvider {
         p.navigateTo("Marketing", "Coupons");
         p.waitForDataToLoad();
         p.search("test coupon " + randomId);
-        p.getCouponParamVal("1", "Name").shouldHave(text("test coupon " + randomId)
-                .because("A just created coupon isn't displayed on the list."));
+        p.getCouponParamVal("1", "Name").shouldHave(text("test coupon " + randomId));
 
     }
 
@@ -72,8 +71,7 @@ public class CouponsTest extends DataProvider {
 
         p.navigateTo("Marketing", "Coupons");
         p.waitForDataToLoad();
-        p.getCouponParamVal("1", "Name").shouldHave(text("test coupon " + randomId)
-                .because("A just created coupon isn't displayed on the list."));
+        p.getCouponParamVal("1", "Name").shouldHave(text("test coupon " + randomId));
 
     }
 
@@ -109,8 +107,7 @@ public class CouponsTest extends DataProvider {
         p.navigateTo("Marketing", "Coupons");
         p.search(couponId);
 
-        p.getCouponParamVal("1", "Name").shouldHave(text("edited coupon " + randomId)
-                .because("Failed to edit coupon's 'Name'."));
+        p.getCouponParamVal("1", "Name").shouldHave(text("edited coupon " + randomId));
 
     }
 
@@ -126,8 +123,7 @@ public class CouponsTest extends DataProvider {
         p.navigateTo("Marketing", "Coupons");
         p.search(couponId);
 
-        p.getCouponParamVal("1", "Storefront Name").shouldHave(text("<p>edited SF name</p>")
-                .because("Failed to edit 'Storefront Name'."));
+        p.getCouponParamVal("1", "Storefront Name").shouldHave(text("<p>edited SF name</p>"));
 
     }
 
@@ -145,8 +141,7 @@ public class CouponsTest extends DataProvider {
 //        System.out.println("Coupon name: <" + couponName + ">");
         p.openCoupon(couponId);
 
-        p.descriptionFld().shouldHave(text("edited description")
-                .because("Failed to edit 'Description'."));
+        p.descriptionFld().shouldHave(text("edited description"));
 
     }
 
@@ -163,49 +158,42 @@ public class CouponsTest extends DataProvider {
         p.search(couponId);
         p.openCoupon(couponId);
 
-        p.detailsFld().shouldHave(text("edited details")
-                .because("Failed to edit 'Details'."));
+        p.detailsFld().shouldHave(text("edited details"));
 
     }
 
     @Test(priority = 9)
     public void editCoupon_state() throws IOException {
-
         provideTestData("coupon with single code");
-        p = openPage(adminUrl + "/coupons/" + couponId, CouponsPage.class);
 
+        p = openPage(adminUrl + "/coupons/" + couponId, CouponsPage.class);
         p.setState("Inactive");
-        p.clickSave();
+        p.clickSave_wait();
         p.navigateTo("Marketing", "Coupons");
         p.search(couponId);
 
-        p.getCouponParamVal("1", "State").shouldHave(text("Inactive")
-                .because("Failed to edit 'State'."));
-
+        p.getCouponParamVal("1", "State").shouldHave(text("Inactive"));
     }
 
     @Description("Fails due to bug with applying coupon to cart")
     @Test(priority = 10)
     public void totalUses() throws IOException {
-
         provideTestData("order in remorse hold with applied coupon");
+
         p = openPage(adminUrl + "/coupons/", CouponsPage.class);
         p.search(couponId);
-        p.getCouponParamVal("1", "Total Uses").shouldHave(text("1")
-                .because("Checking out the order with coupon applied isn't reflected on the coupons list (Incorrect 'Total Uses' val)."));
 
+        p.getCouponParamVal("1", "Total Uses").shouldHave(text("1"));
     }
 
     @Description("Fails due to bug with applying coupon to cart")
     @Test(priority = 11)
     public void currentCarts() throws IOException {
+        provideTestData("cart<1 SKU, coupon applied>; coupon<any, single code>");
 
-        provideTestData("a cart with a single code coupon applied");
         p = openPage(adminUrl + "/coupons/", CouponsPage.class);
         p.search(couponId);
-        p.getCouponParamVal("1", "Current Carts").shouldHave(text("1")
-                .because("Applying coupon to a cart isn't reflected on the coupons list (Incorrect 'Current Carts' val)."));
 
+        p.getCouponParamVal("1", "Current Carts").shouldHave(text("1"));
     }
-
 }

@@ -3,14 +3,17 @@ package base;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import ru.yandex.qatools.allure.annotations.Step;
 
 import java.util.List;
+import java.util.Objects;
 
-import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Condition.type;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
+import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 import static org.openqa.selenium.By.xpath;
 
 public class BasePage extends ConciseAPI {
@@ -58,8 +61,27 @@ public class BasePage extends ConciseAPI {
 
     @Step("Click \"Cancel\"")
     public void clickCancel() {
-        click(cancelBtn());
+        click(modalCancelBtn());
     }
+
+    public SelenideElement modalSaveBtn() {
+        return $(xpath("//*[@id='modal-confirm-btn']"));
+    }
+
+    public SelenideElement modalCancelBtn() {
+        return $(xpath("//*[@id='modal-cancel-btn']"));
+    }
+
+    @Step("Click \"Save\" btn")
+    public void clickSaveBtn_modal() {
+        click(modalSaveBtn());
+    }
+
+    @Step("Click \"Cancel\" btn")
+    public void clickCancelBtn_modal() {
+        click(modalCancelBtn());
+    }
+
 
     //----------------------------------- NAVIGATION MENU ------------------------------------//
 
@@ -149,7 +171,7 @@ public class BasePage extends ConciseAPI {
         sleep(750);
         shouldNotBeVisible($(xpath("//button[@id='primary-save-btn' and contains(@class, 'loading')]")),
                 "\"Save\" btn doesn't get re-enabled");
-        sleep(750);
+        sleep(1000);
     }
 
     private SelenideElement saveOptionsDd() {
@@ -175,32 +197,76 @@ public class BasePage extends ConciseAPI {
     @Step("Open first item on the category table")
     public void openFirstItemOnList() {
         waitForDataToLoad();
-        shouldBeVisible(itemsOnList(), "Data isn't displayed at the category view table");
+        shouldBeVisible(contentOnList(), "Data isn't displayed at the category view table");
         click(firstItemOnList());
         shouldBeVisible(saveBtn(), "Failed to open first item on the list");
+    }
+
+    private SelenideElement richTextFld(String name) {
+        if (Objects.equals(name, "Storefront Name")) {
+            name = "storefrontname";
+        } else {
+            name = name.replaceAll(" ", "-").toLowerCase();
+        }
+        return $(xpath("//div[contains(@class, 'fc-rich-text__name-" + name + "')]//div[@role='textbox']"));
+    }
+
+    private SelenideElement richTextVal(String name) {
+        if (Objects.equals(name, "Storefront Name")) {
+            name = "storefrontname";
+        } else {
+            name = name.replaceAll(" ", "-").toLowerCase();
+        }
+        return $(xpath("//div[contains(@class, 'fc-rich-text__name-" + name + "')]//span"));
+    }
+
+    @Step("Set <{0}> rich text fld to <{1}>")
+    private void setRichTextFldVal(String name, String text) {
+        clearField(richTextFld(name));
+        if (Objects.equals(name, "Storefront Name")) {
+            name = "storefrontname";
+        } else {
+            name = name.replaceAll(" ", "-").toLowerCase();
+        }
+        String className = "fc-rich-text__name-" + name;
+        System.out.println(className);
+
+        jsClick(richTextFld(name));
+        JavascriptExecutor executor = (JavascriptExecutor)getWebDriver();
+        executor.executeScript("function addTextToDraftJs(className, text) {\n" +
+                "  var components = document.getElementsByClassName(className);\n" +
+                "  if(components && components.length) {\n" +
+                "    var textarea = components[0].getElementsByClassName('public-DraftEditor-content')[0];\n" +
+                "    var textEvent = document.createEvent('TextEvent');\n" +
+                "    textEvent.initTextEvent ('textInput', true, true, null, text);\n" +
+                "    textarea.dispatchEvent(textEvent);\n" +
+                "  }  \n" +
+                "}\n" +
+                "addTextToDraftJs(arguments[0], arguments[1]);", className, text);
     }
 
 
 //----
     public SelenideElement addTagBtn() {
-        return $(xpath("//button[@class='_tags_tags__icon']"));
+        return $(xpath("//button[@id='fct-tag-toggle-btn']"));
     }
 
     private SelenideElement tagFld() {
         return $(xpath("//input[@placeholder='Separate tags with a comma']"));
     }
 
-    protected SelenideElement removeTagBtn(String index) {
-        // define only btn on the first tag in line
-        return $(xpath("//div[@class='_tags_tags__tags']/div[1]/button"));
+    protected SelenideElement removeTagBtn(String tag) {
+        tag = tag.replaceAll(" ", "-").toLowerCase();
+        return $(xpath("//div[@id='fct-tag__" + tag + "']//button[contains(@class, 'fct-tag-close-btn')]"));
     }
 
-    public SelenideElement tag(String tagVal) {
-        return $(xpath("//div[@class='_tags_tags__tags']/div/div[text()='" + tagVal + "']"));
+    public SelenideElement tag(String tag) {
+        tag = tag.replaceAll(" ", "-").toLowerCase();
+        return $(xpath("//div[@id='fct-tag__" + tag + "']"));
     }
 
     public ElementsCollection allTags() {
-        return $$(xpath("//div[@class='_rounded_pill_rounded_pill__text']"));
+        return $$(xpath("//div[contains(@class, 'fct-tag-label')]"));
     }
 
     //---------------------------------- HELPERS -----------------------------------//
@@ -214,20 +280,12 @@ public class BasePage extends ConciseAPI {
     }
 
     @Step("Remove <{0}th> tag (left to right)")
-    public void removeTag(String index) {
-        click(removeTagBtn(index));
+    public void removeTag(String tag) {
+        click(removeTagBtn(tag));
     }
 
 
     //---------------------------------------- SEARCH ------------------------------------------//
-
-    //TODO: test out this method
-    public void findItemOnList(String expectedParamVal) {
-        int totalItemsOnTable = $$(xpath("//a[@class='fc-table-tr']")).size();
-        for (int i = 0; i < totalItemsOnTable; i++) {
-            $(xpath("//tbody/a[" + i + "]//*")).shouldHave(text(expectedParamVal));
-        }
-    }
 
     public SelenideElement searchFld() {
         return $(xpath("//input[@placeholder='filter or keyword search']"));
@@ -398,7 +456,7 @@ public class BasePage extends ConciseAPI {
         hitEnter();
         click(searchFld());
         click($(xpath("//h1")));
-        shouldBeVisible(itemsOnList(), "Search request returned no results.");
+        shouldBeVisible(contentOnList(), "Search request returned no results.");
     }
 
     @Step("Remove all search filters from search field")

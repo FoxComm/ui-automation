@@ -41,7 +41,7 @@ public class GiftCardsPage extends BasePage {
     }
 
     public SelenideElement availableBalance() {
-        return $(xpath("//*[@id='gift-card-available-balance']"));
+        return $(xpath("//span[@id='gift-card-available-balance']"));
     }
 
     public SelenideElement stateDd() {
@@ -53,7 +53,7 @@ public class GiftCardsPage extends BasePage {
     }
 
     //TODO: add id in ashes
-    public SelenideElement cancelReasonDd() {
+    private SelenideElement cancelReasonDd() {
         return $(xpath("//label[text()='Cancel Reason']/../following-sibling::*/div/div[2]/button"));
     }
 
@@ -65,6 +65,7 @@ public class GiftCardsPage extends BasePage {
         return $(xpath("//button[@id='modal-cancel-btn']"));
     }
 
+//    Features are (temporarily?) removed from product
 //    public SelenideElement gcToCustomerChbx() {
 //        return $(xpath("//input[@name='sendToCustomer']"));
 //    }
@@ -111,7 +112,7 @@ public class GiftCardsPage extends BasePage {
 
         @Step("Set \"Type\" dd val to <{0}>")
         public void setType(String type) {
-            setDdVal(typeDd(), type);
+            setDdVal_li(typeDd(), type);
         }
 
         @Step("Set \"Value\" fld val to <{0}>")
@@ -146,6 +147,7 @@ public class GiftCardsPage extends BasePage {
         setDdVal(cancelReasonDd(), reason);
     }
 
+//    Features are (temporarily?) removed from product
 //    @Step("Issue GC to customer <{0}>")
 //    public void issueGCToCustomer(String customerName, String message) {
 //        clickCheckbox();
@@ -204,7 +206,7 @@ public class GiftCardsPage extends BasePage {
                 gcParamVal = $(xpath("//tbody/a[" + gcIndex + "]/td[contains(@class, 'availableBalance')]"));
                 break;
             case "State":
-                gcParamVal = $(xpath("//tbody/a[" + gcIndex + "]/td[contains(@class, 'state')]//div[contains(text(), 'ctive')]"));
+                gcParamVal = $(xpath("//tbody/a[" + gcIndex + "]//span[@class='fc-model-state']"));
                 break;
             case "Date/Time Created":
                 gcParamVal = $(xpath("//tbody/a[" + gcIndex + "]//time"));

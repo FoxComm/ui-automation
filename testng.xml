@@ -7,11 +7,11 @@
             <!--<class name="tests.generalcontrols.search.SKUTest" />-->
         <!--</classes>-->
     <!--</test>-->
-    <!--<test name="Authentication">-->
-        <!--<classes>-->
-            <!--<class name="tests.generalcontrols.login.LoginTest" />-->
-        <!--</classes>-->
-    <!--</test>-->
+    <test name="Authentication">
+        <classes>
+            <class name="tests.generalcontrols.login.LoginTest" />
+        </classes>
+    </test>
     <!--<test name="Search Controls > Saved Search">-->
         <!--<classes>-->
             <!--<class name="tests.generalcontrols.search.SavedSearchTest" />-->
@@ -97,48 +97,46 @@
         </classes>
     </test>
 
-    <!--<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<-->
     <test name="Create Product">
         <classes>
             <class name="tests.products.CreateProductsTest" />
         </classes>
     </test>
-    <!-->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>-->
 
-    <!--<test name="Edit Product">-->
-        <!--<classes>-->
-            <!--<class name="tests.products.EditProductTest" />-->
-        <!--</classes>-->
-    <!--</test>-->
-    <!--<test name="New Product Form">-->
-        <!--<classes>-->
-            <!--<class name="tests.products.NewProductFormTest" />-->
-        <!--</classes>-->
-    <!--</test>-->
+    <test name="Edit Product">
+        <classes>
+            <class name="tests.products.EditProductTest" />
+        </classes>
+    </test>
+    <test name="New Product Form">
+        <classes>
+            <class name="tests.products.NewProductFormTest" />
+        </classes>
+    </test>
 
-    <!--<test name="Promotions">-->
-        <!--<classes>-->
-            <!--<class name="tests.promotions.PromotionsTest" />-->
-        <!--</classes>-->
-    <!--</test>-->
+    <test name="Promotions">
+        <classes>
+            <class name="tests.promotions.PromotionsTest" />
+        </classes>
+    </test>
 
-    <!--<test name="Coupons" >-->
-        <!--<classes>-->
-            <!--<class name="tests.coupons.CouponsTest" />-->
-        <!--</classes>-->
-    <!--</test>-->
+    <test name="Coupons" >
+        <classes>
+            <class name="tests.coupons.CouponsTest" />
+        </classes>
+    </test>
 
-    <!--<test name="Gift Cards">-->
-        <!--<classes>-->
-            <!--<class name="tests.giftcards.GiftCardsTest" />-->
-        <!--</classes>-->
-    <!--</test>-->
+    <test name="Gift Cards">
+        <classes>
+            <class name="tests.giftcards.GiftCardsTest" />
+        </classes>
+    </test>
 
-    <!--<test name="Inventory">-->
-        <!--<classes>-->
-            <!--<class name="tests.inventory.InventoryTest" />-->
-        <!--</classes>-->
-    <!--</test>-->
+    <test name="Inventory">
+        <classes>
+            <class name="tests.inventory.InventoryTest" />
+        </classes>
+    </test>
     <!--<test name="test test">-->
         <!--<classes>-->
             <!--<class name="TestClass"/>-->

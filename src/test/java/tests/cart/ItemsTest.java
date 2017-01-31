@@ -14,8 +14,6 @@ import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.open;
 
-// TODO: [New Test] Check if line items with Qty > 1 are stacked to one-line record at Items block
-
 public class ItemsTest extends DataProvider {
 
     private CartPage p;
@@ -44,7 +42,7 @@ public class ItemsTest extends DataProvider {
 
     @Test (priority = 2)
     public void editItemQuantity_arrowBtn() throws IOException {
-        provideTestData("cart with 1 item");
+        provideTestData("cart<1 SKU[active, qty: 1]>");
 
         p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
         shouldBeVisible(p.itemQty("1"), "Failed to open cart page");
@@ -63,7 +61,7 @@ public class ItemsTest extends DataProvider {
 
     @Test (priority = 3)
     public void editItemQuantity_directInput() throws IOException {
-        provideTestData("cart with 1 item");
+        provideTestData("cart<1 SKU[active, qty: 1]>");
 
         p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
         p.clickEditBtn("Line Items");
@@ -103,7 +101,7 @@ public class ItemsTest extends DataProvider {
     @Test(priority = 6, dependsOnMethods = "editItemQuantity_directInput")
     @Description("Regression test: 1 line item with 'qty > 1' should be displayed as a single line item")
     public void oneItemIsntPropagated() throws IOException {
-        provideTestData("cart with 1 item");
+        provideTestData("cart<1 SKU[active, qty: 1]>");
 
         p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
         shouldBeVisible(p.itemQty("1"), "Failed to open cart page");

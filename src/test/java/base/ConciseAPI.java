@@ -41,8 +41,12 @@ public class ConciseAPI implements IHookable {
 
     //------------------------- ELEMENTS -------------------------//
 
-    protected SelenideElement itemsOnList() {
+    protected SelenideElement contentOnList() {
         return $(xpath("//tbody/a"));
+    }
+
+    public ElementsCollection itemsOnList() {
+        return $$(xpath("//tbody/a"));
     }
 
     protected SelenideElement emptyList() {
@@ -93,6 +97,12 @@ public class ConciseAPI implements IHookable {
         click( option, "Option <" + ddValue + "> on dd list isn't visible" );
     }
 
+    protected void setDdVal_li(SelenideElement ddElement, String ddValue) {
+        click( ddElement, "Dropdown isn't visible" );
+        SelenideElement option = $(By.xpath("//li[text()='" + ddValue + "']"));
+        click( option, "Option <" + ddValue + "> on dd list isn't visible" );
+    }
+
     protected void setFieldVal(SelenideElement element, String value) {
         shouldBeVisible(element, "Field is not visible");
         element.setValue(value);
@@ -133,7 +143,7 @@ public class ConciseAPI implements IHookable {
         try {
             element.shouldBe(visible);
         } catch (ElementNotFound | ElementShould | NullPointerException e) {
-            System.err.println(Arrays.toString(e.getStackTrace()));
+            System.err.println(e.getStackTrace());
             e.printStackTrace();
             throw new RuntimeException(errorMsg);
         }
@@ -259,7 +269,6 @@ public class ConciseAPI implements IHookable {
 
     public void assertTwice(SelenideElement element, String condition, String value, String errorMsg) {
         switch (condition.toLowerCase()) {
-
             case "should have value":
                 try {
                     element.shouldHave(value(value).because(errorMsg));
@@ -336,11 +345,14 @@ public class ConciseAPI implements IHookable {
         return randomId;
     }
 
-    protected double cutDecimal(double numb) {
+    //TODO: Use for generating random balance value when issuing multiple GCs
+    protected String generateRandomBalanceVal() {
+        return String.valueOf(cutDecimal(0.01 + Math.random() * 200.00));
+    }
 
+    protected double cutDecimal(double numb) {
         DecimalFormat cutDecimals = new DecimalFormat(("#.##"));
         return Double.valueOf(cutDecimals.format(numb));
-
     }
 
     // calculates the amount of funds to be applied to order with SC + GC
