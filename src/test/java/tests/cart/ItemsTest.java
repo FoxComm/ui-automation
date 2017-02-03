@@ -98,7 +98,7 @@ public class ItemsTest extends DataProvider {
         p.cart().shouldHaveSize(2);
     }
 
-    @Test(priority = 6, dependsOnMethods = "editItemQuantity_directInput")
+    @Test(priority = 6)
     @Description("Regression test: 1 line item with 'qty > 1' should be displayed as a single line item")
     public void oneItemIsntPropagated() throws IOException {
         provideTestData("cart<1 SKU[active, qty: 1]>");

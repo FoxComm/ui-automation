@@ -5,8 +5,6 @@ import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import ru.yandex.qatools.allure.annotations.Step;
 
-import java.util.List;
-
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
 import static org.openqa.selenium.By.xpath;
@@ -175,11 +173,11 @@ public class CartPage extends BasePage {
         return $(xpath("//tbody[@id='cart-line-items']/tr[" + itemIndex + "]//button[contains(@class, 'increment')]"));
     }
 
-    private SelenideElement itemQtyInput_byIndex(String itemIndex) {
+    private SelenideElement qtyInput_skuIndex(String itemIndex) {
         return $(xpath("//tbody[@id='cart-line-items']/tr[" + itemIndex + "]//input"));
     }
 
-    private SelenideElement itemQtyInput_bySKU(String skuCode) {
+    private SelenideElement qtyInput_sku(String skuCode) {
         skuCode = skuCode.replaceAll(" ", "-").toLowerCase();
         return $(xpath("//input[@id='item-quantity-input-" + skuCode + "']"));
     }
@@ -263,37 +261,22 @@ public class CartPage extends BasePage {
     public void cancelDeletion() {
         click(cancelDeletionBtn());
         shouldNotBeVisible(cancelDeletionBtn(), "Confirmation modal window isn't auto-hidden");
-//        sleep(2000);
     }
 
     @Step("Remove <{0}th> line item from the cart")
-    private void removeItem(String itemIndex) {
-        int expectedItemsAmount = cart().size() - 1;
-        System.out.println("Deleting items... expectedItemsAmount: " + expectedItemsAmount);
-
-        if ( !(itemsInEditMode()) ) {
-            clickEditBtn("Line Items");
-        }
-
+    public void removeItem(String itemIndex) {
         click(deleteBtn_item(itemIndex));
         confirmDeletion();
-
-        int actualItemsAmount = cart().size();
-        System.out.println("actualItemsAmount: " + actualItemsAmount);
     }
 
     @Step("Remove all line items from cart")
-    public void clearCart() {
-        if ( !(itemsInEditMode()) ) {
-            clickEditBtn("Line Items");
-        }
+    public void removeAllItems() {
         int timesToIterate = itemsInCartAmount();
         String itemIndex;
         for (int i = 1; i <= timesToIterate; i++) {
             itemIndex = String.valueOf(i);
             removeItem(itemIndex);
         }
-        clickDoneBtn("Line Items");
     }
 
     public String getItemName(String index) {
@@ -306,12 +289,12 @@ public class CartPage extends BasePage {
 
     @Step("Increase {0}th item in cart qty by {1}")
     public void increaseItemQty(String itemIndex, int increaseBy) {
-        int initialQty = Integer.valueOf(itemQtyInput_byIndex(itemIndex).getValue());
+        int initialQty = Integer.valueOf(qtyInput_skuIndex(itemIndex).getValue());
         for (int i = 0; i < increaseBy; i++) {
             String expectedValue = String.valueOf(initialQty + 1);
             clickIncreaseQty(itemIndex);
             sleep(750);
-            shouldHaveValue(itemQtyInput_byIndex(itemIndex), expectedValue,
+            shouldHaveValue(qtyInput_skuIndex(itemIndex), expectedValue,
                     "Item QTY input field has incorrect value");
             initialQty += 1;
         }
@@ -324,7 +307,7 @@ public class CartPage extends BasePage {
 
     @Step("Decrease <{0}th> line item QTY by <{1}>")
     public void decreaseItemQty(String itemIndex, int decreaseBy) {
-        int initialQty = Integer.valueOf(itemQtyInput_byIndex(itemIndex).getValue());
+        int initialQty = Integer.valueOf(qtyInput_skuIndex(itemIndex).getValue());
         for (int i = 0; i < decreaseBy; i++) {
             String expectedValue = String.valueOf(initialQty - 1);
             clickDecreaseQty(itemIndex);
@@ -333,7 +316,7 @@ public class CartPage extends BasePage {
                 confirmDeletionBtn().shouldBe(visible
                         .because("'Confirm deletion' modal window doesn't appear after item quantity is decreased to '0'."));
             } else {
-                shouldHaveValue(itemQtyInput_byIndex(itemIndex), expectedValue,
+                shouldHaveValue(qtyInput_skuIndex(itemIndex), expectedValue,
                         "Item QTY input field has incorrect value");
                 initialQty -= 1;
             }
@@ -346,7 +329,7 @@ public class CartPage extends BasePage {
     }
 
     public void decreaseItemQtyBelowZero(String itemIndex) {
-        int decreaseBy =  Integer.valueOf(itemQtyInput_byIndex("1").getValue());
+        int decreaseBy =  Integer.valueOf(qtyInput_skuIndex("1").getValue());
         System.out.println("decreaseBy" + decreaseBy);
 
         decreaseItemQty(itemIndex, decreaseBy);
@@ -355,8 +338,9 @@ public class CartPage extends BasePage {
 
     @Step("Set QTY of <{0}th> line item using input fld; <newQTY:{1}>")
     public void setItemQty(String sku, String qty) {
-        setFieldVal(itemQtyInput_bySKU(sku), qty);
-        shouldHaveValue(itemQtyInput_bySKU(sku), qty, "Failed to edit \"Qty\" input field value");
+        clearField(qtyInput_sku(sku));
+        setFieldVal(qtyInput_sku(sku), qty);
+        shouldHaveValue(qtyInput_sku(sku), qty, "Failed to edit \"Qty\" input field value");
     }
 
 

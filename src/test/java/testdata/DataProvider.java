@@ -44,6 +44,7 @@ public class DataProvider extends BaseTest {
     public static List<String> bulkCodes = new ArrayList<>();
 
     protected static String sku;                    // stored from createSKU_active();
+    protected static List<String> skus = new ArrayList<>();
     protected static String skuTitle;               // stored from createSKU_active();
     protected static int skuId_inventory;                     // stored from viewSKU();
     protected static String productName;            // stored from createProduct_<..>() methods
@@ -242,11 +243,9 @@ public class DataProvider extends BaseTest {
 
     @Step("[API] Add line item: <{1}>, <QTY:{2}> to cart: <{0}>")
     private static void updLineItems(String cartId, String SKU, int quantity) throws IOException {
-
         System.out.println("Updating SKUs: setting <" + SKU + "> quantity to <" + quantity + ">...");
 
         OkHttpClient client = new OkHttpClient();
-
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "[" +
                 "{\"sku\":\"" + SKU + "\"," +
@@ -259,7 +258,6 @@ public class DataProvider extends BaseTest {
                 .addHeader("cache-control", "no-cache")
                 .addHeader("JWT", jwt)
                 .build();
-
         Response response = client.newCall(request).execute();
         String responseBody = response.body().string();
         int responseCode = response.code();
@@ -271,7 +269,43 @@ public class DataProvider extends BaseTest {
         } else {
             failTest(responseBody, responseCode, responseMsg);
         }
+    }
 
+    @Step("[API] Add line item: <{1}>, <QTY:{2}> to cart: <{0}>")
+    private static void updLineItems_multiple(String cartId, String sku1, int qty1,String sku2, int qty2, String sku3, int qty3) throws IOException {
+        System.out.println("Updating SKUs: <{1}:{2}>; <{3}:{4}>; <{5}:{6}>");
+
+        OkHttpClient client = new OkHttpClient();
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "[{\n" +
+                "  \"sku\": \"" + sku1 + "\",\n" +
+                "  \"quantity\": " + qty1 + "\n" +
+                "}, {\n" +
+                "  \"sku\": \"" + sku2 + "\",\n" +
+                "  \"quantity\": " + qty2 + "\n" +
+                "}, {\n" +
+                "  \"sku\": \"" + sku3 + "\",\n" +
+                "  \"quantity\": " + qty3 + "\n" +
+                "}]\n");
+        Request request = new Request.Builder()
+                .url(apiUrl + "/v1/orders/" + cartId + "/line-items")
+                .post(body)
+                .addHeader("content-type", "application/json")
+                .addHeader("accept", "application/json")
+                .addHeader("cache-control", "no-cache")
+                .addHeader("JWT", jwt)
+                .build();
+        Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+        int responseCode = response.code();
+        String responseMsg = response.message();
+
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
     }
 
     @Step("[API] View customer <{0}>")
@@ -1210,7 +1244,7 @@ public class DataProvider extends BaseTest {
 
     }
 
-    @Step("[API] Create coupon with promotion <ID:'{0}>'")
+    @Step("[API] Create coupon with promotion <ID:{0}>")
     private static void createCoupon(String promotionId) throws IOException {
 
         System.out.println("Creating a new coupon with promotion <" + promotionId + ">...");
@@ -1280,7 +1314,7 @@ public class DataProvider extends BaseTest {
 
     }
 
-    @Step("[API] Bulk generate codes for coupon <ID:'{0}'>; [prefix:'{1}', codeLength:'{2}', QTY:'{3}']")
+    @Step("[API] Bulk generate codes for coupon <ID:{0}>; [prefix:{1}, codeLength:{2}, QTY:{3}]")
     private static void bulkGenerateCodes(String couponId, String prefix, int codeLength, int quantity) throws IOException {
 
         int length = prefix.length() + codeLength;
@@ -2265,7 +2299,7 @@ public class DataProvider extends BaseTest {
 
     }
 
-    @Step("Create test data using API")
+    @Step("Create test data using API -- <{0}>")
     protected void provideTestData(String testMethodName) throws IOException {
 
         loginAsAdmin();
@@ -2293,25 +2327,27 @@ public class DataProvider extends BaseTest {
                 updLineItems(cartId, sku, 1);
                 break;
 
-            case "cart with 2 items":
-                createCustomer();
-                createCart(customerId);
-                updLineItems(cartId, "SKU-TRL", 1);
-                updLineItems(cartId, "SKU-BRO", 3);
-                break;
-
             case "cart with 3 items":
                 createCustomer();
                 createCart(customerId);
-                updLineItems(cartId, "SKU-TRL", 3);
-                updLineItems(cartId, "SKU-BRO", 2);
-                updLineItems(cartId, "SKU-ZYA", 4);
+                createSKU_active();
+                createProduct_active(sku, "test");
+                skus.add(sku);
+                createSKU_active();
+                createProduct_active(sku, "test");
+                skus.add(sku);
+                createSKU_active();
+                createProduct_active(sku, "test");
+                skus.add(sku);
+                updLineItems_multiple(cartId, skus.get(0), 4, skus.get(1), 5, skus.get(2), 3);
                 break;
 
             case "cart with 1 item, qty: 3":
                 createCustomer();
                 createCart(customerId);
-                updLineItems(cartId, "SKU-TRL", 3);
+                createSKU_active();
+                createProduct_active(sku, "test");
+                updLineItems(cartId, sku, 3);
                 break;
 
             //------------------------------------- CART SHIPPING ADDRESS -------------------------------------//

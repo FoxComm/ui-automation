@@ -29,11 +29,10 @@ public class CouponsTest extends DataProvider {
 
     @Test(priority = 1)
     public void createCoupon_singleCode_active() throws IOException {
-
         provideTestData("a promotion");
-        p = openPage(adminUrl + "/coupons/", CouponsPage.class);
         String randomId = generateRandomID();
 
+        p = openPage(adminUrl + "/coupons/", CouponsPage.class);
         p.clickAddNewCouponBtn();
         p.setPromotion(promotionId);
         p.setCouponName("test coupon " + randomId);
@@ -41,23 +40,21 @@ public class CouponsTest extends DataProvider {
         p.setDescription("that's nothing but another test coupon");
         p.setDetails("get 10% off for any order");
         p.generateCodes_single("NWCPN-" + randomId);
-        p.clickSave();
+        p.clickSave_wait();
         shouldNotHaveText(p.couponIdVal(), "new", "Failed to create new coupon");
 
         p.navigateTo("Marketing", "Coupons");
         p.waitForDataToLoad();
         p.search("test coupon " + randomId);
         p.getCouponParamVal("1", "Name").shouldHave(text("test coupon " + randomId));
-
     }
 
     @Test(priority = 2)
     public void createCoupon_bulkCodes_active() throws IOException {
-
         provideTestData("a promotion");
-        p = openPage(adminUrl + "/coupons/", CouponsPage.class);
         String randomId = generateRandomID();
 
+        p = openPage(adminUrl + "/coupons/", CouponsPage.class);
         p.clickAddNewCouponBtn();
         p.setPromotion(promotionId);
         p.setCouponName("test coupon " + randomId);
@@ -66,100 +63,84 @@ public class CouponsTest extends DataProvider {
         p.setDetails("get 10% off for any order");
         p.generateCodes_bulk(4, "BULKCPN_" + randomId + "-", 5);
         p.setState("Active");
-        p.clickSave();
+        p.clickSave_wait();
         shouldNotHaveText(p.couponIdVal(), "new", "Failed to create new coupon");
 
         p.navigateTo("Marketing", "Coupons");
         p.waitForDataToLoad();
         p.getCouponParamVal("1", "Name").shouldHave(text("test coupon " + randomId));
-
     }
 
     @Test(priority = 3)
     public void codesDisplayedInCodesTab_bulkGenerated() throws IOException {
-
         provideTestData("coupon with bulk generated codes");
         p = openPage(adminUrl + "/coupons/" + couponId + "/codes", CouponsPage.class);
-
         p.assertCodesGenerated(5);
-
     }
 
     @Test(priority = 4)
     public void codesDisplayedInCodesTab_singleCode() throws IOException {
-
         provideTestData("coupon with single code");
         p = openPage(adminUrl + "/coupons/" + couponId + "/codes", CouponsPage.class);
-
         p.assertCodesGenerated(1);
-
     }
 
     @Test(priority = 5)
     public void editCoupon_name() throws IOException {
-
         provideTestData("coupon with single code");
-        p = openPage(adminUrl + "/coupons/" + couponId, CouponsPage.class);
         String randomId = generateRandomID();
 
+        p = openPage(adminUrl + "/coupons/" + couponId, CouponsPage.class);
         p.setCouponName("edited coupon " + randomId);
-        p.clickSave();
+        p.clickSave_wait();
         p.navigateTo("Marketing", "Coupons");
-        p.search(couponId);
+        p.search("edited coupon " + randomId);
 
         p.getCouponParamVal("1", "Name").shouldHave(text("edited coupon " + randomId));
-
     }
 
     @Test(priority = 6)
     public void editCoupon_storefrontName() throws IOException {
-
         provideTestData("coupon with single code");
-        p = openPage(adminUrl + "/coupons/" + couponId, CouponsPage.class);
 
+        p = openPage(adminUrl + "/coupons/" + couponId, CouponsPage.class);
         clearField( p.storefrontNameFld() );
         p.setStorefrontName("edited SF name");
-        p.clickSave();
+        p.clickSave_wait();
         p.navigateTo("Marketing", "Coupons");
         p.search(couponId);
 
         p.getCouponParamVal("1", "Storefront Name").shouldHave(text("<p>edited SF name</p>"));
-
     }
 
     @Test(priority = 7)
     public void editCoupon_description() throws IOException {
-
         provideTestData("coupon with single code");
-        p = openPage(adminUrl + "/coupons/" + couponId, CouponsPage.class);
 
+        p = openPage(adminUrl + "/coupons/" + couponId, CouponsPage.class);
         clearField(p.descriptionFld());
         p.setDescription("edited description");
-        p.clickSave();
+        p.clickSave_wait();
         p.navigateTo("Marketing", "Coupons");
         p.search(couponId);
-//        System.out.println("Coupon name: <" + couponName + ">");
         p.openCoupon(couponId);
 
         p.descriptionFld().shouldHave(text("edited description"));
-
     }
 
     @Test(priority = 8)
     public void editCoupon_details() throws IOException {
-
         provideTestData("coupon with single code");
-        p = openPage(adminUrl + "/coupons/" + couponId, CouponsPage.class);
 
+        p = openPage(adminUrl + "/coupons/" + couponId, CouponsPage.class);
         clearField(p.detailsFld());
         p.setDetails("edited details");
-        p.clickSave();
+        p.clickSave_wait();
         p.navigateTo("Marketing", "Coupons");
         p.search(couponId);
         p.openCoupon(couponId);
 
         p.detailsFld().shouldHave(text("edited details"));
-
     }
 
     @Test(priority = 9)

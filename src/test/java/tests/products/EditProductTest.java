@@ -250,7 +250,7 @@ public class EditProductTest extends DataProvider {
         shouldBeVisible(p.addTagBtn(),
                 "Waiting for \"Add Tag\" btn to become visible after refreshing the page has failed");
 
-        p.tag("eyeglasses").shouldNotBe(visible);
+        p.tag("sunglasses").shouldNotBe(visible);
     }
 
 //    @Test(priority = 16)

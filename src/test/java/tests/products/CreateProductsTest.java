@@ -47,9 +47,9 @@ public class CreateProductsTest extends DataProvider {
         p.createProduct(productTitle, sku, "27.18", "27.18", "sunglasses", "Active");
         p.navigateTo("Catalog", "Products");
         p.waitForDataToLoad();
-        p.addFilter("Product : Name", randomId);
+        p.search(randomId);
 
-        p.getProductParamVal("1", "Name").shouldHave(text(productTitle));
+        p.getProductParamVal("1", "Title").shouldHave(text(productTitle));
     }
 
     @Test(priority = 2)
@@ -266,7 +266,7 @@ public class CreateProductsTest extends DataProvider {
         p.waitForDataToLoad();
         p.search(randomId);
 
-        p.getProductParamVal("1", "Name").shouldHave(text(productTitle));
+        p.getProductParamVal("1", "Title").shouldHave(text(productTitle));
     }
 
     //TODO: Move test to API level
@@ -284,7 +284,7 @@ public class CreateProductsTest extends DataProvider {
         p.waitForDataToLoad();
         p.search(randomId);
 
-        p.getProductParamVal("1", "Name").shouldHave(text(productTitle));
+        p.getProductParamVal("1", "Title").shouldHave(text(productTitle));
     }
 
     @Test(priority = 16)

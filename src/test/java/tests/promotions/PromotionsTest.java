@@ -30,107 +30,107 @@ public class PromotionsTest extends DataProvider {
         }
     }
 
-//    @Test(priority = 1)
-//    public void addNewPromo() {
-//        String randomId = generateRandomID();
-//
-//        p = open(adminUrl + "/promotions/new", PromotionsPage.class);
-//        p.fillOutNewPromoForm("Coupon", randomId);
-//        p.clickSave_wait();
-//        shouldNotHaveText(p.promoIdBreadcumb(), "new", "\"new\" isn't changed to promoId value of a just created promo");
-//        String promoId = p.promoIdBreadcumb().text();
-//        p.navigateTo("Marketing", "Promotions");
-//        p.search(randomId);
-//
-//        p.getPromoParamVal("1", "Promotion ID").shouldHave(text(promoId));
-//    }
-//
-//    @Test(priority = 2)
-//    public void addNewPromo_appearsOnList() throws IOException {
-//        provideTestData("a promotion");
-//
-//        p = open(adminUrl + "/promotions", PromotionsPage.class);
-//        p.search(promotionId);
-//
-//        p.getPromoParamVal("1", "Promotion ID").shouldHave(text(promotionId));
-//    }
-//
-//    @Test(priority = 3)
-//    public void couponApplyType_stateActive() {
-//        String randomId = generateRandomID();
-//
-//        p = open(adminUrl + "/promotions/new", PromotionsPage.class);
-//        p.fillOutNewPromoForm("Coupon", randomId);
-//        p.clickSave_wait();
-//        shouldNotHaveText(p.promoIdBreadcumb(), "new", "\"new\" isn't changed to promoId value of a just created promo");
-//        p.navigateTo("Marketing", "Promotions");
-//        p.search(promotionId);
-//
-//        p.getPromoParamVal("1", "State").shouldHave(text("Active"));
-//    }
-//
-//    @Test(priority = 4)
-//    public void editName() throws IOException {
-//        provideTestData("a promotion");
-//
-//        p = open(adminUrl + "/promotions/" + promotionId, PromotionsPage.class);
-//        p.setPromoName("Edited Promo Name");
-//        p.clickSave_wait();
-//        p.navigateTo("Marketing", "Promotions");
-//        p.search(promotionId);
-//        p.getPromoParamVal("1", "Name").shouldHave(text("Edited Promo Name")
-//                .because("An old promo name is displayed on the list."));
-//        p.openPromo(promotionId);
-//
-//        p.nameFld().shouldHave(value("Edited Promo Name"));
-//    }
-//
-//    @Test(priority = 5)
-//    public void editStorefrontName() throws IOException {
-//        provideTestData("a promotion");
-//
-//        p = open(adminUrl + "/promotions/" + promotionId, PromotionsPage.class);
-//        clearField(p.storefrontNameFld());
-//        p.setStorefrontName("Edited Promo Storefront Name");
-//        p.clickSave_wait();
-//        p.navigateTo("Marketing", "Promotions");
-//        p.search(promotionId);
-//        p.getPromoParamVal("1", "Storefront Name").shouldHave(text("Edited Promo Storefront Name")
-//                .because("An old promo storefront name is displayed on the list."));
-//        p.openPromo(promotionId);
-//
-//        p.storefrontNameFld().shouldHave(text("Edited Promo Storefront Name"));
-//    }
-//
-//    @Test(priority = 6)
-//    public void editDescription() throws IOException {
-//        provideTestData("a promotion");
-//
-//        p = open(adminUrl + "/promotions/" + promotionId, PromotionsPage.class);
-//        p.clearField( p.descriptionFld() );
-//        p.setDescription("Edited Promo Description");
-//        p.clickSave_wait();
-//        p.navigateTo("Marketing", "Promotions");
-//        p.search(promotionId);
-//        p.openPromo(promotionId);
-//
-//        p.descriptionFld().shouldHave(text("Edited Promo Description"));
-//    }
-//
-//    @Test(priority = 7)
-//    public void editDetails() throws IOException {
-//        provideTestData("a promotion");
-//
-//        p = open(adminUrl + "/promotions/" + promotionId, PromotionsPage.class);
-//        p.clearField( p.detailsFld() );
-//        p.setDetails("Edited Promo Details");
-//        p.clickSave_wait();
-//        p.navigateTo("Marketing", "Promotions");
-//        p.search(promotionId);
-//        p.openPromo(promotionId);
-//
-//        p.detailsFld().shouldHave(text("Edited Promo Details"));
-//    }
+    @Test(priority = 1)
+    public void addNewPromo() {
+        String randomId = generateRandomID();
+
+        p = open(adminUrl + "/promotions/new", PromotionsPage.class);
+        p.fillOutNewPromoForm("Coupon", randomId);
+        p.clickSave_wait();
+        shouldNotHaveText(p.promoIdBreadcumb(), "new", "\"new\" isn't changed to promoId value of a just created promo");
+        String promoId = p.promoIdBreadcumb().text();
+        p.navigateTo("Marketing", "Promotions");
+        p.search(randomId);
+
+        p.getPromoParamVal("1", "Promotion ID").shouldHave(text(promoId));
+    }
+
+    @Test(priority = 2)
+    public void addNewPromo_appearsOnList() throws IOException {
+        provideTestData("a promotion");
+
+        p = open(adminUrl + "/promotions", PromotionsPage.class);
+        p.search(promotionId);
+
+        p.getPromoParamVal("1", "Promotion ID").shouldHave(text(promotionId));
+    }
+
+    @Test(priority = 3)
+    public void couponApplyType_stateActive() {
+        String randomId = generateRandomID();
+
+        p = open(adminUrl + "/promotions/new", PromotionsPage.class);
+        p.fillOutNewPromoForm("Coupon", randomId);
+        p.clickSave_wait();
+        shouldNotHaveText(p.promoIdBreadcumb(), "new", "\"new\" isn't changed to promoId value of a just created promo");
+        p.navigateTo("Marketing", "Promotions");
+        p.search(promotionId);
+
+        p.getPromoParamVal("1", "State").shouldHave(text("Active"));
+    }
+
+    @Test(priority = 4)
+    public void editName() throws IOException {
+        provideTestData("a promotion");
+
+        p = open(adminUrl + "/promotions/" + promotionId, PromotionsPage.class);
+        p.setPromoName("Edited Promo Name");
+        p.clickSave_wait();
+        p.navigateTo("Marketing", "Promotions");
+        p.search(promotionId);
+        p.getPromoParamVal("1", "Name").shouldHave(text("Edited Promo Name")
+                .because("An old promo name is displayed on the list."));
+        p.openPromo(promotionId);
+
+        p.nameFld().shouldHave(value("Edited Promo Name"));
+    }
+
+    @Test(priority = 5)
+    public void editStorefrontName() throws IOException {
+        provideTestData("a promotion");
+
+        p = open(adminUrl + "/promotions/" + promotionId, PromotionsPage.class);
+        clearField(p.storefrontNameFld());
+        p.setStorefrontName("Edited Promo Storefront Name");
+        p.clickSave_wait();
+        p.navigateTo("Marketing", "Promotions");
+        p.search(promotionId);
+        p.getPromoParamVal("1", "Storefront Name").shouldHave(text("Edited Promo Storefront Name")
+                .because("An old promo storefront name is displayed on the list."));
+        p.openPromo(promotionId);
+
+        p.storefrontNameFld().shouldHave(text("Edited Promo Storefront Name"));
+    }
+
+    @Test(priority = 6)
+    public void editDescription() throws IOException {
+        provideTestData("a promotion");
+
+        p = open(adminUrl + "/promotions/" + promotionId, PromotionsPage.class);
+        p.clearField( p.descriptionFld() );
+        p.setDescription("Edited Promo Description");
+        p.clickSave_wait();
+        p.navigateTo("Marketing", "Promotions");
+        p.search(promotionId);
+        p.openPromo(promotionId);
+
+        p.descriptionFld().shouldHave(text("Edited Promo Description"));
+    }
+
+    @Test(priority = 7)
+    public void editDetails() throws IOException {
+        provideTestData("a promotion");
+
+        p = open(adminUrl + "/promotions/" + promotionId, PromotionsPage.class);
+        p.clearField( p.detailsFld() );
+        p.setDetails("Edited Promo Details");
+        p.clickSave_wait();
+        p.navigateTo("Marketing", "Promotions");
+        p.search(promotionId);
+        p.openPromo(promotionId);
+
+        p.detailsFld().shouldHave(text("Edited Promo Details"));
+    }
 
     @Test(priority = 8)
     public void editApplyType() throws IOException {

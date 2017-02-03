@@ -1,10 +1,8 @@
 package tests.cart;
 
-import com.codeborne.selenide.Condition;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import pages.CartPage;
-import pages.CustomersPage;
 import pages.LoginPage;
 import ru.yandex.qatools.allure.annotations.Description;
 import testdata.DataProvider;
@@ -61,7 +59,9 @@ public class CartValidationTest extends DataProvider {
         provideTestData("cart<filled out, payment method: SC>");
 
         p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
-        p.clearCart();
+        p.clickEditBtn("Line Items");
+        p.removeItem("1");
+        p.clickDoneBtn("Line Items");
 
         p.cartWarn().shouldBe(visible);
         p.placeOrderBtn().shouldBe(disabled);
@@ -73,7 +73,6 @@ public class CartValidationTest extends DataProvider {
 
         p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
         p.clickEditBtn("Payment Method");
-        p.addPaymentMethod_SC("200");
         p.removePaymentMethod("1");
         p.addPaymentMethod_SC("200");
 

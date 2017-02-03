@@ -22,7 +22,7 @@ public class BaseTest extends ConciseAPI {
         String driverPath = Optional.ofNullable(System.getenv("WEBDRIVER_PATH")).orElse("bin/chromedriver");
         System.setProperty("webdriver.chrome.driver", driverPath);
         Configuration.browser = "chrome";
-        Configuration.timeout = 10000;
+        Configuration.timeout = 7000;
     }
 
 }

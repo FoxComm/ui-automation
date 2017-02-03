@@ -17,7 +17,7 @@ public class CouponsPage extends BasePage {
     //--------------------------------- ELEMENTS -----------------------------//
 
     private SelenideElement coupon(String id) {
-        return $(xpath("//a[@href='/coupons/" + id + "']"));
+        return $(xpath("//a[contains(@href, '" + id + "')]"));
     }
 
     private SelenideElement addNewCouponBtn() {
@@ -104,7 +104,7 @@ public class CouponsPage extends BasePage {
     }
 
     private SelenideElement deleteStartDateBtn() {
-        return $(xpath("//div[@id='remove-start-date-btn']"));
+        return $(xpath("//*[@id='remove-start-date-btn']"));
     }
 
     public SelenideElement couponCodesTab() {
@@ -205,13 +205,9 @@ public class CouponsPage extends BasePage {
 
     @Step("Assert that codes are displayed on the \"Coupon Codes\" tab")
     public void assertCodesGenerated(int codesQty) {
-
         waitForDataToLoad();
-        $(xpath("//div[text()='No coupon codes found.']")).shouldNotBe(visible
-                .because("No coupon codes is displayed on the list"));
+        $(xpath("//div[text()='No coupon codes found.']")).shouldNotBe(visible);
         listOfCodes().shouldHave(size(codesQty));
-        //.because("There are less codes on the list than it should")
-
     }
 
     private ElementsCollection listOfCodes() {

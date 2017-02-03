@@ -165,10 +165,9 @@ public class BasePage extends ConciseAPI {
     @Step("Click \"Save\" and wait until it's re-enabled")
     public void clickSave_wait() {
         jsClick(saveBtn());
-//        shouldBeEnabled(saveBtn(), "\"Save\" btn doesn't get re-enabled");
-        shouldBeVisible($(xpath("//button[@id='primary-save-btn' and contains(@class, 'loading')]")),
-                "\"Save\" btn isn't clicked");
-        sleep(750);
+//        shouldBeVisible($(xpath("//button[@id='primary-save-btn' and contains(@class, 'loading')]")),
+//                "\"Loading\" onClick animation didn't appear");
+        sleep(1500);
         shouldNotBeVisible($(xpath("//button[@id='primary-save-btn' and contains(@class, 'loading')]")),
                 "\"Save\" btn doesn't get re-enabled");
         sleep(1000);
@@ -257,7 +256,7 @@ public class BasePage extends ConciseAPI {
 
     protected SelenideElement removeTagBtn(String tag) {
         tag = tag.replaceAll(" ", "-").toLowerCase();
-        return $(xpath("//div[@id='fct-tag__" + tag + "']//button[contains(@class, 'fct-tag-close-btn')]"));
+        return $(xpath("//div[@id='fct-tag__" + tag + "']//button[contains(@class, 'fct-pill-close-btn')]"));
     }
 
     public SelenideElement tag(String tag) {
@@ -279,7 +278,7 @@ public class BasePage extends ConciseAPI {
         shouldNotBeVisible(tagFld(), "\"Tag\" fld shouldn't be visible after pressing \"Enter\" key on it");
     }
 
-    @Step("Remove <{0}th> tag (left to right)")
+    @Step("Remove tag <{0}>")
     public void removeTag(String tag) {
         click(removeTagBtn(tag));
     }
