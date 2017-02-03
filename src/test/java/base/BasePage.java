@@ -167,7 +167,7 @@ public class BasePage extends ConciseAPI {
         jsClick(saveBtn());
 //        shouldBeVisible($(xpath("//button[@id='primary-save-btn' and contains(@class, 'loading')]")),
 //                "\"Loading\" onClick animation didn't appear");
-        sleep(1500);
+        sleep(3000);
         shouldNotBeVisible($(xpath("//button[@id='primary-save-btn' and contains(@class, 'loading')]")),
                 "\"Save\" btn doesn't get re-enabled");
         sleep(1000);
