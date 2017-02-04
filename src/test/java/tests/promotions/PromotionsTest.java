@@ -34,7 +34,7 @@ public class PromotionsTest extends DataProvider {
     public void addNewPromo() {
         String randomId = generateRandomID();
 
-        p = open(adminUrl + "/promotions/new", PromotionsPage.class);
+        p = openPage(adminUrl + "/promotions/new", PromotionsPage.class);
         p.fillOutNewPromoForm("Coupon", randomId);
         p.clickSave_wait();
         shouldNotHaveText(p.promoIdBreadcumb(), "new", "\"new\" isn't changed to promoId value of a just created promo");
@@ -49,7 +49,7 @@ public class PromotionsTest extends DataProvider {
     public void addNewPromo_appearsOnList() throws IOException {
         provideTestData("a promotion");
 
-        p = open(adminUrl + "/promotions", PromotionsPage.class);
+        p = openPage(adminUrl + "/promotions", PromotionsPage.class);
         p.search(promotionId);
 
         p.getPromoParamVal("1", "Promotion ID").shouldHave(text(promotionId));
@@ -59,7 +59,7 @@ public class PromotionsTest extends DataProvider {
     public void couponApplyType_stateActive() {
         String randomId = generateRandomID();
 
-        p = open(adminUrl + "/promotions/new", PromotionsPage.class);
+        p = openPage(adminUrl + "/promotions/new", PromotionsPage.class);
         p.fillOutNewPromoForm("Coupon", randomId);
         p.clickSave_wait();
         shouldNotHaveText(p.promoIdBreadcumb(), "new", "\"new\" isn't changed to promoId value of a just created promo");
@@ -73,7 +73,7 @@ public class PromotionsTest extends DataProvider {
     public void editName() throws IOException {
         provideTestData("a promotion");
 
-        p = open(adminUrl + "/promotions/" + promotionId, PromotionsPage.class);
+        p = openPage(adminUrl + "/promotions/" + promotionId, PromotionsPage.class);
         p.setPromoName("Edited Promo Name");
         p.clickSave_wait();
         p.navigateTo("Marketing", "Promotions");
@@ -89,7 +89,7 @@ public class PromotionsTest extends DataProvider {
     public void editStorefrontName() throws IOException {
         provideTestData("a promotion");
 
-        p = open(adminUrl + "/promotions/" + promotionId, PromotionsPage.class);
+        p = openPage(adminUrl + "/promotions/" + promotionId, PromotionsPage.class);
         clearField(p.storefrontNameFld());
         p.setStorefrontName("Edited Promo Storefront Name");
         p.clickSave_wait();
@@ -106,7 +106,7 @@ public class PromotionsTest extends DataProvider {
     public void editDescription() throws IOException {
         provideTestData("a promotion");
 
-        p = open(adminUrl + "/promotions/" + promotionId, PromotionsPage.class);
+        p = openPage(adminUrl + "/promotions/" + promotionId, PromotionsPage.class);
         p.clearField( p.descriptionFld() );
         p.setDescription("Edited Promo Description");
         p.clickSave_wait();
@@ -121,7 +121,7 @@ public class PromotionsTest extends DataProvider {
     public void editDetails() throws IOException {
         provideTestData("a promotion");
 
-        p = open(adminUrl + "/promotions/" + promotionId, PromotionsPage.class);
+        p = openPage(adminUrl + "/promotions/" + promotionId, PromotionsPage.class);
         p.clearField( p.detailsFld() );
         p.setDetails("Edited Promo Details");
         p.clickSave_wait();
@@ -136,7 +136,7 @@ public class PromotionsTest extends DataProvider {
     public void editApplyType() throws IOException {
         provideTestData("a promotion");
 
-        p = open(adminUrl + "/promotions/" + promotionId, PromotionsPage.class);
+        p = openPage(adminUrl + "/promotions/" + promotionId, PromotionsPage.class);
         p.setApplyType("Auto");
         shouldBeVisible(p.stateDd(), "Failed to want until \"State\" dd will become visible");
         p.clickSave_wait();
@@ -152,7 +152,7 @@ public class PromotionsTest extends DataProvider {
     public void setStateToInactive() throws IOException {
         provideTestData("active promotion with auto apply type");
 
-        p = open(adminUrl + "/promotions/" + promotionId, PromotionsPage.class);
+        p = openPage(adminUrl + "/promotions/" + promotionId, PromotionsPage.class);
         shouldBeVisible(p.stateDd(), "Failed to want until \"State\" dd will become visible");
         p.setState("Inactive");
         p.clickSave_wait();
@@ -168,7 +168,7 @@ public class PromotionsTest extends DataProvider {
     public void setStateToActive() throws IOException {
         provideTestData("inactive promotion with auto apply type");
 
-        p = open(adminUrl + "/promotions/" + promotionId, PromotionsPage.class);
+        p = openPage(adminUrl + "/promotions/" + promotionId, PromotionsPage.class);
         shouldBeVisible(p.stateDd(), "Failed to want until \"State\" dd will become visible");
         p.setState("Active");
         p.clickSave_wait();
@@ -185,7 +185,7 @@ public class PromotionsTest extends DataProvider {
     public void addTag() throws IOException {
         provideTestData("a promotion");
 
-        p = open(adminUrl + "/promotions/" + promotionId, PromotionsPage.class);
+        p = openPage(adminUrl + "/promotions/" + promotionId, PromotionsPage.class);
         p.addTag("test promo");
         p.clickSave_wait();
         refresh();

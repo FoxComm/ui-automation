@@ -1334,7 +1334,7 @@ public class TestClass extends BaseTest {
 //        listCustomerAddresses(customerId);
 //        getCustomerAddress(customerId, addressId1);
 //        createCreditCard("John Doe", "4242", 5, 2020, "Visa");
-        System.out.println("5555555555554444".substring(12, 16));
+//        System.out.println("5555555555554444".substring(12, 16));
 
     }
 
