@@ -26,7 +26,7 @@ public class ContactInformationTest extends DataProvider {
         open(adminUrl);
         if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
             LoginPage loginPage = openPage(adminUrl + "/login", LoginPage.class);
-            loginPage.login("tenant", "admin@admin.com", "password");
+            loginPage.login(adminOrg, adminEmail, adminPassword);
             shouldBeVisible(loginPage.userMenuBtn(), "Failed to log in");
         }
     }

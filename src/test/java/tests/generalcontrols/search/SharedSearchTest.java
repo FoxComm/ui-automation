@@ -26,7 +26,7 @@ public class SharedSearchTest extends DataProvider {
         open(adminUrl);
         if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
             LoginPage loginPage = openPage(adminUrl + "/login", LoginPage.class);
-            loginPage.login("tenant", "admin@admin.com", "password");
+            loginPage.login(adminOrg, adminEmail, adminPassword);
             shouldBeVisible(loginPage.userMenuBtn(), "Failed to log in");
         }
 
@@ -48,7 +48,7 @@ public class SharedSearchTest extends DataProvider {
         p.closeModalWindow();
 
         p.logout();
-        p.login("tenant", "hackerman@yahoo.com", "password1");
+        p.login(adminOrg, "hackerman@yahoo.com", "password1");
         p.tab("Search " + searchRandomId).shouldBe(visible.because("Shared search isn't displayed."));
 
     }
@@ -80,7 +80,7 @@ public class SharedSearchTest extends DataProvider {
         p.unshareSearchWith("Such Root");
         p.closeModalWindow();
         p.logout();
-        p.login("tenant", "hackerman@yahoo.com", "password1");
+        p.login(adminOrg, "hackerman@yahoo.com", "password1");
         //refresh() is a workaround for a known bug - should be deleted later
         refresh();
         p.tab("Search " + searchRandomId).shouldNotBe(visible.because("Shared search is displayed."));
@@ -102,7 +102,7 @@ public class SharedSearchTest extends DataProvider {
         shouldNotBeVisible(p.dirtySearchIndicator(),
                 "\"Dirty Search\" indicator isn't displayed after search has been edited");
         p.logout();
-        p.login("tenant", "hackerman@yahoo.com", "password1");
+        p.login(adminOrg, "hackerman@yahoo.com", "password1");
         //refresh() is a workaround for a known bug - should be deleted later
         refresh();
         p.tab("Search " + searchRandomId).shouldNotBe(visible.because("Shared search is displayed."));
@@ -134,7 +134,7 @@ public class SharedSearchTest extends DataProvider {
         shouldNotExist(p.tab("Search " + searchRandomId),
                 "Failed to delete shared search - search tab still exists.");
         p.logout();
-        p.login("tenant", "hackerman@yahoo.com", "password1");
+        p.login(adminOrg, "hackerman@yahoo.com", "password1");
         //refresh() is a workaround for a known bug - should be deleted later
         refresh();
         p.tab("Search " + searchRandomId).shouldNotBe(visible.because("Shared search is displayed."));
@@ -146,7 +146,7 @@ public class SharedSearchTest extends DataProvider {
         refresh();
         if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
             LoginPage loginPage = openPage(adminUrl + "/login", LoginPage.class);
-            p.login("tenant", "admin@admin.com", "password");
+            p.login(adminOrg, adminEmail, adminPassword);
             shouldBeVisible(loginPage.userMenuBtn(), "Failed to log in");
         }
         p.ordersCounter().click();

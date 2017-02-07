@@ -29,7 +29,7 @@ public class LoginTest extends BaseTest {
 
     @Test(priority = 2)
     public void login_logout_test() {
-        p.login("tenant", "admin@admin.com", "password");
+        p.login(adminOrg, adminEmail, adminPassword);
         p.userMenuBtn().shouldBe(visible.because("Log in has failed."));
         p.logout();
     }
@@ -38,7 +38,7 @@ public class LoginTest extends BaseTest {
     //TODO: finish the test below
 //    @Test(priority = 3)
 //    public void login_userHasNoRolesTest() {
-//        p.login("tenant", customerEmail, "78qa22");
+//        p.login(adminOrg, customerEmail, "78qa22");
 //        p.noRolesErrorMsg().shouldBe(visible);    //*[text()='User has no roles in the organization']
 //    }
 

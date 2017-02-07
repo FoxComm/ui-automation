@@ -87,9 +87,9 @@ public class DataProvider extends BaseTest {
 
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{" +
-                "\n    \"email\": \"admin@admin.com\"," +
-                "\n    \"password\": \"password\"," +
-                "\n    \"org\": \"tenant\"\n}");
+                "\n    \"email\": \"" + adminEmail + "\"," +
+                "\n    \"password\": \"" + adminPassword + "\"," +
+                "\n    \"org\": \"" + adminOrg + "\"\n}");
 
         Request request = new Request.Builder()
                 .url(apiUrl + "/v1/public/login")
