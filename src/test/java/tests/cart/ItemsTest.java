@@ -30,7 +30,7 @@ public class ItemsTest extends DataProvider {
 
     @Test (priority = 1)
     public void addItemToCart() throws IOException {
-        provideTestData("empty cart and 1 active product");
+        provideTestData("empty cart and 3 active products");
 
         p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
         p.addItemToCart(skus.get(0));

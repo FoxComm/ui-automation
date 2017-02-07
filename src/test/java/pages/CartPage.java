@@ -195,7 +195,7 @@ public class CartPage extends BasePage {
     }
 
     public SelenideElement lineItem_byName(String itemName) {
-        return $(xpath("//tbody[@id='cart-line-items']/tr/td[text()='" + itemName + "']"));
+        return $(xpath("//tbody[@id='cart-line-items']//a[text()='" + itemName + "']"));
     }
 
     public ElementsCollection cart() {
