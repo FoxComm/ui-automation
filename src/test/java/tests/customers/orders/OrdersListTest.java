@@ -73,7 +73,7 @@ public class OrdersListTest extends DataProvider {
 
         p = openPage(adminUrl + "/customers/" + customerId + "/transactions", CustomersPage.class);
         waitForDataToLoad();
-        p.addFilter("Items", "Product Name", "Shark");
+        p.addFilter("Items", "Product Name", productName);
 
         p.ordersOnList().shouldHaveSize(1);
     }
@@ -84,7 +84,7 @@ public class OrdersListTest extends DataProvider {
 
         p = openPage(adminUrl + "/customers/" + customerId + "/transactions", CustomersPage.class);
         waitForDataToLoad();
-        p.addFilter("Items", "Product SKU", "SKU-BRO");
+        p.addFilter("Items", "Product SKU", skus.get(0));
 
         p.ordersOnList().shouldHaveSize(1);
     }

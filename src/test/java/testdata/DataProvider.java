@@ -2314,9 +2314,20 @@ public class DataProvider extends BaseTest {
 
             //----------------------------------------- CART ITEMS -----------------------------------------//
 
-            case "empty cart":
+            case "empty cart and 3 active products":
                 createCustomer();
                 createCart(customerId);
+                createSKU_active();
+                createProduct_active(sku, "test");
+                createSKU_active();
+                createProduct_active(sku, "test");
+                skus.add(sku);
+                createSKU_active();
+                createProduct_active(sku, "test");
+                skus.add(sku);
+                createSKU_active();
+                createProduct_active(sku, "test");
+                skus.add(sku);
                 break;
 
             case "cart<1 SKU[active, qty: 1]>":
@@ -2726,8 +2737,11 @@ public class DataProvider extends BaseTest {
 
                 createCustomer();
                 createCart(customerId);
-                increaseOnHandQty("SKU-YAX", "Sellable", 1);
-                updLineItems(cartId, "SKU-YAX", 1);
+                createSKU_active();
+                createProduct_active(sku, "test");
+                increaseOnHandQty(sku, "Sellable", 1);
+                skus.add(sku);
+                updLineItems(cartId, sku, 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
@@ -2738,8 +2752,11 @@ public class DataProvider extends BaseTest {
                 checkoutCart(cartId);
 
                 createCart(customerId);
-                increaseOnHandQty("SKU-BRO", "Sellable", 2);
-                updLineItems(cartId, "SKU-BRO", 2);
+                createSKU_active();
+                createProduct_active(sku, "test");
+                increaseOnHandQty(sku, "Sellable", 1);
+                skus.add(sku);
+                updLineItems(cartId, sku, 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);

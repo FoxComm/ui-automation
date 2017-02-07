@@ -30,14 +30,14 @@ public class ItemsTest extends DataProvider {
 
     @Test (priority = 1)
     public void addItemToCart() throws IOException {
-        provideTestData("empty cart");
+        provideTestData("empty cart and 1 active product");
 
         p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
-        p.addItemToCart("Shark");
-        p.addItemToCart("Fox");
+        p.addItemToCart(skus.get(0));
+        p.addItemToCart(skus.get(1));
 
-        p.lineItem_byName("Shark").shouldBe(visible);
-        p.lineItem_byName("Fox").shouldBe(visible);
+        p.lineItem_byName(skus.get(0)).shouldBe(visible);
+        p.lineItem_byName(skus.get(1)).shouldBe(visible);
     }
 
     @Test (priority = 2)
