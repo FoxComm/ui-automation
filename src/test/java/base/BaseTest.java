@@ -18,7 +18,7 @@ public class BaseTest extends ConciseAPI {
     protected static String storefrontUrl = System.getenv("API_URL");
     protected static String adminOrg = "tenant";
     protected static String adminEmail = "admin@admin.com";
-    protected static String adminPassword = "Fluffybunny";
+    protected static String adminPassword = "password";
 
     @BeforeSuite
     public void browserConfig() {
