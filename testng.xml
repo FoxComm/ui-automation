@@ -12,21 +12,21 @@
             <class name="tests.generalcontrols.login.LoginTest" />
         </classes>
     </test>
-    <!--<test name="Search Controls > Saved Search">-->
-        <!--<classes>-->
-            <!--<class name="tests.generalcontrols.search.SavedSearchTest" />-->
-        <!--</classes>-->
-    <!--</test>-->
-    <!--<test name="Search Controls > Search Field">-->
-        <!--<classes>-->
-            <!--<class name="tests.orders.SearchTest" />-->
-        <!--</classes>-->
-    <!--</test>-->
-    <!--<test name="Shared Search">-->
-        <!--<classes>-->
-            <!--<class name="tests.generalcontrols.search.SharedSearchTest" />-->
-        <!--</classes>-->
-    <!--</test>-->
+    <test name="Search Controls > Saved Search">
+        <classes>
+            <class name="tests.generalcontrols.search.SavedSearchTest" />
+        </classes>
+    </test>
+    <test name="Search Controls > Search Field">
+        <classes>
+            <class name="tests.orders.SearchTest" />
+        </classes>
+    </test>
+    <test name="Shared Search">
+        <classes>
+            <class name="tests.generalcontrols.search.SharedSearchTest" />
+        </classes>
+    </test>
 
     <test name="Cart > Items">
         <classes>
@@ -137,9 +137,14 @@
             <class name="tests.inventory.InventoryTest" />
         </classes>
     </test>
-    <!--<test name="test test">-->
-        <!--<classes>-->
-            <!--<class name="TestClass"/>-->
-        <!--</classes>-->
-    <!--</test>-->
+    <test name="test test">
+        <classes>
+            <class name="TestClass"/>
+        </classes>
+    </test>
+    <test name="Products">
+        <classes>
+            <class name="tests.products.ProductsTest" />
+        </classes>
+    </test>
 </suite>

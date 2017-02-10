@@ -79,7 +79,7 @@ public class DataProvider extends BaseTest {
     }
 
     @Step("[API] Log in as admin")
-    private static void loginAsAdmin() throws IOException {
+    protected static void loginAsAdmin() throws IOException {
 
         System.out.println("Authorizing as an admin...");
 
@@ -1434,7 +1434,7 @@ public class DataProvider extends BaseTest {
     }
 
     @Step("[API] Create SKU in <State:'Active'>")
-    private static void createSKU_active() throws IOException {
+    protected static void createSKU_active() throws IOException {
 
         System.out.println("Creating a new SKU, options: ACTIVE state...");
         String randomId = generateRandomID();
@@ -1472,7 +1472,7 @@ public class DataProvider extends BaseTest {
     }
 
     @Step("[API] Create SKU in <State: 'Inactive'>")
-    private static void createSKU_inactive() throws IOException {
+    protected static void createSKU_inactive() throws IOException {
 
         System.out.println("Creating a new SKU, options: INACTIVE state...");
         String randomId = generateRandomID();
@@ -1654,7 +1654,7 @@ public class DataProvider extends BaseTest {
     }
 
     @Step("[API] Create product; <SKU:'{0}'>, <Tag:'{1}'>, <State:'Active'>")
-    private static void createProduct_active(String sku, String tag) throws IOException {
+    protected static void createProduct_active(String sku, String tag) throws IOException {
 
         System.out.println("Creating a new product with SKU <" + sku + ">...");
         String productName_local = "Test Product " + generateRandomID();
@@ -1692,7 +1692,7 @@ public class DataProvider extends BaseTest {
     }
 
     @Step("[API] Create product; <SKU:'{0}'> <State:'Active'>, no tag")
-    private static void createProduct_active_noTag(String sku) throws IOException {
+    protected static void createProduct_active_noTag(String sku) throws IOException {
 
         System.out.println("Creating a new product with SKU <" + sku + ">...");
         String productName_local = "Test Product " + generateRandomID();
@@ -1730,7 +1730,7 @@ public class DataProvider extends BaseTest {
     }
 
     @Step("[API] Create product; <SKU:'{0}'>, <Tag:'{1}'>, <State:'Inactive'>")
-    private static void createProduct_inactive(String sku, String tag) throws IOException {
+    protected static void createProduct_inactive(String sku, String tag) throws IOException {
 
         System.out.println("Creating a new product with SKU <" + sku + ">...");
         String productName_local = "Test Product " + generateRandomID();
@@ -2194,7 +2194,7 @@ public class DataProvider extends BaseTest {
      * Given arg "String type" value should be capitalized, e.g. - "Sellable"
      */
     @Step("[API] Increase amount of sellable unites of <{0}> by <{1}>")
-    private static void increaseOnHandQty(String skuCode, String type, Integer qty) throws IOException {
+    protected static void increaseOnHandQty(String skuCode, String type, Integer qty) throws IOException {
 
         viewSKU_inventory(skuCode);
 
