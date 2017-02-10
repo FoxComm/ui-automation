@@ -61,9 +61,10 @@ public class CartValidationTest extends DataProvider {
         p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
         p.clickEditBtn("Line Items");
         p.removeItem("1");
+        shouldBeVisible(p.itemsWarn(), "Items warning doesn't appear once line items are cleared from cart");
         p.clickDoneBtn("Line Items");
 
-        p.cartWarn().shouldBe(visible);
+        p.itemsWarn().shouldBe(visible);
         p.placeOrderBtn().shouldBe(disabled);
     }
 
@@ -176,7 +177,7 @@ public class CartValidationTest extends DataProvider {
 //        archiveSKU(sku);
 //        p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
 //
-//        p.cartWarn().shouldBe(visible);
+//        p.itemsWarn().shouldBe(visible);
 //        p.placeOrderBtn().shouldBe(disabled);
 //    }
 
@@ -189,7 +190,7 @@ public class CartValidationTest extends DataProvider {
 //        archiveProduct(productId);
 //        p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
 //
-//        p.cartWarn().shouldBe(visible);
+//        p.itemsWarn().shouldBe(visible);
 //        p.placeOrderBtn().shouldBe(disabled);
 //    }
 
@@ -203,7 +204,7 @@ public class CartValidationTest extends DataProvider {
 //        archiveSKU(variantSKU_2);
 //        p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
 //
-//        p.cartWarn().shouldBe(visible);
+//        p.itemsWarn().shouldBe(visible);
 //        p.placeOrderBtn().shouldBe(disabled);
 //    }
 

@@ -265,7 +265,7 @@ public class BasePage extends ConciseAPI {
     }
 
     public ElementsCollection allTags() {
-        return $$(xpath("//div[contains(@class, 'fct-tag-label')]"));
+        return $$(xpath("//div[contains(@class, 'fct-pill-label')]"));
     }
 
     //---------------------------------- HELPERS -----------------------------------//

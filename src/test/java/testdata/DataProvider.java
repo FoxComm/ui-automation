@@ -194,7 +194,7 @@ public class DataProvider extends BaseTest {
         System.out.println("Getting Grand Total of cart <" + cartId + ">...");
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
-                .url("https://stage.foxcommerce.com/api/v1/carts/" + cartId)
+                .url(apiUrl + "/v1/carts/" + cartId)
                 .get()
                 .addHeader("cache-control", "no-cache")
                 .addHeader("JWT", jwt)
@@ -385,13 +385,13 @@ public class DataProvider extends BaseTest {
 
     }
 
-    @Step("[API] Delete address <ID:{1}> from ccutomer <ID:{0}> address book")
+    @Step("[API] Delete address <ID:{1}> from customer <ID:{0}>")
     protected static void deleteAddress(int customerId, int addressId) throws IOException {
         System.out.println("Deleting address <ID:" + addressId + "> from customer <ID:" + customerId + "> address book");
 
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
-                .url("https://stage.foxcommerce.com/api/v1/customers/" + customerId + "/addresses/" + addressId)
+                .url(apiUrl + "/v1/customers/" + customerId + "/addresses/" + addressId)
                 .delete(null)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -1044,7 +1044,7 @@ public class DataProvider extends BaseTest {
     }
 
     @Step("[API] Checkout cart <{0}>")
-    private static void checkoutCart(String cartId) throws IOException {
+    protected static void checkoutCart(String cartId) throws IOException {
 
         System.out.println("Checking out order <" + cartId + ">...");
 
@@ -1142,13 +1142,13 @@ public class DataProvider extends BaseTest {
     }
 
     @Step("[API] Create promotion -- <Apply type: 'Coupon'>")
-    private static void createPromotion_coupon_itemsNoQual() throws IOException {
+    private static void createPromotion_coupon_itemsNoQual(int searchId) throws IOException {
         System.out.println("Creating a new promotion...");
 
         OkHttpClient client = new OkHttpClient();
 
         MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, "{\"id\": null,\"createdAt\": null,\"attributes\": {\"name\": {\"t\": \"string\",\"v\": \"Test Promo 773\"},\"storefrontName\": {\"t\": \"richText\",\"v\": \"<p>SF Test Promo</p>\"},\"description\": {\"t\": \"text\",\"v\": \"Test Promo Description\"},\"details\": {\"t\": \"richText\",\"v\": \"<p>Test Promo 773 Details</p>\"},\"activeFrom\": {\"v\": \"2017-01-25T19:38:33.572Z\",\"t\": \"datetime\"},\"activeTo\": {\"v\": null,\"t\": \"datetime\"}},\"discounts\": [{\"id\": null,\"createdAt\": null,\"attributes\": {\"qualifier\": {\"t\": \"qualifier\",\"v\": {\"itemsAny\": {\"search\": [{\"productSearchId\": 5}]}}},\"offer\": {\"t\": \"offer\",\"v\": {\"orderPercentOff\": {\"discount\": 10}}}}}],\"applyType\": \"coupon\"}");
+        RequestBody body = RequestBody.create(mediaType, "{\"id\": null,\"createdAt\": null,\"attributes\": {\"name\": {\"t\": \"string\",\"v\": \"Test Promo 773\"},\"storefrontName\": {\"t\": \"richText\",\"v\": \"<p>SF Test Promo</p>\"},\"description\": {\"t\": \"text\",\"v\": \"Test Promo Description\"},\"details\": {\"t\": \"richText\",\"v\": \"<p>Test Promo 773 Details</p>\"},\"activeFrom\": {\"v\": \"2017-01-25T19:38:33.572Z\",\"t\": \"datetime\"},\"activeTo\": {\"v\": null,\"t\": \"datetime\"}},\"discounts\": [{\"id\": null,\"createdAt\": null,\"attributes\": {\"qualifier\": {\"t\": \"qualifier\",\"v\": {\"itemsAny\": {\"search\": [{\"productSearchId\": " + searchId + "}]}}},\"offer\": {\"t\": \"offer\",\"v\": {\"orderPercentOff\": {\"discount\": 10}}}}}],\"applyType\": \"coupon\"}");
         Request request = new Request.Builder()
                 .url(apiUrl + "/v1/promotions/default")
                 .post(body)
@@ -1344,13 +1344,14 @@ public class DataProvider extends BaseTest {
 
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
-//            METHOD DEBUG
+//            DEBUG
 //            int startIndex = 2;
 //            for (int i = 0; i < quantity; i++) {
 //                String code = responseBody.substring(startIndex, startIndex + length);
 //                bulkCodes.add(code);
 //                startIndex += (length + 3);
 //            }
+            bulkCodes.clear();
             JSONArray jsonData = new JSONArray(responseBody);
             for (int i = 0; i < jsonData.length(); i++) {
                 bulkCodes.add(jsonData.getString(i));
@@ -2414,6 +2415,25 @@ public class DataProvider extends BaseTest {
                 setPayment_storeCredit(cartId, 10000);
                 break;
 
+            case "filled out cart":
+                createCustomer();
+                createCart(customerId);
+                createAddress(customerId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
+                setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "9879879876", false);
+                listShipMethods(cartId);
+                setShipMethod(cartId, shipMethodId);
+                listCustomerAddresses(customerId);
+                getCustomerAddress(customerId, addressId1);
+                createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard");
+                setPayment_creditCard(cartId, creditCardId);
+                createSKU_active();
+                createProduct_active(sku, "test");
+                increaseOnHandQty(sku, "Sellable", 10);
+                updLineItems(cartId, sku, 3);
+                issueStoreCredit(customerId, 50000);
+                setPayment_storeCredit(cartId, 10000);
+                break;
+
 
             //----------------------------------- CART COUPONS ------------------------------------//
 
@@ -2494,7 +2514,7 @@ public class DataProvider extends BaseTest {
                 createProduct_active(sku, "test");
                 updLineItems(cartId, sku, 1);
                 createSharedSearch_oneFilter();
-                createPromotion_coupon_itemsNoQual();
+                createPromotion_coupon_itemsNoQual(searchId);
                 createCoupon(promotionId);
                 generateSingleCode(couponId);
                 break;
@@ -3204,24 +3224,7 @@ public class DataProvider extends BaseTest {
                 break;
 
         }
-
     }
-
-    public static void main(String[] args) throws IOException {
-
-        loginAsAdmin();
-        createCustomer();
-        createCart(customerId);
-        createSKU_active();
-        createProduct_active(sku, "test");
-        updLineItems(cartId, sku, 1);
-        createSharedSearch("test product", "test products");
-        createPromotion_coupon_itemsNoQual();
-        createCoupon(promotionId);
-        generateSingleCode(couponId);
-
-    }
-
 }
 
 

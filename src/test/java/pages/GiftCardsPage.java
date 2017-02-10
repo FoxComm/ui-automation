@@ -54,7 +54,11 @@ public class GiftCardsPage extends BasePage {
 
     //TODO: add id in ashes
     private SelenideElement cancelReasonDd() {
-        return $(xpath("//label[text()='Cancel Reason']/../following-sibling::*/div/div[2]/button"));
+        return $(xpath("//*[contains(@class, 'cancel-reason-selector')]"));
+    }
+
+    private SelenideElement cancelReasonOption(String index) {
+        return $(xpath("//*[contains(@class, 'cancel-reason-selector')]//li[" + index + "]"));
     }
 
     public SelenideElement yesBtn() {
@@ -143,8 +147,9 @@ public class GiftCardsPage extends BasePage {
     }
 
     @Step("Select cancellation reason <{0}>")
-    public void setCancelReason(String reason) {
-        setDdVal(cancelReasonDd(), reason);
+    public void setCancelReason(String index) {
+        click(cancelReasonDd());
+        click(cancelReasonOption(index));
     }
 
 //    Features are (temporarily?) removed from product

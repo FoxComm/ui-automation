@@ -132,8 +132,7 @@ public class StoreCreditsTest extends DataProvider {
         p.navToTransactionTab();
         waitForDataToLoad();
 
-        p.getTransactionParamVal("1", "Amount").shouldHave(text("-$36.00")
-                .because("Incorrect amount of funds was applied to order as a payment."));
+        p.getTransactionParamVal("1", "Amount").shouldHave(text("-$36.00"));
 //        p.getTransactionParamVal("1", "Transaction").shouldHave(text("Gift Card Transfer")
 //                .because("Incorrect transaction type."));
     }

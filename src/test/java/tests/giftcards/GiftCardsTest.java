@@ -108,7 +108,7 @@ public class GiftCardsTest extends DataProvider {
 
         p = openPage(adminUrl + "/gift-cards/" + gcCode, GiftCardsPage.class);
         p.setState("Cancel Gift Card");
-        p.setCancelReason("Other cancellation reason");
+        p.setCancelReason("1");
         p.clickYes();
         shouldNotBeVisible(p.yesBtn(), "Failed to wait until yesBtn won't be visible");
         sleep(1000);

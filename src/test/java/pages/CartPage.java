@@ -56,7 +56,7 @@ public class CartPage extends BasePage {
         return Double.valueOf(grandTotal().text().substring(1, grandTotal().text().length()));
     }
 
-    public SelenideElement cartWarn() {
+    public SelenideElement itemsWarn() {
         return $(xpath("//div[@class='fc-order-messages']/*[text()='Cart is empty.']"));
     }
 
@@ -130,7 +130,7 @@ public class CartPage extends BasePage {
 
         @Step("Assert that \"Cart is empty\" warning isn't displayed")
         private void assertNoCartWarn() {
-            shouldNotBeVisible(cartWarn(), "'Cart is empty' warning is displayed.");
+            shouldNotBeVisible(itemsWarn(), "'Cart is empty' warning is displayed.");
         }
 
         @Step("Assert that \"No shipping address\" warning isn't displayed")
@@ -182,6 +182,10 @@ public class CartPage extends BasePage {
         return $(xpath("//input[@id='item-quantity-input-" + skuCode + "']"));
     }
 
+    public SelenideElement itemTotalPrice(String index) {
+        return $(xpath("//tbody[@id='cart-line-items']/tr[" + index + "]//*[contains(@class, 'item-total-price')]"));
+    }
+
     private SelenideElement deleteBtn_item(String itemIndex) {
         return $(xpath("//tbody[@id='cart-line-items']/tr[" + itemIndex + "]//button[contains(@class, 'remove')]"));
     }
@@ -198,12 +202,12 @@ public class CartPage extends BasePage {
         return $(xpath("//tbody[@id='cart-line-items']//a[text()='" + itemName + "']"));
     }
 
-    public ElementsCollection cart() {
+    public ElementsCollection lineItems() {
         return $$(xpath("//tbody[@id='cart-line-items']/tr"));
     }
 
     private int itemsInCartAmount() {
-        return cart().size();
+        return lineItems().size();
     }
 
     private String indexOfLastItemInCart() {

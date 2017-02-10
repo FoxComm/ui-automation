@@ -68,7 +68,6 @@ public class OrderCouponsTest extends DataProvider {
         p.clickEditBtn("Coupons");
         p.addCouponCode(singleCouponCode);
         p.clickApplyBtn();
-        p.clickDoneBtn("Coupons");
         p.clickPlaceOderBtn();
         shouldHaveText(p.orderState(), "Remorse Hold", "Checkout failed");
         open(adminUrl + "/customers/" + customerId + "/cart");

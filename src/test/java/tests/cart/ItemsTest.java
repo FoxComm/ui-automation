@@ -66,6 +66,7 @@ public class ItemsTest extends DataProvider {
         p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
         p.clickEditBtn("Line Items");
         p.setItemQty(sku, "3");
+        shouldHaveText(p.itemTotalPrice("1"), "$150.00", "");
         p.clickDoneBtn("Line Items");
 
         p.itemQty("1").shouldHave(text("3")
@@ -82,7 +83,7 @@ public class ItemsTest extends DataProvider {
         p.clickDeleteBtn_item("1");
         p.cancelDeletion();
 
-        p.cart().shouldHaveSize(1);
+        p.lineItems().shouldHaveSize(1);
     }
 
     @Test (priority = 5)
@@ -95,7 +96,7 @@ public class ItemsTest extends DataProvider {
         p.clickDeleteBtn_item("1");
         p.confirmDeletion();
 
-        p.cart().shouldHaveSize(2);
+        p.lineItems().shouldHaveSize(2);
     }
 
     @Test(priority = 6)
@@ -108,10 +109,21 @@ public class ItemsTest extends DataProvider {
         p.clickEditBtn("Line Items");
         p.setItemQty(sku, "3");
         p.clickDoneBtn("Line Items");
-        shouldHaveText(p.itemQty("1"), "3", "Failed to edit Qty");
+        shouldHaveText(p.itemQty("1"), "1", "Failed to edit Qty");
         open(adminUrl + "/customers/" + customerId + "/cart");
 
-        p.cart().shouldHaveSize(1);
+        p.lineItems().shouldHaveSize(1);
+    }
+
+    @Test(priority = 7)
+    @Description("Regression test: 1 line item with 'qty > 1' should be displayed as a single line item after cart checkout")
+    public void oneItemIsntPropagatedAfterCheckout() throws IOException {
+        provideTestData("filled out cart 2 addresses in address book");
+
+        checkoutCart(cartId);
+        p = openPage(adminUrl + "/orders/" + cartId, CartPage.class);
+
+        p.lineItems().shouldHaveSize(1);
     }
 
 }
