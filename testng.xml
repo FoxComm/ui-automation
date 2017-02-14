@@ -1,32 +1,32 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="e2e" verbose="1">
-    <!--<test name="ES Tests">-->
+    <!--<test name="Search > Orders">-->
         <!--<classes>-->
-            <!--<class name="tests.generalcontrols.search.CustomersSearchTest" />-->
-            <!--<class name="tests.generalcontrols.search.ProductsSearchTest" />-->
-            <!--<class name="tests.generalcontrols.search.SKUTest" />-->
+            <!--<class name="tests.generalcontrols.search.orders.order.ReferenceNumberTest" />-->
+            <!--<class name="tests.generalcontrols.search.orders.order.StateTest" />-->
+            <!--<class name="tests.generalcontrols.search.orders.order.DatePlacedTest" />-->
+            <!--<class name="tests.generalcontrols.search.orders.order.TotalTest" />-->
+
+            <!--<class name="tests.generalcontrols.search.orders.payment.CreditCardTest" />-->
+            <!--<class name="tests.generalcontrols.search.orders.payment.GiftCardTest" />-->
         <!--</classes>-->
     <!--</test>-->
+    <!--<test name="Search Controls > Saved Search">-->
+        <!--<classes>-->
+            <!--<class name="tests.generalcontrols.search.general.SavedSearchTest" />-->
+        <!--</classes>-->
+    <!--</test>-->
+    <!--<test name="Shared Search">-->
+        <!--<classes>-->
+            <!--<class name="tests.generalcontrols.search.general.SharedSearchTest" />-->
+        <!--</classes>-->
+    <!--</test>-->
+
     <test name="Authentication">
         <classes>
             <class name="tests.generalcontrols.login.LoginTest" />
         </classes>
     </test>
-    <!--<test name="Search Controls > Saved Search">-->
-        <!--<classes>-->
-            <!--<class name="tests.generalcontrols.search.SavedSearchTest" />-->
-        <!--</classes>-->
-    <!--</test>-->
-    <!--<test name="Search Controls > Search Field">-->
-        <!--<classes>-->
-            <!--<class name="tests.orders.SearchTest" />-->
-        <!--</classes>-->
-    <!--</test>-->
-    <!--<test name="Shared Search">-->
-        <!--<classes>-->
-            <!--<class name="tests.generalcontrols.search.SharedSearchTest" />-->
-        <!--</classes>-->
-    <!--</test>-->
 
     <test name="Cart > Items">
         <classes>

@@ -307,7 +307,7 @@ public class BasePage extends ConciseAPI {
     }
 
     public SelenideElement itemOnList(String itemParam) {
-        return $(xpath("//table[@class='fc-table fc-multi-select-table']/tbody/a/td[text()='" + itemParam + "']"));
+        return $(xpath("//tbody//*[text()='" + itemParam + "']"));
     }
 
     public SelenideElement itemOnList_byPrice(String priceVal) {

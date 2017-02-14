@@ -1,4 +1,4 @@
-package tests.generalcontrols.search;
+package tests.generalcontrols.search.general;
 
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
