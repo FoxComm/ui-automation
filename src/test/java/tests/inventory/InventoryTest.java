@@ -34,71 +34,62 @@ public class InventoryTest extends DataProvider {
 
     @Test(priority = 1)
     public void editOnHand_sellable() throws IOException {
-
         provideTestData("active SKU for inventory");
-        p = openPage(adminUrl + "/skus/" + sku + "/inventory", InventoryPage.class);
 
+        p = openPage(adminUrl + "/skus/" + sku + "/inventory", InventoryPage.class);
         p.expandWarehouse("default");
         p.setOnHand("Sellable", "1");
         p.clickSave_wait();
         refresh();
 
         p.onHandQty("default").shouldHave(text("1"));
-
     }
 
     @Test(priority = 2)
     public void editOnHand_nonsellable() throws IOException {
-
         provideTestData("active SKU for inventory");
-        p = openPage(adminUrl + "/skus/" + sku + "/inventory", InventoryPage.class);
 
+        p = openPage(adminUrl + "/skus/" + sku + "/inventory", InventoryPage.class);
         p.expandWarehouse("default");
         p.setOnHand("Non-sellable", "1");
         p.clickSave_wait();
         refresh();
 
         p.onHandQty("default").shouldHave(text("1"));
-
     }
 
     @Test(priority = 3)
     public void editOnHand_backorder() throws IOException {
-
         provideTestData("active SKU for inventory");
-        p = openPage(adminUrl + "/skus/" + sku + "/inventory", InventoryPage.class);
 
+        p = openPage(adminUrl + "/skus/" + sku + "/inventory", InventoryPage.class);
         p.expandWarehouse("default");
         p.setOnHand("Backorder", "1");
         p.clickSave_wait();
         refresh();
 
         p.onHandQty("default").shouldHave(text("1"));
-
     }
 
     @Test(priority = 4)
     public void editOnHand_preorder() throws IOException {
-
         provideTestData("active SKU for inventory");
-        p = openPage(adminUrl + "/skus/" + sku + "/inventory", InventoryPage.class);
 
+        p = openPage(adminUrl + "/skus/" + sku + "/inventory", InventoryPage.class);
         p.expandWarehouse("default");
         p.setOnHand("Preorder", "1");
         p.clickSave_wait();
         refresh();
 
         p.onHandQty("default").shouldHave(text("1"));
-
     }
 
     // TODO: [Fix] Investigate why not all 4 types are edited
     @Test(priority = 5)
     public void editOnHand_multipleTypes() throws IOException {
-
         provideTestData("active SKU for inventory");
-        p = openPage(adminUrl + "/skus/" + sku + "/inventory", InventoryPage.class);
 
+        p = openPage(adminUrl + "/skus/" + sku + "/inventory", InventoryPage.class);
         p.expandWarehouse("default");
         p.setOnHand("Preorder", "1");
         p.setOnHand("Backorder", "1");
@@ -108,15 +99,13 @@ public class InventoryTest extends DataProvider {
         refresh();
 
         p.onHandQty("default").shouldHave(text("4"));
-
     }
 
     @Test(priority = 6)
     public void editOnHand_arrowBtns() throws IOException {
-
         provideTestData("active SKU for inventory");
-        p = openPage(adminUrl + "/skus/" + sku + "/inventory", InventoryPage.class);
 
+        p = openPage(adminUrl + "/skus/" + sku + "/inventory", InventoryPage.class);
         p.expandWarehouse("default");
         p.increaseOnHand_arrowBtn("Sellable", 2);
         p.onHandFld("Sellable").shouldHave(value("2"));
@@ -126,30 +115,26 @@ public class InventoryTest extends DataProvider {
         refresh();
 
         p.onHandQty("default").shouldHave(text("1"));
-
     }
 
     @Test(priority = 7)
     @Description("Check visibility of \"Adjust Quantity\" block for the last row on table")
     public void visibilityOfAdjustQty() throws IOException {
-
         provideTestData("active SKU for inventory");
-        p = openPage(adminUrl + "/skus/" + sku + "/inventory", InventoryPage.class);
 
+        p = openPage(adminUrl + "/skus/" + sku + "/inventory", InventoryPage.class);
         p.expandWarehouse("default");
         p.setOnHand("Preorder", "1");
 
         p.arrowBtn("Preorder", "increment").shouldBe(visible
                 .because("\"Adjust Quantity\" block isn't visible"));
-
     }
 
     @Test(priority = 8)
     public void transactionsLog() throws IOException {
-
         provideTestData("active SKU for inventory");
-        p = openPage(adminUrl + "/skus/" + sku + "/inventory", InventoryPage.class);
 
+        p = openPage(adminUrl + "/skus/" + sku + "/inventory", InventoryPage.class);
         p.expandWarehouse("default");
         p.setOnHand("Sellable", "1");
         p.clickSave_wait();
@@ -157,7 +142,6 @@ public class InventoryTest extends DataProvider {
         waitForDataToLoad();
 
         $(xpath("//td[text()='default']")).shouldBe(visible);
-
     }
 
 //    @Test(priority = 9)

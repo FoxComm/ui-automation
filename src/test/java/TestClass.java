@@ -1328,14 +1328,6 @@ public class TestClass extends BaseTest {
 
     public static void main(String[] args) throws IOException {
 
-//        loginAsAdmin();
-//        createNewCustomer();
-//        createAddress(customerId, "John Doe", 4161, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
-//        listCustomerAddresses(customerId);
-//        getCustomerAddress(customerId, addressId1);
-//        createCreditCard("John Doe", "4242", 5, 2020, "Visa");
-//        System.out.println("5555555555554444".substring(12, 16));
-
     }
 
 }

@@ -117,7 +117,7 @@ public class StoreCreditsTest extends DataProvider {
         p.navToTransactionTab();
         waitForDataToLoad();
 
-        p.getTransactionParamVal("1", "Amount").shouldHave(text("-$36.00"));
+        p.getTransactionParamVal("1", "Amount").shouldHave(text("-$50.00"));
 //        p.getTransactionParamVal("1", "Transaction").shouldHave(text("CSR Appeasement")
 //                .because("Incorrect transaction type."));
 
@@ -132,7 +132,7 @@ public class StoreCreditsTest extends DataProvider {
         p.navToTransactionTab();
         waitForDataToLoad();
 
-        p.getTransactionParamVal("1", "Amount").shouldHave(text("-$36.00"));
+        p.getTransactionParamVal("1", "Amount").shouldHave(text("-$50.00"));
 //        p.getTransactionParamVal("1", "Transaction").shouldHave(text("Gift Card Transfer")
 //                .because("Incorrect transaction type."));
     }

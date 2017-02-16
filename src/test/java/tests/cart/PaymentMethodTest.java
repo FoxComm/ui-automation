@@ -74,7 +74,7 @@ public class PaymentMethodTest extends DataProvider {
         p.clickNewPayMethodBtn();
         p.selectPaymentType("Store Credit");
         p.setAmountToUse(String.valueOf(p.grandTotalVal()));
-        double expectedVal = cutDecimal( p.availableBalanceVal() - p.grandTotalVal() );
+        double expectedVal = cutDecimal(p.availableBalanceVal() - p.grandTotalVal());
         System.out.println("New available balance should be: <$" + expectedVal + ">");
         shouldHaveText(p.newAvailableBalance(), "$" + expectedVal,
                 "New available balance calculations are incorrect.");
@@ -91,9 +91,9 @@ public class PaymentMethodTest extends DataProvider {
         shouldBeVisible(p.cartSummary(), "Failed to open the cart page");
         double amountToUse = p.grandTotalVal() + 10.00;
         p.clickEditBtn("Payment Method");
-        p.addPaymentMethod_SC( String.valueOf(amountToUse) );
+        p.addPaymentMethod_SC(String.valueOf(amountToUse));
 
-        p.appliedAmount().shouldHave(text(p.grandTotal().text())
+        p.appliedAmount().shouldHave(text(String.valueOf(amountToUse))
                 .because("Amount of funds to be applied as a payment isn't auto-adjusted."));
     }
 
@@ -106,7 +106,7 @@ public class PaymentMethodTest extends DataProvider {
         double amountToUse = p.grandTotalVal() + 10.00;
         p.addPaymentMethod_GC(gcCode, String.valueOf(amountToUse));
 
-        p.appliedAmount().shouldHave(text(p.grandTotal().text())
+        p.appliedAmount().shouldHave(text(String.valueOf(amountToUse))
                 .because("Amount of funds to be applied as a payment isn't auto-adjusted."));
     }
 

@@ -32,6 +32,18 @@ public class ContactInformationTest extends DataProvider {
     }
 
     @Test(priority = 1)
+    @Description("User is redirected to customer details page after customer creation")
+    public void createCustomer() {
+        p = openPage(adminUrl + "/customers/" + customerId, CustomersPage.class);
+        p.clickAddCustomerBtn();
+        p.setNewCustomerName("John Doe");
+        p.setNewCustomerEmail("qatest2278+" + generateRandomID() + "@gmail.com");
+        p.clickSaveBtn_modal();
+
+        p.customerName().shouldHave(text("John Doe"));
+    }
+
+    @Test(priority = 2)
     public void assertDefaultValues() throws IOException {
         provideTestData("a customer");
 
@@ -40,7 +52,7 @@ public class ContactInformationTest extends DataProvider {
         p.emailVal_contactInfo().shouldHave(text(customerEmail));
     }
 
-    @Test(priority = 2)
+    @Test(priority = 3)
     public void addPhoneNumber() throws IOException {
         provideTestData("a customer");
 
@@ -52,7 +64,7 @@ public class ContactInformationTest extends DataProvider {
         p.phoneNumberVal_contactInfo().shouldHave(text("7779994242"));
     }
 
-    @Test(priority = 3)
+    @Test(priority = 4)
     public void editName() throws IOException {
         provideTestData("a customer");
 
@@ -66,7 +78,7 @@ public class ContactInformationTest extends DataProvider {
         p.nameVal_overview().shouldHave(text(newName));
     }
 
-    @Test(priority = 4)
+    @Test(priority = 5)
     public void editEmail() throws IOException {
         provideTestData("a customer");
 
@@ -82,7 +94,7 @@ public class ContactInformationTest extends DataProvider {
     }
 
     @Description("Phone number from billing address should be transmitted to \"Contact Info\"")
-    @Test(priority = 5)
+    @Test(priority = 6)
     public void phoneNumbFromBillAddress() throws IOException {
         provideTestData("customer with a credit card");
         p = openPage(adminUrl + "/customers/" + customerId, CustomersPage.class);

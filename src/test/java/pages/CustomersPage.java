@@ -18,9 +18,16 @@ public class CustomersPage extends BasePage {
     //---------------------------- CATEGORY LIST ------------------------------//
     //------------------------------ ELEMENTS ---------------------------------//
 
-
+    public SelenideElement addCustomerBtn() {
+        return $(xpath("//span[text()='Customer']/.."));
+    }
 
     //------------------------------- HELPERS ---------------------------------//
+
+    @Step("Click \"Add Customer\" btn")
+    public void clickAddCustomerBtn() {
+        click(addCustomerBtn());
+    }
 
     @Step("Get <{1}> parameter value of <{0}th> customer on the list")
     public SelenideElement getCustomerParamVal(int customerIndex, String paramName) {
@@ -54,7 +61,20 @@ public class CustomersPage extends BasePage {
         return paramVal;
     }
 
-    //-------------------- G E N E R A L    E L E M E N T S ------------------//
+    //--------------------------- G E N E R A L ------------------------------//
+    //------------------------------ ELEMENTS --------------------------------//
+
+    public SelenideElement newCustomerName() {
+        return $(xpath("//input[@id='nameCustomerFormField']"));
+    }
+
+    public SelenideElement newCustomerEmail() {
+        return $(xpath("//input[@id='emailCustomerFormField']"));
+    }
+
+    public SelenideElement customerName() {
+        return $(xpath("//div[@id='customer-title-name']"));
+    }
 
     public SelenideElement saveBtn() {
         return $(By.xpath("//span[text()='Save']/.."));
@@ -82,6 +102,18 @@ public class CustomersPage extends BasePage {
 
     public SelenideElement activityTrailTab() {
         return $(By.xpath("//a[text()='Activity Trail']"));
+    }
+
+    //------------------------------ HELPERS --------------------------------//
+
+    @Step("Set new customer \"Name\" fld to <{0}>")
+    public void setNewCustomerName(String name) {
+        setFieldVal(newCustomerName(), name);
+    }
+
+    @Step("Set new customer \"Email Address\" fld to <{0}>")
+    public void setNewCustomerEmail(String email) {
+        setFieldVal(newCustomerEmail(), email);
     }
 
 

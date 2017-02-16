@@ -2303,6 +2303,7 @@ public class DataProvider extends BaseTest {
     @Step("Create test data using API -- <{0}>")
     protected void provideTestData(String testMethodName) throws IOException {
 
+        skus.clear();
         loginAsAdmin();
 
         switch(testMethodName) {
@@ -2524,28 +2525,39 @@ public class DataProvider extends BaseTest {
             case "cart with 1 item and chosen shipping address":
                 createCustomer();
                 createCart(customerId);
-                updLineItems(cartId, "SKU-BRO", 1);
+                createSKU_active();
+                createProduct_active(sku, "test");
+                increaseOnHandQty(sku, "Sellable", 1);
+                updLineItems(cartId, sku, 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 break;
 
             case "cart with 1 item && customer with GC":
                 createCustomer();
                 createCart(customerId);
-                updLineItems(cartId, "SKU-BRO", 1);
+                createSKU_active();
+                createProduct_active(sku, "test");
+                increaseOnHandQty(sku, "Sellable", 1);
+                updLineItems(cartId, sku, 1);
                 issueGiftCard(50000, 1);
                 break;
 
             case "cart with 1 item && customer with SC":
                 createCustomer();
                 createCart(customerId);
-                updLineItems(cartId, "SKU-BRO", 1);
+                createSKU_active();
+                createProduct_active(sku, "test");
+                updLineItems(cartId, sku, 1);
                 issueStoreCredit(customerId, 50000);
                 break;
 
             case "cart with 1 item, shipping method, and credit card payment":
                 createCustomer();
                 createCart(customerId);
-                updLineItems(cartId, "SKU-YAX", 1);
+                createSKU_active();
+                createProduct_active(sku, "test");
+                increaseOnHandQty(sku, "Sellable", 1);
+                updLineItems(cartId, sku, 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
@@ -2558,7 +2570,10 @@ public class DataProvider extends BaseTest {
             case "cart with 1 item, shipping method and issued SC":
                 createCustomer();
                 createCart(customerId);
-                updLineItems(cartId, "SKU-YAX", 1);
+                createSKU_active();
+                createProduct_active(sku, "test");
+                increaseOnHandQty(sku, "Sellable", 1);
+                updLineItems(cartId, sku, 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
@@ -2568,7 +2583,10 @@ public class DataProvider extends BaseTest {
             case "cart with 1 item, shipping method and issued GC":
                 createCustomer();
                 createCart(customerId);
-                updLineItems(cartId, "SKU-YAX", 1);
+                createSKU_active();
+                createProduct_active(sku, "test");
+                increaseOnHandQty(sku, "Sellable", 1);
+                updLineItems(cartId, sku, 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
@@ -2578,7 +2596,10 @@ public class DataProvider extends BaseTest {
             case "cart with 1 item, shipping method, credit card payment and issued SC":
                 createCustomer();
                 createCart(customerId);
-                updLineItems(cartId, "SKU-YAX", 1);
+                createSKU_active();
+                createProduct_active(sku, "test");
+                increaseOnHandQty(sku, "Sellable", 1);
+                updLineItems(cartId, sku, 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
@@ -2592,7 +2613,10 @@ public class DataProvider extends BaseTest {
             case "cart with 1 item, shipping method, credit card payment and issued GC":
                 createCustomer();
                 createCart(customerId);
-                updLineItems(cartId, "SKU-YAX", 1);
+                createSKU_active();
+                createProduct_active(sku, "test");
+                increaseOnHandQty(sku, "Sellable", 1);
+                updLineItems(cartId, sku, 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
@@ -2605,7 +2629,10 @@ public class DataProvider extends BaseTest {
 
             case "cart with 1 item, shipping method, issued SC and GC":
                 createCart(customerId);
-                updLineItems(cartId, "SKU-YAX", 1);
+                createSKU_active();
+                createProduct_active(sku, "test");
+                increaseOnHandQty(sku, "Sellable", 1);
+                updLineItems(cartId, sku, 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
@@ -2617,7 +2644,10 @@ public class DataProvider extends BaseTest {
             case "cart with 1 item && SC onHold":
                 createCustomer();
                 createCart(customerId);
-                updLineItems(cartId, "SKU-YAX", 1);
+                createSKU_active();
+                createProduct_active(sku, "test");
+                increaseOnHandQty(sku, "Sellable", 1);
+                updLineItems(cartId, sku, 1);
                 issueStoreCredit(customerId, 50000);
                 updateSCState(scId, "onHold");
                 break;
@@ -2625,7 +2655,10 @@ public class DataProvider extends BaseTest {
             case "cart with 1 item && SC canceled":
                 createCustomer();
                 createCart(customerId);
-                updLineItems(cartId, "SKU-YAX", 1);
+                createSKU_active();
+                createProduct_active(sku, "test");
+                increaseOnHandQty(sku, "Sellable", 1);
+                updLineItems(cartId, sku, 1);
                 issueStoreCredit(customerId, 50000);
                 updateSCState(scId, "canceled");
                 break;
@@ -2698,8 +2731,10 @@ public class DataProvider extends BaseTest {
             case "order in remorse hold":
                 createCustomer();
                 createCart(customerId);
-                increaseOnHandQty("SKU-YAX", "Sellable", 1);
-                updLineItems(cartId, "SKU-YAX", 1);
+                createSKU_active();
+                createProduct_active(sku, "test");
+                increaseOnHandQty(sku, "Sellable", 1);
+                updLineItems(cartId, sku, 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
@@ -2789,8 +2824,11 @@ public class DataProvider extends BaseTest {
             case "customer with 2 orders in remorse hold and fulfillment started":
                 createCustomer();
                 createCart(customerId);
-                increaseOnHandQty("SKU-YAX", "Sellable", 1);
-                updLineItems(cartId, "SKU-YAX", 1);
+                createSKU_active();
+                createProduct_active(sku, "test");
+                increaseOnHandQty(sku, "Sellable", 1);
+                updLineItems(cartId, sku, 1);
+                skus.add(sku);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
@@ -2801,8 +2839,11 @@ public class DataProvider extends BaseTest {
                 checkoutCart(cartId);
 
                 createCart(customerId);
-                increaseOnHandQty("SKU-BRO", "Sellable", 2);
-                updLineItems(cartId, "SKU-BRO", 2);
+                createSKU_active();
+                createProduct_active(sku, "test");
+                increaseOnHandQty(sku, "Sellable", 2);
+                updLineItems(cartId, sku, 2);
+                skus.add(sku);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
@@ -3282,22 +3323,7 @@ public class DataProvider extends BaseTest {
     }
 
     public static void main(String[] args) throws IOException {
-        adminPassword = "password";
-        loginAsAdmin();
-        createCustomer();
-        createCart(customerId);
-        createSKU_active();
-        createProduct_active(sku, "test");
-        increaseOnHandQty(sku, "Sellable", 100);
-        updLineItems(cartId, sku, 1);
-        setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
-        listShipMethods(cartId);
-        setShipMethod(cartId, shipMethodId);
-        listCustomerAddresses(customerId);
-        getCustomerAddress(customerId, addressId1);
-        createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard");
-        setPayment_creditCard(cartId, creditCardId);
-        checkoutCart(cartId);
+
     }
 
 }
