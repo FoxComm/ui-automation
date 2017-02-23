@@ -34,7 +34,7 @@ public class ContactInformationTest extends DataProvider {
     @Test(priority = 1)
     @Description("User is redirected to customer details page after customer creation")
     public void createCustomer() {
-        p = openPage(adminUrl + "/customers/" + customerId, CustomersPage.class);
+        p = openPage(adminUrl + "/customers/", CustomersPage.class);
         p.clickAddCustomerBtn();
         p.setNewCustomerName("John Doe");
         p.setNewCustomerEmail("qatest2278+" + generateRandomID() + "@gmail.com");

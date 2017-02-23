@@ -24,32 +24,32 @@ public class CartPage extends BasePage {
     }
 
     public double subtotalVal() {
-        String subtotal = $(xpath("//span[@id='subtotal']")).getText();
+        String subtotal = $(xpath("//span[@id='fct-totals__subtotal']")).getText();
         return Double.valueOf(subtotal.substring(1, subtotal.length()));
     }
 
     public double discountsVal() {
-        String discounts = $(xpath("//span[@id='discounts-total']")).getText();
+        String discounts = $(xpath("//span[@id='fct-totals__discounts-total']")).getText();
         return Double.valueOf(discounts.substring(1, discounts.length()));
     }
 
     public double newSubtotal() {
-        String newSubtotal = $(xpath("//span[@id='new-subtotal']")).getText();
+        String newSubtotal = $(xpath("//span[@id='fct-totals__new-subtotal']")).getText();
         return Double.valueOf(newSubtotal.substring(1, newSubtotal.length()));
     }
 
     public double shipping() {
-        String shipping = $(xpath("//span[@id='shipping-total']")).getText();
+        String shipping = $(xpath("//span[@id='fct-totals__shipping-total']")).getText();
         return Double.valueOf(shipping.substring(1, shipping.length()));
     }
 
     public double tax() {
-        String tax = $(xpath("//span[@id='tax-total']")).getText();
+        String tax = $(xpath("//span[@id='fct-totals__tax-total']")).getText();
         return Double.valueOf(tax.substring(1, tax.length()));
     }
 
     public SelenideElement grandTotal() {
-        return $(xpath("//span[@id='grand-total']"));
+        return $(xpath("//span[@id='fct-totals__grand-total']"));
     }
 
     public double grandTotalVal() {
@@ -80,20 +80,20 @@ public class CartPage extends BasePage {
 
     private SelenideElement editBtn(String blockName) {
         blockName = blockName.toLowerCase().replaceAll(" ", "-");
-        return $(xpath("//*[@id='" + blockName + "-edit-btn']"));
+        return $(xpath("//*[@id='fct-edit-btn__" + blockName + "']"));
     }
 
     private SelenideElement doneBtn(String blockName) {
         blockName = blockName.toLowerCase().replaceAll(" ", "-");
-        return $(xpath("//button[@id='" + blockName + "-done-btn']"));
+        return $(xpath("//*[@id='fct-done-btn__" + blockName + "']"));
     }
 
     public SelenideElement placeOrderBtn() {
-        return $(xpath("//button[@id='place-order-btn']"));
+        return $(xpath("//button[@id='fct-place-order-btn']"));
     }
 
     public SelenideElement orderState() {
-        return $(xpath("//*[@id='order-state-value']"));
+        return $(xpath("//*[@id='fct-order-state__value']"));
     }
 
     //---------------------------------------- HELPERS ----------------------------------------//
@@ -153,12 +153,12 @@ public class CartPage extends BasePage {
     //----------------------------------- ELEMENTS -------------------------------------//
 
     public SelenideElement noItemsMsg() {
-        return $(xpath("//*[@id='cart-items-block']//*[text()='No items yet.']"));
+        return $(xpath("//*[@id='fct-cart-items-block']//*[text()='No items yet.']"));
     }
 
     // Works when cart is not in edit mode
     public SelenideElement itemQty(String itemIndex) {
-        return $(xpath("//tbody[@id='cart-line-items']/tr[" + itemIndex + "]/td[5]"));
+        return $(xpath("//tbody[@id='fct-cart-line-items']/tr[" + itemIndex + "]/td[5]"));
     }
 
     private SelenideElement lineItemSearchFld() {
@@ -166,44 +166,44 @@ public class CartPage extends BasePage {
     }
 
     private SelenideElement decreaseItemQtyBtn(String itemIndex) {
-        return $(xpath("//tbody[@id='cart-line-items']/tr[" + itemIndex + "]//button[contains(@class, 'decrement')]"));
+        return $(xpath("//tbody[@id='fct-cart-line-items']/tr[" + itemIndex + "]//button[contains(@class, 'decrement')]"));
     }
 
     private SelenideElement increaseItemQtyBtn(String itemIndex) {
-        return $(xpath("//tbody[@id='cart-line-items']/tr[" + itemIndex + "]//button[contains(@class, 'increment')]"));
+        return $(xpath("//tbody[@id='fct-cart-line-items']/tr[" + itemIndex + "]//button[contains(@class, 'increment')]"));
     }
 
     private SelenideElement qtyInput_skuIndex(String itemIndex) {
-        return $(xpath("//tbody[@id='cart-line-items']/tr[" + itemIndex + "]//input"));
+        return $(xpath("//tbody[@id='fct-cart-line-items']/tr[" + itemIndex + "]//input"));
     }
 
     private SelenideElement qtyInput_sku(String skuCode) {
         skuCode = skuCode.replaceAll(" ", "-").toLowerCase();
-        return $(xpath("//input[@id='item-quantity-input-" + skuCode + "']"));
+        return $(xpath("//input[@id='fct-counter-input__" + skuCode + "']"));
     }
 
     public SelenideElement itemTotalPrice(String index) {
-        return $(xpath("//tbody[@id='cart-line-items']/tr[" + index + "]//*[contains(@class, 'item-total-price')]"));
+        return $(xpath("//tbody[@id='fct-cart-line-items']/tr[" + index + "]//*[contains(@class, 'item-total-price')]"));
     }
 
     private SelenideElement deleteBtn_item(String itemIndex) {
-        return $(xpath("//tbody[@id='cart-line-items']/tr[" + itemIndex + "]//button[contains(@class, 'remove')]"));
+        return $(xpath("//tbody[@id='fct-cart-line-items']/tr[" + itemIndex + "]//button[contains(@class, 'remove')]"));
     }
 
     private SelenideElement confirmDeletionBtn() {
-        return $(xpath("//button[@id='modal-confirm-btn']"));
+        return $(xpath("//button[@id='fct-modal-confirm-btn']"));
     }
 
     private SelenideElement cancelDeletionBtn() {
-        return $(xpath("//a[@id='modal-cancel-btn']"));
+        return $(xpath("//a[@id='fct-modal-cancel-btn']"));
     }
 
     public SelenideElement lineItem_byName(String itemName) {
-        return $(xpath("//tbody[@id='cart-line-items']//a[text()='" + itemName + "']"));
+        return $(xpath("//tbody[@id='fct-cart-line-items']//a[text()='" + itemName + "']"));
     }
 
     public ElementsCollection lineItems() {
-        return $$(xpath("//tbody[@id='cart-line-items']/tr"));
+        return $$(xpath("//tbody[@id='fct-cart-line-items']/tr"));
     }
 
     private int itemsInCartAmount() {
@@ -357,15 +357,15 @@ public class CartPage extends BasePage {
     }
 
     public ElementsCollection addressBook() {
-        return $$(xpath("//*[@id='cart-shipping-address-block']//div[@class='fc-tile-selector__item']"));
+        return $$(xpath("//*[@id='fct-cart-shipping-address-block']//div[@class='fc-tile-selector__item']"));
     }
 
     public SelenideElement successIcon_shipAddress() {
-        return $(xpath("//div[@id='cart-shipping-address-block']//i[contains(@class, 'success')]"));
+        return $(xpath("//div[@id='fct-cart-shipping-address-block']//i[contains(@class, 'success')]"));
     }
 
     public SelenideElement warningIcon_shipAddress() {
-        return $(xpath("//*[@id='cart-shipping-address-block']//i[contains(@class, 'warning')]"));
+        return $(xpath("//*[@id='fct-cart-shipping-address-block']//i[contains(@class, 'warning')]"));
     }
 
     private SelenideElement deleteBtn_chosenAddress() {
@@ -385,7 +385,7 @@ public class CartPage extends BasePage {
     }
 
     private SelenideElement addNewAddressBtn() {
-        return $(xpath("//button[@id='shipping-address-add-new-address-btn']"));
+        return $(xpath("//button[@id='fct-add-btn__new-shipping-address']"));
     }
 
     public SelenideElement chosenAddress() {
@@ -463,7 +463,7 @@ public class CartPage extends BasePage {
     }
 
     public SelenideElement appliedShipAddress_name() {
-        return $(xpath("//div[@id='cart-shipping-address-block']//li[@class='name']"));
+        return $(xpath("//div[@id='fct-cart-shipping-address-block']//li[contains(@class, 'is-active')]//li[@class='name']"));
     }
 
     //------------------------------------ HELPERS -------------------------------------//
@@ -608,7 +608,7 @@ public class CartPage extends BasePage {
 
     // should be clicked with 'jsClick(element)'
     private SelenideElement shipMethodRdbtn(String index) {
-        return $(xpath("//*[@id='cart-shipping-method-block']//tr[" + index + "]//input"));
+        return $(xpath("//*[@id='fct-cart-shipping-method-block']//tr[" + index + "]//input"));
     }
 
     public SelenideElement editSelectedShipMethodBtn() {
@@ -616,11 +616,11 @@ public class CartPage extends BasePage {
     }
 
     private SelenideElement successIcon_shipMethod() {
-        return $(xpath("//*[@id='cart-shipping-method-block']//i[contains(@class, 'success')]"));
+        return $(xpath("//*[@id='fct-cart-shipping-method-block']//i[contains(@class, 'success')]"));
     }
 
     private SelenideElement warningIcon_shipMethod() {
-        return $(xpath("//*[@id='cart-shipping-method-block']//i[contains(@class, 'warning')]"));
+        return $(xpath("//*[@id='fct-cart-shipping-method-block']//i[contains(@class, 'warning')]"));
     }
 
 
@@ -657,19 +657,19 @@ public class CartPage extends BasePage {
     }
 
     private SelenideElement applyBtn() {
-        return $(xpath("//button[@id='apply-coupon-btn']"));
+        return $(xpath("//button[@id='fct-apply-coupon-btn']"));
     }
 
     public SelenideElement removeCouponBtn() {
-        return $(xpath("//*[@id='cart-coupons-block']//button[contains(@class, 'remove')]"));
+        return $(xpath("//*[@id='fct-cart-coupons-block']//button[contains(@class, 'remove')]"));
     }
 
     public SelenideElement appliedCoupon(String couponCode) {
-        return $(xpath("//div[@id='cart-coupons-block']//td[contains(@class, 'code') and text()='" + couponCode + "']"));
+        return $(xpath("//div[@id='fct-cart-coupons-block']//td[contains(@class, 'code') and text()='" + couponCode + "']"));
     }
 
     public SelenideElement noCouponMsg() {
-        return $(xpath("//*[@id='cart-coupons-block']//div[text()='No coupons applied.']"));
+        return $(xpath("//*[@id='fct-cart-coupons-block']//div[text()='No coupons applied.']"));
     }
 
     public SelenideElement noDiscountsMsg() {
@@ -677,7 +677,7 @@ public class CartPage extends BasePage {
     }
 
     public SelenideElement couponErrorMsg() {
-        return $(xpath("//*[@id='cart-coupons-block']//div[text()='This coupon code does not exist.']"));
+        return $(xpath("//*[@id='fct-cart-coupons-block']//div[text()='This coupon code does not exist.']"));
     }
 
 
@@ -703,29 +703,30 @@ public class CartPage extends BasePage {
     //-------------------------- P A Y M E N T    M E T H O D --------------------------//
     //----------------------------------- ELEMENTS -------------------------------------//
 
+    //TODO: find it in Ashes
     public SelenideElement editBtn_payment() {
         return $(xpath("//button[@id='payment-methods-edit-btn']"));
     }
 
     public SelenideElement newPaymentBtn() {
-        return $(xpath("//button[@id='payment-methods-add-method-btn']"));
+        return $(xpath("//button[@id='fct-add-btn__payment-method']"));
     }
 
     private SelenideElement paymentTypeDd() {
-        return $(xpath("//*[@id='payment-type-dd']"));
+        return $(xpath("//*[@id='fct-payment-type-dd']"));
     }
 
     public SelenideElement appliedAmount() {
-        return $(xpath("//*[@id='cart-payment-method-block']//*[@class='fc-currency']"));
+        return $(xpath("//*[@id='fct-cart-payment-method-block']//*[@class='fc-currency']"));
     }
 
     private SelenideElement removePaymentMethodBtn(String index) {
-        return $(xpath("//*[@id='cart-payment-method-block']//tr[" + index + "]//button[contains(@class, 'remove')]"));
+        return $(xpath("//*[@id='fct-cart-payment-method-block']//tr[" + index + "]//button[contains(@class, 'remove')]"));
     }
 
     // ----------- >> NEW CREDIT CARD FORM
     private SelenideElement newCreditCardBtn() {
-        return $(xpath("//button[@id='payment-methods-create-credit-cart']"));
+        return $(xpath("//button[@id='fct-payment-add-btn__new-credit-card']"));
     }
 
     private SelenideElement holderNameFld() {
@@ -753,7 +754,7 @@ public class CartPage extends BasePage {
     }
 
     private SelenideElement chooseBtn(String index) {
-        return $(xpath("//*[@id='address-select-list']/div[" + index + "]//button"));
+        return $(xpath("//*[@id='fct-address-select-list']/div[" + index + "]//button"));
     }
 
     private SelenideElement addPaymentBtn() {
@@ -812,7 +813,7 @@ public class CartPage extends BasePage {
     }
 
     public SelenideElement noPayMethodError() {
-        return $(xpath("//*[@id='cart-payment-method-block']//*[text()='No payment method applied']"));
+        return $(xpath("//*[@id='fct-cart-payment-method-block']//*[text()='No payment method applied']"));
     }
 
 
@@ -936,7 +937,7 @@ public class CartPage extends BasePage {
     }
 
     private ElementsCollection paymentMethodsList() {
-        return $$(xpath("//*[@id='cart-payment-method-block']//tbody/tr"));
+        return $$(xpath("//*[@id='fct-cart-payment-method-block']//tbody/tr"));
     }
 
     @Step("Remove <{0}th> payment method on the table")

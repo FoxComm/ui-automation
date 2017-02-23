@@ -67,6 +67,7 @@ public class OrdersListTest extends DataProvider {
         p.ordersOnList().shouldHaveSize(1);
     }
 
+    //TODO: Product name should consist of 2 words, e.g. "Product 123" (currently it consists of 3 words)
     @Test(priority = 4)
     public void searchFld_productName() throws IOException {
         provideTestData("customer with 2 orders in remorse hold and fulfillment started");

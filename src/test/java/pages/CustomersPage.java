@@ -73,7 +73,7 @@ public class CustomersPage extends BasePage {
     }
 
     public SelenideElement customerName() {
-        return $(xpath("//div[@id='customer-title-name']"));
+        return $(xpath("//div[@id='fct-customer-title-name']"));
     }
 
     public SelenideElement saveBtn() {
@@ -122,32 +122,32 @@ public class CustomersPage extends BasePage {
     //------------------------------ ELEMENTS --------------------------------//
 
     private SelenideElement addNewAddressBtn() {
-        return $(By.xpath("//button[@id='customer-add-new-address-btn']"));
+        return $(By.xpath("//button[@id='fct-add-btn__new-address']"));
     }
 
     public SelenideElement editAddressBtn(String addressIndex) {
-        return $(By.xpath("//ul[@id='customer-addresses-list']/li[" + addressIndex + "]//button[contains(@class, 'edit')]"));
+        return $(By.xpath("//ul[@id='fct-customer-addresses-list']/li[" + addressIndex + "]//button[contains(@class, 'edit')]"));
     }
 
     public SelenideElement deleteAddressBtn(String addressIndex) {
-        return $(By.xpath("//ul[@id='customer-addresses-list']/li[" + addressIndex + "]//button[contains(@class, 'trash')]"));
+        return $(By.xpath("//ul[@id='fct-customer-addresses-list']/li[" + addressIndex + "]//button[contains(@class, 'trash')]"));
     }
 
     private SelenideElement confirmDeletionBtn() {
-        return $(By.xpath("//button[@id='modal-confirm-btn']"));
+        return $(By.xpath("//button[@id='fct-modal-confirm-btn']"));
     }
 
     private SelenideElement cancelDeletionBtn() {
-        return $(By.xpath("//a[@id='modal-cancel-btn']"));
+        return $(By.xpath("//a[@id='fct-modal-cancel-btn']"));
     }
 
     public SelenideElement defaultShipAddressChbx_byIndex(String addressIndex) {
         //xpath might be wrong
-        return $(By.xpath("//*[@id='customer-addresses-list']/li[" + addressIndex + "]//input[contains(@id, 'is-default')]"));
+        return $(By.xpath("//*[@id='fct-customer-addresses-list']/li[" + addressIndex + "]//input[contains(@id, 'is-default')]"));
     }
 
     public SelenideElement defaultShipAddressChbx_byId(String addressId) {
-        return $(xpath("//input[@id='address-" + addressId + "-is-default'"));
+        return $(xpath("//input[@id='" + addressId + "-is-default'"));
     }
 
     public ElementsCollection addressBook() {
@@ -155,32 +155,32 @@ public class CustomersPage extends BasePage {
     }
 
     public SelenideElement nameFldVal(String addressIndex) {
-        return $(By.xpath("//ul[@id='customer-addresses-list']/li[" + addressIndex + "]//li[@class='name']"));
+        return $(By.xpath("//ul[@id='fct-customer-addresses-list']/li[" + addressIndex + "]//li[@class='name']"));
     }
 
     public SelenideElement address1FldVal(String addressIndex) {
-        return $(By.xpath("//ul[@id='customer-addresses-list']/li[" + addressIndex + "]//li[@class='address1']"));
+        return $(By.xpath("//ul[@id='fct-customer-addresses-list']/li[" + addressIndex + "]//li[@class='address1']"));
     }
 
     public SelenideElement address2FldVal(String addressIndex) {
-        return $(By.xpath("//ul[@id='customer-addresses-list']/li[" + addressIndex + "]//li[@class='address2']"));
+        return $(By.xpath("//ul[@id='fct-customer-addresses-list']/li[" + addressIndex + "]//li[@class='address2']"));
     }
 
     public SelenideElement cityFldVal(String addressIndex) {
-        return $(By.xpath("//ul[@id='customer-addresses-list']/li[" + addressIndex + "]//li[@class='city']"));
+        return $(By.xpath("//ul[@id='fct-customer-addresses-list']/li[" + addressIndex + "]//li[@class='city']"));
     }
 
     public SelenideElement stateVal(String addressIndex) {
-        return $(By.xpath("//ul[@id='customer-addresses-list']/li[" + addressIndex + "]//span[@class='region']"));
+        return $(By.xpath("//ul[@id='fct-customer-addresses-list']/li[" + addressIndex + "]//span[@class='region']"));
     }
 
     public SelenideElement zipFldVal(String addressIndex) {
-        return $(By.xpath("//ul[@id='customer-addresses-list']/li[" + addressIndex + "]//span[@class='zip']"));
+        return $(By.xpath("//ul[@id='fct-customer-addresses-list']/li[" + addressIndex + "]//span[@class='zip']"));
 
     }
 
     public SelenideElement phoneNumberFldVal(String addressIndex) {
-        return $(By.xpath("//ul[@id='customer-addresses-list']/li[" + addressIndex + "]//span[@class='phone']"));
+        return $(By.xpath("//ul[@id='fct-customer-addresses-list']/li[" + addressIndex + "]//span[@class='phone']"));
     }
 
     public SelenideElement phoneNumbErrorMsg() {
@@ -217,7 +217,7 @@ public class CustomersPage extends BasePage {
     }
 
     private SelenideElement cancelBtn_addressForm() {
-        return $(By.xpath("//button[@id='modal-cancel-btn']"));
+        return $(By.xpath("//button[@id='fct-modal-cancel-btn']"));
     }
     // -----------
 
@@ -386,12 +386,12 @@ public class CustomersPage extends BasePage {
     }
 
     public SelenideElement billCityVal(String ccIndex) {
-        return $(By.xpath("//ul[@id='customer-credit-cards-list']/li[" + ccIndex + "]//li[@class='city']"));
+        return $(By.xpath("//ul[@id='fct-customer-credit-cards-list']/li[" + ccIndex + "]//li[@class='city']"));
 //        billCityVal.substring(0, billCityVal.indexOf(","));
     }
 
     public SelenideElement nameFldVal_billAddress(String ccIndex) {
-        return $(By.xpath("//ul[@id='customer-credit-cards-list']/li[" + ccIndex + "]//li[@class='name']"));
+        return $(By.xpath("//ul[@id='fct-customer-credit-cards-list']/li[" + ccIndex + "]//li[@class='name']"));
     }
 
 
@@ -464,7 +464,7 @@ public class CustomersPage extends BasePage {
 
     @Step("Check if credit card is created")
     public void assertCardAdded(String customerName) {
-        $(By.xpath("//*[@id='customer-credit-cards-list']//dd[text()='" + customerName + "']")).shouldBe(visible
+        $(By.xpath("//*[@id='fct-customer-credit-cards-list']//dd[text()='" + customerName + "']")).shouldBe(visible
                 .because("Failed to create a new credit card."));
     }
 

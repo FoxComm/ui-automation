@@ -10,23 +10,28 @@ import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 
 public class BaseTest extends ConciseAPI {
 
+    protected static String apiUrl = "https://stage.foxcommerce.com/api";
+    protected static String adminUrl = "http://localhost:4000";
+//    protected static String storefrontUrl = System.getenv("API_URL");
+    protected static String adminPassword = "password";
+
     protected String getUrl() {
         return getWebDriver().getCurrentUrl();
     }
-    protected static String apiUrl = System.getenv("API_URL") + "/api";
-    protected static String adminUrl = System.getenv("API_URL") + "/admin";
-    protected static String storefrontUrl = System.getenv("API_URL");
+//    protected static String apiUrl = System.getenv("API_URL") + "/api";
+//    protected static String adminUrl = System.getenv("API_URL") + "/admin";
+//    protected static String storefrontUrl = System.getenv("API_URL");
     protected static String adminOrg = "tenant";
     protected static String adminEmail = "admin@admin.com";
-    protected static String adminPassword;
+//    protected static String adminPassword;
 
-    private void setAdminPassword() {
-        if (System.getenv("API_URL").equals("https://td-prod.foxcommerce.com")) {
-            adminPassword = "Fluffybunny";
-        } else {
-            adminPassword = "password";
-        }
-    }
+//    private void setAdminPassword() {
+//        if (System.getenv("API_URL").equals("https://td-prod.foxcommerce.com")) {
+//            adminPassword = "Fluffybunny";
+//        } else {
+//            adminPassword = "password";
+//        }
+//    }
 
     @BeforeSuite
     public void browserConfig() {
@@ -34,7 +39,7 @@ public class BaseTest extends ConciseAPI {
         System.setProperty("webdriver.chrome.driver", driverPath);
         Configuration.browser = System.getenv("BROWSER");
         Configuration.timeout = 7000;
-        setAdminPassword();
+//        setAdminPassword();
     }
 
 }

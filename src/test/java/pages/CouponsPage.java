@@ -64,15 +64,15 @@ public class CouponsPage extends BasePage {
     }
 
     public SelenideElement couponIdVal() {
-        return $(xpath("//a[@id='item-id']"));
+        return $(xpath("//a[@id='fct-breadcrumbs-id']"));
     }
 
     private SelenideElement qtyDecrBtn() {
-        return $(xpath("//div[@id='code-quantity-counter']//button[contains(@class, 'decrement')]"));
+        return $(xpath("//div[@id='fct-codes-quantity-counter']//button[contains(@class, 'decrement')]"));
     }
 
     private SelenideElement qtyIncrBtn() {
-        return $(xpath("//div[@id='code-quantity-counter']//button[contains(@class, 'increment')]"));
+        return $(xpath("//div[@id='fct-codes-quantity-counter']//button[contains(@class, 'increment')]"));
     }
 
     private SelenideElement codePrefixFld() {
@@ -80,11 +80,11 @@ public class CouponsPage extends BasePage {
     }
 
     private SelenideElement codeLengthDecrBtn() {
-        return $(xpath("//div[@id='code-character-length-counter']//button[contains(@class, 'decrement')]"));
+        return $(xpath("//div[@id='fct-code-length-counter']//button[contains(@class, 'decrement')]"));
     }
 
     private SelenideElement codeLengthIncrBtn() {
-        return $(xpath("//div[@id='code-character-length-counter']//button[contains(@class, 'increment')]"));
+        return $(xpath("//div[@id='fct-code-length-counter']//button[contains(@class, 'increment')]"));
     }
 
     private SelenideElement generateCodesBtn() {
@@ -92,7 +92,7 @@ public class CouponsPage extends BasePage {
     }
 
     private SelenideElement submitBtn() {
-        return $(xpath("//button[@id='modal-confirm-btn']"));
+        return $(xpath("//button[@id='fct-modal-confirm-btn']"));
     }
 
     private SelenideElement stateDd() {
@@ -104,7 +104,7 @@ public class CouponsPage extends BasePage {
     }
 
     private SelenideElement deleteStartDateBtn() {
-        return $(xpath("//*[@id='remove-start-date-btn']"));
+        return $(xpath("//*[@id='fct-remove-start-date-btn']"));
     }
 
     public SelenideElement couponCodesTab() {

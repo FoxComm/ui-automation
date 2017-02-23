@@ -21,7 +21,7 @@ public class GiftCardsPage extends BasePage {
     }
 
     public SelenideElement typeDd() {
-        return $(xpath("//div[@id='gift-card-type-dd']"));
+        return $(xpath("//div[@id='fct-gift-card-type-dd']"));
     }
 
     public SelenideElement valueFld() {
@@ -41,15 +41,15 @@ public class GiftCardsPage extends BasePage {
     }
 
     public SelenideElement availableBalance() {
-        return $(xpath("//span[@id='gift-card-available-balance']"));
+        return $(xpath("//span[@id='fct-panel__available-balance']"));
     }
 
     public SelenideElement stateDd() {
-        return $(xpath("//div[@id='gift-card-state-dd']"));
+        return $(xpath("//div[@id='fct-gift-card-state-dd']"));
     }
 
     public SelenideElement stateVal() {
-        return $(xpath("//div[@id='gift-card-state-dd']//div[@class='fc-dropdown__value']"));
+        return $(xpath("//div[@id='fct-gift-card-state-dd']//div[@class='fc-dropdown__value']"));
     }
 
     //TODO: add id in ashes
@@ -62,11 +62,11 @@ public class GiftCardsPage extends BasePage {
     }
 
     public SelenideElement yesBtn() {
-        return $(xpath("//button[@id='modal-confirm-btn']"));
+        return $(xpath("//button[@id='fct-modal-confirm-btn']"));
     }
 
     public SelenideElement cancelBtn() {
-        return $(xpath("//button[@id='modal-cancel-btn']"));
+        return $(xpath("//button[@id='fct-modal-cancel-btn']"));
     }
 
 //    Features are (temporarily?) removed from product

@@ -20,11 +20,11 @@ public class OrderDetailsPage extends CartPage {
     //------------------------------ ELEMENTS --------------------------------//
 
     private SelenideElement orderStateDd() {
-        return $(xpath("//div[@id='order-state-dd']"));
+        return $(xpath("//div[@id='fct-order-state-dd']"));
     }
 
     public SelenideElement addTimeBtn() {
-        return $(xpath("//button[@id='remorse-timer-extend-btn']"));
+        return $(xpath("//button[@id='fct-remorse-timer-extend-btn']"));
     }
 
     public SelenideElement timer() {

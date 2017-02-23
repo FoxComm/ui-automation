@@ -16,11 +16,11 @@ public class PromotionsPage extends BasePage {
     }
 
     private SelenideElement applyTypeDd() {
-        return $(xpath("//div[@id='apply-type-dd']"));
+        return $(xpath("//div[@id='fct-apply-type-dd']"));
     }
 
     public SelenideElement applyTypeVal() {
-        return $(xpath("//div[@id='apply-type-dd']//div[@class='fc-dropdown__value']"));
+        return $(xpath("//div[@id='fct-apply-type-dd']//div[@class='fc-dropdown__value']"));
     }
 
     public SelenideElement nameFld() {
@@ -42,47 +42,47 @@ public class PromotionsPage extends BasePage {
     }
 
     private SelenideElement qualifierTypeDd() {
-        return $(xpath("//div[@id='promo-qualifier-dd']"));
+        return $(xpath("//div[@id='fct-promo-qualifier-dd']"));
     }
 
     private SelenideElement spendFld_qualifier() {
-        return $(xpath("//*[@id='promo-qualifier-block']//div[contains(@class, 'promotions_attrs')]/input"));
+        return $(xpath("//*[@id='fct-promo-qualifier-block']//div[contains(@class, 'promotions_attrs')]/input"));
     }
 
     private SelenideElement qtyFld_qualifier() {
-        return $(xpath("//*[@id='promo-qualifier-block']//input[contains(@class, 'adjust-quantity-input')]"));
+        return $(xpath("//*[@id='fct-promo-qualifier-block']//input[contains(@class, 'adjust-quantity-input')]"));
     }
 
     private SelenideElement modifierDd_qualifier() {
-        return $(xpath("//*[@id='promo-qualifier-block']//div[contains(@class, 'modifier-dd')]"));
+        return $(xpath("//*[@id='fct-promo-qualifier-block']//div[contains(@class, 'modifier-dd')]"));
     }
 
     private SelenideElement productSearchDd_qualifier() {
-        return $(xpath("//*[@id='promo-qualifier-block']//div[contains(@class, 'select-product-search-dd')]"));
+        return $(xpath("//*[@id='fct-promo-qualifier-block']//div[contains(@class, 'select-product-search-dd')]"));
     }
 
     private SelenideElement offerTypeDd() {
-        return $(xpath("//div[@id='promo-offer-dd']"));
+        return $(xpath("//div[@id='fct-promo-offer-dd']"));
     }
 
     private SelenideElement getFld_offer() {
-        return $(xpath("//*[@id='promo-offer-block']//div[contains(@class, 'promotions_attrs')]/input"));
+        return $(xpath("//*[@id='fct-promo-offer-block']//div[contains(@class, 'promotions_attrs')]/input"));
     }
 
     private SelenideElement productDd_offer() {
-        return $(xpath("//*[@id='promo-offer-block']//div[contains(@class, 'select-product-dd')]"));
+        return $(xpath("//*[@id='fct-promo-offer-block']//div[contains(@class, 'select-product-dd')]"));
     }
 
     private SelenideElement modifierDd_offer() {
-        return $(xpath("//*[@id='promo-offer-block']//div[contains(@class, 'modifier-dd')]"));
+        return $(xpath("//*[@id='fct-promo-offer-block']//div[contains(@class, 'modifier-dd')]"));
     }
 
     private SelenideElement productSearchDd_offer() {
-        return $(xpath("//*[@id='promo-offer-block']//div[contains(@class, 'select-product-search-dd')]"));
+        return $(xpath("//*[@id='fct-promo-offer-block']//div[contains(@class, 'select-product-search-dd')]"));
     }
 
     public SelenideElement promoIdBreadcumb() {
-        return $(xpath("//a[@id='item-id']"));
+        return $(xpath("//a[@id='fct-breadcrumbs-id']"));
     }
 
     public SelenideElement stateDd() {
@@ -90,11 +90,11 @@ public class PromotionsPage extends BasePage {
     }
 
     public SelenideElement stateVal() {
-        return $(xpath("//div[@id='state-dd--value']"));
+        return $(xpath("//div[@id='state-dd-value']"));
     }
 
     private SelenideElement removeStartDateBtn() {
-        return $(xpath("//a[@id='remove-start-date-btn']"));
+        return $(xpath("//a[@id='fct-remove-start-date-btn']"));
     }
 
     public SelenideElement promotion(String idOrName) {

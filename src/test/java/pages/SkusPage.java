@@ -51,7 +51,7 @@ public class SkusPage extends BasePage {
     }
 
     private SelenideElement removeStartDateBtn() {
-        return $(xpath("//a[@id='remove-start-date-btn']"));
+        return $(xpath("//a[@id='fct-remove-start-date-btn']"));
     }
 
     private SelenideElement stateDd() {
@@ -59,7 +59,7 @@ public class SkusPage extends BasePage {
     }
 
     public SelenideElement stateVal() {
-        return $(xpath("//div[@id='state-dd--value']"));
+        return $(xpath("//div[@id='state-dd-value']"));
     }
 
     public SelenideElement skuCodeVal() {
@@ -67,19 +67,19 @@ public class SkusPage extends BasePage {
     }
 
     private SelenideElement addCustomPropBtn() {
-        return $(xpath("//a[@id='add-custom-property-btn']"));
+        return $(xpath("//a[@id='fct-add-btn__custom-property']"));
     }
 
     private SelenideElement labelFld() {
-        return $(xpath("//input[@id='field-label-fld']"));
+        return $(xpath("//input[@id='fct-field-label-fld']"));
     }
 
     private SelenideElement typeDd() {
-        return $(xpath("//div[@id='field-type-dd']"));
+        return $(xpath("//div[@id='fct-field-type-dd']"));
     }
 
     private SelenideElement saveAndApplyBtn() {
-        return $(xpath("//button[@id='modal-confirm-btn']"));
+        return $(xpath("//button[@id='fct-modal-confirm-btn']"));
     }
 
     public SelenideElement customTextFld(String label) {

@@ -21,7 +21,7 @@ public class BasePage extends ConciseAPI {
     //---------------------------------- GENERAL CONTROLS -----------------------------------//
 
     public SelenideElement userMenuBtn() {
-        return $(xpath("//*[@id='user-menu-btn']"));
+        return $(xpath("//*[@id='fct-user-menu-btn']"));
     }
 
     public SelenideElement logoutBtn() {
@@ -65,11 +65,11 @@ public class BasePage extends ConciseAPI {
     }
 
     public SelenideElement modalSaveBtn() {
-        return $(xpath("//*[@id='modal-confirm-btn']"));
+        return $(xpath("//*[@id='fct-modal-confirm-btn']"));
     }
 
     public SelenideElement modalCancelBtn() {
-        return $(xpath("//*[@id='modal-cancel-btn']"));
+        return $(xpath("//*[@id='fct-modal-cancel-btn']"));
     }
 
     @Step("Click \"Save\" btn")
@@ -168,9 +168,9 @@ public class BasePage extends ConciseAPI {
 //        shouldBeVisible($(xpath("//button[@id='primary-save-btn' and contains(@class, 'loading')]")),
 //                "\"Loading\" onClick animation didn't appear");
         sleep(3000);
-        shouldNotBeVisible($(xpath("//button[@id='primary-save-btn' and contains(@class, 'loading')]")),
+        shouldNotBeVisible($(xpath("//button[@id='fct-primary-save-btn' and contains(@class, 'loading')]")),
                 "\"Save\" btn doesn't get re-enabled");
-        sleep(1000);
+        sleep(1500);
     }
 
     private SelenideElement saveOptionsDd() {

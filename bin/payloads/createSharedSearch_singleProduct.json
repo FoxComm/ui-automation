@@ -1,0 +1,47 @@
+{
+  "title": "All - Copy",
+  "query": [
+    {
+      "term": "archivedAt",
+      "hidden": true,
+      "operator": "missing",
+      "value": {
+        "type": "exists"
+      }
+    },
+    {
+      "display": "Product : Name : Test Product 2012001",
+      "term": "title",
+      "operator": "eq",
+      "value": {
+        "type": "string",
+        "value": "Test Product 2012001"
+      }
+    }
+  ],
+  "scope": "productsScope",
+  "rawQuery": {
+    "query": {
+      "bool": {
+        "filter": [
+          {
+            "missing": {
+              "field": "archivedAt"
+            }
+          }
+        ],
+        "must": [
+          {
+            "match": {
+              "title": {
+                "query": "Test Product 2012001",
+                "analyzer": "standard",
+                "operator": "and"
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

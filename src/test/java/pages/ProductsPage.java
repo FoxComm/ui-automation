@@ -35,7 +35,7 @@ public class ProductsPage extends BasePage {
     }
 
     public SelenideElement skuFld(int index) {
-        return $(xpath("//tbody[@id='sku-list']/tr[" + index + "]//input[@placeholder='SKU']"));
+        return $(xpath("//tbody[@id='fct-sku-list']/tr[" + index + "]//input[@placeholder='SKU']"));
     }
 
     private SelenideElement skuFld() {
@@ -43,7 +43,7 @@ public class ProductsPage extends BasePage {
     }
 
     private SelenideElement skuSearchView(String skuCode) {
-        return $(xpath("//li[@id='search-view-" + skuCode + "']"));
+        return $(xpath("//li[@id='fct-search-view-line__" + skuCode + "']"));
     }
 
     public SelenideElement stateDd() {
@@ -51,11 +51,11 @@ public class ProductsPage extends BasePage {
     }
 
     public SelenideElement stateVal() {
-        return $(xpath("//div[@id='state-dd--value']"));
+        return $(xpath("//div[@id='state-dd-value']"));
     }
 
     private SelenideElement removeStartDateBtn() {
-        return $(xpath("//a[@id='remove-start-date-btn']"));
+        return $(xpath("//a[@id='fct-remove-start-date-btn']"));
     }
 
     public SelenideElement saveDraftBtn() {
@@ -65,7 +65,7 @@ public class ProductsPage extends BasePage {
 
     //TODO: to be moved to BasePage
     private SelenideElement productsCounter() {
-        return $(xpath("//*[@id='total-counter-value']"));
+        return $(xpath("//*[@id='fct-total-counter-value']"));
     }
 
     public SelenideElement noSKUsMsg() {
@@ -73,15 +73,15 @@ public class ProductsPage extends BasePage {
     }
 
     private SelenideElement productId() {
-        return $(xpath("//a[@id='item-id']"));
+        return $(xpath("//a[@id='fct-breadcrumbs-id']"));
     }
 
     private SelenideElement addSKUBtn() {
-        return $(xpath("//a[@id='sku-block-add-sku-btn']"));
+        return $(xpath("//a[@id='fct-add-sku-btn__skus-block']"));
     }
 
     private SelenideElement addBtn() {
-        return $(xpath("//button[@id='modal-confirm-btn']"));
+        return $(xpath("//button[@id='fct-modal-confirm-btn']"));
     }
 
     private SelenideElement availableOptionChkbx(String valuesPairVal) {
@@ -97,11 +97,11 @@ public class ProductsPage extends BasePage {
     }
 
     public SelenideElement skuRetailPriceFld(String index) {
-        return $(xpath("//tbody[@id='sku-list']/tr[" + index + "]/td[contains(@class, 'retailPrice')]//input"));
+        return $(xpath("//tbody[@id='fct-sku-list']/tr[" + index + "]/td[contains(@class, 'retailPrice')]//input"));
     }
 
     public SelenideElement skuSalePriceFld(String index) {
-        return $(xpath("//tbody[@id='sku-list']/tr[" + index + "]/td[contains(@class, 'salePrice')]//input"));
+        return $(xpath("//tbody[@id='fct-sku-list']/tr[" + index + "]/td[contains(@class, 'salePrice')]//input"));
     }
 
     //TODO: rework the element locator - element should be searched by its index, not option values
@@ -114,7 +114,7 @@ public class ProductsPage extends BasePage {
     }
 
     public SelenideElement sku_byOptVal(String optValueVal) {
-        return $(xpath("//tbody[@id='sku-list']//div[text()='" + optValueVal + "']"));
+        return $(xpath("//tbody[@id='fct-sku-list']//div[text()='" + optValueVal + "']"));
     }
 
     private SelenideElement removeSKUBtn(String optValueVal) {
@@ -123,22 +123,22 @@ public class ProductsPage extends BasePage {
 
     //TODO: once figured out where to add ids at SKUs box - add id to this
     private SelenideElement removeSKUBtn(String firstValue, String secondValue){
-        return $(xpath("//tbody[@id='sku-list']//div[text()='"+firstValue+"']/../following-sibling::*[1]/div[text()='"+secondValue+"']/../following-sibling::*//button[@class='fc-btn fc-btn-remove']"));
+        return $(xpath("//tbody[@id='fct-sku-list']//div[text()='"+firstValue+"']/../following-sibling::*[1]/div[text()='"+secondValue+"']/../following-sibling::*//button[@class='fc-btn fc-btn-remove']"));
     }
 
     private SelenideElement removalConfirmBtn() {
-        return $(xpath("//button[@id='modal-confirm-btn']"));
+        return $(xpath("//button[@id='fct-modal-confirm-btn']"));
     }
 
     //-------------------------- OPTIONS (a.k.a VARIANTS)
 
-    public SelenideElement option(String optionVal) {
-        optionVal = optionVal.replaceAll(" ", "-").toLowerCase();
-        return $(xpath("//*[@id='product-option-" + optionVal + "-box']"));
+    public SelenideElement option(String option) {
+        option = option.replaceAll(" ", "-").toLowerCase();
+        return $(xpath("//*[@id='fct-option-box__" + option + "']"));
     }
 
-    public SelenideElement optionValue(String optionVal, String optValueVal) {
-        return $(xpath("//div[@id='product-option-" + optionVal + "-box']//td[@id='" + optValueVal + "-value-name']"));
+    public SelenideElement optionValue(String option, String optValueVal) {
+        return $(xpath("//div[@id='fct-option-box__" + option + "']//td[@id='fct-option-value-name__" + optValueVal + "']"));
     }
 
     public SelenideElement optionValue_SKUsTable(String optionVal, String optValueVal) {
@@ -146,43 +146,43 @@ public class ProductsPage extends BasePage {
     }
 
     private SelenideElement addOptionBtn() {
-        return $(xpath("//a[@id='add-new-option-btn']"));
+        return $(xpath("//a[@id='fct-add-btn__new-option']"));
     }
 
     private SelenideElement saveOptionBtn() {
-        return $(xpath("//*[@id='modal-confirm-btn']"));
+        return $(xpath("//*[@id='fct-modal-confirm-btn']"));
     }
 
     private SelenideElement addOptionValueBtn(String option) {
-        return $(xpath("//*[@id='product-option-" + option + "-box']//a[contains(@class, 'option-add-btn')]"));
+        return $(xpath("//*[@id='fct-option-box__" + option + "']//a[contains(@class, 'option-add-btn')]"));
     }
 
     private SelenideElement editOptionBtn(String option) {
-        return $(xpath("//*[@id='product-option-" + option + "-box']//a[contains(@class, 'option-edit-btn')]"));
+        return $(xpath("//*[@id='fct-option-box__" + option + "']//a[contains(@class, 'option-edit-btn')]"));
     }
 
     private SelenideElement deleteOptionBtn(String option) {
-        return $(xpath("//*[@id='product-option-" + option + "-box']//a[contains(@class, 'option-delete-btn')]"));
+        return $(xpath("//*[@id='fct-option-box__" + option + "']//a[contains(@class, 'option-delete-btn')]"));
     }
 
     private SelenideElement editOptionValueBtn(String optionValueName) {
-        return $(xpath("//a[@id='" + optionValueName + "-value-edit-btn']"));
+        return $(xpath("//a[@id='fct-value-edit-btn__" + optionValueName + "']"));
     }
 
     private SelenideElement deleteOptionValueBtn(String optionValueName) {
-        return $(xpath("//a[@id='" + optionValueName + "-value-delete-btn']"));
+        return $(xpath("//a[@id='fct-value-delete-btn__" + optionValueName + "']"));
     }
 
     private SelenideElement optionNameFld() {
-        return $(xpath("//input[@id='option-name-fld']"));
+        return $(xpath("//input[@id='fct-option-name-fld']"));
     }
 
     private SelenideElement valueNameField() {
-        return $(xpath("//input[@id='value-name-fld']"));
+        return $(xpath("//input[@id='fct-value-name-fld']"));
     }
 
     private SelenideElement saveValueBtn() {
-        return $(xpath("//button[@id='modal-confirm-btn']"));
+        return $(xpath("//button[@id='fct-modal-confirm-btn']"));
     }
 
 
@@ -336,7 +336,7 @@ public class ProductsPage extends BasePage {
 
         @Step("Add SKU to a product: <{0}>, <salePr:{1}>, <retailPr:{2}>")
         private void addNewSKU(String SKU, String retailPrice, String salePrice) {
-            String lastSKUIndex = String.valueOf($$(xpath("//tbody[@id='sku-list']/tr")).size());
+            String lastSKUIndex = String.valueOf($$(xpath("//tbody[@id='fct-sku-list']/tr")).size());
             setFieldVal(skuFld(), SKU);
             click(skuSearchView(SKU));
             setFieldVal(skuRetailPriceFld(lastSKUIndex), retailPrice);

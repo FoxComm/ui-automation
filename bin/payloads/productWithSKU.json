@@ -47,7 +47,7 @@
         "unitCost":{
           "t":"price",
           "v":{
-            "value":"5000",
+            "value":5000,
             "currency":"USD"
           }
         },

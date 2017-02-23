@@ -118,7 +118,7 @@ public class ItemsTest extends DataProvider {
     @Test(priority = 7)
     @Description("Regression test: 1 line item with 'qty > 1' should be displayed as a single line item after cart checkout")
     public void oneItemIsntPropagatedAfterCheckout() throws IOException {
-        provideTestData("filled out cart 2 addresses in address book");
+        provideTestData("filled out cart");
 
         checkoutCart(cartId);
         p = openPage(adminUrl + "/orders/" + cartId, CartPage.class);
