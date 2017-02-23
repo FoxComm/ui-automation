@@ -51,60 +51,7 @@ public class SearchTest extends DataProvider {
 
     }
 
-    @Test (priority = 3)
-    public void customerName_filter() throws IOException {
-
-        provideTestData("order in remorse hold");
-        p = openPage(adminUrl + "/orders", OrdersPage.class);
-
-        p.addFilter("Customer", "Name", customerName);
-        p.getOrderParamValue(1, "Customer Name").shouldHave(text(customerName));
-
-    }
-
-    @Test (priority = 4)
-    public void customerEmail_filter() throws IOException {
-
-        provideTestData("order in remorse hold");
-        p = openPage(adminUrl + "/orders", OrdersPage.class);
-
-        p.addFilter("Customer", "Email", customerEmail);
-        p.getOrderParamValue(1, "Customer Email").shouldHave(text(customerEmail));
-
-    }
-
-
-//    Need to refactor assertion for this
-//    @Test (priority = 5)
-//    public void orderTotal_filter() {
-//
-//        p = openPage(adminUrl + "/orders", OrdersPage.class);
-//
-//        p.addFilter_arrowKeys("Order", "Total", ">=", "$50");
-//        p.sortListBy(7);
-//        p.assertOrderParameter(1, "Total", ">=", 50);
-//
-//    }
-
-    @Test (priority = 6)
-    public void noSearchResults_email() {
-
-        p = openPage(adminUrl + "/orders", OrdersPage.class);
-
-        p.addFilter("Customer", "Email", "find.nothing@withthis.com");
-        p.assertNoSearchResults();
-
-    }
-
-    @Test (priority = 7)
-    public void noSearchResults_SKU() {
-
-        p = openPage(adminUrl + "/orders", OrdersPage.class);
-
-        p.addFilter("Items", "Product SKU", "SKU-NONE");
-        p.assertNoSearchResults();
-
-    }
+    //TODO: More search filters tests
 
     @AfterMethod(alwaysRun = true)
     public void cleanUp() {
