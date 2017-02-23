@@ -202,6 +202,18 @@ public class ConciseAPI implements IHookable {
         }
     }
 
+    protected void shouldMatchText(SelenideElement element, String expValue, String errorMsg) {
+        try {
+            actualValue = element.getText();
+            element.should(matchText(expValue));
+        } catch (ElementNotFound | ElementShould | NullPointerException e) {
+            System.err.println(e.getStackTrace());
+            e.printStackTrace();
+            throw new RuntimeException(errorMsg +
+                    "\nExpected: [" + expValue + "], Actual: [" + actualValue + "].");
+        }
+    }
+
     protected void shouldNotHaveText(SelenideElement element, String expValue, String errorMsg) {
         try {
             actualValue = element.getText();

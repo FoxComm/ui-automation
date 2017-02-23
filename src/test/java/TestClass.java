@@ -1306,25 +1306,24 @@ public class TestClass extends BaseTest {
 
     }
 
-//    @Test
-//    public void testTest() {
-//
+    @Test
+    public void testTest() {
+
 //        open(adminUrl);
 //        if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
 //            LoginPage loginPage = open(adminUrl + "/login", LoginPage.class);
 //            loginPage.login("admin@admin.com", "password");
 //            loginPage.userMenuBtn().shouldBe(visible);
 //        }
-//
-//
+
 //        sleep(12000);
-//
-//        p = open("http://admin.stage.foxcommerce.com/skus/SKU-ZYA", SkusPage.class);
-//
-//        p.sideMenu("SKUs").click();
-//        p.addNewSKUBtn().shouldBe(visible);
-//
-//    }
+
+        p = open("http://admin.stage.foxcommerce.com/skus/SKU-ZYA", SkusPage.class);
+
+        p.sideMenu("SKUs").click();
+        p.addNewSKUBtn().shouldBe(visible);
+
+    }
 
     public static void main(String[] args) throws IOException {
 

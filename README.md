@@ -132,18 +132,20 @@ The FoxCommerce E2E UI automation test framework. Used for automating UI test sc
                           │         ┌─────────────┐            └                            ┘
                           │         │  TestClass  │◄─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─┐
         ┌────────────┐    │         └─────────────┘                                      ¦
-        │ testng.xml │◄───┤                ▲                                             ¦
-        └────────────┘    │        extends │         ┌─────────────┐                     ¦
-         [test suits]     │                │         │  TestClass  │                     ¦
-                          │                │         └─────────────┘                     ¦
-                          └                │            ▲       ▲                        ¦
-                                           │    extends │       ¦                        ¦
-                                           ├────────────┘       ¦                        ¦
-                                           │                    ¦                        ¦
-                                           │                    ¦                        ¦
-                                        ┌──┴───────────┐      ┌─────────────┐    ┌─────────────┐
-         [fulfills test preconditions]  │ DataProvider │      │  PageClass  │    │  PageClass  │
-                                        └──────────────┘      └─────────────┘    └─────────────┘
+        │ testng.xml │◄───┤                   ▲                                          ¦
+        └────────────┘    │           extends │      ┌─────────────┐                     ¦
+         [test suits]     │                   │      │  TestClass  │                     ¦
+                          │                   │      └─────────────┘                     ¦
+                          └                   │         ▲       ▲                        ¦
+                                              │ extends │       ¦                        ¦
+                                              ├─────────┘       ¦                        ¦
+                  ┌──────────────┐            │                 ¦                        ¦
+                  │ bin/payloads ├────────┐   │                 ¦                        ¦
+                  └──────────────┘        │   │                 ¦                        ¦
+                                          ▼   │                 ¦                        ¦
+                                        ┌─────┴────────┐      ┌─────────────┐    ┌─────────────┐
+                                        │ DataProvider │      │  PageClass  │    │  PageClass  │
+          [fulfills test preconditions] └──────────────┘      └─────────────┘    └─────────────┘
                                             ▲   ▲                        ▲         ▲
                                             ¦   │ extends        extends │         │ extends
         ┌─────────────┐                     ¦   │                        │         │

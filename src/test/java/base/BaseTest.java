@@ -19,12 +19,23 @@ public class BaseTest extends ConciseAPI {
     protected static String adminOrg = "tenant";
     protected static String adminEmail = "admin@admin.com";
     protected static String adminPassword;
+    protected static String storefrontCategory;
 //
     private void setAdminPassword() {
         if (System.getenv("API_URL").equals("https://td-prod.foxcommerce.com")) {
             adminPassword = "Fluffybunny";
         } else {
             adminPassword = "password";
+        }
+    }
+
+    private void setStorefrontCategory() {
+        if (System.getenv("API_URL").equals("https://td-prod.foxcommerce.com")) {
+            storefrontCategory = "MODERN";
+        } else if (System.getenv("API_URL").equals("https://stage-tpg.foxcommerce.com")) {
+            storefrontCategory = "APPETIZERS";
+        } else {
+            storefrontCategory = "test";
         }
     }
 
@@ -35,6 +46,7 @@ public class BaseTest extends ConciseAPI {
         Configuration.browser = System.getenv("BROWSER");
         Configuration.timeout = 6000;
         setAdminPassword();
+        setStorefrontCategory();
     }
 
 }

@@ -21,21 +21,23 @@ public class DataProvider extends BaseTest {
     protected static int customerId;
     protected static String cartId;
     protected static int orderGrandTotal;
-    protected static String orderId;            // responseBody.indexOf(",") not added
+    protected static String orderId;
     protected static int orderTotal;
     private static String jwt;
+    protected static String randomId;
 
-    protected static String customerName;       // stored from viewCustomer()
-    public static String customerEmail;      // stored from viewCustomer()
-    protected static int addressId1;              // stored from listCustomerAddresses()
-    private static int addressId2;              // stored from listCustomerAddresses()
-    private static String addressPayload;   // stored from listCustomerAddresses()
+    protected static String customerName;
+    public static String customerEmail;
+    public static String takenEmail;
+    protected static int addressId1;
+    private static int addressId2;
+    private static String addressPayload;
 
-    protected static String gcCode;           // stored from issueGiftCard()
-    protected static int scId;                    // stored from issueStoreCredit()
-    private static int shipMethodId;            // stored from listShipMethods()
-    protected static int creditCardId;            // stored from create createCreditCard()
-    private static String stripeToken;          // stored from getStripeToken()
+    protected static String gcCode;
+    protected static int scId;
+    private static int shipMethodId;
+    protected static int creditCardId;
+    private static String stripeToken;
 
     protected static String promotionId;
     protected static String couponId;
@@ -43,19 +45,19 @@ public class DataProvider extends BaseTest {
     public static String singleCouponCode;
     public static List<String> bulkCodes = new ArrayList<>();
 
-    protected static String sku;                    // stored from createSKU_active();
+    protected static String sku;
     protected static List<String> skus = new ArrayList<>();
-    protected static String skuTitle;               // stored from createSKU_active();
-    protected static int skuId_inventory;                     // stored from viewSKU();
-    protected static String productName;            // stored from createProduct_<..>() methods
-    protected static String productId;                 // stored from createProduct_<..>() methods
-    protected static String variantSKU_1;               // stored from createProduct_variants()
-    protected static String variantSKU_2;               // stored from createProduct_variants()
+    protected static String skuTitle;
+    protected static int skuId_inventory;
+    protected static String productName;
+    protected static String productId;
+    protected static String variantSKU_1;
+    protected static String variantSKU_2;
 
-    protected static int searchId;                    // stored from createSharedSearch() methods
-    protected static String searchRandomId;            // stored at createSharedSearch() methods
-    protected static String searchCode;             // stored from createSharedSearch() methods
-    private static int adminId;                   // stored from getAdminId() method
+    protected static int searchId;
+    protected static String searchRandomId;
+    protected static String searchCode;
+    private static int adminId;
 
     private static JSONObject parse(String rout) throws IOException {
         String jsonData = "";
@@ -157,12 +159,54 @@ public class DataProvider extends BaseTest {
 
     }
 
+    private static void signUpCustomer(String name, String email) throws IOException {
+        System.out.println("Registering a new customer on Storefront...");
+
+//        JSONObject jsonObj = parse("bin/payloads/signUpCustomer.json");
+//        jsonObj.putOpt("email", email);
+//        jsonObj.putOpt("name", name);
+//        jsonObj.putOpt("password", "78qa22!#");
+//        String payload = jsonObj.toString();
+
+        OkHttpClient client = new OkHttpClient();
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{\"email\": \""+email+"\",\"name\": \""+name+"\",\"password\": \"78qa22!#\"}");
+        Request request = new Request.Builder()
+                .url("https://stage-tpg.foxcommerce.com/api/v1/public/registrations/new")
+                .post(body)
+                .addHeader("content-type", "application/json")
+                .addHeader("accept", "application/json")
+                .addHeader("cache-control", "no-cache")
+                .addHeader("postman-token", "d1fb4f1f-6e15-d859-4f6e-e11da22b39af")
+                .build();
+
+        Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+        int responseCode = response.code();
+        String responseMsg = response.message();
+
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+            JSONObject jsonData = new JSONObject(responseBody);
+            customerId = jsonData.getInt("id");
+            customerName = jsonData.getString("name");
+            customerEmail = jsonData.getString("email");
+            System.out.println("Customer ID: " + customerId);
+            System.out.println("Customer Name: " + customerName);
+            System.out.println("Customer Email: " + customerEmail);
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
+
+    }
+
     @Step("[API] Create cart for customer <{0}>")
     private static void createCart(int customerId) throws IOException {
         System.out.println("Creating a cart for customer <" + customerId + ">...");
         OkHttpClient client = new OkHttpClient();
         MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, "{\n    \"customerId\": " + customerId + "\n}");
+        RequestBody body = RequestBody.create(mediaType, "{\"customerId\": " + customerId + "}");
         Request request = new Request.Builder()
                 .url(apiUrl + "/v1/orders")
                 .post(body)
@@ -2753,6 +2797,21 @@ public class DataProvider extends BaseTest {
                 checkoutCart(cartId);
                 break;
 
+            case "order in remorse hold payed with SC":
+                createCustomer();
+                createCart(customerId);
+                createSKU_active();
+                createProduct_active(sku, "test");
+                increaseOnHandQty(sku, "Sellable", 1);
+                updLineItems(cartId, sku, 1);
+                setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
+                listShipMethods(cartId);
+                setShipMethod(cartId, shipMethodId);
+                issueStoreCredit(customerId, 50000);
+                setPayment_storeCredit(cartId, 10000);
+                checkoutCart(cartId);
+                break;
+
             //--------------------------------- CUSTOMER ADDRESS BOOK ---------------------------------//
 
             case "customer with a shipping address":
@@ -3122,13 +3181,42 @@ public class DataProvider extends BaseTest {
                 createSharedSearch_twoFilters();
                 break;
 
-            //--------------------------------- SEARCH FILTERS ---------------------------------//
+            //------------------------------------- SF: AUTH ------------------------------------//
+
+            case "a customer signed up on storefront":
+                randomId = generateRandomID();
+                signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
+                break;
+
+            case "two customers signed up on storefront":
+                randomId = generateRandomID();
+                signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
+                takenEmail = customerEmail;
+                signUpCustomer("Test Buddy " + generateRandomID(), "qatest2278+" + generateRandomID() + "@gmail.com");
+                break;
+
+            //------------------------------------- SF: CART ------------------------------------//
+
+            case "registered customer, active product in cart":
+                randomId = generateRandomID();
+                signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
+                createSKU_active();
+                createProduct_active(sku, "test");
+                createCart(customerId);
+                updLineItems(cartId, sku, 1);
+                break;
+
+            case "registered customer, active product on storefront":
+                randomId = generateRandomID();
+                signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
+                createSKU_active();
+                createProduct_active(sku, storefrontCategory);
 
         }
     }
 
     public static void main(String[] args) throws IOException {
-
+        signUpCustomer("Foo Bar", "78qa22");
     }
 
 }
