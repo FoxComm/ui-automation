@@ -15,7 +15,8 @@ public class BaseTest extends ConciseAPI {
     }
     protected static String apiUrl = System.getenv("API_URL") + "/api";
     protected static String adminUrl = System.getenv("API_URL") + "/admin";
-    protected static String storefrontUrl = System.getenv("API_URL");
+    private static String storefront = System.getenv("STOREFRONT");
+    protected static String storefrontUrl = System.getenv("API_URL") + "/" + storefront;
     protected static String adminOrg = "tenant";
     protected static String adminEmail = "admin@admin.com";
     protected static String adminPassword;
