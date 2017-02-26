@@ -1512,6 +1512,8 @@ public class DataProvider extends BaseTest {
             failTest(responseBody, responseCode, responseMsg);
         }
 
+        checkInventoryAvailability(sku);
+
     }
 
     @Step("[API] Create SKU in <State: 'Inactive'>")
@@ -1547,6 +1549,8 @@ public class DataProvider extends BaseTest {
         } else {
             failTest(responseBody, responseCode, responseMsg);
         }
+
+        checkInventoryAvailability(sku);
 
     }
 
@@ -1584,6 +1588,8 @@ public class DataProvider extends BaseTest {
             failTest(responseBody, responseCode, responseMsg);
         }
 
+        checkInventoryAvailability(sku);
+
     }
 
     @Step("[API] Create SKU with empty 'Description'")
@@ -1620,6 +1626,8 @@ public class DataProvider extends BaseTest {
             failTest(responseBody, responseCode, responseMsg);
         }
 
+        checkInventoryAvailability(sku);
+
     }
 
     @Step("[API] Create SKU without specifying the prices")
@@ -1651,6 +1659,44 @@ public class DataProvider extends BaseTest {
             System.out.println(responseCode + " " + responseMsg);
             sku = skuCode;
             System.out.println("SKU code: <" + skuCode + ">.");
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
+
+        checkInventoryAvailability(sku);
+
+    }
+
+    @Step("[API] Check if Inventory is available")
+    protected static void checkInventoryAvailability(String sku) throws IOException {
+
+        System.out.println("Checking if inventory of SKU <" + sku + "> is available...");
+
+        int responseCode = 0;
+        String responseBody = "";
+        String responseMsg = "";
+        long time = System.currentTimeMillis();
+        long end = time + 10000;
+
+        OkHttpClient client = new OkHttpClient();
+
+        Request request = new Request.Builder()
+                .url(apiUrl + "/v1/inventory/summary/" + sku)
+                .get()
+                .addHeader("cache-control", "no-cache")
+                .addHeader("JWT", jwt)
+                .build();
+
+        while((System.currentTimeMillis() < end) && (responseCode != 200)) {
+            Response response = client.newCall(request).execute();
+            responseBody = response.body().string();
+            responseCode = response.code();
+            responseMsg = response.message();
+        }
+
+        if (responseCode == 200) {
+            System.out.println("Inventory is created");
             System.out.println("---- ---- ---- ----");
         } else {
             failTest(responseBody, responseCode, responseMsg);
@@ -3216,7 +3262,6 @@ public class DataProvider extends BaseTest {
     }
 
     public static void main(String[] args) throws IOException {
-        signUpCustomer("Foo Bar", "78qa22");
     }
 
 }
