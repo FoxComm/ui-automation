@@ -153,7 +153,7 @@ The FoxCommerce E2E UI automation test framework. Used for automating UI test sc
         └─────────────┘                         │                        │         │
                                          ┌──────┴──────┐              ┌──┴─────────┴─┐
                                          │  BaseTest   │              │   BasePage   │
-                                         └─────────────┘              └──────────────┘
+            [all kind of configurations] └─────────────┘              └──────────────┘
                                                 ▲                             ▲
                                         extends │                             │ extends
                                                 │    ┌────────────────────────┘
