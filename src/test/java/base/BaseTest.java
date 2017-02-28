@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import static com.codeborne.selenide.WebDriverRunner.CHROME;
 import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
+import static com.codeborne.selenide.WebDriverRunner.source;
 
 public class BaseTest extends ConciseAPI {
 
@@ -21,7 +22,7 @@ public class BaseTest extends ConciseAPI {
     protected static String adminEmail = "admin@admin.com";
     protected static String adminPassword;
     protected static String storefrontCategory;
-//
+
     private void setAdminPassword() {
         if (System.getenv("API_URL").equals("https://td-prod.foxcommerce.com")) {
             adminPassword = "Fluffybunny";
@@ -31,12 +32,18 @@ public class BaseTest extends ConciseAPI {
     }
 
     private void setStorefrontCategory() {
-        if (System.getenv("API_URL").equals("https://td-prod.foxcommerce.com")) {
+        if (System.getenv("API_URL").equals("https://stage.foxcommerce.com") && storefront.equals("top-drawer")) {
             storefrontCategory = "MODERN";
-        } else if (System.getenv("API_URL").equals("https://stage-tpg.foxcommerce.com")) {
+        } else if (System.getenv("API_URL").equals("https://td-prod.foxcommerce.com") && storefront.equals("")) {
+            storefrontCategory = "MODERN";
+        } else if (System.getenv("API_URL").equals("https://stage.foxcommerce.com") && storefront.equals("perfect-gourmet")) {
             storefrontCategory = "APPETIZERS";
+        } else if (System.getenv("API_URL").equals("https://stage-tpg.foxcommerce.com") && storefront.equals("")) {
+            storefrontCategory = "APPETIZERS";
+        } else if ((System.getenv("API_URL").equals("https://stage.foxcommerce.com") && storefront.equals(""))) {
+            storefrontCategory = "sunglasses";
         } else {
-            storefrontCategory = "test";
+            storefrontCategory = "";
         }
     }
 

@@ -5,6 +5,7 @@ import com.codeborne.selenide.SelenideElement;
 import ru.yandex.qatools.allure.annotations.Step;
 
 import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.sleep;
 import static org.openqa.selenium.By.xpath;
 
 public class PromotionsPage extends BasePage {
@@ -107,6 +108,15 @@ public class PromotionsPage extends BasePage {
 
 
     //--------------------------------------- HELPERS ----------------------------------------//
+
+    @Step("Click \"Save\" and wait until it's re-enabled")
+    public void clickSave_wait() {
+        click(saveBtn());
+        sleep(1000);
+        shouldNotBeVisible($(xpath("//button[@id='fct-primary-save-btn' and contains(@class, 'loading')]")),
+                "\"Save\" btn doesn't get re-enabled");
+        sleep(2000);
+    }
 
     @Step("Create a new promotion with <{0}> apply type")
     public void fillOutNewPromoForm(String applyType, String id) {

@@ -1195,7 +1195,8 @@ public class DataProvider extends BaseTest {
                 .getJSONObject("attributes")
                 .getJSONObject("qualifier")
                 .getJSONObject("v")
-                .getJSONObject("search")
+                .getJSONArray("search")
+                .getJSONObject(0)
                 .putOpt("productSearchId", searchId);
         jsonObj.getJSONObject("attributes")
                 .getJSONObject("name")

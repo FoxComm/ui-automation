@@ -147,7 +147,7 @@ public class BasePage extends ConciseAPI {
     //---------------------------- GENERAL FORM SPECIFIC ----------------------------//
     //---------------------------------- ELEMENTS -----------------------------------//
     protected SelenideElement saveBtn() {
-        return $(xpath("//span[text()='Save']/.."));
+        return $(xpath("//button[@id='fct-primary-save-btn']"));
     }
 
     /**
@@ -164,11 +164,8 @@ public class BasePage extends ConciseAPI {
      */
     @Step("Click \"Save\" and wait until it's re-enabled")
     public void clickSave_wait() {
-        click(saveBtn());
-//        shouldBeVisible($(xpath("//button[@id='primary-save-btn' and contains(@class, 'loading')]")),
-//                "\"Loading\" onClick animation didn't appear");
-        shouldBeVisible($(xpath("//button[@id='fct-primary-save-btn' and contains(@class, 'loading')]")),
-                "\"Save\" btn doesn't get loading animation");
+        jsClick(saveBtn());
+        sleep(1000);
         shouldNotBeVisible($(xpath("//button[@id='fct-primary-save-btn' and contains(@class, 'loading')]")),
                 "\"Save\" btn doesn't get re-enabled");
         sleep(3000);

@@ -5,6 +5,7 @@ import com.codeborne.selenide.SelenideElement;
 import ru.yandex.qatools.allure.annotations.Step;
 
 import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.refresh;
 import static org.openqa.selenium.By.xpath;
 
 public class StorefrontPage extends BasePage {
@@ -140,7 +141,7 @@ public class StorefrontPage extends BasePage {
 
     private SelenideElement editLnk(String parameter) {
         parameter = parameter.toLowerCase().replaceAll(" ", "-");
-        return $(xpath("//a[@href='/profile/" + parameter + "']"));
+        return $(xpath("//a[contains(@href, '/profile/" + parameter + "')]"));
     }
 
     public SelenideElement changePasswordBtn() {
@@ -162,7 +163,7 @@ public class StorefrontPage extends BasePage {
 
     //---------------------------------------------- STEPS ---------------------------------------------
 
-    @Step("Click \"EDIT\" next to customer's \"{0}\"")
+    @Step("Click \"EDIT\" next to <{0}>")
     public void clickEditLnk(String parameter) {
         click(editLnk(parameter));
     }
@@ -199,7 +200,12 @@ public class StorefrontPage extends BasePage {
 
     @Step("Open PDP: <{0}>")
     public void openPDP(String productName) {
-        click(pdpTitle(productName));
+        try {
+            click(pdpTitle(productName));
+        } catch (RuntimeException ignored) {
+            refresh();
+            click(pdpTitle(productName));
+        }
     }
 
     @Step("Click \"Add To Cart\" btn")
@@ -260,6 +266,15 @@ public class StorefrontPage extends BasePage {
     public void clickCheckoutBtn_cart() {
         click(checkoutBtn_cart());
     }
+
+    public void cleanCart() {
+        int cartQty = Integer.valueOf(cartQty().text());
+        for(int i = 0; i < cartQty; i++) {
+            removeLineItem(String.valueOf(i+1));
+            shouldNotBeVisible(removeLineItemBtn_byIndex(String.valueOf(cartQty - i)), "oops");
+        }
+    }
+
 
     //============================================ CHECKOUT ===========================================
     //-------------------------------------------- ELEMENTS -------------------------------------------

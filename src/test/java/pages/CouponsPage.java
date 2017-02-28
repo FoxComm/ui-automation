@@ -10,6 +10,7 @@ import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
+import static com.codeborne.selenide.Selenide.sleep;
 import static org.openqa.selenium.By.xpath;
 
 public class CouponsPage extends BasePage {
@@ -60,7 +61,7 @@ public class CouponsPage extends BasePage {
     }
 
     public SelenideElement saveBtn() {
-        return $(xpath("//span[text()='Save']/.."));
+        return $(xpath("//button[@id='fct-primary-save-btn']"));
     }
 
     public SelenideElement couponIdVal() {
@@ -113,6 +114,15 @@ public class CouponsPage extends BasePage {
 
 
     //--------------------------------- HELPERS -----------------------------//
+
+    @Step("Click \"Save\" and wait until it's re-enabled")
+    public void clickSave_wait() {
+        jsClick(saveBtn());
+        sleep(1000);
+        shouldNotBeVisible($(xpath("//button[@id='fct-primary-save-btn' and contains(@class, 'loading')]")),
+                "\"Save\" btn doesn't get re-enabled");
+        sleep(3000);
+    }
 
     @Step("Set \"Name\" fld val to <{0}>")
     public void setCouponName(String name) {
