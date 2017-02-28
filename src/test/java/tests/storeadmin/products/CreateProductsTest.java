@@ -39,6 +39,7 @@ public class CreateProductsTest extends DataProvider {
     @Test(priority = 1)
     public void productIsDisplayed_admin() throws IOException {
         provideTestData("active SKU");
+        checkInventoryAvailability(sku);
         String randomId = generateRandomID();
         String productTitle = "Test Product " + randomId;
 
@@ -55,6 +56,7 @@ public class CreateProductsTest extends DataProvider {
     @Test(priority = 2)
     public void skuIsApplied() throws IOException {
         provideTestData("active product, has tag, active SKU");
+        checkInventoryAvailability(sku);
         p = openPage(adminUrl + "/products/default/" + productId, ProductsPage.class);
         p.sku(sku).shouldBe(visible);
     }
@@ -63,6 +65,7 @@ public class CreateProductsTest extends DataProvider {
     @Description("retailPrice and salePrice are atuofilled with price values of the selected SKU")
     public void pricesAutofilled() throws IOException {
         provideTestData("active SKU");
+        checkInventoryAvailability(sku);
 
         p = openPage(adminUrl + "/products", ProductsPage.class);
         p.clickAddNewProduct();
@@ -256,6 +259,7 @@ public class CreateProductsTest extends DataProvider {
     @Description("A just created product is displayed in category_view, its PDP can be accessed")
     public void createProduct_SKU_inactive() throws IOException {
         provideTestData("inactive SKU");
+        checkInventoryAvailability(sku);
         String randomId = generateRandomID();
         String productTitle = "Test Product " + randomId;
 
@@ -274,6 +278,7 @@ public class CreateProductsTest extends DataProvider {
     @Description("A just created product is displayed in category_view, its PDP can be accessed")
     public void createProduct_SKU_noTitle() throws IOException {
         provideTestData("SKU with no title");
+        checkInventoryAvailability(sku);
         String randomId = generateRandomID();
         String productTitle = "Test Product " + randomId;
 
@@ -290,6 +295,7 @@ public class CreateProductsTest extends DataProvider {
     @Test(priority = 16)
     public void createProduct_SKU_noDescription() throws IOException {
         provideTestData("SKU with no description");
+        checkInventoryAvailability(sku);
         String randomId = generateRandomID();
         String productTitle = "Test Product " + randomId;
 

@@ -31,6 +31,7 @@ public class EditProductTest extends DataProvider {
     @Test(priority = 1)
     public void editTitle_admin_PDP() throws IOException {
         provideTestData("product in active state");
+        checkInventoryAvailability(sku);
         String uid = productName.substring(13, 20);
 
         p = openPage(adminUrl + "/products/default/" + productId, ProductsPage.class);
@@ -45,6 +46,7 @@ public class EditProductTest extends DataProvider {
     @Test(priority = 2)
     public void editTitle_admin_list() throws IOException {
         provideTestData("product in active state");
+        checkInventoryAvailability(sku);
         String uid = productName.substring(13, 20);
 
         p = openPage(adminUrl + "/products/default/" + productId, ProductsPage.class);
@@ -96,6 +98,7 @@ public class EditProductTest extends DataProvider {
     @Test(priority = 5)
     public void editDescription_admin_PDP() throws IOException {
         provideTestData("product in active state");
+        checkInventoryAvailability(sku);
 
         p = openPage(adminUrl + "/products/default/" + productId, ProductsPage.class);
         clearField(p.descriptionFld());
@@ -125,6 +128,7 @@ public class EditProductTest extends DataProvider {
     @Test(priority = 7)
     public void editState_admin_PDP() throws IOException {
         provideTestData("product in active state");
+        checkInventoryAvailability(sku);
 
         p = openPage(adminUrl + "/products/default/" + productId, ProductsPage.class);
         p.setState("Inactive");
@@ -139,6 +143,7 @@ public class EditProductTest extends DataProvider {
     @Test(priority = 8)
     public void editState_admin_category() throws IOException {
         provideTestData("product in active state");
+        checkInventoryAvailability(sku);
         String uid = productName.substring(13, 20);
 
         p = openPage(adminUrl + "/products/default/" + productId, ProductsPage.class);
@@ -169,6 +174,7 @@ public class EditProductTest extends DataProvider {
     @Test(priority = 10)
     public void editRetailPrice_admin_PDP() throws IOException {
         provideTestData("product in active state");
+        checkInventoryAvailability(sku);
 
         p = openPage(adminUrl + "/products/default/" + productId, ProductsPage.class);
         p.setRetailPrice("1", "35.18");
@@ -181,6 +187,7 @@ public class EditProductTest extends DataProvider {
     @Test(priority = 11)
     public void editSalePrice_admin_PDP() throws IOException {
         provideTestData("product in active state");
+        checkInventoryAvailability(sku);
 
         p = openPage(adminUrl + "/products/default/" + productId, ProductsPage.class);
         p.setSalePrice("1", "35.18");
@@ -208,6 +215,7 @@ public class EditProductTest extends DataProvider {
     @Test(priority = 13)
     public void editTag_admin() throws IOException {
         provideTestData("product in active state");
+        checkInventoryAvailability(sku);
 
         p = openPage(adminUrl + "/products/default/" + productId, ProductsPage.class);
         p.removeTag("sunglasses");
@@ -242,6 +250,7 @@ public class EditProductTest extends DataProvider {
     @Test(priority = 15)
     public void removeTag_admin() throws IOException {
         provideTestData("product in active state");
+        checkInventoryAvailability(sku);
 
         p = openPage(adminUrl + "/products/default/" + productId, ProductsPage.class);
         p.removeTag("sunglasses");

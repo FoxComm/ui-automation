@@ -1195,6 +1195,7 @@ public class DataProvider extends BaseTest {
                 .getJSONObject("attributes")
                 .getJSONObject("qualifier")
                 .getJSONObject("v")
+                .getJSONObject("itemsAny")
                 .getJSONArray("search")
                 .getJSONObject(0)
                 .putOpt("productSearchId", searchId);
@@ -1678,7 +1679,7 @@ public class DataProvider extends BaseTest {
     }
 
     @Step("[API] Check if Inventory is available")
-    private static void checkInventoryAvailability(String sku) throws IOException {
+    protected static void checkInventoryAvailability(String sku) throws IOException {
 
         System.out.println("Checking if inventory of SKU <" + sku + "> is available...");
 

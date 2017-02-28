@@ -69,21 +69,21 @@ public class ConciseAPI implements IHookable {
     }
 
     public void click(SelenideElement element) {
-        shouldBeVisible(element, "Element is not visible");
-        shouldBeEnabled(element, "Element is not enabled");
+        shouldBeVisible(element, "Element is not visible: " + element);
+        shouldBeEnabled(element, "Element is not enabled: " + element);
         element.click();
     }
 
     public void click(SelenideElement element, String errorMsg) {
         shouldBeVisible(element, errorMsg);
-        shouldBeEnabled(element, "Element is not enabled");
+        shouldBeEnabled(element, "Element is not enabled: " + element);
         element.click();
     }
 
     protected void click(List<SelenideElement> listOfElements, int index) {
         SelenideElement element = listOfElements.get(index - 1);
-        shouldBeVisible(element, "Element is not visible");
-        shouldBeEnabled(element, "Element is not enabled");
+        shouldBeVisible(element, "Element is not visible: " + element);
+        shouldBeEnabled(element, "Element is not enabled: " + element);
         element.click();
     }
 
@@ -93,19 +93,19 @@ public class ConciseAPI implements IHookable {
     }
 
     protected void setDdVal(SelenideElement ddElement, String ddValue) {
-        click( ddElement, "Dropdown isn't visible" );
+        click(ddElement, "Dropdown isn't visible: " + ddElement);
         SelenideElement option = $(By.xpath("//*[text()='" + ddValue + "']"));
-        click( option, "Option <" + ddValue + "> on dd list isn't visible" );
+        click(option, "Option <" + ddValue + "> on dd list isn't visible");
     }
 
     protected void setDdVal_li(SelenideElement ddElement, String ddValue) {
-        click( ddElement, "Dropdown isn't visible" );
+        click(ddElement, "Dropdown isn't visible: " + ddElement);
         SelenideElement option = $(By.xpath("//li[text()='" + ddValue + "']"));
-        click( option, "Option <" + ddValue + "> on dd list isn't visible" );
+        click(option, "Option <" + ddValue + "> on dd list isn't visible");
     }
 
     protected void setFieldVal(SelenideElement element, String value) {
-        shouldBeVisible(element, "Field is not visible");
+        shouldBeVisible(element, "Field is not visible: " + element);
         element.setValue(value);
     }
 
@@ -115,13 +115,13 @@ public class ConciseAPI implements IHookable {
     }
 
     protected void setFieldValWithSubmit(SelenideElement element, String value) {
-        shouldBeVisible(element, "Field is not visible");
+        shouldBeVisible(element, "Field is not visible: " + element);
         element.setValue(value).submit();
     }
 
     protected void setFieldVal_delayed(SelenideElement element, String value) {
         sleep(250);
-        shouldBeVisible(element, "Failed to set field value - it's not visible");
+        shouldBeVisible(element, "Element is not visible: " + element);
         for(int i = 0; i < value.length(); i++) {
             element.sendKeys(String.valueOf(value.charAt(i)));
             sleep(250);

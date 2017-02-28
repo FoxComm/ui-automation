@@ -507,7 +507,7 @@ public class CartPage extends BasePage {
         setPhoneNumber(phoneNumber);
         // assertion for a known bug
         assertStateIsntReset();
-        clickSave();
+        clickSaveBtn_modal();
         // wait till changes in address book will be displayed - customer name on any address should be visible
         shouldBeVisible($(xpath("//li[@class='name']")),
                 "'New shipping address' form isn't closed after clicking 'Save'" );

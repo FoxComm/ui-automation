@@ -112,7 +112,7 @@ public class ShippingAddressTest extends DataProvider {
         p.assertNoWarnings();
         p.clickPlaceOderBtn();
         shouldHaveText(p.orderState(), "Remorse Hold", "Failed to place order");
-        open(adminUrl + "/customers/" + customerId + "/cart");
+        openPage(adminUrl + "/customers/" + customerId + "/cart", CartPage.class);
         p.clickEditCartBtn();
 
         p.appliedShipAddress_name().shouldHave(text("John Doe"));

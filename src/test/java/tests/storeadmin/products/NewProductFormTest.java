@@ -43,6 +43,7 @@ public class NewProductFormTest extends DataProvider {
     @Test(priority = 2)
     public void titleIsRequired() throws IOException {
         provideTestData("active SKU");
+        checkInventoryAvailability(sku);
 
         p = openPage(adminUrl + "/products/default/new", ProductsPage.class);
         p.addExistingSKU(sku);
@@ -156,6 +157,7 @@ public class NewProductFormTest extends DataProvider {
     @Description("Options are saved correctly")
     public void optionsAreSaved() throws IOException {
         provideTestData("active SKU");
+        checkInventoryAvailability(sku);
 
         p = openPage(adminUrl + "/products/default/new", ProductsPage.class);
         p.setTitle("Product " + generateRandomID());
@@ -173,6 +175,7 @@ public class NewProductFormTest extends DataProvider {
     @Description("Options are saved correctly")
     public void variantSpecificSkuIsSaved() throws IOException {
         provideTestData("active SKU");
+        checkInventoryAvailability(sku);
 
         p = openPage(adminUrl + "/products/default/new", ProductsPage.class);
         p.setTitle("Product " + generateRandomID());

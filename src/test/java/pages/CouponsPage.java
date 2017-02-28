@@ -3,14 +3,14 @@ package pages;
 import base.BasePage;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
+import com.codeborne.selenide.ex.ElementNotFound;
+import com.codeborne.selenide.ex.ListSizeMismatch;
 import ru.yandex.qatools.allure.annotations.Step;
 
 import static com.codeborne.selenide.CollectionCondition.size;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.$$;
-import static com.codeborne.selenide.Selenide.sleep;
+import static com.codeborne.selenide.Selenide.*;
 import static org.openqa.selenium.By.xpath;
 
 public class CouponsPage extends BasePage {
@@ -217,7 +217,13 @@ public class CouponsPage extends BasePage {
     public void assertCodesGenerated(int codesQty) {
         waitForDataToLoad();
         $(xpath("//div[text()='No coupon codes found.']")).shouldNotBe(visible);
-        listOfCodes().shouldHave(size(codesQty));
+        try {
+            listOfCodes().shouldHave(size(codesQty));
+        } catch (ElementNotFound | ListSizeMismatch | NullPointerException ignored) {
+            refresh();
+            listOfCodes().shouldHave(size(codesQty));
+        }
+
     }
 
     private ElementsCollection listOfCodes() {

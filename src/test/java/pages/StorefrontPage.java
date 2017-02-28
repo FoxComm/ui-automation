@@ -135,6 +135,7 @@ public class StorefrontPage extends BasePage {
     //============================================ PROFILE ============================================
     //-------------------------------------------- ELEMENTS -------------------------------------------
 
+    //TODO: id
     public SelenideElement userEmail() {
         return $(xpath("//div[contains(@class, 'content')]/div[2]/div[2]"));
     }
@@ -148,12 +149,14 @@ public class StorefrontPage extends BasePage {
         return $(xpath("//button[text()='CHANGE PASSWORD']"));
     }
 
+    //TODO: id
     private SelenideElement nameFld_edit() {
-        return $(xpath("//div[contains(text(), 'Use this form')]/following-sibling::input"));
+        return $(xpath("//div[contains(text(), 'Use this form')]/following-sibling::*/input"));
     }
 
+    //TODO: id
     private SelenideElement emailFld_edit() {
-        return $(xpath("//div[contains(text(), 'Use this form')]/following-sibling::input"));
+        return $(xpath("//div[contains(text(), 'Use this form')]/following-sibling::*/input"));
     }
 
     public SelenideElement saveBtn() {
