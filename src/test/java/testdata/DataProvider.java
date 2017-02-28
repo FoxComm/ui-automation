@@ -1531,8 +1531,6 @@ public class DataProvider extends BaseTest {
             failTest(responseBody, responseCode, responseMsg);
         }
 
-        checkInventoryAvailability(sku);
-
     }
 
     @Step("[API] Create SKU in <State: 'Inactive'>")
@@ -1568,8 +1566,6 @@ public class DataProvider extends BaseTest {
         } else {
             failTest(responseBody, responseCode, responseMsg);
         }
-
-        checkInventoryAvailability(sku);
 
     }
 
@@ -1607,8 +1603,6 @@ public class DataProvider extends BaseTest {
             failTest(responseBody, responseCode, responseMsg);
         }
 
-        checkInventoryAvailability(sku);
-
     }
 
     @Step("[API] Create SKU with empty 'Description'")
@@ -1644,8 +1638,6 @@ public class DataProvider extends BaseTest {
         } else {
             failTest(responseBody, responseCode, responseMsg);
         }
-
-        checkInventoryAvailability(sku);
 
     }
 
@@ -1683,12 +1675,10 @@ public class DataProvider extends BaseTest {
             failTest(responseBody, responseCode, responseMsg);
         }
 
-        checkInventoryAvailability(sku);
-
     }
 
     @Step("[API] Check if Inventory is available")
-    protected static void checkInventoryAvailability(String sku) throws IOException {
+    private static void checkInventoryAvailability(String sku) throws IOException {
 
         System.out.println("Checking if inventory of SKU <" + sku + "> is available...");
 
@@ -2350,6 +2340,7 @@ public class DataProvider extends BaseTest {
     @Step("[API] Increase amount of sellable unites of <{0}> by <{1}>")
     protected static void increaseOnHandQty(String skuCode, String type, Integer qty) throws IOException {
 
+        checkInventoryAvailability(sku);
         viewSKU_inventory(skuCode);
 
         System.out.println("Increase amount of sellable items by <" + qty + "> for SKU <" + skuCode + ">, ID: <" + skuId_inventory + ">...");
@@ -3157,7 +3148,7 @@ public class DataProvider extends BaseTest {
 
             case "active SKU for inventory":
                 createSKU_active();
-                sleep(5000);
+                checkInventoryAvailability(sku);
                 break;
 
             case "cart with backorder SKU":
