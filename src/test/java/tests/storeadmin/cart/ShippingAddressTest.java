@@ -79,7 +79,7 @@ public class ShippingAddressTest extends DataProvider {
         p.clickEditBtn("Shipping Address");
         p.clickEditBtn_chosenAddress();
         p.setName("Edited Name");
-        p.clickSave();
+        p.clickSaveBtn_modal();
         shouldNotBeVisible(p.nameFld(), "'New Address' form isn't closed after clicking 'Save'");
 
         p.customerName_chosenShipAddress().shouldHave(text("Edited Name")
