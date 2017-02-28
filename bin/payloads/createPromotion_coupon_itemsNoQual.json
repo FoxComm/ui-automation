@@ -1,0 +1,55 @@
+{
+  "id": null,
+  "createdAt": null,
+  "attributes": {
+    "name": {
+      "t": "string",
+      "v": "Test Promo 773"
+    },
+    "storefrontName": {
+      "t": "richText",
+      "v": "<p>SF Test Promo</p>"
+    },
+    "description": {
+      "t": "text",
+      "v": "Test Promo Description"
+    },
+    "details": {
+      "t": "richText",
+      "v": "<p>Test Promo 773 Details</p>"
+    },
+    "activeFrom": {
+      "v": "2017-01-25T19:38:33.572Z",
+      "t": "datetime"
+    },
+    "activeTo": {
+      "v": null,
+      "t": "datetime"
+    }
+  },
+  "discounts": [{
+    "id": null,
+    "createdAt": null,
+    "attributes": {
+      "qualifier": {
+        "t": "qualifier",
+        "v": {
+          "itemsAny": {
+            "search": [{
+              "productSearchId": 35
+            }]
+          }
+        }
+      },
+      "offer": {
+        "t": "offer",
+        "v": {
+          "orderPercentOff": {
+            "discount": 10
+          }
+        }
+      }
+    }
+  }],
+  "applyType": "coupon"
+}

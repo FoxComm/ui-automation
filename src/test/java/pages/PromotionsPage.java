@@ -65,8 +65,12 @@ public class PromotionsPage extends BasePage {
         return $(xpath("//div[@id='fct-promo-offer-dd']"));
     }
 
-    private SelenideElement getFld_offer() {
-        return $(xpath("//*[@id='fct-promo-offer-block']//div[contains(@class, 'promotions_attrs')]/input"));
+    private SelenideElement offerInput_percent() {
+        return $(xpath("//*[@id='fct-promo-offer-block']//input[@class='fc-append-input__input-field']"));
+    }
+
+    private SelenideElement offerInput_currency() {
+        return $(xpath("//*[@id='fct-promo-offer-block']//input[@name='currencyInput']"));
     }
 
     private SelenideElement productDd_offer() {
@@ -112,8 +116,7 @@ public class PromotionsPage extends BasePage {
         setDescription("test promo");
         setDetails("promo details");
         setQualifierType("Order - No qualifier");
-        setOfferType("Percent off order");
-        setOfferGet("10");
+        setOffer("Percent off order", "10");
     }
 
         @Step("Click \"Create New Promotion\" btn")
@@ -156,9 +159,32 @@ public class PromotionsPage extends BasePage {
             setDdVal_li(offerTypeDd(), offerType);
         }
 
-        @Step("Set \"Offer Get\" fld val to <{0}>")
-        private void setOfferGet(String offerGet) {
-            setFieldVal(getFld_offer(), offerGet);
+        @Step("Set \"Offer Get\" fld val to <${0}>")
+        private void setOfferGet_currency(String offer) {
+            setFieldVal(offerInput_currency(), offer);
+        }
+
+        @Step("Set \"Offer Get\" fld val to <{0}%>")
+        private void setOfferGet_percent(String offer) {
+            setFieldVal(offerInput_percent(), offer);
+        }
+
+        @Step("Set offer type:<{0}>, value:<{1}>")
+        private void setOffer(String type, String offer) {
+            setOfferType(type);
+            String typeToSet = definePromoOfferType(type);
+            switch (typeToSet) {
+                case "percent":
+                    setOfferGet_percent(offer);
+                    break;
+                case "currency":
+                    setOfferGet_currency(offer);
+                    break;
+                case "free shipping":
+                    break;
+                case "unknown offer type":
+                    throw new RuntimeException("Unknown offer type is given: <" + type + ">");
+            }
         }
 
     @Step("Create a new promotion with <{0}> apply type")
@@ -170,8 +196,7 @@ public class PromotionsPage extends BasePage {
         setDescription("test promo");
         setDetails("promo details");
         setQualifierType("Order - No qualifier");
-        setOfferType("Percent off order");
-        setOfferGet("10");
+        setOffer("Percent off order", "10");
         setDdVal( stateDd(), "Active" );
         clickSave_wait();
         shouldNotHaveText(promoIdBreadcumb(), "new", "Failed to create a new promotion.");

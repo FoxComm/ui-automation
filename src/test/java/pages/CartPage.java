@@ -463,7 +463,7 @@ public class CartPage extends BasePage {
     }
 
     public SelenideElement appliedShipAddress_name() {
-        return $(xpath("//div[@id='fct-cart-shipping-address-block']//li[contains(@class, 'is-active')]//li[@class='name']"));
+        return $(xpath("//div[@id='fct-cart-shipping-address-block']//*[@class='name']"));
     }
 
     //------------------------------------ HELPERS -------------------------------------//

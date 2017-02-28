@@ -27,6 +27,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
@@ -392,6 +394,27 @@ public class ConciseAPI implements IHookable {
         String day = today.substring(8, 10);
         String yesterday = subtractFromString(day, 1);
         return today.substring(0, 8) + yesterday;
+    }
+
+    //------------ TEXT
+    protected static Boolean findInText(String textToLookAt, String textToMatch) {
+        Pattern pattern = Pattern.compile(textToMatch, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(textToLookAt);
+
+        return matcher.find();
+    }
+
+    protected static String definePromoOfferType(String type) {
+        type = type.toLowerCase();
+        if (findInText(type, "percent")) {
+            return "percent";
+        } else if ((findInText(type, "amount")) || findInText(type, "price") || findInText(type, "discounted")) {
+            return "currency";
+        } else if (findInText(type, "free")) {
+            return "free shipping";
+        } else {
+            return "unknown offer type";
+        }
     }
 
 

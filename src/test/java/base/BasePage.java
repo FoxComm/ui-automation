@@ -164,13 +164,14 @@ public class BasePage extends ConciseAPI {
      */
     @Step("Click \"Save\" and wait until it's re-enabled")
     public void clickSave_wait() {
-        jsClick(saveBtn());
+        click(saveBtn());
 //        shouldBeVisible($(xpath("//button[@id='primary-save-btn' and contains(@class, 'loading')]")),
 //                "\"Loading\" onClick animation didn't appear");
-        sleep(3000);
+        shouldBeVisible($(xpath("//button[@id='fct-primary-save-btn' and contains(@class, 'loading')]")),
+                "\"Save\" btn doesn't get loading animation");
         shouldNotBeVisible($(xpath("//button[@id='fct-primary-save-btn' and contains(@class, 'loading')]")),
                 "\"Save\" btn doesn't get re-enabled");
-        sleep(1500);
+        sleep(3000);
     }
 
     private SelenideElement saveOptionsDd() {

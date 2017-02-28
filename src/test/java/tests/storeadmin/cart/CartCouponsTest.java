@@ -17,7 +17,7 @@ import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 
-public class OrderCouponsTest extends DataProvider {
+public class CartCouponsTest extends DataProvider {
 
     private CartPage p;
 
@@ -76,17 +76,17 @@ public class OrderCouponsTest extends DataProvider {
         p.noDiscountsMsg().shouldBe(visible);
     }
 
-//    @Test(priority = 4)
-//    public void applyCoupon_fail() throws IOException {
-//        provideTestData("empty cart");
-//        p = openPage(adminUrl + "/carts/" + cartId, OrderDetailsPage.class);
-//
-//        p.clickEditBtn("Coupons");
-//        p.addCouponCode("incorrect-coupon-code");
-//        p.clickApplyBtn();
-//
-//        p.couponErrorMsg().shouldBe(visible);
-//    }
+    @Test(priority = 4)
+    public void applyCoupon_fail() throws IOException {
+        provideTestData("empty cart");
+        p = openPage(adminUrl + "/carts/" + cartId, OrderDetailsPage.class);
+
+        p.clickEditBtn("Coupons");
+        p.addCouponCode("incorrect-coupon-code");
+        p.clickApplyBtn();
+
+        p.errorMsg("This coupon code does not exist.").shouldBe(visible);
+    }
 
     @Test(priority = 5)
     public void applyCoupon_bulkGenerated() throws IOException {

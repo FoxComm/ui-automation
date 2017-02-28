@@ -28,7 +28,7 @@
     </test>
     <test name="Cart > Coupons">
         <classes>
-            <class name="tests.storeadmin.cart.OrderCouponsTest" />
+            <class name="tests.storeadmin.cart.CartCouponsTest" />
         </classes>
     </test>
     <test name="Cart > Validation">

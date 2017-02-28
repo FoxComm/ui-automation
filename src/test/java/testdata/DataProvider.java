@@ -159,6 +159,7 @@ public class DataProvider extends BaseTest {
 
     }
 
+    @Step("[API] Sign up a new customer -- name:<{0}> email:<{1}>")
     private static void signUpCustomer(String name, String email) throws IOException {
         System.out.println("Registering a new customer on Storefront...");
 
@@ -172,12 +173,12 @@ public class DataProvider extends BaseTest {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{\"email\": \""+email+"\",\"name\": \""+name+"\",\"password\": \"78qa22!#\"}");
         Request request = new Request.Builder()
-                .url("https://stage-tpg.foxcommerce.com/api/v1/public/registrations/new")
+                .url(apiUrl + "/v1/public/registrations/new")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
                 .addHeader("cache-control", "no-cache")
-                .addHeader("postman-token", "d1fb4f1f-6e15-d859-4f6e-e11da22b39af")
+                .addHeader("JWT", jwt)
                 .build();
 
         Response response = client.newCall(request).execute();
@@ -1186,11 +1187,28 @@ public class DataProvider extends BaseTest {
     @Step("[API] Create promotion -- <Apply type: 'Coupon'>")
     private static void createPromotion_coupon_itemsNoQual(int searchId) throws IOException {
         System.out.println("Creating a new promotion...");
+        String randomId = generateRandomID();
+
+        JSONObject jsonObj = parse("bin/payloads/createPromotion_coupon_itemsNoQual.json");
+        jsonObj.getJSONArray("discounts")
+                .getJSONObject(0)
+                .getJSONObject("attributes")
+                .getJSONObject("qualifier")
+                .getJSONObject("v")
+                .getJSONObject("search")
+                .putOpt("productSearchId", searchId);
+        jsonObj.getJSONObject("attributes")
+                .getJSONObject("name")
+                .putOpt("v", "Test Promo" + randomId);
+        jsonObj.getJSONObject("attributes")
+                .getJSONObject("storefrontName")
+                .putOpt("v", "SF Test Promo" + randomId);
+        String payload = jsonObj.toString();
 
         OkHttpClient client = new OkHttpClient();
 
         MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, "{\"id\": null,\"createdAt\": null,\"attributes\": {\"name\": {\"t\": \"string\",\"v\": \"Test Promo 773\"},\"storefrontName\": {\"t\": \"richText\",\"v\": \"<p>SF Test Promo</p>\"},\"description\": {\"t\": \"text\",\"v\": \"Test Promo Description\"},\"details\": {\"t\": \"richText\",\"v\": \"<p>Test Promo 773 Details</p>\"},\"activeFrom\": {\"v\": \"2017-01-25T19:38:33.572Z\",\"t\": \"datetime\"},\"activeTo\": {\"v\": null,\"t\": \"datetime\"}},\"discounts\": [{\"id\": null,\"createdAt\": null,\"attributes\": {\"qualifier\": {\"t\": \"qualifier\",\"v\": {\"itemsAny\": {\"search\": [{\"productSearchId\": " + searchId + "}]}}},\"offer\": {\"t\": \"offer\",\"v\": {\"orderPercentOff\": {\"discount\": 10}}}}}],\"applyType\": \"coupon\"}");
+        RequestBody body = RequestBody.create(mediaType, payload);
         Request request = new Request.Builder()
                 .url(apiUrl + "/v1/promotions/default")
                 .post(body)
@@ -2077,6 +2095,7 @@ public class DataProvider extends BaseTest {
                 .getJSONArray("must").getJSONObject(0).getJSONObject("match").getJSONObject("title")
                 .putOpt("query", productName);
         String payload = jsonObj.toString();
+        System.out.println(payload);
 
         OkHttpClient client = new OkHttpClient();
 
@@ -2293,8 +2312,6 @@ public class DataProvider extends BaseTest {
 
     private static void viewSKU_inventory(String skuCode) throws IOException {
 
-        System.out.println("Inventory takes its time to get created...");
-        sleep(10000);
         System.out.println("Viewing inventory summary of SKU <" + skuCode + ">...");
 
         OkHttpClient client = new OkHttpClient();
@@ -2535,6 +2552,11 @@ public class DataProvider extends BaseTest {
 
             //----------------------------------- CART COUPONS ------------------------------------//
 
+            case "empty cart":
+                createCustomer();
+                createCart(customerId);
+                break;
+
 //            case "cart<empty>; coupon<any, single code>":
 //                createCustomer();
 //                createCart(customerId);
@@ -2611,7 +2633,6 @@ public class DataProvider extends BaseTest {
                 createSKU_active();
                 createProduct_active(sku, "test");
                 updLineItems(cartId, sku, 1);
-                createSharedSearch_oneFilter();
                 createSharedSearch_singleProduct(productName);
                 createPromotion_coupon_itemsNoQual(searchId);
                 createCoupon(promotionId);
