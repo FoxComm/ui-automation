@@ -222,11 +222,6 @@ public class PromotionsPage extends BasePage {
         setDdVal(productSearchDd_qualifier(), productSearchDd);
     }
 
-    @Step("Set offer's \"Get\" input fld to <{0}>")
-    public void setGetFld_offer(String spend) {
-        setFieldVal(getFld_offer(), spend);
-    }
-
     @Step("Select <{0}> value in \"Select Product\" dd at \"Offer-Get\" block")
     public void setProductDd_offer(String qty) {
         setDdVal((productDd_offer()), qty);
