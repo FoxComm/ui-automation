@@ -2419,6 +2419,7 @@ public class DataProvider extends BaseTest {
     protected void provideTestData(String testMethodName) throws IOException {
 
         skus.clear();
+        System.out.println("==== ==== ==== ====");
         loginAsAdmin();
 
         switch(testMethodName) {
@@ -3279,11 +3280,8 @@ public class DataProvider extends BaseTest {
                 signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
                 createSKU_active();
                 createProduct_active(sku, storefrontCategory);
-
+                break;
         }
-    }
-
-    public static void main(String[] args) throws IOException {
     }
 
 }

@@ -23,6 +23,18 @@ public class BaseTest extends ConciseAPI {
     protected static String adminPassword;
     protected static String storefrontCategory;
 
+    private void printEnvInfo() {
+        String f = "%-25s %s\n";
+        System.out.printf(f, "timeout, ms:", "<" + Configuration.timeout + ">");
+        System.out.printf(f, "apiUrl:", "<" + apiUrl + ">");
+        System.out.printf(f, "adminUrl:", "<" + adminUrl + ">");
+        System.out.printf(f, "storefront:", "<" + storefront + ">");
+        System.out.printf(f, "storefrontUrl:", "<" + storefrontUrl + ">");
+        System.out.printf(f, "storefrontCategory:", "<" + storefrontCategory + ">");
+        System.out.printf(f, "adminPassword:", "<" + adminPassword.charAt(0) + "*>");
+        System.out.println("");
+    }
+
     private void setAdminPassword() {
         if (System.getenv("API_URL").equals("https://td-prod.foxcommerce.com")) {
             adminPassword = "Fluffybunny";
@@ -55,6 +67,7 @@ public class BaseTest extends ConciseAPI {
         Configuration.timeout = 6000;
         setAdminPassword();
         setStorefrontCategory();
+        printEnvInfo();
     }
 
 }
