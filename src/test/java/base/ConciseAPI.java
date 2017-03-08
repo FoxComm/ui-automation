@@ -8,9 +8,7 @@ import com.codeborne.selenide.ex.ElementShould;
 import com.codeborne.selenide.ex.ElementShouldNot;
 import com.codeborne.selenide.ex.ListSizeMismatch;
 import com.google.common.io.Files;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
+import org.openqa.selenium.*;
 import org.testng.IHookCallBack;
 import org.testng.IHookable;
 import org.testng.ITestResult;
@@ -27,6 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -131,6 +130,11 @@ public class ConciseAPI implements IHookable {
     public void clearField(SelenideElement element) {
         element.sendKeys(Keys.chord(Keys.CONTROL, "a"));
         element.sendKeys(Keys.BACK_SPACE);
+    }
+
+    protected void scrollPageUp() {
+        JavascriptExecutor js = (JavascriptExecutor)getWebDriver();
+        js.executeScript("window.scrollTo(0, 0)");
     }
 
     //------------------------- ASSERTIONS -------------------------//
@@ -242,6 +246,16 @@ public class ConciseAPI implements IHookable {
         }
     }
 
+    protected void shouldNotBeEmpty(SelenideElement element, String errorMsg) {
+        try {
+            element.shouldNotBe(empty);
+        } catch (ElementNotFound | ElementShouldNot | NullPointerException e) {
+            System.err.println(e.getStackTrace());
+            e.printStackTrace();
+            throw new RuntimeException(errorMsg);
+        }
+    }
+
     public void assertTwice(SelenideElement element, String condition, String errorMsg) {
         switch (condition.toLowerCase()) {
 
@@ -316,6 +330,17 @@ public class ConciseAPI implements IHookable {
             refresh();
             elemCollection.shouldHaveSize(expValue);
         }
+    }
+
+    protected Boolean checkCustomerAuth() {
+        Boolean result = null;
+        try {
+            getWebDriver().manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+            WebElement logInLnk = getWebDriver().findElement(By.xpath("//a[contains(@class, 'login-link')]"));
+        } catch (NoSuchElementException ignored) {
+            result = true;
+        }
+        return result != null;
     }
 
 

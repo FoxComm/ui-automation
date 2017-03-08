@@ -1,8 +1,5 @@
 package tests.storefront.auth;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebElement;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -11,12 +8,10 @@ import pages.StorefrontPage;
 import testdata.DataProvider;
 
 import java.io.IOException;
-import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
 import static com.codeborne.selenide.Condition.matchText;
 import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
+import static org.testng.Assert.assertEquals;
 
 public class AuthTest extends DataProvider {
 
@@ -25,19 +20,7 @@ public class AuthTest extends DataProvider {
     @BeforeMethod(alwaysRun = true)
     public void cleanUp_before() {
         p = openPage(storefrontUrl + "/" + storefrontCategory, StorefrontPage.class);
-        if (!Objects.equals(p.cartQty().text(), "0")) {
-            p.openCart();
-            p.cleanCart();
-            p.closeCart();
-        }
-        try {
-            getWebDriver().manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
-            WebElement logInLnk = getWebDriver().findElement(By.xpath("//a[contains(@class, 'login-link')]"));
-        } catch (NoSuchElementException ignored) {
-            p.userName().click();
-            p.menuLink("LOG OUT").click();
-            p.logInLnk().shouldBe(visible);
-        }
+        p.cleanUp_beforeMethod();
     }
 
     @Test(priority = 1)
@@ -113,7 +96,7 @@ public class AuthTest extends DataProvider {
         p.setPassword("78qa22!#");
         p.clickLogInBtn();
         shouldMatchText(p.userName(), customerName.toUpperCase(), "Failed to log out");
-        p.logOut();
+        p.selectInUserMenu("LOG OUT");
 
         p.logInLnk().shouldBe(visible);
     }
@@ -145,22 +128,37 @@ public class AuthTest extends DataProvider {
         p.userName().should(matchText(randomId.toUpperCase()));
     }
 
+    @Test(priority = 8)
+    @Description("User is redirected to the home page upon logging out under /profile")
+    public void logOutUnderProfile() throws IOException {
+        provideTestData("a customer signed up on storefront");
+
+        p = openPage(storefrontUrl, StorefrontPage.class);
+        p.logIn(customerEmail, "78qa22!#");
+        p.selectInUserMenu("PROFILE");
+        p.selectInUserMenu("LOG OUT");
+
+        p.logInLnk().shouldBe(visible);
+        assertEquals(getUrl(), storefrontUrl);
+    }
+
+    @Test(priority = 9)
+    @Description("Can't view pages under /admin using customer auth")
+    public void customerCantAccessAdmin() throws IOException {
+        provideTestData("a customer signed up on storefront");
+
+        p = openPage(storefrontUrl, StorefrontPage.class);
+        p.logIn(customerEmail, "78qa22!#");
+        p.selectInUserMenu("PROFILE");
+        p.selectInUserMenu("LOG OUT");
+
+        p.logInLnk().shouldBe(visible);
+        assertEquals(getUrl(), storefrontUrl);
+    }
+
     @AfterMethod(alwaysRun = true)
     public void cleanUp_after() {
-        click(p.logo());
-        if (!Objects.equals(p.cartQty().text(), "0")) {
-            p.openCart();
-            p.cleanCart();
-            p.closeCart();
-        }
-        try {
-            getWebDriver().manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
-            WebElement logInLnk = getWebDriver().findElement(By.xpath("//a[contains(@class, 'login-link')]"));
-        } catch (NoSuchElementException ignored) {
-            p.userName().click();
-            p.menuLink("LOG OUT").click();
-            p.logInLnk().shouldBe(visible);
-        }
+        p.cleanUp_afterMethod();
     }
 
 }

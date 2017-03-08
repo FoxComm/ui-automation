@@ -11,13 +11,13 @@ import static com.codeborne.selenide.WebDriverRunner.source;
 
 public class BaseTest extends ConciseAPI {
 
-    protected String getUrl() {
+    public String getUrl() {
         return getWebDriver().getCurrentUrl();
     }
     protected static String apiUrl = System.getenv("API_URL") + "/api";
     protected static String adminUrl = System.getenv("API_URL") + "/admin";
     private static String storefront = System.getenv("STOREFRONT");
-    protected static String storefrontUrl = System.getenv("API_URL") + "/" + storefront;
+    public static String storefrontUrl = System.getenv("API_URL") + "/" + storefront;
     protected static String adminOrg = "tenant";
     protected static String adminEmail = "admin@admin.com";
     protected static String adminPassword;
@@ -31,7 +31,7 @@ public class BaseTest extends ConciseAPI {
         System.out.printf(f, "storefront:", "<" + storefront + ">");
         System.out.printf(f, "storefrontUrl:", "<" + storefrontUrl + ">");
         System.out.printf(f, "storefrontCategory:", "<" + storefrontCategory + ">");
-        System.out.printf(f, "adminPassword:", "<" + adminPassword.charAt(0) + "*>");
+        System.out.printf(f, "adminPassword:", "<" + adminPassword.charAt(0) + ">");
         System.out.println("");
     }
 

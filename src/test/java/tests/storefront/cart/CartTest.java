@@ -1,8 +1,5 @@
 package tests.storefront.cart;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebElement;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -11,12 +8,9 @@ import pages.StorefrontPage;
 import testdata.DataProvider;
 
 import java.io.IOException;
-import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 
 public class CartTest extends DataProvider {
 
@@ -25,19 +19,7 @@ public class CartTest extends DataProvider {
     @BeforeMethod(alwaysRun = true)
     public void cleanUp_before() {
         p = openPage(storefrontUrl + "/" + storefrontCategory, StorefrontPage.class);
-        if (!Objects.equals(p.cartQty().text(), "0")) {
-            p.openCart();
-            p.cleanCart();
-            p.closeCart();
-        }
-        try {
-            getWebDriver().manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
-            WebElement logInLnk = getWebDriver().findElement(By.xpath("//a[contains(@class, 'login-link')]"));
-        } catch (NoSuchElementException ignored) {
-            p.userName().click();
-            p.menuLink("LOG OUT").click();
-            p.logInLnk().shouldBe(visible);
-        }
+        p.cleanUp_beforeMethod();
     }
 
     @Test(priority = 1)
@@ -107,27 +89,14 @@ public class CartTest extends DataProvider {
         shouldHaveText(p.cartQty(), "0", "Incorrect line item indicator value");
         p.logIn(customerEmail, "78qa22!#");
         shouldHaveText(p.cartQty(), "1", "Incorrect line item indicator value");
-        p.logOut();
+        p.selectInUserMenu("LOG OUT");
 
         p.cartQty().shouldHave(text("0"));
     }
 
     @AfterMethod(alwaysRun = true)
     public void cleanUp_after() {
-        click(p.logo());
-        if (!Objects.equals(p.cartQty().text(), "0")) {
-            p.openCart();
-            p.cleanCart();
-            p.closeCart();
-        }
-        try {
-            getWebDriver().manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
-            WebElement logInLnk = getWebDriver().findElement(By.xpath("//a[contains(@class, 'login-link')]"));
-        } catch (NoSuchElementException ignored) {
-            p.userName().click();
-            p.menuLink("LOG OUT").click();
-            p.logInLnk().shouldBe(visible);
-        }
+        p.cleanUp_afterMethod();
     }
 
 }

@@ -136,4 +136,9 @@
             <class name="tests.storefront.profile.ProfileTest" />
         </classes>
     </test>
+    <test name="Storefront : Shipping Address">
+        <classes>
+            <class name="tests.storefront.profile.ShippingAddressTest" />
+        </classes>
+    </test>
 </suite>

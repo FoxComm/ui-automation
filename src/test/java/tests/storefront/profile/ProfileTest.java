@@ -1,8 +1,5 @@
 package tests.storefront.profile;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebElement;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -11,34 +8,19 @@ import pages.StorefrontPage;
 import testdata.DataProvider;
 
 import java.io.IOException;
-import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
 import static com.codeborne.selenide.Condition.matchText;
 import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 
 public class ProfileTest extends DataProvider {
+
+    private StorefrontPage p;
 
     @BeforeMethod(alwaysRun = true)
     public void cleanUp_before() {
         p = openPage(storefrontUrl + "/" + storefrontCategory, StorefrontPage.class);
-        if (!Objects.equals(p.cartQty().text(), "0")) {
-            p.openCart();
-            p.cleanCart();
-            p.closeCart();
-        }
-        try {
-            getWebDriver().manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
-            WebElement logInLnk = getWebDriver().findElement(By.xpath("//a[contains(@class, 'login-link')]"));
-        } catch (NoSuchElementException ignored) {
-            p.userName().click();
-            p.menuLink("LOG OUT").click();
-            p.logInLnk().shouldBe(visible);
-        }
+        p.cleanUp_beforeMethod();
     }
-
-    private StorefrontPage p;
 
     @Test(priority = 1)
     @Description("Can access profile from user menu")
@@ -51,7 +33,7 @@ public class ProfileTest extends DataProvider {
         p.setPassword("78qa22!#");
         p.clickLogInBtn();
         shouldMatchText(p.userName(), customerName.toUpperCase(), "Failed to edit customer name");
-        p.openProfile();
+        p.selectInUserMenu("PROFILE");
 
         p.changePasswordBtn().shouldBe(visible);
     }
@@ -63,7 +45,7 @@ public class ProfileTest extends DataProvider {
         p = openPage(storefrontUrl, StorefrontPage.class);
         p.logIn(customerEmail, "78qa22!#");
 
-        p.openProfile();
+        p.selectInUserMenu("PROFILE");
         p.clickEditLnk("Name");
         p.setNameFld("Edited Name");
         p.clickSaveBtn();
@@ -79,12 +61,12 @@ public class ProfileTest extends DataProvider {
         p = openPage(storefrontUrl, StorefrontPage.class);
         p.logIn(customerEmail, "78qa22!#");
 
-        p.openProfile();
+        p.selectInUserMenu("PROFILE");
         p.clickEditLnk("Email");
         p.setEmailFld(newEmail);
         p.clickSaveBtn();
         shouldHaveText(p.userEmail(), newEmail, "Failed to edit customer's \"Email\"");
-        p.logOut();
+        p.selectInUserMenu("LOG OUT");
         p.logIn(newEmail, "78qa22!#");
 
         p.userName().should(matchText(customerName.toUpperCase()));
@@ -97,7 +79,7 @@ public class ProfileTest extends DataProvider {
 
         p = openPage(storefrontUrl, StorefrontPage.class);
         p.logIn(customerEmail, "78qa22!#");
-        p.openProfile();
+        p.selectInUserMenu("PROFILE");
         p.clickEditLnk("Email");
         p.setEmailFld(takenEmail);
 
@@ -106,20 +88,7 @@ public class ProfileTest extends DataProvider {
 
     @AfterMethod(alwaysRun = true)
     public void cleanUp_after() {
-        click(p.logo());
-        if (!Objects.equals(p.cartQty().text(), "0")) {
-            p.openCart();
-            p.cleanCart();
-            p.closeCart();
-        }
-        try {
-            getWebDriver().manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
-            WebElement logInLnk = getWebDriver().findElement(By.xpath("//a[contains(@class, 'login-link')]"));
-        } catch (NoSuchElementException ignored) {
-            p.userName().click();
-            p.menuLink("LOG OUT").click();
-            p.logInLnk().shouldBe(visible);
-        }
+        p.cleanUp_afterMethod();
     }
 
 }

@@ -3273,6 +3273,65 @@ public class DataProvider extends BaseTest {
                 createSKU_active();
                 createProduct_active(sku, storefrontCategory);
                 break;
+
+            //---------------------------------- SF: SHIPPING ADDRESS --------------------------------//
+
+            case "a storefront signed up customer with a shipping address":
+                randomId = generateRandomID();
+                signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
+                createAddress(customerId,
+                        "John Doe",
+                        4177, 234,
+                        "Washington", "7500 Roosevelt Way NE",
+                        "Block 42",
+                        "Seattle", "98115",
+                        "5038234000", false);
+                break;
+
+            case "a storefront signed up customer with 2 shipping addresses":
+                randomId = generateRandomID();
+                signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
+                createAddress(customerId,
+                        "John Doe",
+                        4177, 234,
+                        "Washington", "7500 Roosevelt Way NE",
+                        "Block 42",
+                        "Seattle", "98115",
+                        "5038234000", false);
+                createAddress(customerId,
+                        "Paul Puga",
+                        4177, 234,
+                        "Washington", "2101 Green Valley",
+                        "200 Suite",
+                        "Seattle", "98101",
+                        "5551237575", false);
+                break;
+
+            case "a storefront signed up customer with a product in cart":
+                randomId = generateRandomID();
+                signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
+                createCart(customerId);
+                createSKU_active();
+                createProduct_active(sku, storefrontCategory);
+                updLineItems(cartId, sku, 1);
+                break;
+
+            case "a storefront signed up customer with a shipping address and a product in cart":
+                randomId = generateRandomID();
+                signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
+                createCart(customerId);
+                createSKU_active();
+                createProduct_active(sku, storefrontCategory);
+                updLineItems(cartId, sku, 1);
+                createAddress(customerId,
+                        "John Doe",
+                        4177, 234,
+                        "Washington", "7500 Roosevelt Way NE",
+                        "Block 42",
+                        "Seattle", "98115",
+                        "5038234000", false);
+                break;
+
         }
     }
 
