@@ -9,3 +9,5 @@ else
 fi
 
 echo Environment=$API_URL >> target/allure-results/environment.properties
+
+echo Test Suit=$SUIT >> target/allure-results/environment.properties
