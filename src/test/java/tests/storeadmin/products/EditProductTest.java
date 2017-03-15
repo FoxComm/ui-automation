@@ -53,7 +53,7 @@ public class EditProductTest extends DataProvider {
         clearField(p.titleFld());
         p.setTitle("Edited Product " + uid);
         p.clickSave_wait();
-        p.navigateTo("Catalog", "Products");
+        p.navigateTo("Products");
         p.search(uid);
 
         p.getProductParamVal("1", "Title").shouldHave(text("Edited Product " + uid));
@@ -149,7 +149,8 @@ public class EditProductTest extends DataProvider {
         p = openPage(adminUrl + "/products/default/" + productId, ProductsPage.class);
         p.setState("Inactive");
         p.clickSave_wait();
-        p.navigateTo("Catalog", "Products");
+        p.navigateTo("Products");
+        p.navigateTo("Products");
         p.search(uid);
 
         p.getProductParamVal("1", "State").shouldHave(text("Inactive"));

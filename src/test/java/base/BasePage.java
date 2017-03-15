@@ -97,10 +97,9 @@ public class BasePage extends ConciseAPI {
         return $(xpath("//span[text()='" + sectionTitle + "']/../../following-sibling::*/a[text()='" + categoryTitle + "']"));
     }
 
-    @Step("Navigate to <{0}> -> <{1}>")
-    public void navigateTo(String sectionTitle, String categoryTitle) {
-        click(navContainer(sectionTitle));
-        click(category(sectionTitle, categoryTitle));
+    @Step("Navigate to <{0}> category")
+    public void navigateTo(String categoryTitle) {
+        click($(xpath("//span[text()='" + categoryTitle + "']")));
         waitForDataToLoad();
     }
 

@@ -43,7 +43,7 @@ public class CouponsTest extends DataProvider {
         p.clickSave_wait();
         shouldNotHaveText(p.couponIdVal(), "new", "Failed to create new coupon");
 
-        p.navigateTo("Marketing", "Coupons");
+        p.navigateTo("Coupons");
         p.waitForDataToLoad();
         p.search("test coupon " + randomId);
         p.getCouponParamVal("1", "Name").shouldHave(text("test coupon " + randomId));
@@ -66,7 +66,7 @@ public class CouponsTest extends DataProvider {
         p.clickSave_wait();
         shouldNotHaveText(p.couponIdVal(), "new", "Failed to create new coupon");
 
-        p.navigateTo("Marketing", "Coupons");
+        p.navigateTo("Coupons");
         p.waitForDataToLoad();
         p.getCouponParamVal("1", "Name").shouldHave(text("test coupon " + randomId));
     }
@@ -93,7 +93,7 @@ public class CouponsTest extends DataProvider {
         p = openPage(adminUrl + "/coupons/" + couponId, CouponsPage.class);
         p.setCouponName("edited coupon " + randomId);
         p.clickSave_wait();
-        p.navigateTo("Marketing", "Coupons");
+        p.navigateTo("Coupons");
         p.search("edited coupon " + randomId);
 
         p.getCouponParamVal("1", "Name").shouldHave(text("edited coupon " + randomId));
@@ -107,7 +107,7 @@ public class CouponsTest extends DataProvider {
         clearField( p.storefrontNameFld() );
         p.setStorefrontName("edited SF name");
         p.clickSave_wait();
-        p.navigateTo("Marketing", "Coupons");
+        p.navigateTo("Coupons");
         p.search(couponId);
 
         p.getCouponParamVal("1", "Storefront Name").shouldHave(text("<p>edited SF name</p>"));
@@ -121,7 +121,7 @@ public class CouponsTest extends DataProvider {
         clearField(p.descriptionFld());
         p.setDescription("edited description");
         p.clickSave_wait();
-        p.navigateTo("Marketing", "Coupons");
+        p.navigateTo("Coupons");
         p.search(couponId);
         p.openCoupon(couponId);
 
@@ -136,7 +136,7 @@ public class CouponsTest extends DataProvider {
         clearField(p.detailsFld());
         p.setDetails("edited details");
         p.clickSave_wait();
-        p.navigateTo("Marketing", "Coupons");
+        p.navigateTo("Coupons");
         p.search(couponId);
         p.openCoupon(couponId);
 
@@ -150,7 +150,7 @@ public class CouponsTest extends DataProvider {
         p = openPage(adminUrl + "/coupons/" + couponId, CouponsPage.class);
         p.setState("Inactive");
         p.clickSave_wait();
-        p.navigateTo("Marketing", "Coupons");
+        p.navigateTo("Coupons");
         p.search(couponId);
 
         p.getCouponParamVal("1", "State").shouldHave(text("Inactive"));

@@ -33,6 +33,7 @@ import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
 import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 import static org.openqa.selenium.By.xpath;
+import static org.testng.Assert.assertEquals;
 
 public class ConciseAPI implements IHookable {
 
@@ -87,8 +88,8 @@ public class ConciseAPI implements IHookable {
     }
 
     protected void jsClick(SelenideElement element) {
-        JavascriptExecutor executor = (JavascriptExecutor)getWebDriver();
-        executor.executeScript("arguments[0].click();", element);
+        JavascriptExecutor jse = (JavascriptExecutor)getWebDriver();
+        jse.executeScript("arguments[0].click();", element);
     }
 
     protected void setDdVal(SelenideElement ddElement, String ddValue) {
@@ -133,8 +134,13 @@ public class ConciseAPI implements IHookable {
     }
 
     protected void scrollPageUp() {
-        JavascriptExecutor js = (JavascriptExecutor)getWebDriver();
-        js.executeScript("window.scrollTo(0, 0)");
+        JavascriptExecutor jse = (JavascriptExecutor)getWebDriver();
+        jse.executeScript("window.scrollTo(0, 0)");
+    }
+
+    protected void scrollToElement(SelenideElement element) {
+        JavascriptExecutor jse = (JavascriptExecutor)getWebDriver();
+        jse.executeScript("arguments[0].scrollIntoView(true);", element);
     }
 
     //------------------------- ASSERTIONS -------------------------//
@@ -332,6 +338,18 @@ public class ConciseAPI implements IHookable {
         }
     }
 
+    @Step("Assert that current URL is <{1}>")
+    protected void assertUrl(String actualUrl, String expectedUrl) {
+        String lastChar = actualUrl.substring(actualUrl.length() - 1);
+        if(lastChar.equals("/")) {
+            actualUrl = actualUrl.substring(0, actualUrl.length() - 1);
+        }
+        assertEquals(actualUrl, expectedUrl);
+    }
+
+    /**
+     * Returns true if customer is signed in
+     */
     protected Boolean checkCustomerAuth() {
         Boolean result = null;
         try {
@@ -343,6 +361,17 @@ public class ConciseAPI implements IHookable {
         return result != null;
     }
 
+    /**
+     * Webdriver based explicit wait.
+     * Checks if element with given xpath is present, timeout = 1 second
+     * Use it if you need to check the presence of the element as a condition
+     * ONLY to be used inside of try-catch blocks as it will throw NoSuchElementException in case of failure
+     * and will fail the test
+     */
+    protected void elementIsPresent(String xpath) {
+        getWebDriver().manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+        WebElement element = getWebDriver().findElement(By.xpath(xpath));
+    }
 
     //------------------------- HELPERS -------------------------//
 
@@ -442,6 +471,12 @@ public class ConciseAPI implements IHookable {
         }
     }
 
+    protected static String totalToString(int total) {
+        String strTotal = Integer.toString(total);
+        strTotal = new StringBuilder(strTotal).insert(strTotal.length() - 2, ".").toString();
+        return strTotal;
+    }
+
 
     //----------------------------------------- SCREENSHOTS -----------------------------------------//
 
@@ -520,6 +555,15 @@ public class ConciseAPI implements IHookable {
         System.out.println("Total amount of elements in list: <" + list.size() + ">.");
         for(String code : list) {
             System.out.println("Code: <" + code + ">");
+        }
+        System.out.println("**** **** **** ");
+    }
+
+    protected static void printIntList(List<Integer> list) {
+        System.out.println("**** **** **** ");
+        System.out.println("Total amount of elements in list: <" + list.size() + ">.");
+        for(int code : list) {
+            System.out.println("ID: <" + code + ">");
         }
         System.out.println("**** **** **** ");
     }

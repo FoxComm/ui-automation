@@ -3,8 +3,8 @@ package tests.storefront.profile;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import ru.yandex.qatools.allure.annotations.Description;
 import pages.StorefrontPage;
+import ru.yandex.qatools.allure.annotations.Description;
 import testdata.DataProvider;
 
 import java.io.IOException;
@@ -14,19 +14,18 @@ import static com.codeborne.selenide.Condition.value;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.refresh;
 
-public class ShippingAddressTest extends DataProvider {
+public class MyShippingAddressesTest extends DataProvider {
 
     private StorefrontPage p;
 
     @BeforeMethod(alwaysRun = true)
     public void cleanUp_before() {
-        p = openPage(storefrontUrl + "/" + storefrontCategory, StorefrontPage.class);
+        p = openPage(storefrontUrl, StorefrontPage.class);
         p.cleanUp_beforeMethod();
     }
 
-
     @Test(priority = 1)
-    @Description("Add a new shipping address at /profile")
+    @Description("Can add a new shipping address")
     public void createShipAddress_profile() throws IOException {
         provideTestData("a customer signed up on storefront");
 
@@ -51,7 +50,7 @@ public class ShippingAddressTest extends DataProvider {
         p.selectInUserMenu("PROFILE");
         p.clickEditBtn_address("1");
         p.setName_shipAddress("Edited Name");
-        p.setZip("90210");
+        p.setZIP("90210");
         p.cityFld().shouldHave(value("Beverly Hills"));
         p.clickSaveBtn();
 
@@ -74,21 +73,6 @@ public class ShippingAddressTest extends DataProvider {
         p.myAddresses().shouldHaveSize(1);
     }
 
-    @Test(priority = 4)
-    @Description("Flag existing shipping address as a default at /profile")
-    public void setShipAddressAsDefault_profile() throws IOException {
-        provideTestData("a storefront signed up customer with 2 shipping addresses");
-
-        p = openPage(storefrontUrl, StorefrontPage.class);
-        p.logIn(customerEmail, "78qa22!#");
-        p.selectInUserMenu("PROFILE");
-        p.clickEditBtn_address("2");
-        p.clickDefaultChbx();
-        p.clickSaveBtn();
-
-        p.assertAddressIsDefault("2");
-    }
-
     @Test(priority = 5)
     @Description("Restore a just deleted shipping address")
     public void restoreShipAddress() throws IOException {
@@ -104,50 +88,54 @@ public class ShippingAddressTest extends DataProvider {
         p.restoreAddressBtn("1").shouldNotBe(visible);
     }
 
+    @Test(priority = 4)
+    @Description("Flag existing shipping address as a default at /profile")
+    public void setShipAddressAsDefault_existing() throws IOException {
+        provideTestData("a storefront signed up customer with 2 shipping addresses");
+
+        p = openPage(storefrontUrl, StorefrontPage.class);
+        p.logIn(customerEmail, "78qa22!#");
+        p.selectInUserMenu("PROFILE");
+        p.clickEditBtn_address("2");
+        p.clickDefaultChbx();
+        p.clickSaveBtn();
+
+        p.assertAddressIsSelected("2");
+    }
+
     @Test(priority = 6)
-    @Description("Create new shipping address at Checkout page")
-    public void createShipAddress_checkout() throws IOException {
-        provideTestData("a storefront signed up customer with a product in cart");
+    @Description("Can make new shipping address a default; customer doesn't have a default address")
+    public void setShipAddressAsDefault_new_noDefault() throws IOException {
+        provideTestData("a storefront signed up customer with 2 shipping addresses");
 
         p = openPage(storefrontUrl, StorefrontPage.class);
         p.logIn(customerEmail, "78qa22!#");
-        p.openCart();
-        p.clickCheckoutBtn_cart();
+        p.selectInUserMenu("PROFILE");
+        p.clickAddAddressBtn();
         p.fillOutAddressForm("John Doe", "7500 Roosevelt Way NE", "Block 42", "98115", "9879879766");
-        p.clickSaveAddressBtn();
+        p.clickDefaultChbx();
+        p.clickSaveBtn();
 
-        p.shipAddress_checkout().shouldBe(visible);
-        scrollPageUp();
-        p.clickLogo();
-        p.selectInUserMenu("PROFILE");
-        p.myAddresses().shouldHaveSize(1);
+        p.assertAddressIsSelected("3");
     }
-
+    
     @Test(priority = 7)
-    @Description("Create new shipping address at Checkout page")
-    public void editShipAddress_checkout() throws IOException {
-        provideTestData("a storefront signed up customer with a shipping address and a product in cart");
+    @Description("Can make new shipping address a default; customer has a default address")
+    public void setShipAddressAsDefault_new_hasDefault() throws IOException {
+        provideTestData("a storefront signed up customer with 2 shipping addresses, has default address");
 
         p = openPage(storefrontUrl, StorefrontPage.class);
         p.logIn(customerEmail, "78qa22!#");
-        p.openCart();
-        p.clickCheckoutBtn_cart();
-        p.clickEditAddressBtn_checkout("1");
-        p.setName_shipAddress("Edited Name");
-        p.setZip("90210");
-        p.cityFld().shouldHave(value("Beverly Hills"));
-        p.clickSaveAddressBtn();
-
-        p.shipAddress_name("1").shouldHave(text("Edited Name"));
-        p.shipAddress_zip("1").shouldHave(text("90210"));
-        p.shipAddress_state("1").shouldHave(text("California"));
-        scrollPageUp();
-        p.clickLogo();
         p.selectInUserMenu("PROFILE");
-        p.shipAddress_name("1").shouldHave(text("Edited Name"));
-        p.shipAddress_zip("1").shouldHave(text("90210"));
-        p.shipAddress_state("1").shouldHave(text("California"));
+        p.clickAddAddressBtn();
+        p.fillOutAddressForm("John Doe", "7500 Roosevelt Way NE", "Block 42", "98115", "9879879766");
+        p.clickDefaultChbx();
+        p.clickSaveBtn();
+
+        p.assertAddressIsSelected("3");
     }
+
+
 
     @AfterMethod(alwaysRun = true)
     public void cleanUp_after() {

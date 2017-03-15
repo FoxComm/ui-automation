@@ -1,4 +1,4 @@
-package tests.storeadmin.generalcontrols.login;
+package tests.storeadmin.generalcontrols;
 
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;

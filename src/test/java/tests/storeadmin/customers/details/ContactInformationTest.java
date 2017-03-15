@@ -19,7 +19,7 @@ public class ContactInformationTest extends DataProvider {
 
     private String randomId = generateRandomID();
     private String newName = "Test Buddy-" + randomId;
-    private String newEmail = "qatest2278+" + randomId + "@mail.com";
+    private String newEmail = "qatest2278+" + randomId + "@gmail.com";
 
     @BeforeClass(alwaysRun = true)
     public void setUp() {

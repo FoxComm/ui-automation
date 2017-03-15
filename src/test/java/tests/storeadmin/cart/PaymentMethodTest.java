@@ -120,7 +120,7 @@ public class PaymentMethodTest extends DataProvider {
 //        p.clickEditBtn("Payment Method");
 //        p.clickNewPayMethodBtn();
 //        p.selectPaymentType("Store Credit");
-//        p.setAmountToUse(String.valueOf(p.grandTotal()));
+//        p.setAmountToUse(String.valueOf(p.total()));
 //
 //        p.availableBalance().shouldHave(text("$0.00")
 //                .because("A store credit with 'onHold' state can be used as a payment method."));
@@ -137,8 +137,8 @@ public class PaymentMethodTest extends DataProvider {
 //        click( p.editBtn_payment() );
 //        click( p.newPaymentBtn() );
 //        p.selectPaymentType("Store Credit");
-//        setFieldVal( p.amountToUseFld(), String.valueOf(p.grandTotal()) );
-//        p.setAmountToUse(String.valueOf(p.grandTotal()));
+//        setFieldVal( p.amountToUseFld(), String.valueOf(p.total()) );
+//        p.setAmountToUse(String.valueOf(p.total()));
 //
 //        p.availableBalance().shouldHave(text("$0.00")
 //                .because("A store credit with 'canceled' state can be used as a payment method."));

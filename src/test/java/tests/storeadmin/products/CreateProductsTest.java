@@ -46,7 +46,7 @@ public class CreateProductsTest extends DataProvider {
         p = openPage(adminUrl + "/products", ProductsPage.class);
         p.clickAddNewProduct();
         p.createProduct(productTitle, sku, "27.18", "27.18", "sunglasses", "Active");
-        p.navigateTo("Catalog", "Products");
+        p.navigateTo("Products");
         p.waitForDataToLoad();
         p.search(randomId);
 
@@ -266,7 +266,7 @@ public class CreateProductsTest extends DataProvider {
         p = open(adminUrl+ "/products/default/new", ProductsPage.class);
         p.createProduct(productTitle, sku, "27.18", "27.18", "sunglasses", "Active");
         p.clickSave_wait();
-        p.navigateTo("Catalog", "Products");
+        p.navigateTo("Products");
         p.waitForDataToLoad();
         p.search(randomId);
 
@@ -285,7 +285,7 @@ public class CreateProductsTest extends DataProvider {
         p = openPage(adminUrl + "/products/default/new", ProductsPage.class);
         p.createProduct(productTitle, sku, "27.18", "27.18", "sunglasses", "Active");
         p.clickSave_wait();
-        p.navigateTo("Catalog", "Products");
+        p.navigateTo("Products");
         p.waitForDataToLoad();
         p.search(randomId);
 
@@ -302,7 +302,7 @@ public class CreateProductsTest extends DataProvider {
         p = openPage(adminUrl + "/products/default/new", ProductsPage.class);
         p.createProduct(productTitle, sku, "27.18", "27.18", "sunglasses", "Active");
         p.clickSave_wait();
-        p.navigateTo("Catalog", "Products");
+        p.navigateTo("Products");
         p.waitForDataToLoad();
         p.search(randomId);
 
@@ -320,7 +320,7 @@ public class CreateProductsTest extends DataProvider {
 //        p = openPage(adminUrl + "/products/default/new", ProductsPage.class);
 //        p.createProduct(productTitle, sku, "27.18", "27.18", "sunglasses", "Active");
 //        p.clickSave_wait();
-//        p.navigateTo("Catalog", "Products");
+//        p.navigateTo("Products");
 //        p.waitForDataToLoad();
 //        p.search(randomId);
 //        p.openProduct(productTitle);

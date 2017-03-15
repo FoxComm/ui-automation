@@ -3,13 +3,10 @@ package pages;
 import base.BasePage;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
-import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebElement;
 import ru.yandex.qatools.allure.annotations.Step;
 
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
 import static base.BaseTest.storefrontUrl;
 import static com.codeborne.selenide.Condition.selected;
@@ -49,6 +46,31 @@ public class StorefrontPage extends BasePage {
 
     private SelenideElement signUpBtn() {
         return $(xpath("//button[@type='submit' and text()='SIGN UP']"));
+    }
+
+    private SelenideElement forgotLnk() {
+        return $(xpath("//a[contains(@class, 'restore-link')]"));
+    }
+
+    private SelenideElement submitBtn() {
+        return $(xpath("//button[@type='submit' and text()='SUBMIT']"));
+    }
+
+    private SelenideElement backToSignInBtn() {
+        return $(xpath("//button[text()='BACK TO SIGN IN']"));
+    }
+
+    //TODO: id
+    public SelenideElement closeAuthFormBtn() {
+        return $(xpath("//a[contains(@class, 'close-button_cface')]/span[contains(@class, 'close-icon')]"));
+    }
+
+    public SelenideElement errorMsg_authForm(String msg) {
+        return $(xpath("//div[contains(@class, 'error') and text()='" + msg + "']"));
+    }
+
+    public SelenideElement message_passRecovery(String msg) {
+        return $(xpath("//div[contains(@class, 'top-message') and contains(text(), '" + msg + "')]"));
     }
 
     //---------------------------------------- STEPS -----------------------------------------
@@ -97,6 +119,26 @@ public class StorefrontPage extends BasePage {
         click(signUpBtn());
     }
 
+    @Step("Click \"forgot?\" link")
+    public void clickForgotLnk() {
+        click(forgotLnk());
+    }
+
+    @Step("Click \"Submit\" btn")
+    public void clickSubmitBtn() {
+        click(submitBtn());
+    }
+
+    @Step("Click \"BACK TO SIGN IN\" btn")
+    public void clickBackToSignInBtn() {
+        click(backToSignInBtn());
+    }
+
+    @Step("Click \"X\" btn to close auth form")
+    public void closeAuthForm() {
+        click(closeAuthFormBtn());
+    }
+
 
     //======================================== GENERAL CONTROLS ========================================
     //-------------------------------------------- ELEMENTS --------------------------------------------
@@ -105,7 +147,7 @@ public class StorefrontPage extends BasePage {
         return $(xpath("//span[contains(@class, 'fc-logo')]"));
     }
 
-    public SelenideElement userName() {
+    public SelenideElement userMenuBtn_sf() {
         return $(xpath("//span[contains(@class, 'username')]"));
     }
 
@@ -117,11 +159,15 @@ public class StorefrontPage extends BasePage {
         return $(xpath("//div[contains(@class, 'error') and text()='" + errorText + "']"));
     }
 
+    private SelenideElement categoryTitle(String category) {
+        return $(xpath("//div[contains(@class, 'navigation')]//a[text()='" + category + "']"));
+    }
+
     //---------------------------------------------- STEPS ----------------------------------------------
 
     @Step("Open user menu")
     private void openUserMenu() {
-        click(userName());
+        click(userMenuBtn_sf());
     }
 
     @Step("Select menu link <{0}>")
@@ -139,6 +185,11 @@ public class StorefrontPage extends BasePage {
     @Step("Click logo")
     public void clickLogo() {
         click(logo());
+    }
+
+    @Step("Navigate to category <{0}>")
+    public void navigateToCategory(String category) {
+        click(categoryTitle(category));
     }
 
 
@@ -245,7 +296,7 @@ public class StorefrontPage extends BasePage {
         return $(xpath("//input[@name='phoneNumber']"));
     }
 
-    private SelenideElement defaultAddressRbtn(String index) {
+    public SelenideElement selectAddressRbtn(String index) {
         return $(xpath("//li[" + index + "]//input[contains(@name, 'address-radio')]"));
     }
 
@@ -296,7 +347,7 @@ public class StorefrontPage extends BasePage {
         setName_shipAddress(name);
         setAddress1(address1);
         setaddress2(address2);
-        setZip(zip);
+        setZIP(zip);
         setPhoneNumber(phoneNumber);
     }
 
@@ -312,22 +363,22 @@ public class StorefrontPage extends BasePage {
     }
 
     @Step("Set \"Address 1\" fld val to <{0}>")
-    private void setAddress1(String address1) {
+    public void setAddress1(String address1) {
         setFieldVal(address1Fld(), address1);
     }
 
     @Step("Set \"Address 2\" fld val to <{0}>")
-    private void setaddress2(String address2) {
+    public void setaddress2(String address2) {
         setFieldVal(address2Fld(), address2);
     }
 
     @Step("Set \"ZIP\" fld val to <{0}>")
-    public void setZip(String zip) {
+    public void setZIP(String zip) {
         setFieldVal(zipFld(), zip);
     }
 
     @Step("Set \"Phone Number\" fld val to <{0}>")
-    private void setPhoneNumber(String phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         setFieldVal(phoneNumberFld(), phoneNumber);
     }
 
@@ -337,8 +388,9 @@ public class StorefrontPage extends BasePage {
     }
 
     @Step("Assert that address <{0}> is set as default")
-    public void assertAddressIsDefault(String index) {
-        defaultAddressRbtn(index).shouldBe(selected);
+    public void assertAddressIsSelected(String index) {
+        scrollToElement(addAddressBtn());
+        selectAddressRbtn(index).shouldBe(selected);
     }
 
 
@@ -349,9 +401,43 @@ public class StorefrontPage extends BasePage {
         return $(xpath("//h1/a[text()='" + title + "']"));
     }
 
+    private SelenideElement qty_PDP() {
+        return $(xpath("//div[contains(@class, 'cart-actions')]//select"));
+    }
+
+    private SelenideElement qtyOption_PDP(String qty) {
+        return $(xpath("//div[contains(@class, 'cart-actions')]//select/option[@value='" + qty + "']"));
+    }
+
     private SelenideElement addToCartBtn_PDP() {
         return $(xpath("//button[contains(@class, 'add-to-cart-btn')]"));
     }
+
+    //TODO: id
+    private SelenideElement couponCodeFld() {
+        return $(xpath("//input[@placeholder='Coupon Code']"));
+    }
+
+    //TODO: id
+    private SelenideElement applyCouponBtn() {
+        return $(xpath("//button[text()='Apply']"));
+    }
+
+    //TODO: id & classes
+    public SelenideElement appliedCoupon() {
+        return $(xpath("//div[contains(@class, 'coupon-code')]"));
+    }
+
+    //TODO: class
+    private SelenideElement removeCouponBtn() {
+        return $(xpath("//span[contains(@class, 'delete-promo')]"));
+    }
+
+    //TODO: id
+    public SelenideElement adjustmentTotal_cart() {
+        return $(xpath("//div[contains(@class, 'coupon')]/span[1]"));
+    }
+
 
     //---------------------------------------------- STEPS --------------------------------------------
 
@@ -365,25 +451,54 @@ public class StorefrontPage extends BasePage {
         }
     }
 
+    @Step("Set product quantity to <{0}>")
+    public void setQty_PDP(String qty) {
+        click(qty_PDP());
+        click(qtyOption_PDP(qty));
+    }
+
     @Step("Click \"Add To Cart\" btn")
     public void clickAddToCartBtn() {
         click(addToCartBtn_PDP());
     }
 
+    @Step("Set \"Coupon Code\" fld val to <{0}>")
+    private void setCouponCode(String code) {
+        setFieldVal(couponCodeFld(), code);
+    }
 
-    //========================================= CATEGORY & PDP ========================================
+    //TODO: id
+    @Step("Click \"Apply\" btn")
+    private void clickApplyBtn_coupon() {
+        click(applyCouponBtn());
+    }
+
+    @Step("Apply coupon to cart, code: <{0}>")
+    public void applyCoupon(String code) {
+        setCouponCode(code);
+        clickApplyBtn_coupon();
+    }
+
+    @Step("Remove coupon from cart")
+    public void removeCoupon() {
+        click(removeCouponBtn());
+    }
+
+
+    //============================================== CART =============================================
     //-------------------------------------------- ELEMENTS -------------------------------------------
 
     public SelenideElement lineItemByName_cart(String productName) {
         return $(xpath("//div[contains(@class, 'product-name') and text()='" + productName + "']"));
     }
 
-    public SelenideElement cartSubtotal() {
+    public SelenideElement subTotal_cart() {
         return $(xpath("//div[contains(@class, 'cart-subtotal')]//span"));
     }
 
     private SelenideElement closeCartBtn() {
         return $(xpath("//span[contains(@class, 'back-icon')]"));
+//        return $(xpath("//div[text()='KEEP SHOPPING']"));
     }
 
     public SelenideElement cartQty() {
@@ -398,15 +513,43 @@ public class StorefrontPage extends BasePage {
         return $(xpath("//div[contains(@class, 'line-items')]/div[" + index + "]//span[contains(@class, 'fc-close')]"));
     }
 
-    private SelenideElement checkoutBtn_cart() {
+    public SelenideElement checkoutBtn_cart() {
         return $(xpath("//button[contains(@class, 'checkout-button')]"));
+    }
+
+    public ElementsCollection lineItemsAmount() {
+        return $$(xpath("//div[contains(@class, 'line-items')]/div[contains(@class, 'box')]"));
+    }
+
+    private SelenideElement priceSelector() {
+        return $(xpath("//div[contains(@class, 'price-selector')]"));
+    }
+
+    private SelenideElement priceOption(String price) {
+        return $(xpath("//div[contains(@class, 'price-selector')]//option[text()='" + price + "']"));
+    }
+
+    private SelenideElement recipientNameFld() {
+        return $(xpath("//input[@name='giftCard.recipientName']"));
+    }
+
+    private SelenideElement recipientEmailFld() {
+        return $(xpath("//input[@name='giftCard.recipientEmail']"));
+    }
+
+    private SelenideElement giftCardMsgFld() {
+        return $(xpath("//textarea[@name='giftCard.message']"));
+    }
+
+    private SelenideElement senderNameFld() {
+        return $(xpath("//input[@name='giftCard.senderName']"));
     }
 
     //---------------------------------------------- STEPS --------------------------------------------
 
     @Step("Close cart")
     public void closeCart() {
-        click(closeCartBtn());
+        jsClick(closeCartBtn());
     }
 
     @Step("Open cart")
@@ -432,9 +575,43 @@ public class StorefrontPage extends BasePage {
         }
     }
 
+    @Step("Set GC price to <{0}>")
+    public void setPriceSelector(String price) {
+        click(priceSelector());
+        click(priceOption(price));
+    }
+
+    @Step("Set \"Recipient Name\" fld val to <{0}>")
+    public void setRecipientName(String name) {
+        setFieldVal(recipientNameFld(), name);
+    }
+
+    @Step("Set \"Recipient Name\" fld val to <{0}>")
+    public void setRecipientEmail(String email) {
+        setFieldVal(recipientEmailFld(), email);
+    }
+
+    @Step("Set \"Message\" text area val to <{0}>")
+    public void setGiftCardMsg(String msg) {
+        setFieldVal(giftCardMsgFld(), msg);
+    }
+
+    @Step("Set \"Sender Name\" fld val to <{0}>")
+    public void setSenderName(String name) {
+        setFieldVal(senderNameFld(), name);
+    }
+
 
     //============================================ CHECKOUT ===========================================
     //-------------------------------------------- ELEMENTS -------------------------------------------
+
+    public SelenideElement navItem(String index) {
+        return $(xpath("//ol[contains(@class, 'nav-list')]/li[" + index + "]"));
+    }
+
+    public void assertCheckoutStepActive(String step) {
+        $(xpath("//ol/li[contains(@class, 'active')]//*[text()='Delivery']"));
+    }
 
     public SelenideElement orderSummary() {
         return $(xpath("//*[contains(@class, 'order-summary')]"));
@@ -460,6 +637,173 @@ public class StorefrontPage extends BasePage {
         return $(xpath("//li[" + index + "]//div[text()='EDIT']"));
     }
 
+    private SelenideElement continueBtn_checkout() {
+        return $(xpath("//button[contains(@class, 'checkout-submit') and text()='Continue']"));
+    }
+
+    private SelenideElement placeOrderBtn_checkout() {
+        return $(xpath("//button[contains(@class, 'checkout-submit') and text()='Place Order']"));
+    }
+
+    public SelenideElement confirmationOrderNumber() {
+        return $(xpath("//div[contains(@class, 'order-number')]/strong"));
+    }
+
+    //TODO: class
+    public SelenideElement appliedShipAddress_name() {
+        return $(xpath("//ul[contains(@class, 'savedAddress')]/li[1]"));
+    }
+
+    //TODO: class
+    public SelenideElement appliedShipAddress_address1() {
+        return $(xpath("//ul[contains(@class, 'savedAddress')]/li[2]"));
+    }
+
+    //TODO: class
+    public SelenideElement appliedShipAddress_address2() {
+        return $(xpath("//ul[contains(@class, 'savedAddress')]/li[3]"));
+    }
+
+    //TODO: class
+    public SelenideElement appliedShipAddress_zip() {
+        return $(xpath("//ul[contains(@class, 'savedAddress')]/li[4]/span[2]"));
+    }
+
+    //TODO: class
+    public SelenideElement appliedShipAddress_city() {
+        return $(xpath("//ul[contains(@class, 'savedAddress')]/li[4]"));
+    }
+
+    //TODO: class
+    public SelenideElement appliedShipAddress_state() {
+        return $(xpath("//ul[contains(@class, 'savedAddress')]/li[4]/span[1]"));
+    }
+
+    //TODO: class
+    public SelenideElement appliedShipAddress_phoneNumber() {
+        return $(xpath("//ul[contains(@class, 'savedAddress')]/li[5]/span"));
+    }
+
+    public SelenideElement shipAddressByName_checkout(String name) {
+        return $(xpath("//h3[text()='" + name + "']"));
+    }
+
+    public ElementsCollection shippingMethods() {
+        return $$(xpath("//div[contains(@class, 'shipping-method')]"));
+    }
+
+    //TODO: id
+    public SelenideElement selectShipMethodRbtn(String index) {
+        return $(xpath("//div[contains(@class, 'form-header')]/following-sibling::div[" + index + "]//input[@name='delivery']"));
+    }
+
+    //TODO: id
+    public SelenideElement selectShipMethodRbtn(int index) {
+        return $(xpath("//div[contains(@class, 'form-header')]/following-sibling::div[" + index + "]//input[@name='delivery']"));
+    }
+
+    public SelenideElement appliedShipMethod_name() {
+        return $(xpath("//article[contains(@class, 'delivery')]/div/div[contains(@class, 'name')]"));
+    }
+
+    public SelenideElement appliedShipMethod_price() {
+        return $(xpath("//article[contains(@class, 'delivery')]//span"));
+    }
+
+    private SelenideElement cardDefaultChbx() {
+        return $(xpath("//input[@id='set-default-card']"));
+    }
+
+    private SelenideElement holderNameFld() {
+        return $(xpath("//input[@name='holderName']"));
+    }
+
+    private SelenideElement cardNumberFld() {
+        return $(xpath("//input[@name='number']"));
+    }
+
+    private SelenideElement cvcFld() {
+        return $(xpath("//input[@placeholder='CVC']"));
+    }
+
+    private SelenideElement monthDd() {
+        return $(xpath("//input[@placeholder='MONTH']"));
+    }
+
+    private SelenideElement yearDd() {
+        return $(xpath("//input[@placeholder='YEAR']"));
+    }
+
+    private SelenideElement dateDdOption(String option) {
+        return $(xpath("//div[contains(@class, 'item') and text()='" + option + "']"));
+    }
+
+    public SelenideElement saveCardBtn() {
+        return $(xpath("//button[contains(@class, 'checkout-submit')]"));
+    }
+
+    public SelenideElement creditCard() {
+        return $(xpath("//div[contains(@class, 'credit-card')]"));
+    }
+
+    public ElementsCollection customerCardsWallet() {
+        return $$(xpath("//fieldset[contains(@class, 'cards')]"));
+    }
+
+    public SelenideElement defaultCardMark() {
+        return $(xpath("//div[contains(@class, 'credit-card')]//div[contains(@class, 'default-card')]"));
+    }
+
+    private SelenideElement deleteCardLnk(String index) {
+        return $(xpath("//fieldset/div/div[" + index + "]//span[text()='Delete']"));
+    }
+
+    //TODO: class for div that wraps all cards
+    public SelenideElement selectCardRbtn(String index) {
+        return $(xpath("//fieldset/div/div[" + index + "]//input[@name='credit-card']"));
+    }
+
+    private SelenideElement couponBlockTitle_checkout() {
+        return $(xpath("//h4[text()='COUPON CODE?']"));
+    }
+
+    private SelenideElement gcBlockTitle_checkout() {
+        return $(xpath("//h4[text()='GIFT CARD?']"));
+    }
+
+    private SelenideElement gcNumberFld() {
+        return $(xpath("//input[@placeholder='Gift Card Number']"));
+    }
+
+    private SelenideElement redeemBtn() {
+        return $(xpath("//button[text()='Redeem']"));
+    }
+
+    public SelenideElement appliedGiftCard() {
+        return $(xpath("//div[contains(@class, '_gift-card_')]"));
+    }
+
+    public SelenideElement removeGiftCardBtn() {
+        return $(xpath("//div[contains(@class, '_gift-card_')]//span[contains(@class, 'fc-close')]"));
+    }
+
+    public SelenideElement takeMeHomeBtn() {
+        return $(xpath("//button[contains(@class, 'button') and text()='Take me home']"));
+    }
+
+    public SelenideElement checkoutError(String errMsg) {
+        return $(xpath("//div[@class='fc-alert _type_error' and text()='" + errMsg + "']"));
+    }
+
+    public SelenideElement grandTotal() {
+        return $(xpath("//div[contains(@class, 'grand-total')]/div[contains(@class, 'value')]/span"));
+    }
+
+    private SelenideElement editStepBtn(String step) {
+        step = step.toLowerCase();
+        return $(xpath("//article[contains(@class, '" + step + "')]//div[text()='EDIT']"));
+    }
+
     //---------------------------------------------- STEPS --------------------------------------------
 
     @Step("Set guest's \"Email\" fld to <{0}>")
@@ -478,48 +822,146 @@ public class StorefrontPage extends BasePage {
     }
 
     @Step("Click \"EDIT\" btn next to <{0}th> shipping address")
-    public void clickEditAddressBtn_checkout(String index) {
+    public void editAddress_checkout(String index) {
         click(editAddressBtn_checkout(index));
+    }
+
+    @Step("Select <{0}th> shipping address")
+    public void setShipAddress(String index) {
+        jsClick(selectAddressRbtn(index));
+    }
+
+    @Step("Set \"Shipping Method\" to last available value on the list")
+    public void setShipMethod(String index) {
+        jsClick(selectShipMethodRbtn(index));
+    }
+
+    @Step("Set \"Shipping Method\" to No.<{0}> available option")
+    public void setShipMethod(int index) {
+        jsClick(selectShipMethodRbtn(index));
+    }
+
+    @Step("Click \"CONTINUE\" btn")
+    public void clickContinueBtn() {
+        click(continueBtn_checkout());
+    }
+
+    @Step("Fill out card form -- holderName:<{0}>, cardNumber:<{1}>, cvc:<{2}>, month:<{3}>, year:<{4}> makeDefault: <{5}>")
+    public void fillOutCardForm(String holderName, String cardNumber, String cvc, String month, String year, boolean makeDefault) {
+        setHolderNameFld(holderName);
+        setCardNumberFld(cardNumber);
+        setCVCFld(cvc);
+        setMonthDd(month);
+        setYearDd(year);
+        if (makeDefault) { clickCardDefaultChbx(); }
+    }
+
+    @Step("Click \"Set Card Default\" checkbox")
+    private void clickCardDefaultChbx() {
+        jsClick(cardDefaultChbx());
+    }
+
+    @Step("Set \"Holder Name\" fld val to <{0}>")
+    private void setHolderNameFld(String name) {
+        setFieldVal(holderNameFld(), name);
+    }
+
+    @Step("Set \"Card Nmber\" fld val to <{0}>")
+    private void setCardNumberFld(String cardBumber) {
+        setFieldVal(cardNumberFld(), cardBumber);
+    }
+
+    @Step("Set \"CVC\" fld val to <{0}>")
+    private void setCVCFld(String cvc) {
+        setFieldVal(cvcFld(), cvc);
+    }
+
+    @Step("Set \"Month\" dd val to <{0}>")
+    private void setMonthDd(String month) {
+        click(monthDd());
+        click(dateDdOption(month));
+    }
+
+    @Step("Set \"Year\" dd val to <{0}>")
+    private void setYearDd(String year) {
+        click(yearDd());
+        click(dateDdOption(year));
+    }
+
+    @Step("Click \"Save Card\" btn")
+    public void clickSaveCardBtn() {
+        click(saveCardBtn());
+    }
+
+    @Step("Select <{0}th> credit card")
+    public void setCreditCard(String index) {
+        jsClick(selectCardRbtn(index));
+    }
+
+    @Step("Assert credit card is selected")
+    public void assertCardIsSelected(String index) {
+        selectCardRbtn(index).shouldBe(selected);
+    }
+
+    @Step("Click \"PLACE ORDER\" btn")
+    public void clickPlaceOrderBtn() {
+        click(placeOrderBtn_checkout());
+    }
+
+    @Step("Click \"Delete\" lnk next to <{0}th> card in customer's wallet")
+    public void clickDeleteCardLnk(String index) {
+        click(deleteCardLnk(index));
+    }
+
+    @Step("Apply coupon code to card: <{0}>")
+    public void applyCouponCode(String code) {
+        expandCouponCodeBlock();
+        setCouponCode(code);
+        clickApplyBtn_coupon();
+    }
+
+    @Step("Expand \"COUPON CODE\" block")
+    public void expandCouponCodeBlock() {
+        click(couponBlockTitle_checkout());
+    }
+
+    @Step("Expand \"GIFT CARD\" block")
+    public void expandGiftCardBlock() {
+        click(gcBlockTitle_checkout());
+    }
+
+    @Step("Apply gift card code:<{0}>")
+    public void redeemGiftCard(String gcCode) {
+        expandGiftCardBlock();
+        setGiftCardNumb(gcCode);
+        click(redeemBtn());
+    }
+
+    @Step("Set \"GIFT CARD NUMBER\" fld val to <{0}>")
+    public void setGiftCardNumb(String gcCode) {
+        setFieldVal(gcNumberFld(), gcCode);
+    }
+
+    @Step("Click \"X\" btn at applied gift card")
+    public void clickRemoveGcBtn() {
+        click(removeGiftCardBtn());
+    }
+
+    @Step("Remove Gift Card")
+    public void removeGiftCard() {
+        expandGiftCardBlock();
+        clickRemoveGcBtn();
+    }
+
+    @Step("Click \"EDIT\" at <{0}> step")
+    public void editStep(String step) {
+        click(editStepBtn(step));
     }
 
     //============================================ HELPERS ===========================================
 
     public String getUrl() {
         return getWebDriver().getCurrentUrl();
-    }
-
-    public void cleanUp_afterMethod() {
-        // if on storeadmin -- go back to storefront
-        if (findInText(getUrl(), "/admin")) {
-            open(storefrontUrl);
-        } else {
-            try {
-                getWebDriver().manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
-                WebElement logInLnk = getWebDriver().findElement(By.xpath("//a[contains(@class, 'login-link')]"));
-                click(logo());
-            } catch (NoSuchElementException ignored) {
-                open(storefrontUrl);
-            }
-        }
-
-        // if cart has line items -- remove them all
-        if (checkCustomerAuth()) {
-            if (!Objects.equals(cartQty().text(), "0")) {
-                openCart();
-                cleanCart();
-                closeCart();
-            }
-        }
-
-        // if signed in -- log out
-        try {
-            getWebDriver().manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
-            WebElement logInLnk = getWebDriver().findElement(By.xpath("//a[contains(@class, 'login-link')]"));
-        } catch (NoSuchElementException ignored) {
-            userName().click();
-            menuLink("LOG OUT").click();
-            logInLnk().shouldBe(visible);
-        }
     }
 
     public void cleanUp_beforeMethod() {
@@ -529,13 +971,48 @@ public class StorefrontPage extends BasePage {
             closeCart();
         } else {
             try {
-                getWebDriver().manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
-                WebElement logInLnk = getWebDriver().findElement(By.xpath("//a[contains(@class, 'login-link')]"));
+                elementIsPresent("//a[contains(@class, 'login-link')]");
             } catch (NoSuchElementException ignored) {
-                userName().click();
+                userMenuBtn_sf().click();
                 menuLink("LOG OUT").click();
                 logInLnk().shouldBe(visible);
             }
+        }
+    }
+
+    public void cleanUp_afterMethod() {
+        // if on storeadmin -- go back to storefront
+        if (findInText(getUrl(), "/admin")) {
+            open(storefrontUrl);
+        } else {
+            try {
+                elementIsPresent("//span[contains(@class, 'back-icon')]");
+                closeCart();
+            } catch (NoSuchElementException ignored) {}
+            try {
+                elementIsPresent("//a[contains(@class, 'login-link')]");
+                jsClick(logo());
+            } catch (NoSuchElementException ignored) {
+                open(storefrontUrl);
+            }
+        }
+
+        // if cart has line items -- remove them all
+        if (!checkCustomerAuth()) {
+            if (!Objects.equals(cartQty().text(), "0")) {
+                openCart();
+                cleanCart();
+                closeCart();
+            }
+        }
+
+        // if signed in -- log out
+        try {
+            elementIsPresent("//a[contains(@class, 'login-link')]");
+        } catch (NoSuchElementException ignored) {
+            userMenuBtn_sf().click();
+            menuLink("LOG OUT").click();
+            logInLnk().shouldBe(visible);
         }
     }
 

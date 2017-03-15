@@ -2,7 +2,7 @@
 <suite name="e2e" verbose="1">
     <test name="Authentication">
         <classes>
-            <class name="tests.storeadmin.generalcontrols.login.LoginTest" />
+            <class name="tests.storeadmin.generalcontrols.auth.AuthTest" />
         </classes>
     </test>
 
@@ -121,24 +121,5 @@
         </classes>
     </test>
 
-    <test name="Storefront : Auth" >
-        <classes>
-            <class name="tests.storefront.auth.AuthTest" />
-        </classes>
-    </test>
-    <test name="Storefront : Cart">
-        <classes>
-            <class name="tests.storefront.cart.CartTest" />
-        </classes>
-    </test>
-    <test name="Storefront : Profile">
-        <classes>
-            <class name="tests.storefront.profile.ProfileTest" />
-        </classes>
-    </test>
-    <test name="Storefront : Shipping Address">
-        <classes>
-            <class name="tests.storefront.profile.ShippingAddressTest" />
-        </classes>
-    </test>
+
 </suite>

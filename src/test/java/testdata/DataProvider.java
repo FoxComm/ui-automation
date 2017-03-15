@@ -20,7 +20,13 @@ public class DataProvider extends BaseTest {
 
     protected static int customerId;
     protected static String cartId;
-    protected static int orderGrandTotal;
+    protected static int subTotal;
+    protected static int taxes;
+    protected static int shipping;
+    protected static int adjustments;
+    protected static int total;
+    protected static int customersExpenses;
+
     protected static String orderId;
     protected static int orderTotal;
     private static String jwt;
@@ -37,6 +43,7 @@ public class DataProvider extends BaseTest {
     protected static int scId;
     private static int shipMethodId;
     protected static int creditCardId;
+    protected static List<Integer> creditCardsIDs = new ArrayList<>();
     private static String stripeToken;
 
     protected static String promotionId;
@@ -50,6 +57,8 @@ public class DataProvider extends BaseTest {
     protected static String skuTitle;
     protected static int skuId_inventory;
     protected static String productName;
+    protected static String productSlug;
+    protected static List<String> products = new ArrayList<>();
     protected static String productId;
     protected static String variantSKU_1;
     protected static String variantSKU_2;
@@ -58,6 +67,34 @@ public class DataProvider extends BaseTest {
     protected static String searchRandomId;
     protected static String searchCode;
     private static int adminId;
+
+    public static void getProductSlug(String productName) throws IOException {
+        System.out.println("Getting slug of product <" + productName + ">...");
+
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url("http://stage.foxcommerce.com/api/v1/products/default/298")
+                .get()
+                .addHeader("content-type", "application/json")
+                .addHeader("accept", "application/json")
+                .addHeader("cache-control", "no-cache")
+                .addHeader("postman-token", "d1eb5025-2c1e-0046-da7c-0a051989be13")
+                .build();
+
+        Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+        int responseCode = response.code();
+        String responseMsg = response.message();
+
+        if (responseCode == 200) {
+            JSONObject jsonResponse = new JSONObject(responseBody);
+            productSlug = jsonResponse.getString("slug");
+            System.out.println("Slug: <" + productSlug + ">");
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
+    }
 
     private static JSONObject parse(String rout) throws IOException {
         String jsonData = "";
@@ -123,7 +160,7 @@ public class DataProvider extends BaseTest {
 
         String randomID = generateRandomID();
         customerName = "Test Buddy-" + randomID;
-        customerEmail = "qatest2278+" + randomID + "@mail.com";
+        customerEmail = "qatest2278+" + randomID + "@gmail.com";
 
         OkHttpClient client = new OkHttpClient();
 
@@ -202,6 +239,36 @@ public class DataProvider extends BaseTest {
 
     }
 
+    @Step("[API] Blacklist customer ID:<{0}>")
+    public static void blacklistCustomer(int customerId) throws IOException {
+        System.out.println("Blacklisting customer ID:<" + customerId + ">...");
+
+        OkHttpClient client = new OkHttpClient();
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{\n  \"blacklisted\": true\n}");
+        Request request = new Request.Builder()
+                .url(apiUrl + "/v1/customers/" + customerId + "/blacklist")
+                .post(body)
+                .addHeader("content-type", "application/json")
+                .addHeader("accept", "application/json")
+                .addHeader("cache-control", "no-cache")
+                .addHeader("JWT", jwt)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+        int responseCode = response.code();
+        String responseMsg = response.message();
+
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
+
+    }
+
     @Step("[API] Create cart for customer <{0}>")
     private static void createCart(int customerId) throws IOException {
         System.out.println("Creating a cart for customer <" + customerId + ">...");
@@ -253,8 +320,41 @@ public class DataProvider extends BaseTest {
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
             JSONObject jsonData = new JSONObject(responseBody);
-            orderGrandTotal = jsonData.getJSONObject("result").getJSONObject("totals").getInt("total");
-            System.out.println("Grand Total: <" + orderGrandTotal + ">");
+            total = jsonData.getJSONObject("result").getJSONObject("totals").getInt("total");
+            System.out.println("Grand Total: <" + total + ">");
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
+    }
+
+    @Step("[API] Get all totals of cart <{0}>")
+    public static void getCartTotals(String cartId) throws IOException {
+        System.out.println("Get all totals of cart <" + cartId + ">...");
+
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url(apiUrl + "/v1/carts/" + cartId)
+                .get()
+                .addHeader("cache-control", "no-cache")
+                .addHeader("JWT", jwt)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+        int responseCode = response.code();
+        String responseMsg = response.message();
+
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+            JSONObject jsonData = new JSONObject(responseBody);
+            subTotal = jsonData.getJSONObject("result").getJSONObject("totals").getInt("subTotal");
+            taxes = jsonData.getJSONObject("result").getJSONObject("totals").getInt("taxes");
+            shipping = jsonData.getJSONObject("result").getJSONObject("totals").getInt("shipping");
+            adjustments = jsonData.getJSONObject("result").getJSONObject("totals").getInt("adjustments");
+            customersExpenses = jsonData.getJSONObject("result").getJSONObject("totals").getInt("customersExpenses");
+            total = jsonData.getJSONObject("result").getJSONObject("totals").getInt("total");
+            System.out.println("Grand Total: <" + total + ">");
             System.out.println("---- ---- ---- ----");
         } else {
             failTest(responseBody, responseCode, responseMsg);
@@ -771,6 +871,74 @@ public class DataProvider extends BaseTest {
         }
     }
 
+    @Step("[API] List all credit cards of customer ID:<{0}>")
+    protected void listCreditCards(String customerId) throws IOException {
+        System.out.println("List all credit cards of customer ID:<{0}");
+
+        OkHttpClient client = new OkHttpClient();
+
+        Request request = new Request.Builder()
+                .url(apiUrl + "/api/v1/customers/" + customerId + "/payment-methods/credit-cards")
+                .get()
+                .addHeader("content-type", "application/json")
+                .addHeader("accept", "application/json")
+                .addHeader("cache-control", "no-cache")
+                .addHeader("JWT", jwt)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+        int responseCode = response.code();
+        String responseMsg = response.message();
+
+        if (responseCode == 200) {
+            JSONArray jsonData = new JSONArray(responseBody);
+
+            for (int i = 0; i < jsonData.length(); i++) {
+                creditCardId = jsonData.getJSONObject(i).getInt("id");
+                creditCardsIDs.add(creditCardId);
+            }
+            printIntList(creditCardsIDs);
+
+            System.out.println(responseCode + " " + responseMsg);
+            System.out.println("Success!");
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
+    }
+
+    @Step("[API] Set credit card ID:<{1}> as default card for customer ID:<{0}>")
+    protected void setCardAsDefault(int customerId, int creditCardId) throws IOException {
+        System.out.println("Set credit card ID:<" + customerId + "> as default for customer ID:<" + creditCardId + ">...");
+
+        OkHttpClient client = new OkHttpClient();
+
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{\n    \"isDefault\": true\n}");
+        Request request = new Request.Builder()
+                .url(apiUrl + "/v1/customers/" + customerId + "/payment-methods/credit-cards/" + creditCardId + "/default")
+                .post(body)
+                .addHeader("content-type", "application/json")
+                .addHeader("accept", "application/json")
+                .addHeader("cache-control", "no-cache")
+                .addHeader("JWT", jwt)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+        int responseCode = response.code();
+        String responseMsg = response.message();
+
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+            System.out.println("Success!");
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
+    }
+
     @Step("[API] Delete credit cart <ID:{1} of customer <ID:{0}>")
     protected void deleteCreditCard(int customerId, int creditCardId) throws IOException {
 
@@ -1053,15 +1221,15 @@ public class DataProvider extends BaseTest {
     }
 
     @Step("[API] Set GC <gcNumber: {1}>, <amount: {2}> for cart <{0}>")
-    protected static void setPayment_giftCard(String cartId, String gcNumber, int amount) throws IOException {
+    protected static void setPayment_giftCard(String cartId, String gcCode, int amount) throws IOException {
 
-        System.out.println("Setting gict card <"+ gcNumber + "> in amount of <" + amount + "> as a payment for order <" + cartId + ">...");
+        System.out.println("Setting gift card <"+ gcCode + "> in amount of <" + amount + "> as a payment for order <" + cartId + ">...");
 
         OkHttpClient client = new OkHttpClient();
 
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{" +
-                "\"code\":\"" + gcNumber + "\"," +
+                "\"code\":\"" + gcCode + "\"," +
                 "\"amount\":" + amount + "}");
         Request request = new Request.Builder()
                 .url(apiUrl + "/v1/orders/" + cartId + "/payment-methods/gift-cards")
@@ -1306,7 +1474,7 @@ public class DataProvider extends BaseTest {
 
     }
 
-    @Step("[API] Create coupon with promotion <ID:{0}>")
+    @Step("[API] Create coupon with promotion ID:<{0}>")
     private static void createCoupon(String promotionId) throws IOException {
 
         System.out.println("Creating a new coupon with promotion <" + promotionId + ">...");
@@ -1342,7 +1510,7 @@ public class DataProvider extends BaseTest {
 
     }
 
-    @Step("[API] Generate a single code for coupon <ID:'{0}>'")
+    @Step("[API] Generate a single code for coupon ID:<{0}>")
     private static void generateSingleCode(String couponId) throws IOException {
 
         System.out.println("Generating a single code for coupon <" + couponId + ">...");
@@ -1459,6 +1627,34 @@ public class DataProvider extends BaseTest {
             failTest(responseBody, responseCode, responseMsg);
         }
 
+    }
+
+    @Step("[API] Set promo <ID:{0}> state to <{1}>")
+    public static void setPromoState(String promotionId, String newState) {
+        System.out.println("Setting promotion<ID:" + promotionId + "> state to <" + newState + ">...");
+
+        //TODO: finish this once discounts re-implementaion will land
+    }
+
+    @Step("[API] Set coupon <ID:{0}> state to <{1}>")
+    public static void setCouponState(String couponId, String newState) {
+        System.out.println("Setting coupon<ID:" + couponId + "> state to <" + newState + ">...");
+
+        //TODO: finish this once discounts re-implementaion will land
+    }
+
+    @Step("[API] Archive promo <ID:{0}>")
+    public static void archivePromo(String promotionId) {
+        System.out.println("Archiving promo<ID:" + promotionId + ">...");
+
+        //TODO: finish this once discounts re-implementaion will land
+    }
+
+    @Step("[API] Archive coupon <ID:{0}>")
+    public static void archiveCoupon(String couponId) {
+        System.out.println("Archiving coupon<ID:" + couponId + ">...");
+
+        //TODO: finish this once discounts re-implementaion will land
     }
 
     @Step("[API] Change store credit <ID:'{0}'> state to <{1}>")
@@ -1687,7 +1883,7 @@ public class DataProvider extends BaseTest {
         String responseBody = "";
         String responseMsg = "";
         long time = System.currentTimeMillis();
-        long end = time + 10000;
+        long end = time + 15000;
 
         OkHttpClient client = new OkHttpClient();
 
@@ -1752,7 +1948,7 @@ public class DataProvider extends BaseTest {
 
     }
 
-    @Step("[API] Create product; <SKU:'{0}'>, <Tag:'{1}'>, <State:'Active'>")
+    @Step("[API] Create product; SKU:<{0}>, Tag:<{1}>, State:<Active>")
     protected static void createProduct_active(String sku, String tag) throws IOException {
 
         System.out.println("Creating a new product with SKU <" + sku + ">...");
@@ -2044,7 +2240,7 @@ public class DataProvider extends BaseTest {
         OkHttpClient client = new OkHttpClient();
 
         MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, "{\"title\":\"Search " + searchRandomId + "\",\"query\":[{\"display\":\"Order : Total : > : $0\",\"term\":\"grandTotal\",\"operator\":\"gt\",\"value\":{\"type\":\"currency\",\"value\":\"000\"}}],\"scope\":\"ordersScope\",\"rawQuery\":{\"query\":{\"bool\":{\"filter\":[{\"range\":{\"grandTotal\":{\"gt\":\"000\"}}}]}}}}");
+        RequestBody body = RequestBody.create(mediaType, "{\"title\":\"Search " + searchRandomId + "\",\"query\":[{\"display\":\"Order : Total : > : $0\",\"term\":\"total\",\"operator\":\"gt\",\"value\":{\"type\":\"currency\",\"value\":\"000\"}}],\"scope\":\"ordersScope\",\"rawQuery\":{\"query\":{\"bool\":{\"filter\":[{\"range\":{\"total\":{\"gt\":\"000\"}}}]}}}}");
         Request request = new Request.Builder()
                 .url(apiUrl + "/v1/shared-search")
                 .post(body)
@@ -2166,7 +2362,7 @@ public class DataProvider extends BaseTest {
         OkHttpClient client = new OkHttpClient();
 
         MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, "{\"title\":\"Search " + searchRandomId + "\",\"query\":[{\"display\":\"Order : State : Remorse Hold\",\"term\":\"state\",\"operator\":\"eq\",\"value\":{\"type\":\"enum\",\"value\":\"remorseHold\"}},{\"display\":\"Order : Total : > : $1\",\"term\":\"grandTotal\",\"operator\":\"gt\",\"value\":{\"type\":\"currency\",\"value\":\"100\"}}],\"scope\":\"ordersScope\",\"rawQuery\":{\"query\":{\"bool\":{\"filter\":[{\"term\":{\"state\":\"remorseHold\"}},{\"range\":{\"grandTotal\":{\"gt\":\"100\"}}}]}}}}");
+        RequestBody body = RequestBody.create(mediaType, "{\"title\":\"Search " + searchRandomId + "\",\"query\":[{\"display\":\"Order : State : Remorse Hold\",\"term\":\"state\",\"operator\":\"eq\",\"value\":{\"type\":\"enum\",\"value\":\"remorseHold\"}},{\"display\":\"Order : Total : > : $1\",\"term\":\"total\",\"operator\":\"gt\",\"value\":{\"type\":\"currency\",\"value\":\"100\"}}],\"scope\":\"ordersScope\",\"rawQuery\":{\"query\":{\"bool\":{\"filter\":[{\"term\":{\"state\":\"remorseHold\"}},{\"range\":{\"total\":{\"gt\":\"100\"}}}]}}}}");
         Request request = new Request.Builder()
                 .url(apiUrl + "/v1/shared-search")
                 .post(body)
@@ -2411,6 +2607,7 @@ public class DataProvider extends BaseTest {
     protected void provideTestData(String testMethodName) throws IOException {
 
         skus.clear();
+        products.clear();
         System.out.println("==== ==== ==== ====");
         loginAsAdmin();
 
@@ -2992,7 +3189,7 @@ public class DataProvider extends BaseTest {
                 listCustomerAddresses(customerId);
                 issueStoreCredit(customerId, 50000);
                 getGrandTotal(cartId);
-                setPayment_storeCredit(cartId, orderGrandTotal);
+                setPayment_storeCredit(cartId, total);
                 checkoutCart(cartId);
                 break;
 
@@ -3010,7 +3207,7 @@ public class DataProvider extends BaseTest {
                 issueGiftCard(50000, 1);
                 issueStoreCredit_gcTransfer(customerId, gcCode);
                 getGrandTotal(cartId);
-                setPayment_storeCredit(cartId, orderGrandTotal);
+                setPayment_storeCredit(cartId, total);
                 checkoutCart(cartId);
                 break;
 
@@ -3256,6 +3453,30 @@ public class DataProvider extends BaseTest {
                 signUpCustomer("Test Buddy " + generateRandomID(), "qatest2278+" + generateRandomID() + "@gmail.com");
                 break;
 
+            case "a customer ready to checkout":
+                randomId = generateRandomID();
+                signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
+                createCart(customerId);
+                createSKU_active();
+                createProduct_active(sku, storefrontCategory);
+                increaseOnHandQty(sku, "Sellable", 1);
+                updLineItems(cartId, sku, 1);
+                setShipAddress(cartId,
+                        "John Doe",
+                        4177, 234,
+                        "Washington", "7500 Roosevelt Way NE",
+                        "Block 42",
+                        "Seattle", "98115",
+                        "5038234000", false);
+                listShipMethods(cartId);
+                setShipMethod(cartId, shipMethodId);
+                listCustomerAddresses(customerId);
+                getCustomerAddress(customerId, addressId1);
+                createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard");
+                setPayment_creditCard(cartId, creditCardId);
+                break;
+
+
             //------------------------------------- SF: CART ------------------------------------//
 
             case "registered customer, active product in cart":
@@ -3272,6 +3493,48 @@ public class DataProvider extends BaseTest {
                 signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
                 createSKU_active();
                 createProduct_active(sku, storefrontCategory);
+                break;
+
+            case "registered customer, 2 active products on storefront":
+                randomId = generateRandomID();
+                signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
+                createSKU_active();
+                createProduct_active(sku, storefrontCategory);
+                products.add(productName);
+                createSKU_active();
+                createProduct_active(sku, storefrontCategory);
+                products.add(productName);
+                break;
+
+            case "a customer signed up on storefront, product<active>, coupon<any, single code>":
+                randomId = generateRandomID();
+                signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
+                createSKU_active();
+                createProduct_active(sku, storefrontCategory);
+                createPromotion_coupon();
+                createCoupon(promotionId);
+                generateSingleCode(couponId);
+                break;
+
+            case "product<active>, coupon<any, single code>":
+                createSKU_active();
+                createProduct_active(sku, storefrontCategory);
+                createPromotion_coupon();
+                createCoupon(promotionId);
+                generateSingleCode(couponId);
+                break;
+
+            case "a customer signed up on storefront with product and coupon<any, single code> in cart":
+                randomId = generateRandomID();
+                signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
+                createCart(customerId);
+                createSKU_active();
+                createProduct_active(sku, storefrontCategory);
+                updLineItems(cartId,sku, 1);
+                createPromotion_coupon();
+                createCoupon(promotionId);
+                generateSingleCode(couponId);
+                applyCouponCode(cartId, singleCouponCode);
                 break;
 
             //---------------------------------- SF: SHIPPING ADDRESS --------------------------------//
@@ -3330,6 +3593,328 @@ public class DataProvider extends BaseTest {
                         "Block 42",
                         "Seattle", "98115",
                         "5038234000", false);
+                break;
+
+            case "a storefront signed up customer with 2 shipping addresses, has default address":
+                randomId = generateRandomID();
+                signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
+                createAddress(customerId,
+                        "John Doe",
+                        4177, 234,
+                        "Washington", "7500 Roosevelt Way NE",
+                        "Block 42",
+                        "Seattle", "98115",
+                        "5038234000", true);
+                createAddress(customerId,
+                        "Paul Puga",
+                        4177, 234,
+                        "Washington", "2101 Green Valley",
+                        "200 Suite",
+                        "Seattle", "98101",
+                        "5551237575", false);
+                break;
+
+            //---------------------------------- SF: CHECKOUT --------------------------------//
+
+            case "a storefront signed up customer, a cart with 1 product, 2 shipping addresses, has default address":
+                randomId = generateRandomID();
+                signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
+                createAddress(customerId,
+                        "John Doe",
+                        4177, 234,
+                        "Washington", "7500 Roosevelt Way NE",
+                        "Block 42",
+                        "Seattle", "98115",
+                        "5038234000", false);
+                createAddress(customerId,
+                        "Default Address",
+                        4177, 234,
+                        "Washington", "2101 Green Valley",
+                        "200 Suite",
+                        "Seattle", "98101",
+                        "5551237575", true);
+                createCart(customerId);
+                createSKU_active();
+                createProduct_active(sku, storefrontCategory);
+                updLineItems(cartId, sku, 1);
+                break;
+
+            case "a storefront signed up customer, a cart with 1 product, 2 shipping addresses, NO default address":
+                randomId = generateRandomID();
+                signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
+                createAddress(customerId,
+                        "John Doe",
+                        4177, 234,
+                        "Washington", "7500 Roosevelt Way NE",
+                        "Block 42",
+                        "Seattle", "98115",
+                        "5038234000", false);
+                createAddress(customerId,
+                        "Paul Puga",
+                        4177, 234,
+                        "Washington", "2101 Green Valley",
+                        "200 Suite",
+                        "Seattle", "98101",
+                        "5551237575", false);
+                createCart(customerId);
+                createSKU_active();
+                createProduct_active(sku, storefrontCategory);
+                updLineItems(cartId, sku, 1);
+                break;
+
+            case "a storefront signed up customer, a cart with 1 product, 2 shipping addresses, HAS default address":
+                randomId = generateRandomID();
+                signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
+                createAddress(customerId,
+                        "Default Address",
+                        4177, 234,
+                        "Washington", "7500 Roosevelt Way NE",
+                        "Block 42",
+                        "Seattle", "98115",
+                        "5038234000", false);
+                createAddress(customerId,
+                        "John Doe",
+                        4177, 234,
+                        "Washington", "2101 Green Valley",
+                        "200 Suite",
+                        "Seattle", "98101",
+                        "5551237575", false);
+                createCart(customerId);
+                createSKU_active();
+                createProduct_active(sku, storefrontCategory);
+                updLineItems(cartId, sku, 1);
+                break;
+
+            case "a storefront signed up customer with active product in cart and applied shipping address":
+                randomId = generateRandomID();
+                signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
+                createCart(customerId);
+                createSKU_active();
+                createProduct_active(sku, storefrontCategory);
+                updLineItems(cartId, sku, 1);
+                setShipAddress(cartId,
+                        "John Doe",
+                        4177, 234,
+                        "Washington", "7500 Roosevelt Way NE",
+                        "Block 42",
+                        "Seattle", "98115",
+                        "5038234000", false);
+                break;
+
+            case "a customer ready to checkout, single code coupon code":
+                randomId = generateRandomID();
+                signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
+                createCart(customerId);
+                createSKU_active();
+                createProduct_active(sku, storefrontCategory);
+                increaseOnHandQty(sku, "Sellable", 1);
+                updLineItems(cartId, sku, 1);
+                setShipAddress(cartId,
+                        "John Doe",
+                        4177, 234,
+                        "Washington", "7500 Roosevelt Way NE",
+                        "Block 42",
+                        "Seattle", "98115",
+                        "5038234000", false);
+                listShipMethods(cartId);
+                setShipMethod(cartId, shipMethodId);
+                listCustomerAddresses(customerId);
+                getCustomerAddress(customerId, addressId1);
+                createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard");
+                setPayment_creditCard(cartId, creditCardId);
+                createPromotion_coupon();
+                createCoupon(promotionId);
+                generateSingleCode(couponId);
+                break;
+
+            case "a storefront customer ready for checkout, has 2 credit cards":
+                randomId = generateRandomID();
+                signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
+                createCart(customerId);
+                createSKU_active();
+                createProduct_active(sku, storefrontCategory);
+                increaseOnHandQty(sku, "Sellable", 1);
+                updLineItems(cartId, sku, 1);
+                setShipAddress(cartId,
+                        "John Doe",
+                        4177, 234,
+                        "Washington", "7500 Roosevelt Way NE",
+                        "Block 42",
+                        "Seattle", "98115",
+                        "5038234000", false);
+                listShipMethods(cartId);
+                setShipMethod(cartId, shipMethodId);
+                listCustomerAddresses(customerId);
+                getCustomerAddress(customerId, addressId1);
+                createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard");
+                createCreditCard(customerId, customerName, "4242424242424242", 3, 2020, 123, "Visa");
+                break;
+
+            case "a storefront signed up customer, with no qualifier coupon code applied":
+                randomId = generateRandomID();
+                signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
+                createCart(customerId);
+                createSKU_active();
+                createProduct_active(sku, storefrontCategory);
+                increaseOnHandQty(sku, "Sellable", 1);
+                updLineItems(cartId, sku, 1);
+                setShipAddress(cartId,
+                        "John Doe",
+                        4177, 234,
+                        "Washington", "7500 Roosevelt Way NE",
+                        "Block 42",
+                        "Seattle", "98115",
+                        "5038234000", false);
+                listShipMethods(cartId);
+                setShipMethod(cartId, shipMethodId);
+                listCustomerAddresses(customerId);
+                getCustomerAddress(customerId, addressId1);
+                createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard");
+                setPayment_creditCard(cartId, creditCardId);
+                createPromotion_coupon();
+                createCoupon(promotionId);
+                generateSingleCode(couponId);
+                applyCouponCode(cartId, singleCouponCode);
+                break;
+
+            case "a storefront signed up customer ready for checkout, has 2 credit cards, has default card":
+                randomId = generateRandomID();
+                signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
+                createCart(customerId);
+                createSKU_active();
+                createProduct_active(sku, storefrontCategory);
+                increaseOnHandQty(sku, "Sellable", 1);
+                updLineItems(cartId, sku, 1);
+                setShipAddress(cartId,
+                        "John Doe",
+                        4177, 234,
+                        "Washington", "7500 Roosevelt Way NE",
+                        "Block 42",
+                        "Seattle", "98115",
+                        "5038234000", false);
+                listShipMethods(cartId);
+                setShipMethod(cartId, shipMethodId);
+                listCustomerAddresses(customerId);
+                getCustomerAddress(customerId, addressId1);
+                createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard");
+                createCreditCard(customerId, customerName, "4242424242424242", 3, 2020, 123, "Visa");
+                setCardAsDefault(customerId, creditCardId);
+                break;
+
+            case "a storefront signed up customer, has shipping address and product in cart":
+                randomId = generateRandomID();
+                signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
+                createCart(customerId);
+                createSKU_active();
+                createProduct_active(sku, storefrontCategory);
+                increaseOnHandQty(sku, "Sellable", 1);
+                updLineItems(cartId, sku, 1);
+                createAddress(customerId,
+                        "John Doe",
+                        4177, 234,
+                        "Washington", "2101 Green Valley",
+                        "200 Suite",
+                        "Seattle", "98101",
+                        "5551237575", false);
+                break;
+
+            case "a storefront signed up customer, with shipping address submitted and product in cart":
+                randomId = generateRandomID();
+                signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
+                createCart(customerId);
+                createSKU_active();
+                createProduct_active(sku, storefrontCategory);
+                increaseOnHandQty(sku, "Sellable", 1);
+                updLineItems(cartId, sku, 1);
+                setShipAddress(cartId,
+                        "John Doe",
+                        4177, 234,
+                        "Washington", "7500 Roosevelt Way NE",
+                        "Block 42",
+                        "Seattle", "98115",
+                        "5038234000", false);
+                break;
+
+            case "happy path":
+                randomId = generateRandomID();
+                signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
+                createCart(customerId);
+                createSKU_active();
+                createProduct_active(sku, storefrontCategory);
+                increaseOnHandQty(sku, "Sellable", 1);
+                break;
+
+            case "a storefront signed up blacklisted customer ready for checkout":
+                randomId = generateRandomID();
+                signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
+                createCart(customerId);
+                createSKU_active();
+                createProduct_active(sku, storefrontCategory);
+                increaseOnHandQty(sku, "Sellable", 1);
+                updLineItems(cartId, sku, 1);
+                setShipAddress(cartId,
+                        "John Doe",
+                        4177, 234,
+                        "Washington", "7500 Roosevelt Way NE",
+                        "Block 42",
+                        "Seattle", "98115",
+                        "5038234000", false);
+                listShipMethods(cartId);
+                setShipMethod(cartId, shipMethodId);
+                listCustomerAddresses(customerId);
+                getCustomerAddress(customerId, addressId1);
+                createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard");
+                setPayment_creditCard(cartId, creditCardId);
+                blacklistCustomer(customerId);
+                break;
+
+            case "a customer ready for checkout, gift card is applied to cart as a payment method":
+                randomId = generateRandomID();
+                signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
+                createCart(customerId);
+                createSKU_active();
+                createProduct_active(sku, storefrontCategory);
+                increaseOnHandQty(sku, "Sellable", 1);
+                updLineItems(cartId, sku, 1);
+                setShipAddress(cartId,
+                        "John Doe",
+                        4177, 234,
+                        "Washington", "7500 Roosevelt Way NE",
+                        "Block 42",
+                        "Seattle", "98115",
+                        "5038234000", false);
+                listShipMethods(cartId);
+                setShipMethod(cartId, shipMethodId);
+                listCustomerAddresses(customerId);
+                getCustomerAddress(customerId, addressId1);
+                createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard");
+                setPayment_creditCard(cartId, creditCardId);
+                issueGiftCard(1000, 1);
+                setPayment_giftCard(cartId, gcCode, 1000);
+                break;
+
+            case "a customer ready to checkout, a gift card issued":
+                randomId = generateRandomID();
+                signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
+                createCart(customerId);
+                createSKU_active();
+                createProduct_active(sku, storefrontCategory);
+                increaseOnHandQty(sku, "Sellable", 1);
+                updLineItems(cartId, sku, 1);
+                setShipAddress(cartId,
+                        "John Doe",
+                        4177, 234,
+                        "Washington", "7500 Roosevelt Way NE",
+                        "Block 42",
+                        "Seattle", "98115",
+                        "5038234000", false);
+                listShipMethods(cartId);
+                setShipMethod(cartId, shipMethodId);
+                listCustomerAddresses(customerId);
+                getCustomerAddress(customerId, addressId1);
+                createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard");
+                setPayment_creditCard(cartId, creditCardId);
+                issueGiftCard(1000, 1);
                 break;
 
         }

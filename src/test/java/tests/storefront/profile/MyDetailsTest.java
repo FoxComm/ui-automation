@@ -3,8 +3,8 @@ package tests.storefront.profile;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import ru.yandex.qatools.allure.annotations.Description;
 import pages.StorefrontPage;
+import ru.yandex.qatools.allure.annotations.Description;
 import testdata.DataProvider;
 
 import java.io.IOException;
@@ -12,13 +12,13 @@ import java.io.IOException;
 import static com.codeborne.selenide.Condition.matchText;
 import static com.codeborne.selenide.Condition.visible;
 
-public class ProfileTest extends DataProvider {
+public class MyDetailsTest extends DataProvider {
 
     private StorefrontPage p;
 
     @BeforeMethod(alwaysRun = true)
     public void cleanUp_before() {
-        p = openPage(storefrontUrl + "/" + storefrontCategory, StorefrontPage.class);
+        p = openPage(storefrontUrl, StorefrontPage.class);
         p.cleanUp_beforeMethod();
     }
 
@@ -32,7 +32,7 @@ public class ProfileTest extends DataProvider {
         p.setEmail(customerEmail);
         p.setPassword("78qa22!#");
         p.clickLogInBtn();
-        shouldMatchText(p.userName(), customerName.toUpperCase(), "Failed to edit customer name");
+        shouldMatchText(p.userMenuBtn_sf(), customerName.toUpperCase(), "Failed to edit customer name");
         p.selectInUserMenu("PROFILE");
 
         p.changePasswordBtn().shouldBe(visible);
@@ -50,11 +50,11 @@ public class ProfileTest extends DataProvider {
         p.setNameFld("Edited Name");
         p.clickSaveBtn();
 
-        p.userName().should(matchText("EDITED NAME"));
+        p.userMenuBtn_sf().should(matchText("EDITED NAME"));
     }
 
     @Test(priority = 3)
-    @Description("Can edit customer email a unique to the system")
+    @Description("Can change email to another one that is unique to the system")
     public void editCustomerEmail_unique() throws IOException {
         String newEmail = "qatest2278+" + generateRandomID() + "@gmail.com";
         provideTestData("a customer signed up on storefront");
@@ -69,7 +69,7 @@ public class ProfileTest extends DataProvider {
         p.selectInUserMenu("LOG OUT");
         p.logIn(newEmail, "78qa22!#");
 
-        p.userName().should(matchText(customerName.toUpperCase()));
+        p.userMenuBtn_sf().should(matchText(customerName.toUpperCase()));
     }
 
     @Test(priority = 4)
@@ -82,6 +82,7 @@ public class ProfileTest extends DataProvider {
         p.selectInUserMenu("PROFILE");
         p.clickEditLnk("Email");
         p.setEmailFld(takenEmail);
+        p.clickSaveBtn();
 
         p.errorMsg("The email address you entered is already in use").shouldBe(visible);
     }

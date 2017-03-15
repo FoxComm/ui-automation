@@ -64,7 +64,7 @@ public class GiftCardsTest extends DataProvider {
         p.clickIssueGCBtn();
         shouldBeVisible(p.availableBalance(), "Waiting for \"Available Balance\" to become visible has failed");
         String gcNumber = p.getGCNumber(getUrl(), adminUrl);
-        p.navigateTo("Marketing", "Gift Cards");
+        p.navigateTo("Gift Cards");
         p.search(gcNumber);
 
         p.getGCParamVal("1", "Gift Card Number").shouldHave(text(gcNumber));
@@ -81,7 +81,7 @@ public class GiftCardsTest extends DataProvider {
         p.clickIssueGCBtn();
         shouldHaveText(p.stateVal(), "Active", "Incorrect 'State' value is displayed on GC details page");
         String gcNumber = p.getGCNumber(getUrl(), adminUrl);
-        p.navigateTo("Marketing", "Gift Cards");
+        p.navigateTo("Gift Cards");
         p.search(gcNumber);
 
         p.getGCParamVal("1", "State").shouldHave(text("Active"));
@@ -140,7 +140,7 @@ public class GiftCardsTest extends DataProvider {
         p.clickYes();
         p.yesBtn().shouldNotBe(visible);
         shouldNotBeVisible(p.yesBtn(), "Failed to wait untill yesBtn won't be visible");
-        p.navigateTo("Marketing", "Gift Cards");
+        p.navigateTo("Gift Cards");
         p.search(gcCode);
 
         p.getGCParamVal("1", "State").shouldHave(text("On Hold"));
@@ -157,7 +157,7 @@ public class GiftCardsTest extends DataProvider {
         shouldHaveText(p.stateVal(), "Active", "Failed to set GC \"State\" to \"Active\"");
 
 //        make this check a separate test -- ES specific
-//        p.navigateTo("Marketing", "Gift Cards");
+//        p.navigateTo("Gift Cards");
 //        p.search(gcCode);
 //
 //        p.getGCParamVal("1", "State").shouldHave(text("Active")
