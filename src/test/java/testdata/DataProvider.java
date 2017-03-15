@@ -2707,6 +2707,10 @@ public class DataProvider extends BaseTest {
             case "filled out cart 2 addresses in address book":
                 createCustomer();
                 createCart(customerId);
+                createSKU_active();
+                createProduct_active(sku, "test");
+                increaseOnHandQty(sku, "Sellable", 1);
+                updLineItems(cartId, sku, 1);
                 createAddress(customerId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 createAddress(customerId, "Paul Puga", 4177, 234, "Washington", "2101 Green Valley", "200 Suite", "Seattle", "98101", "5551237575", false);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "9879879876", false);
@@ -2716,10 +2720,6 @@ public class DataProvider extends BaseTest {
                 getCustomerAddress(customerId, addressId1);
                 createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard");
                 setPayment_creditCard(cartId, creditCardId);
-                createSKU_active();
-                createProduct_active(sku, "test");
-                increaseOnHandQty(sku, "Sellable", 1);
-                updLineItems(cartId, sku, 1);
                 issueStoreCredit(customerId, 50000);
                 setPayment_storeCredit(cartId, 10000);
                 break;
@@ -2727,6 +2727,10 @@ public class DataProvider extends BaseTest {
             case "filled out cart":
                 createCustomer();
                 createCart(customerId);
+                createSKU_active();
+                createProduct_active(sku, "test");
+                increaseOnHandQty(sku, "Sellable", 10);
+                updLineItems(cartId, sku, 3);
                 createAddress(customerId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "9879879876", false);
                 listShipMethods(cartId);
@@ -2735,10 +2739,6 @@ public class DataProvider extends BaseTest {
                 getCustomerAddress(customerId, addressId1);
                 createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard");
                 setPayment_creditCard(cartId, creditCardId);
-                createSKU_active();
-                createProduct_active(sku, "test");
-                increaseOnHandQty(sku, "Sellable", 10);
-                updLineItems(cartId, sku, 3);
                 issueStoreCredit(customerId, 50000);
                 setPayment_storeCredit(cartId, 10000);
                 break;
@@ -2805,6 +2805,10 @@ public class DataProvider extends BaseTest {
             case "cart<1 SKU in stock, shipAddress, shipMethod, coupon applied, payMethod[SC]>; coupon<any, single code>":
                 createCustomer();
                 createCart(customerId);
+                createSKU_active();
+                createProduct_active(sku, "test");
+                updLineItems(cartId, sku, 1);
+                increaseOnHandQty(sku, "Sellable", 1);
                 createAddress(customerId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 createAddress(customerId, "Paul Puga", 4177, 234, "Washington", "2101 Green Valley", "200 Suite", "Seattle", "98101", "5551237575", false);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "9879879876", false);
@@ -2812,10 +2816,6 @@ public class DataProvider extends BaseTest {
                 setShipMethod(cartId, shipMethodId);
                 issueStoreCredit(customerId, 50000);
                 setPayment_storeCredit(cartId, 10000);
-                createSKU_active();
-                createProduct_active(sku, "test");
-                updLineItems(cartId, sku, 1);
-                increaseOnHandQty(sku, "Sellable", 1);
                 createPromotion_coupon();
                 createCoupon(promotionId);
                 generateSingleCode(couponId);

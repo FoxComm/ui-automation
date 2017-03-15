@@ -389,7 +389,7 @@ public class StorefrontPage extends BasePage {
 
     @Step("Assert that address <{0}> is set as default")
     public void assertAddressIsSelected(String index) {
-        scrollToElement(addAddressBtn());
+        scrollToElement($(xpath("//div[text()='My Shipping Addresses']")));
         selectAddressRbtn(index).shouldBe(selected);
     }
 

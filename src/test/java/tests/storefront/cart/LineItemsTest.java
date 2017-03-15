@@ -26,7 +26,7 @@ public class LineItemsTest extends DataProvider {
     public void addProductToCart_lineItemIsVisible() throws IOException {
         provideTestData("registered customer, active product on storefront");
 
-        p = openPage(storefrontUrl + "/" + storefrontCategory, StorefrontPage.class);
+        p = openPage(storefrontUrl + storefrontCategory, StorefrontPage.class);
         p.logIn(customerEmail, "78qa22!#");
         p.openPDP(productName);
         p.clickAddToCartBtn();
@@ -43,7 +43,7 @@ public class LineItemsTest extends DataProvider {
     public void addProductToCart_indicatorUpdated() throws IOException {
         provideTestData("registered customer, 2 active products on storefront");
 
-        p = openPage(storefrontUrl + "/" + storefrontCategory, StorefrontPage.class);
+        p = openPage(storefrontUrl + storefrontCategory, StorefrontPage.class);
         p.logIn(customerEmail, "78qa22!#");
         p.openPDP(products.get(0));
         p.setQty_PDP("2");
@@ -81,7 +81,7 @@ public class LineItemsTest extends DataProvider {
     public void addGiftCardToCart() throws IOException {
         provideTestData("a customer signed up on storefront");
 
-        p = openPage(storefrontUrl + "/GIFT-CARDS", StorefrontPage.class);
+        p = openPage(storefrontUrl + "GIFT-CARDS", StorefrontPage.class);
         p.logIn(customerEmail, "78qa22!#");
         p.setPriceSelector("$10.00");
         p.setRecipientName("John Smith");
