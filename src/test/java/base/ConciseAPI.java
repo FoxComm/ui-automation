@@ -340,10 +340,18 @@ public class ConciseAPI implements IHookable {
 
     @Step("Assert that current URL is <{1}>")
     protected void assertUrl(String actualUrl, String expectedUrl) {
-        String lastChar = actualUrl.substring(actualUrl.length() - 1);
-        if(lastChar.equals("/")) {
+        String lastChar_actual = actualUrl.substring(actualUrl.length() - 1);
+        System.out.println("lastChar_actual: <" + lastChar_actual + ">");
+        if(lastChar_actual.equals("/")) {
             actualUrl = actualUrl.substring(0, actualUrl.length() - 1);
         }
+        String lastChar_expected = expectedUrl.substring(expectedUrl.length() - 1);
+        System.out.println("lastChar_expected: <" + lastChar_expected + ">");
+        if(lastChar_expected .equals("/")) {
+            expectedUrl = expectedUrl.substring(0, expectedUrl.length() - 1);
+        }
+        System.out.println("actualUrl: <" + actualUrl + ">");
+        System.out.println("expectedUrl: <" + expectedUrl + ">");
         assertEquals(actualUrl, expectedUrl);
     }
 

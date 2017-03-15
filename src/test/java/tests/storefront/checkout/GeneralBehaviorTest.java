@@ -138,7 +138,7 @@ public class GeneralBehaviorTest extends DataProvider {
     public void happyPath() throws IOException {
         provideTestData("happy path");
 
-        p = openPage(storefrontUrl + "/" + storefrontCategory, StorefrontPage.class);
+        p = openPage(storefrontUrl + storefrontCategory, StorefrontPage.class);
         p.logIn(customerEmail, "78qa22!#");
         p.openPDP(productName);
         p.clickAddToCartBtn();
@@ -155,7 +155,7 @@ public class GeneralBehaviorTest extends DataProvider {
 
         p.confirmationOrderNumber().shouldBe(visible);
         p.takeMeHomeBtn().shouldBe(visible);
-        assertUrl(getUrl(), storefrontUrl + "/checkout/done");
+        assertUrl(getUrl(), storefrontUrl + "checkout/done");
     }
 
     @Test(priority = 8)

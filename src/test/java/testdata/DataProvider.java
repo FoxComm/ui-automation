@@ -725,7 +725,7 @@ public class DataProvider extends BaseTest {
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
             JSONArray jsonData = new JSONArray(responseBody);
-            shipMethodId = jsonData.getJSONObject(1).getInt("id");
+            shipMethodId = jsonData.getJSONObject(0).getInt("id");
             System.out.println("shipMethodId: <" + shipMethodId + ">");
             System.out.println("---- ---- ---- ----");
         } else {
@@ -2684,6 +2684,9 @@ public class DataProvider extends BaseTest {
             case "cart with chosen shipping address":
                 createCustomer();
                 createCart(customerId);
+                createSKU_active();
+                createProduct_active(sku, "test");
+                updLineItems(cartId, sku, 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 break;
 

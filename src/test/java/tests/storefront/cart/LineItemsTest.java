@@ -117,14 +117,14 @@ public class LineItemsTest extends DataProvider {
         p.openCart();
         p.checkoutBtn_cart().shouldBe(disabled);
 
-        p = openPage(storefrontUrl + "/" + storefrontCategory, StorefrontPage.class);
+        p = openPage(storefrontUrl + storefrontCategory, StorefrontPage.class);
         p.openPDP(productName);
         p.clickAddToCartBtn();
         p.checkoutBtn_cart().shouldBe(enabled);
         p.clickCheckoutBtn_cart();
 
         p.grandTotal().shouldBe(visible);
-        assertUrl(getUrl(), storefrontUrl + "/checkout");
+        assertUrl(getUrl(), storefrontUrl + "checkout");
     }
 
     @Test(priority = 7)

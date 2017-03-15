@@ -9,7 +9,6 @@ import testdata.DataProvider;
 
 import java.io.IOException;
 
-import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 
 public class CartTest extends DataProvider {
@@ -18,7 +17,7 @@ public class CartTest extends DataProvider {
 
     @BeforeMethod(alwaysRun = true)
     public void cleanUp_before() {
-        p = openPage(storefrontUrl + "/" + storefrontCategory, StorefrontPage.class);
+        p = openPage(storefrontUrl + storefrontCategory, StorefrontPage.class);
         p.cleanUp_beforeMethod();
     }
 
@@ -29,7 +28,7 @@ public class CartTest extends DataProvider {
     public void canProceedToCheckout_guest() throws IOException {
         provideTestData("registered customer, active product on storefront");
 
-        p = openPage(storefrontUrl + "/" + storefrontCategory, StorefrontPage.class);
+        p = openPage(storefrontUrl + storefrontCategory, StorefrontPage.class);
         p.openPDP(productName);
         p.clickAddToCartBtn();
         p.clickCheckoutBtn_cart();

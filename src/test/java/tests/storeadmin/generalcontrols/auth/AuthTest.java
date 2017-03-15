@@ -61,7 +61,7 @@ public class AuthTest extends DataProvider {
 
         op.userMenuBtn().shouldNotBe(visible);
         op.organizationFld().shouldBe(visible);
-        assertEquals(getUrl(), adminUrl);
+        assertEquals(getUrl(), adminUrl + "/login");
     }
 
     @AfterTest

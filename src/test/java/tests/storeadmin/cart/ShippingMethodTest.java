@@ -17,14 +17,12 @@ public class ShippingMethodTest extends DataProvider {
 
     @BeforeClass(alwaysRun = true)
     public void setUp() {
-
         open(adminUrl);
         if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
             LoginPage loginPage = openPage(adminUrl + "/login", LoginPage.class);
             loginPage.login(adminOrg, adminEmail, adminPassword);
             shouldBeVisible(loginPage.userMenuBtn(), "Failed to log in");
         }
-
     }
 
     @Test(priority = 1)
