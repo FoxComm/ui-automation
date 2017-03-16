@@ -40,7 +40,7 @@ public class StorefrontPage extends BasePage {
         return $(xpath("//button[@type='submit' and text()='LOG IN']"));
     }
 
-    private SelenideElement signUpLnk() {
+    public SelenideElement signUpLnk() {
         return $(xpath("//a[text()='Sign Up']"));
     }
 
@@ -102,6 +102,13 @@ public class StorefrontPage extends BasePage {
         setEmail(email);
         setPassword(password);
         clickLogInBtn();
+    }
+
+    @Step("Fill out sign up form; name:<{0}>, email:<{1}>, password:<{2}>")
+    public void fillOutSignUpForm(String name, String email, String pass) {
+        setName(name);
+        setEmail(email);
+        setPassword(pass);
     }
 
     @Step("Click \"Sign Up\" lnk")
@@ -609,6 +616,15 @@ public class StorefrontPage extends BasePage {
         return $(xpath("//ol[contains(@class, 'nav-list')]/li[" + index + "]"));
     }
 
+    /**
+     * email field at "LOG IN & CHECKOUT" form
+     * (which is used for sign in & checkout as a registered customer instead of doing guest checkout)
+     */
+    //TODO: id
+    private SelenideElement emailFld_guestAuth() {
+        return $(xpath("//div[text()='LOG IN & CHECKOUT']/following-sibling::form//input[@type='email']"));
+    }
+
     public void assertCheckoutStepActive(String step) {
         $(xpath("//ol/li[contains(@class, 'active')]//*[text()='Delivery']"));
     }
@@ -617,11 +633,15 @@ public class StorefrontPage extends BasePage {
         return $(xpath("//*[contains(@class, 'order-summary')]"));
     }
 
-    private SelenideElement guestEmailFld() {
+    private SelenideElement guestEmailFld_auth() {
         return $(xpath("//div[text()='CHECKOUT AS GUEST']//following-sibling::div/input"));
     }
 
-    private SelenideElement checkoutBtn_guestAuth() {
+    public SelenideElement guestEmail_checkout() {
+        return $(xpath("//input[contains(@class, 'guest-email')]"));
+    }
+
+    public SelenideElement checkoutBtn_guestAuth() {
         return $(xpath("//button[text()='CHECKOUT']"));
     }
 
@@ -804,16 +824,40 @@ public class StorefrontPage extends BasePage {
         return $(xpath("//article[contains(@class, '" + step + "')]//div[text()='EDIT']"));
     }
 
+    public ElementsCollection lineItems_checkout() {
+        return $$(xpath("//table[contains(@class, 'products')]/tbody/tr"));
+    }
+
+    public SelenideElement lineItem_checkout(String productTitle) {
+        return $(xpath("//table[contains(@class, 'products')]//span[contains(@class, 'product-name') and text()='" + productTitle + "']"));
+    }
+
     //---------------------------------------------- STEPS --------------------------------------------
 
+    @Step("Log in as <{0}> / <{1}> at guest checkout auth")
+    public void logIn_guestAuth(String email, String password) {
+        setEmail_guestAuth(email);
+        setPassword(password);
+    }
+
+    @Step("Set \"EMAIL\" fld val to <{0}>")
+    private void setEmail_guestAuth(String email) {
+        setFieldVal(emailFld_guestAuth(), email);
+    }
+
     @Step("Set guest's \"Email\" fld to <{0}>")
-    public void setGuestEmailFld(String email) {
-        setFieldVal(guestEmailFld(), email);
+    public void setGuestEmail_auth(String email) {
+        setFieldVal(guestEmailFld_auth(), email);
     }
 
     @Step("Click \"Checkout\" btn at the guest auth form")
     public void clickCheckoutBtn_guestAuth() {
         click(checkoutBtn_guestAuth());
+    }
+
+    @Step("Set guest email at checkout")
+    public void setGuestEmail_checkout(String email) {
+        setFieldVal(guestEmail_checkout(), email);
     }
 
     @Step("Click \"Save Address\" btn at checkout")

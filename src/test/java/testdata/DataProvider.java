@@ -28,12 +28,12 @@ public class DataProvider extends BaseTest {
     protected static int customersExpenses;
 
     protected static String orderId;
-    protected static int orderTotal;
     private static String jwt;
     protected static String randomId;
 
     protected static String customerName;
     public static String customerEmail;
+    public static String guestOrderEmail;
     public static String takenEmail;
     protected static int addressId1;
     private static int addressId2;
@@ -67,34 +67,6 @@ public class DataProvider extends BaseTest {
     protected static String searchRandomId;
     protected static String searchCode;
     private static int adminId;
-
-    public static void getProductSlug(String productName) throws IOException {
-        System.out.println("Getting slug of product <" + productName + ">...");
-
-        OkHttpClient client = new OkHttpClient();
-        Request request = new Request.Builder()
-                .url("http://stage.foxcommerce.com/api/v1/products/default/298")
-                .get()
-                .addHeader("content-type", "application/json")
-                .addHeader("accept", "application/json")
-                .addHeader("cache-control", "no-cache")
-                .addHeader("postman-token", "d1eb5025-2c1e-0046-da7c-0a051989be13")
-                .build();
-
-        Response response = client.newCall(request).execute();
-        String responseBody = response.body().string();
-        int responseCode = response.code();
-        String responseMsg = response.message();
-
-        if (responseCode == 200) {
-            JSONObject jsonResponse = new JSONObject(responseBody);
-            productSlug = jsonResponse.getString("slug");
-            System.out.println("Slug: <" + productSlug + ">");
-            System.out.println("---- ---- ---- ----");
-        } else {
-            failTest(responseBody, responseCode, responseMsg);
-        }
-    }
 
     private static JSONObject parse(String rout) throws IOException {
         String jsonData = "";
@@ -200,15 +172,11 @@ public class DataProvider extends BaseTest {
     private static void signUpCustomer(String name, String email) throws IOException {
         System.out.println("Registering a new customer on Storefront...");
 
-//        JSONObject jsonObj = parse("bin/payloads/signUpCustomer.json");
-//        jsonObj.putOpt("email", email);
-//        jsonObj.putOpt("name", name);
-//        jsonObj.putOpt("password", "78qa22!#");
-//        String payload = jsonObj.toString();
-
         OkHttpClient client = new OkHttpClient();
         MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, "{\"email\": \""+email+"\",\"name\": \""+name+"\",\"password\": \"78qa22!#\"}");
+        RequestBody body = RequestBody.create(mediaType, "{\"email\": \""+email+"\"," +
+                                                          "\"name\": \""+name+"\"," +
+                                                          "\"password\": \"78qa22!#\"}");
         Request request = new Request.Builder()
                 .url(apiUrl + "/v1/public/registrations/new")
                 .post(body)
@@ -301,13 +269,16 @@ public class DataProvider extends BaseTest {
         }
     }
 
-    @Step("[API] Get \"Grand Total\" of cart <{0}>")
-    private static void getGrandTotal(String cartId) throws IOException {
-        System.out.println("Getting Grand Total of cart <" + cartId + ">...");
+    @Step("[API] Get email used for guest checkout, order:<{0}>")
+    public static void getGuestOrderEmail(String orderId) throws IOException {
+        System.out.println("Getting email used for guest checkout, order:<" + orderId + ">...");
+
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
-                .url(apiUrl + "/v1/carts/" + cartId)
+                .url(apiUrl + "/api/v1/orders/" + orderId)
                 .get()
+                .addHeader("content-type", "application/json")
+                .addHeader("accept", "application/json")
                 .addHeader("cache-control", "no-cache")
                 .addHeader("JWT", jwt)
                 .build();
@@ -320,12 +291,13 @@ public class DataProvider extends BaseTest {
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
             JSONObject jsonData = new JSONObject(responseBody);
-            total = jsonData.getJSONObject("result").getJSONObject("totals").getInt("total");
-            System.out.println("Grand Total: <" + total + ">");
+            guestOrderEmail = jsonData.getJSONObject("result").getJSONObject("customer").getString("email");
+            System.out.println("Cart ID: <" + cartId + ">");
             System.out.println("---- ---- ---- ----");
         } else {
             failTest(responseBody, responseCode, responseMsg);
         }
+
     }
 
     @Step("[API] Get all totals of cart <{0}>")
@@ -2231,6 +2203,34 @@ public class DataProvider extends BaseTest {
 
     }
 
+    public static void getProductSlug(String productId) throws IOException {
+        System.out.println("Getting slug of product <" + productId + ">...");
+
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url(apiUrl + "/api/v1/products/default/" + productId)
+                .get()
+                .addHeader("content-type", "application/json")
+                .addHeader("accept", "application/json")
+                .addHeader("cache-control", "no-cache")
+                .addHeader("JWT", jwt)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+        int responseCode = response.code();
+        String responseMsg = response.message();
+
+        if (responseCode == 200) {
+            JSONObject jsonResponse = new JSONObject(responseBody);
+            productSlug = jsonResponse.getString("slug");
+            System.out.println("Slug: <" + productSlug + ">");
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
+    }
+
     @Step("[API] Create shared search with one search filter")
     private static void createSharedSearch_oneFilter() throws IOException {
 
@@ -3191,7 +3191,7 @@ public class DataProvider extends BaseTest {
                 setShipMethod(cartId, shipMethodId);
                 listCustomerAddresses(customerId);
                 issueStoreCredit(customerId, 50000);
-                getGrandTotal(cartId);
+                getCartTotals(cartId);
                 setPayment_storeCredit(cartId, total);
                 checkoutCart(cartId);
                 break;
@@ -3209,7 +3209,7 @@ public class DataProvider extends BaseTest {
                 listCustomerAddresses(customerId);
                 issueGiftCard(50000, 1);
                 issueStoreCredit_gcTransfer(customerId, gcCode);
-                getGrandTotal(cartId);
+                getCartTotals(cartId);
                 setPayment_storeCredit(cartId, total);
                 checkoutCart(cartId);
                 break;
@@ -3538,6 +3538,11 @@ public class DataProvider extends BaseTest {
                 createCoupon(promotionId);
                 generateSingleCode(couponId);
                 applyCouponCode(cartId, singleCouponCode);
+                break;
+
+            case "an active product visible on storefront":
+                createSKU_active();
+                createProduct_active(sku, storefrontCategory);
                 break;
 
             //---------------------------------- SF: SHIPPING ADDRESS --------------------------------//
@@ -3920,6 +3925,80 @@ public class DataProvider extends BaseTest {
                 issueGiftCard(1000, 1);
                 break;
 
+            case "a customer ready to checkout, 2 active products, 1 in cart":
+                randomId = generateRandomID();
+                signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
+                createCart(customerId);
+                createSKU_active();
+                createProduct_active(sku, storefrontCategory);
+                skus.add(sku);
+                products.add(productName);
+                increaseOnHandQty(sku, "Sellable", 1);
+                updLineItems(cartId, sku, 1);
+                createSKU_active();
+                createProduct_active(sku, storefrontCategory);
+                skus.add(sku);
+                products.add(productName);
+                setShipAddress(cartId,
+                        "John Doe",
+                        4177, 234,
+                        "Washington", "7500 Roosevelt Way NE",
+                        "Block 42",
+                        "Seattle", "98115",
+                        "5038234000", false);
+                listShipMethods(cartId);
+                setShipMethod(cartId, shipMethodId);
+                listCustomerAddresses(customerId);
+                getCustomerAddress(customerId, addressId1);
+                createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard");
+                setPayment_creditCard(cartId, creditCardId);
+                break;
+
+            case "a storefront registered customer, 2 active products, 1 in cart":
+                randomId = generateRandomID();
+                signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
+                createCart(customerId);
+                createSKU_active();
+                createProduct_active(sku, storefrontCategory);
+                skus.add(sku);
+                products.add(productName);
+                updLineItems(cartId, sku, 1);
+                createSKU_active();
+                createProduct_active(sku, storefrontCategory);
+                skus.add(sku);
+                products.add(productName);
+                break;
+
+            case "an active product, a gift card":
+                createSKU_active();
+                createProduct_active(sku, storefrontCategory);
+                issueGiftCard(1000, 1);
+                break;
+
+            case "a storefront registered customer, 2 active products, 1 in cart, coupon<no qualifier, 10% off, single code>":
+                randomId = generateRandomID();
+                signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
+                createCart(customerId);
+                createSKU_active();
+                createProduct_active(sku, storefrontCategory);
+                skus.add(sku);
+                products.add(productName);
+                updLineItems(cartId, sku, 1);
+                createSKU_active();
+                createProduct_active(sku, storefrontCategory);
+                skus.add(sku);
+                products.add(productName);
+                createPromotion_coupon();
+                createCoupon(promotionId);
+                generateSingleCode(couponId);
+                break;
+
+            case "a storefront registered customer, an active product":
+                randomId = generateRandomID();
+                signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
+                createSKU_active();
+                createProduct_active(sku, storefrontCategory);
+                break;
         }
     }
 
