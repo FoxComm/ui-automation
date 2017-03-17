@@ -3,7 +3,7 @@ package tests.storefront.guestsession;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import pages.StorefrontPage;
+import pages.storefront.StorefrontPage;
 import ru.yandex.qatools.allure.annotations.Description;
 import testdata.DataProvider;
 

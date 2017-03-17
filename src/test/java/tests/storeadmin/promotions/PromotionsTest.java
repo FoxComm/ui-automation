@@ -2,8 +2,8 @@ package tests.storeadmin.promotions;
 
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import pages.LoginPage;
-import pages.PromotionsPage;
+import pages.admin.LoginPage;
+import pages.admin.PromotionsPage;
 import ru.yandex.qatools.allure.annotations.Description;
 import testdata.DataProvider;
 

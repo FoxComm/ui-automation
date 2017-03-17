@@ -1,8 +1,8 @@
 package tests.storeadmin.cart;
 
 import org.testng.annotations.BeforeClass;
-import pages.LoginPage;
-import pages.OrderDetailsPage;
+import pages.admin.LoginPage;
+import pages.admin.OrderDetailsPage;
 import testdata.DataProvider;
 
 import java.util.Objects;

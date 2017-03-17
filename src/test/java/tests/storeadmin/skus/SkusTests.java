@@ -2,8 +2,8 @@ package tests.storeadmin.skus;
 
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import pages.LoginPage;
-import pages.SkusPage;
+import pages.admin.LoginPage;
+import pages.admin.SkusPage;
 import ru.yandex.qatools.allure.annotations.Description;
 import testdata.DataProvider;
 

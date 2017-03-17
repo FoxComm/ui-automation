@@ -3,8 +3,8 @@ package tests.storeadmin.orders;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import ru.yandex.qatools.allure.annotations.Description;
-import pages.LoginPage;
-import pages.OrderDetailsPage;
+import pages.admin.LoginPage;
+import pages.admin.OrderDetailsPage;
 import testdata.DataProvider;
 
 import java.io.IOException;

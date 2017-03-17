@@ -3,8 +3,8 @@ package tests.storeadmin.generalcontrols;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import pages.LoginPage;
-import pages.OrdersPage;
+import pages.admin.LoginPage;
+import pages.admin.OrdersPage;
 import testdata.DataProvider;
 
 import java.io.IOException;

@@ -3,8 +3,8 @@ package tests.storeadmin.giftcards;
 import org.openqa.selenium.By;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import pages.GiftCardsPage;
-import pages.LoginPage;
+import pages.admin.GiftCardsPage;
+import pages.admin.LoginPage;
 import ru.yandex.qatools.allure.annotations.Description;
 import testdata.DataProvider;
 

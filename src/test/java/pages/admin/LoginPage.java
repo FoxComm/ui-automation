@@ -1,4 +1,4 @@
-package pages;
+package pages.admin;
 
 import base.BasePage;
 

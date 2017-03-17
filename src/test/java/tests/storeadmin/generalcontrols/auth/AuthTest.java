@@ -4,9 +4,9 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import pages.LoginPage;
-import pages.OrdersPage;
-import pages.StorefrontPage;
+import pages.admin.LoginPage;
+import pages.admin.OrdersPage;
+import pages.storefront.StorefrontPage;
 import ru.yandex.qatools.allure.annotations.Description;
 import testdata.DataProvider;
 

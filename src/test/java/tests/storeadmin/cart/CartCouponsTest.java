@@ -3,9 +3,9 @@ package tests.storeadmin.cart;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import pages.CartPage;
-import pages.LoginPage;
-import pages.OrderDetailsPage;
+import pages.admin.CartPage;
+import pages.admin.LoginPage;
+import pages.admin.OrderDetailsPage;
 import ru.yandex.qatools.allure.annotations.Description;
 import testdata.DataProvider;
 

@@ -2,9 +2,9 @@ package tests.storeadmin.inventory;
 
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import pages.CartPage;
-import pages.InventoryPage;
-import pages.LoginPage;
+import pages.admin.CartPage;
+import pages.admin.InventoryPage;
+import pages.admin.LoginPage;
 import ru.yandex.qatools.allure.annotations.Description;
 import testdata.DataProvider;
 
