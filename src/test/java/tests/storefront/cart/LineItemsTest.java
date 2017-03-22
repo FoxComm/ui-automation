@@ -81,7 +81,7 @@ public class LineItemsTest extends DataProvider {
     public void addGiftCardToCart() throws IOException {
         provideTestData("a customer signed up on storefront");
 
-        p = openPage(storefrontUrl + "GIFT-CARDS", StorefrontPage.class);
+        p = openPage(storefrontUrl + "/GIFT-CARDS", StorefrontPage.class);
         p.logIn(customerEmail, "78qa22!#");
         p.setPriceSelector("$10.00");
         p.setRecipientName("John Smith");

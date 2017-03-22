@@ -2,12 +2,8 @@ package base;
 
 import com.codeborne.selenide.Configuration;
 import org.testng.annotations.BeforeSuite;
-
 import java.util.Optional;
-
-import static com.codeborne.selenide.WebDriverRunner.CHROME;
 import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
-import static com.codeborne.selenide.WebDriverRunner.source;
 
 public class BaseTest extends ConciseAPI {
 
@@ -17,7 +13,7 @@ public class BaseTest extends ConciseAPI {
     protected static String apiUrl = System.getenv("API_URL") + "/api";
     protected static String adminUrl = System.getenv("API_URL") + "/admin";
     private static String storefront = System.getenv("STOREFRONT");
-    public static String storefrontUrl = System.getenv("API_URL") + "/" + storefront;
+    public static String storefrontUrl = System.getenv("API_URL") + storefront;
     protected static String adminOrg = "tenant";
     protected static String adminEmail = "admin@admin.com";
     protected static String adminPassword;
@@ -44,16 +40,16 @@ public class BaseTest extends ConciseAPI {
     }
 
     private void setStorefrontCategory() {
-        if (System.getenv("API_URL").equals("https://stage.foxcommerce.com") && storefront.equals("top-drawer")) {
-            storefrontCategory = "MODERN";
+        if (System.getenv("API_URL").equals("https://stage.foxcommerce.com") && storefront.equals("/top-drawer")) {
+            storefrontCategory = "/MODERN";
         } else if (System.getenv("API_URL").equals("https://td-prod.foxcommerce.com") && storefront.equals("")) {
-            storefrontCategory = "MODERN";
-        } else if (System.getenv("API_URL").equals("https://stage.foxcommerce.com") && storefront.equals("perfect-gourmet")) {
-            storefrontCategory = "APPETIZERS";
+            storefrontCategory = "/MODERN";
+        } else if (System.getenv("API_URL").equals("https://stage.foxcommerce.com") && storefront.equals("/perfect-gourmet")) {
+            storefrontCategory = "/APPETIZERS";
         } else if (System.getenv("API_URL").equals("https://stage-tpg.foxcommerce.com") && storefront.equals("")) {
-            storefrontCategory = "APPETIZERS";
+            storefrontCategory = "/APPETIZERS";
         } else if ((System.getenv("API_URL").equals("https://stage.foxcommerce.com") && storefront.equals(""))) {
-            storefrontCategory = "sunglasses";
+            storefrontCategory = "/sunglasses";
         } else {
             storefrontCategory = "";
         }

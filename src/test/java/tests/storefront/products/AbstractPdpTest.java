@@ -78,7 +78,7 @@ public class AbstractPdpTest extends DataProvider {
     public void changeProductQty() throws IOException {
         provideTestData("an active product visible on storefront");
 
-        p = openPage(storefrontUrl + "/" + storefrontCategory, StorefrontPage.class);
+        p = openPage(storefrontUrl + storefrontCategory, StorefrontPage.class);
         p.openPDP(productName);
         p.setQty_pdp("3");
         p.clickAddToCartBtn();

@@ -41,7 +41,7 @@ public class CatalogTest extends DataProvider {
     public void addProductFromCatalogViewPage() throws IOException {
         provideTestData("an active product visible on storefront");
 
-        p = openPage(storefrontUrl + "/" + storefrontCategory, StorefrontPage.class);
+        p = openPage(storefrontUrl + storefrontCategory, StorefrontPage.class);
         p.navigateToCategory(storefrontCategory);
         scrollToElement(p.productTitle_catalog(productName));
         p.clickAddToCartBtn_catalog(productName);
@@ -57,7 +57,7 @@ public class CatalogTest extends DataProvider {
     public void hoverProductImageInCatalog_hasImage() throws IOException {
         provideTestData("an active product visible on storefront");
 
-        p = openPage(storefrontUrl + "/" + storefrontCategory, StorefrontPage.class);
+        p = openPage(storefrontUrl + storefrontCategory, StorefrontPage.class);
         scrollToElement(p.productImage(productName));
         p.productImage(productName).hover();
 
@@ -70,7 +70,7 @@ public class CatalogTest extends DataProvider {
     public void hoverProductImageInCatalog_noImage() throws IOException {
         provideTestData("an active product visible on storefront");
 
-        p = openPage(storefrontUrl + "/" + storefrontCategory, StorefrontPage.class);
+        p = openPage(storefrontUrl + storefrontCategory, StorefrontPage.class);
         scrollToElement(p.imagePlaceholder(productName));
         p.imagePlaceholder(productName).hover();
 
@@ -108,7 +108,7 @@ public class CatalogTest extends DataProvider {
     public void canAccessPdp() throws IOException {
         provideTestData("an active product visible on storefront");
 
-        p = openPage(storefrontUrl + "/" + storefrontCategory, StorefrontPage.class);
+        p = openPage(storefrontUrl + storefrontCategory, StorefrontPage.class);
         p.openPDP(productName);
 
         p.description_pdp().shouldBe(visible);

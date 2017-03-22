@@ -197,17 +197,17 @@
         </classes>
     </test>
 
-    <test name="SF: Abstract PDP Test">
+    <test name="SF: Products > General PDP Test">
         <classes>
             <class name="tests.storefront.products.AbstractPdpTest"/>
         </classes>
     </test>
-    <test name="SF: Catalog Test">
+    <test name="SF: Products > Catalog Test">
         <classes>
             <class name="tests.storefront.products.CatalogTest"/>
         </classes>
     </test>
-    <test name="SF: TPG Product Attributes">
+    <test name="SF: Products > TPG Product Attributes">
         <classes>
             <class name="tests.storefront.products.TpgProductAttrsTest"/>
         </classes>
