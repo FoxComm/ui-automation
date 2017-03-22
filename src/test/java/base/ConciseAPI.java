@@ -12,6 +12,7 @@ import org.openqa.selenium.*;
 import org.testng.IHookCallBack;
 import org.testng.IHookable;
 import org.testng.ITestResult;
+import org.testng.asserts.SoftAssert;
 import ru.yandex.qatools.allure.annotations.Attachment;
 import ru.yandex.qatools.allure.annotations.Step;
 
@@ -57,8 +58,6 @@ public class ConciseAPI implements IHookable {
     private SelenideElement loadingSpinner() {
         return $(xpath("//div[@class='fc-wait-animation fc-wait-animation_size_l']"));
     }
-
-    private String element;
 
     //------------------------- ACTIONS -------------------------//
 
@@ -144,6 +143,13 @@ public class ConciseAPI implements IHookable {
     }
 
     //------------------------- ASSERTIONS -------------------------//
+
+    protected SoftAssert soft = new SoftAssert();
+
+    @Step("Soft assertEquals Expected: <{1}>, Actual: <{0}>")
+    protected void assertEquals_soft(String actual, String expected) {
+        soft.assertEquals(actual, expected);
+    }
 
     public void waitForDataToLoad() {
         shouldNotBeVisible(loadingSpinner(),
@@ -262,7 +268,8 @@ public class ConciseAPI implements IHookable {
         }
     }
 
-    public void assertTwice(SelenideElement element, String condition, String errorMsg) {
+    @Step("Assert twice that element {1}")
+    protected void assertTwice(SelenideElement element, String condition, String errorMsg) {
         switch (condition.toLowerCase()) {
 
             case "should be visible":

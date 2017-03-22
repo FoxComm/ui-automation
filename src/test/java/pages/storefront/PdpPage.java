@@ -11,91 +11,155 @@ public class PdpPage extends ProfilePage {
 
     //-------------------------------------------- ELEMENTS -------------------------------------------
 
-    private SelenideElement pdpTitle(String title) {
+    public SelenideElement productTitle_catalog(String title) {
         return $(xpath("//h1/a[text()='" + title + "']"));
     }
 
-    private SelenideElement qty_PDP() {
+    public SelenideElement description_pdp() {
+        return $(xpath("//div[contains(@class, '_description_')]"));
+    }
+
+    public SelenideElement description_textStyles(String element, String content) {
+        if (element.equals("ul") || element.equals("ol")) {
+            return $(xpath("//div[contains(@class, 'description')]/" + element + "/li[text()='" + content + "']"));
+        } else {
+            return $(xpath("//div[contains(@class, 'description')]/" + element + "[text()='" + content + "']"));
+        }
+    }
+
+    private SelenideElement qty_pdp() {
         return $(xpath("//div[contains(@class, 'cart-actions')]//select"));
     }
 
-    private SelenideElement qtyOption_PDP(String qty) {
+    private SelenideElement qtyOption_pdp(String qty) {
         return $(xpath("//div[contains(@class, 'cart-actions')]//select/option[@value='" + qty + "']"));
     }
 
-    private SelenideElement addToCartBtn_PDP() {
+    private SelenideElement addToCartBtn_pdp() {
         return $(xpath("//button[contains(@class, 'add-to-cart-btn')]"));
     }
 
-    //TODO: id
-    private SelenideElement couponCodeFld() {
-        return $(xpath("//input[@placeholder='Coupon Code']"));
+    private SelenideElement addToCartBtn_catalog(String productTitle) {
+        return $(xpath("//h1[@alt='" + productTitle + "']/following-sibling::div//button"));
     }
 
-    //TODO: id
-    private SelenideElement applyCouponBtn() {
-        return $(xpath("//button[text()='Apply']"));
+    public SelenideElement productPrice_catalog(String productTitle) {
+        return $(xpath("//h1[@alt='" + productTitle + "']/following-sibling::div//div[contains(@class, 'price')]/span"));
     }
 
-    //TODO: id & classes
-    public SelenideElement appliedCoupon() {
-        return $(xpath("//div[contains(@class, 'coupon-code')]"));
+    public SelenideElement productImage(String productTitle) {
+        return $(xpath("//h1[@alt='" + productTitle + "']/../..//img"));
     }
 
-    //TODO: class
-    private SelenideElement removeCouponBtn() {
-        return $(xpath("//span[contains(@class, 'delete-promo')]"));
+    public SelenideElement imagePlaceholder(String productTitle) {
+        return $(xpath("//h1[@alt='" + productTitle + "']/../..//div[contains(@class, 'image-placeholder')]/span"));
     }
 
-    //TODO: id
-    public SelenideElement adjustmentTotal_cart() {
-        return $(xpath("//div[contains(@class, 'coupon')]/span[1]"));
+    public SelenideElement additionalDescription(String productTitle) {
+        return $(xpath("//h1[@alt='" + productTitle + "']/../..//h2[contains(@class, 'additional-description')]"));
     }
 
+    private SelenideElement additionalInfoBlock(String title) {
+        return $(xpath("//div[contains(@class, 'item-title') and text()='" + title + "']"));
+    }
+
+    public SelenideElement productTitle_pdp() {
+        return $(xpath("//h1[contains(@class, 'title')]"));
+    }
+
+    public SelenideElement salePrice() {
+        return $(xpath("//div[contains(@class, '_price_')]/span"));
+    }
+
+    public SelenideElement customAttribute(String title) {
+        return $(xpath("//div[contains(@class, 'attribute-title') and text()='" + title + "']/following-sibling::div[1]"));
+    }
+
+    //----------------------- GIFT CARDS
+
+    private SelenideElement priceSelector() {
+        return $(xpath("//div[contains(@class, 'price-selector')]"));
+    }
+
+    private SelenideElement priceOption(String price) {
+        return $(xpath("//div[contains(@class, 'price-selector')]//option[text()='" + price + "']"));
+    }
+
+    private SelenideElement recipientNameFld() {
+        return $(xpath("//input[@name='giftCard.recipientName']"));
+    }
+
+    private SelenideElement recipientEmailFld() {
+        return $(xpath("//input[@name='giftCard.recipientEmail']"));
+    }
+
+    private SelenideElement giftCardMsgFld() {
+        return $(xpath("//textarea[@name='giftCard.message']"));
+    }
+
+    private SelenideElement senderNameFld() {
+        return $(xpath("//input[@name='giftCard.senderName']"));
+    }
 
     //---------------------------------------------- STEPS --------------------------------------------
+
+    @Step("Click \"Add To Cart\" btn at catalog view")
+    public void clickAddToCartBtn_catalog(String productTitle) {
+        click(addToCartBtn_catalog(productTitle));
+    }
 
     @Step("Open PDP: <{0}>")
     public void openPDP(String productName) {
         try {
-            click(pdpTitle(productName));
+            click(productTitle_catalog(productName));
         } catch (RuntimeException ignored) {
             refresh();
-            click(pdpTitle(productName));
+            click(productTitle_catalog(productName));
         }
     }
 
     @Step("Set product quantity to <{0}>")
-    public void setQty_PDP(String qty) {
-        click(qty_PDP());
-        click(qtyOption_PDP(qty));
+    public void setQty_pdp(String qty) {
+        click(qty_pdp());
+        click(qtyOption_pdp(qty));
     }
 
     @Step("Click \"Add To Cart\" btn")
     public void clickAddToCartBtn() {
-        click(addToCartBtn_PDP());
+        click(addToCartBtn_pdp());
     }
 
-    @Step("Set \"Coupon Code\" fld val to <{0}>")
-    protected void setCouponCode(String code) {
-        setFieldVal(couponCodeFld(), code);
+    @Step("Switch to <{0}> additional info section")
+    public void switchInfoBlock(String title) {
+        click(additionalInfoBlock(title));
     }
 
-    //TODO: id
-    @Step("Click \"Apply\" btn")
-    protected void clickApplyBtn_coupon() {
-        click(applyCouponBtn());
+    //----------------------- GIFT CARDS
+
+    @Step("Set GC price to <{0}>")
+    public void setPriceSelector(String price) {
+        click(priceSelector());
+        click(priceOption(price));
     }
 
-    @Step("Apply coupon to cart, code: <{0}>")
-    public void applyCoupon(String code) {
-        setCouponCode(code);
-        clickApplyBtn_coupon();
+    @Step("Set \"Recipient Name\" fld val to <{0}>")
+    public void setRecipientName(String name) {
+        setFieldVal(recipientNameFld(), name);
     }
 
-    @Step("Remove coupon from cart")
-    public void removeCoupon() {
-        click(removeCouponBtn());
+    @Step("Set \"Recipient Name\" fld val to <{0}>")
+    public void setRecipientEmail(String email) {
+        setFieldVal(recipientEmailFld(), email);
+    }
+
+    @Step("Set \"Message\" text area val to <{0}>")
+    public void setGiftCardMsg(String msg) {
+        setFieldVal(giftCardMsgFld(), msg);
+    }
+
+    @Step("Set \"Sender Name\" fld val to <{0}>")
+    public void setSenderName(String name) {
+        setFieldVal(senderNameFld(), name);
     }
 
 }

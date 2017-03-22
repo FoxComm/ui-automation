@@ -53,6 +53,7 @@ public class DataProvider extends BaseTest {
     public static List<String> bulkCodes = new ArrayList<>();
 
     protected static String sku;
+    protected static int skuId;
     protected static List<String> skus = new ArrayList<>();
     protected static String skuTitle;
     protected static int skuId_inventory;
@@ -77,6 +78,31 @@ public class DataProvider extends BaseTest {
         }
         bufferedReader.close();
         return new JSONObject(Objects.requireNonNull(jsonData));
+    }
+
+    private static boolean assertProductExists_es(String jsonAttrType, String attrName, String attrVal, String responseBody) {
+        JSONObject responseJSON = new JSONObject(responseBody);
+        JSONArray productsArr = responseJSON.getJSONArray("result");
+        jsonAttrType = jsonAttrType.toLowerCase();
+
+        if (jsonAttrType.equals("string")) {
+            for (int i = 0; i < productsArr.length(); i++) {
+                String foundAttr = productsArr.getJSONObject(i).getString(attrName);
+                if (foundAttr.equals(attrVal)) {
+                    return true;
+                }
+            }
+        } else if (jsonAttrType.equals("int")) {
+            int intAttrVal = Integer.valueOf(attrVal);
+            for (int i = 0; i < productsArr.length(); i++) {
+                int foundAttr = productsArr.getJSONObject(i).getInt(attrName);
+                if (foundAttr == intAttrVal) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     private static void failTest(String responseBody, int responseCode, String responseMsg) throws IOException {
@@ -275,7 +301,7 @@ public class DataProvider extends BaseTest {
 
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
-                .url(apiUrl + "/api/v1/orders/" + orderId)
+                .url(apiUrl + "/v1/orders/" + orderId)
                 .get()
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -850,7 +876,7 @@ public class DataProvider extends BaseTest {
         OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
-                .url(apiUrl + "/api/v1/customers/" + customerId + "/payment-methods/credit-cards")
+                .url(apiUrl + "/v1/customers/" + customerId + "/payment-methods/credit-cards")
                 .get()
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -1256,6 +1282,113 @@ public class DataProvider extends BaseTest {
         } else {
             failTest(responseBody, responseCode, responseMsg);
         }
+
+    }
+
+    @Step("[API] Wait for <{1}> orders to apeear in ES")
+    public static void waitForOrdersToAppearInES(int customerId, int ordersExpectedAmount) throws IOException {
+        System.out.println("Wait for <" + ordersExpectedAmount + "> orders to appear in ES");
+
+        JSONObject jsonObj = parse("bin/payloads/esSearchCustomer.json");
+        jsonObj.getJSONObject("query")
+                .getJSONObject("bool")
+                .getJSONArray("filter")
+                .getJSONObject(0)
+                .getJSONObject("nested")
+                .getJSONObject("query")
+                .getJSONObject("term")
+                .putOpt("customer.id", customerId);
+        String payload = jsonObj.toString();
+
+        int responseCode = 0;
+        String responseBody = "";
+        String responseMsg = "";
+        long time = System.currentTimeMillis();
+        long end = time + 15000;
+        int ordersInEs = 0;
+        int totalTries = 0;
+
+        OkHttpClient client = new OkHttpClient();
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, payload);
+        Request request = new Request.Builder()
+                .url(apiUrl + "/search/admin/orders_search_view/_search?size=50")
+                .post(body)
+                .addHeader("content-type", "application/json")
+                .addHeader("accept", "application/json")
+                .addHeader("cache-control", "no-cache")
+                .addHeader("JWT", jwt)
+                .build();
+
+        while((System.currentTimeMillis() < end) && (ordersInEs != ordersExpectedAmount)) {
+            Response response = client.newCall(request).execute();
+            responseBody = response.body().string();
+            responseCode = response.code();
+            responseMsg = response.message();
+
+            JSONObject jsonResponse = new JSONObject(responseBody);
+            try {
+                ordersInEs = jsonResponse.getJSONArray("result").length();
+            } catch(org.json.JSONException ignored) {}
+            totalTries ++;
+        }
+        System.out.println("total tries: <" + totalTries + ">");
+
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+            System.out.println("Orders in ES: <" + ordersInEs + ">");
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
+    }
+
+    @Step("[API] Check if product<({0}) {1}: {2}> is present in category view on storefront")
+    private static void checkProductPresenceInCategoryView(String attrType, String attrName, String attrVal) throws IOException {
+        System.out.println("Checking if product<("+attrType+") "+attrName+": "+attrVal+"> is present in category view on storefront...");
+
+        JSONObject jsonObj = parse("bin/payloads/esCatalogView.json");
+        String payload = jsonObj.toString();
+
+        int responseCode = 0;
+        String responseBody = "";
+        String responseMsg = "";
+        long time = System.currentTimeMillis();
+        long end = time + 15000;
+        int totalTries = 0;
+        boolean productInEs = false;
+
+        OkHttpClient client = new OkHttpClient();
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, payload);
+        Request request = new Request.Builder()
+                .url(apiUrl + "/search/public/products_catalog_view/_search?size=1000")
+                .post(body)
+                .addHeader("content-type", "application/json")
+                .addHeader("cache-control", "no-cache")
+                .addHeader("JWT", jwt)
+                .build();
+
+        while((System.currentTimeMillis() < end) && (productInEs != true)) {
+            Response response = client.newCall(request).execute();
+            responseBody = response.body().string();
+            responseCode = response.code();
+            responseMsg = response.message();
+
+            totalTries ++;
+            productInEs = assertProductExists_es(attrType, attrName, attrVal, responseBody);
+        }
+        System.out.println("total tries: <" + totalTries + ">");
+        System.out.println("Time spent: <" + (System.currentTimeMillis() - time) + " MS>");
+
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+            System.out.println("Orders in ES: <" + productInEs + ">");
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
+
 
     }
 
@@ -1692,8 +1825,10 @@ public class DataProvider extends BaseTest {
 
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
+            JSONObject responseJSON = new JSONObject(responseBody);
             sku = skuCode;
             skuTitle = title;
+            skuId = responseJSON.getInt("id");
             System.out.println("SKU code: <" + skuCode + ">.");
             System.out.println("---- ---- ---- ----");
         } else {
@@ -1856,6 +1991,7 @@ public class DataProvider extends BaseTest {
         String responseMsg = "";
         long time = System.currentTimeMillis();
         long end = time + 15000;
+        int totalTries = 0;
 
         OkHttpClient client = new OkHttpClient();
 
@@ -1871,7 +2007,10 @@ public class DataProvider extends BaseTest {
             responseBody = response.body().string();
             responseCode = response.code();
             responseMsg = response.message();
+            totalTries ++;
         }
+        System.out.println("totalTries: <" + totalTries + ">");
+        System.out.println("Time spent: <" + (System.currentTimeMillis() - time) + " MS>");
 
         if (responseCode == 200) {
             System.out.println("Inventory is created");
@@ -1925,6 +2064,7 @@ public class DataProvider extends BaseTest {
 
         System.out.println("Creating a new product with SKU <" + sku + ">...");
         String productName_local = "Test Product " + generateRandomID();
+        tag = tag.toUpperCase();
 
         OkHttpClient client = new OkHttpClient();
 
@@ -1949,8 +2089,137 @@ public class DataProvider extends BaseTest {
             JSONObject jsonData = new JSONObject(responseBody);
             productId = String.valueOf(jsonData.getInt("id"));
             productName = productName_local;
-            System.out.println("Product ID: <" + productId + ">.");
-            System.out.println("Product name: <" + productName + ">.");
+            productSlug = jsonData.getString("slug");
+            System.out.println("Product ID: <" + productId + ">");
+            System.out.println("Product name: <" + productName + ">");
+            System.out.println("Slug: <" + productSlug + ">");
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
+
+    }
+
+    @Step("[API] Create product for TPG Storefront product props test at PDP")
+    public static void createProduct_tpgProps(int skuId, String skuCode, String skuTitle) throws IOException {
+        System.out.println("Creating a new product with TPG specific props with SKU <" + skuCode + ">...");
+        randomId = generateRandomID();
+
+        JSONObject jsonObj = parse("bin/payloads/tpgProduct_propsTest.json");
+        jsonObj.getJSONObject("attributes")
+                .getJSONObject("title")
+                .putOpt("v", "Test Product " + randomId);
+        jsonObj.putOpt("slug", "test-product-" + randomId);
+        jsonObj.getJSONArray("skus")
+                .getJSONObject(0)
+                .putOpt("id", skuId);
+        jsonObj.getJSONArray("skus")
+                .getJSONObject(0)
+                .getJSONObject("attributes")
+                .getJSONObject("code")
+                .putOpt("v", skuCode);
+        jsonObj.getJSONArray("skus")
+                .getJSONObject(0)
+                .getJSONObject("attributes")
+                .getJSONObject("title")
+                .putOpt("v", skuTitle);
+        String payload = jsonObj.toString();
+
+        OkHttpClient client = new OkHttpClient();
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, payload);
+        Request request = new Request.Builder()
+                .url(apiUrl + "/v1/products/default")
+                .post(body)
+                .addHeader("content-type", "application/json")
+                .addHeader("cache-control", "no-cache")
+                .addHeader("JWT", jwt)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+        int responseCode = response.code();
+        String responseMsg = response.message();
+
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+            JSONObject responseJSON = new JSONObject(responseBody);
+            productId = String.valueOf(responseJSON.getInt("id"));
+            productName = responseJSON.getJSONObject("attributes").getJSONObject("title").getString("v");
+            productSlug = responseJSON.getString("slug");
+            System.out.println("Product ID: <" + productId + ">");
+            System.out.println("Product name: <" + productName + ">");
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
+
+    }
+
+    @Step("[API] Create product with styled description <{0}>, content: <{1}>")
+    private static void createActiveProduct_styledDescription(String skuCode, String tag, String element, String content) throws IOException {
+        System.out.println("Creating product with styled description <" + element + ">, content: <" + content + ">");
+
+        JSONObject jsonObj = parse("bin/payloads/createProduct_styledDescription.json");
+
+        jsonObj.getJSONObject("attributes")
+                .getJSONObject("title")
+                .putOpt("v", "Test Product " + randomId);
+        jsonObj.putOpt("slug", "test-product-" + randomId);
+
+        jsonObj.getJSONArray("skus")
+                .getJSONObject(0)
+                .putOpt("id", skuId);
+        jsonObj.getJSONArray("skus")
+                .getJSONObject(0)
+                .getJSONObject("attributes")
+                .getJSONObject("code")
+                .putOpt("v", skuCode);
+        jsonObj.getJSONArray("skus")
+                .getJSONObject(0)
+                .getJSONObject("attributes")
+                .getJSONObject("title")
+                .putOpt("v", skuTitle);
+
+        JSONArray tags = jsonObj.getJSONObject("attributes").getJSONObject("tags").getJSONArray("v");
+        tags.put(tags.length(), tag);
+
+        if (element.equals("ul") || element.equals("ol")) {
+            jsonObj.getJSONObject("attributes")
+                    .getJSONObject("description")
+                    .putOpt("v", "<"+element+"><li>" + content + "</li></"+element+">");
+        } else {
+            jsonObj.getJSONObject("attributes")
+                    .getJSONObject("description")
+                    .putOpt("v", "<"+element+">" + content + "</"+element+">");
+        }
+
+        String payload = jsonObj.toString();
+
+        OkHttpClient client = new OkHttpClient();
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, payload);
+        Request request = new Request.Builder()
+                .url(apiUrl + "/v1/products/default")
+                .post(body)
+                .addHeader("content-type", "application/json")
+                .addHeader("cache-control", "no-cache")
+                .addHeader("JWT", jwt)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+        int responseCode = response.code();
+        String responseMsg = response.message();
+
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+            JSONObject responseJSON = new JSONObject(responseBody);
+            productId = String.valueOf(responseJSON.getInt("id"));
+            productName = responseJSON.getJSONObject("attributes").getJSONObject("title").getString("v");
+            productSlug = responseJSON.getString("slug");
+            System.out.println("Product ID: <" + productId + ">");
+            System.out.println("Product name: <" + productName + ">");
             System.out.println("---- ---- ---- ----");
         } else {
             failTest(responseBody, responseCode, responseMsg);
@@ -2208,7 +2477,7 @@ public class DataProvider extends BaseTest {
 
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
-                .url(apiUrl + "/api/v1/products/default/" + productId)
+                .url(apiUrl + "/v1/products/default/" + productId)
                 .get()
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -2225,6 +2494,104 @@ public class DataProvider extends BaseTest {
             JSONObject jsonResponse = new JSONObject(responseBody);
             productSlug = jsonResponse.getString("slug");
             System.out.println("Slug: <" + productSlug + ">");
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
+    }
+
+    @Step("[API] Set product<ID:{0}> slug to <{1}>")
+    public static void editProductSlug(String productId, String newSlug) throws IOException {
+        System.out.println("Setting product<ID:" + productId + "> slug to <" + newSlug + ">...");
+
+        JSONObject jsonObj = viewProduct(productId);
+        jsonObj.putOpt("slug", newSlug);
+        String payload = jsonObj.toString();
+
+        OkHttpClient client = new OkHttpClient();
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, payload);
+        Request request = new Request.Builder()
+                .url(apiUrl + "/v1/products/default/" + productId)
+                .patch(body)
+                .addHeader("content-type", "application/json")
+                .addHeader("cache-control", "no-cache")
+                .addHeader("JWT", jwt)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+        int responseCode = response.code();
+        String responseMsg = response.message();
+
+        if (responseCode == 200) {
+            JSONObject jsonResponse = new JSONObject(responseBody);
+            productSlug = jsonResponse.getString("slug");
+            System.out.println("Slug: <" + productSlug + ">");
+            System.out.println("---- ---- ---- ----");
+            checkProductPresenceInCategoryView("string", "slug", productSlug);
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+        }
+
+    }
+
+    @Step("[API] Get JSON schema of product <{0}>")
+    public static JSONObject viewProduct(String productId) throws IOException {
+
+        OkHttpClient client = new OkHttpClient();
+
+        Request request = new Request.Builder()
+                .url(apiUrl + "/v1/products/default/" + productId)
+                .get()
+                .addHeader("content-type", "application/json")
+                .addHeader("accept", "application/json")
+                .addHeader("cache-control", "no-cache")
+                .addHeader("JWT", jwt)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+        int responseCode = response.code();
+        String responseMsg = response.message();
+
+        if (responseCode == 200) {
+            return new JSONObject(responseBody);
+        } else {
+            failTest(responseBody, responseCode, responseMsg);
+            return new JSONObject("{}");
+        }
+    }
+
+    @Step("[API] Add tag <{1}> to product <{0}>")
+    public static void addTag_product(String productId, String tag) throws IOException {
+        tag = tag.toUpperCase();
+        JSONObject jsonObj = viewProduct(productId);
+        JSONArray tags = jsonObj.getJSONObject("attributes").getJSONObject("tags").getJSONArray("v");
+        tags.put(tags.length(), tag);
+        String payload = jsonObj.toString();
+
+        OkHttpClient client = new OkHttpClient();
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, payload);
+        Request request = new Request.Builder()
+                .url(apiUrl + "/v1/products/default/" + productId)
+                .patch(body)
+                .addHeader("content-type", "application/json")
+                .addHeader("cache-control", "no-cache")
+                .addHeader("JWT", jwt)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        String responseBody = response.body().string();
+        int responseCode = response.code();
+        String responseMsg = response.message();
+
+        if (responseCode == 200) {
+            System.out.println(responseCode + " " + responseMsg);
+            JSONObject jsonData = new JSONObject(responseBody);
+            String newTags = jsonData.getJSONObject("attributes").getJSONObject("tags").getJSONArray("v").toString();
+            System.out.println("New Tags JSONArray:\n" + newTags);
             System.out.println("---- ---- ---- ----");
         } else {
             failTest(responseBody, responseCode, responseMsg);
@@ -3533,7 +3900,7 @@ public class DataProvider extends BaseTest {
                 createCart(customerId);
                 createSKU_active();
                 createProduct_active(sku, storefrontCategory);
-                updLineItems(cartId,sku, 1);
+                updLineItems(cartId, sku, 1);
                 createPromotion_coupon();
                 createCoupon(promotionId);
                 generateSingleCode(couponId);
@@ -3543,6 +3910,7 @@ public class DataProvider extends BaseTest {
             case "an active product visible on storefront":
                 createSKU_active();
                 createProduct_active(sku, storefrontCategory);
+                checkProductPresenceInCategoryView("int", "productId", productId);
                 break;
 
             //---------------------------------- SF: SHIPPING ADDRESS --------------------------------//
@@ -3998,6 +4366,156 @@ public class DataProvider extends BaseTest {
                 signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
                 createSKU_active();
                 createProduct_active(sku, storefrontCategory);
+                break;
+
+            //------------------------------------- SF: PDP ------------------------------------//
+
+            case "active product with tags <ENTRÉES> and <POULTRY>":
+                createSKU_active();
+                createProduct_active(sku, "ENTRÉES");
+                addTag_product(productId, "POULTRY");
+                checkProductPresenceInCategoryView("int", "productId", productId);
+                break;
+
+            case "active product with tags <ENTRÉES> and <SEAFOOD>":
+                createSKU_active();
+                createProduct_active(sku, "ENTRÉES");
+                addTag_product(productId, "SEAFOOD");
+                checkProductPresenceInCategoryView("int", "productId", productId);
+                break;
+
+            case "active product with tags <ENTRÉES> and <MEAT>":
+                createSKU_active();
+                createProduct_active(sku, "ENTRÉES");
+                addTag_product(productId, "MEAT");
+                checkProductPresenceInCategoryView("int", "productId", productId);
+                break;
+
+            case "active product with tags <ENTRÉES> and <VEGETARIAN>":
+                createSKU_active();
+                createProduct_active(sku, "ENTRÉES");
+                addTag_product(productId, "VEGETARIAN");
+                checkProductPresenceInCategoryView("int", "productId", productId);
+                break;
+
+            case "active product with tags <ENTRÉES> and <>":
+                createSKU_active();
+                createProduct_active(sku, "ENTRÉES");
+                checkProductPresenceInCategoryView("int", "productId", productId);
+                break;
+
+            case "products with tags with entrees subcategories names":
+                createSKU_active();
+                createProduct_active(sku, "ENTRÉES");
+                addTag_product(productId, "POULTRY");
+                products.add(productName);
+                createSKU_active();
+                createProduct_active(sku, "ENTRÉES");
+                addTag_product(productId, "SEAFOOD");
+                products.add(productName);
+                createSKU_active();
+                createProduct_active(sku, "ENTRÉES");
+                addTag_product(productId, "MEAT");
+                products.add(productName);
+                createSKU_active();
+                createProduct_active(sku, "ENTRÉES");
+                addTag_product(productId, "VEGETARIAN");
+                products.add(productName);
+                createSKU_active();
+                createProduct_active(sku, "ENTRÉES");
+                products.add(productName);
+                createSKU_active();
+                checkProductPresenceInCategoryView("int", "productId", productId);
+                break;
+
+            case "an active product with tpg-specific custom properties":
+                createSKU_active();
+                createProduct_tpgProps(skuId, sku, skuTitle);
+                checkProductPresenceInCategoryView("int", "productId", productId);
+                break;
+
+            case "an active product with <p> in description":
+                randomId = generateRandomID();
+                createSKU_active();
+                createActiveProduct_styledDescription(sku, storefrontCategory, "p", "Paragraph");
+                checkProductPresenceInCategoryView("int", "productId", productId);
+                break;
+
+            case "an active product with <h1> in description":
+                randomId = generateRandomID();
+                createSKU_active();
+                createActiveProduct_styledDescription(sku, storefrontCategory, "h1", "Heading One");
+                checkProductPresenceInCategoryView("int", "productId", productId);
+                break;
+
+            case "an active product with <h2> in description":
+                randomId = generateRandomID();
+                createSKU_active();
+                createActiveProduct_styledDescription(sku, storefrontCategory, "h2", "Heading Two");
+                checkProductPresenceInCategoryView("int", "productId", productId);
+                break;
+
+            case "an active product with <h3> in description":
+                randomId = generateRandomID();
+                createSKU_active();
+                createActiveProduct_styledDescription(sku, storefrontCategory, "h3", "Heading Three");
+                checkProductPresenceInCategoryView("int", "productId", productId);
+                break;
+
+            case "an active product with <h4> in description":
+                randomId = generateRandomID();
+                createSKU_active();
+                createActiveProduct_styledDescription(sku, storefrontCategory, "h4", "Heading Four");
+                checkProductPresenceInCategoryView("int", "productId", productId);
+                break;
+
+            case "an active product with <h5> in description":
+                randomId = generateRandomID();
+                createSKU_active();
+                createActiveProduct_styledDescription(sku, storefrontCategory, "h5", "Heading Five");
+                checkProductPresenceInCategoryView("int", "productId", productId);
+                break;
+
+            case "an active product with <h6> in description":
+                randomId = generateRandomID();
+                createSKU_active();
+                createActiveProduct_styledDescription(sku, storefrontCategory, "h6", "Heading Six");
+                checkProductPresenceInCategoryView("int", "productId", productId);
+                break;
+
+            case "an active product with <strong> in description":
+                randomId = generateRandomID();
+                createSKU_active();
+                createActiveProduct_styledDescription(sku, storefrontCategory, "strong", "Bold Text");
+                checkProductPresenceInCategoryView("int", "productId", productId);
+                break;
+
+            case "an active product with <em> in description":
+                randomId = generateRandomID();
+                createSKU_active();
+                createActiveProduct_styledDescription(sku, storefrontCategory, "em", "Italic Text");
+                checkProductPresenceInCategoryView("int", "productId", productId);
+                break;
+
+            case "an active product with <ins> in description":
+                randomId = generateRandomID();
+                createSKU_active();
+                createActiveProduct_styledDescription(sku, storefrontCategory, "ins", "Underlined Text");
+                checkProductPresenceInCategoryView("int", "productId", productId);
+                break;
+
+            case "an active product with <ul> in description":
+                randomId = generateRandomID();
+                createSKU_active();
+                createActiveProduct_styledDescription(sku, storefrontCategory, "ul", "UL Bullet Point");
+                checkProductPresenceInCategoryView("int", "productId", productId);
+                break;
+
+            case "an active product with <ol> in description":
+                randomId = generateRandomID();
+                createSKU_active();
+                createActiveProduct_styledDescription(sku, storefrontCategory, "ol", "OL Point");
+                checkProductPresenceInCategoryView("int", "productId", productId);
                 break;
         }
     }

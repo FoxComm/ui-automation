@@ -1,7 +1,5 @@
 package pages.storefront;
 
-import base.BasePage;
-import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.NoSuchElementException;
 import ru.yandex.qatools.allure.annotations.Step;
@@ -9,7 +7,6 @@ import ru.yandex.qatools.allure.annotations.Step;
 import java.util.Objects;
 
 import static base.BaseTest.storefrontUrl;
-import static com.codeborne.selenide.Condition.selected;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
 import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
@@ -40,6 +37,15 @@ public class StorefrontPage extends NavigationPage {
         return $(xpath("//div[contains(@class, 'navigation')]//a[text()='" + category + "']"));
     }
 
+    private SelenideElement subCategoryTitle(String subCategory) {
+        return $(xpath("//div[contains(@class, '_item_') and text()='" + subCategory + "']"));
+    }
+
+    public SelenideElement notFoundMsg(String msg) {
+        return $(xpath("//p[contains(@class, 'not-found') and text()='" + msg + "']"));
+    }
+
+
     //---------------------------------------------- STEPS ----------------------------------------------
 
     @Step("Open user menu")
@@ -69,6 +75,11 @@ public class StorefrontPage extends NavigationPage {
         click(categoryTitle(category));
     }
 
+    @Step("Navigate to sub-category <{0}>")
+    public void navigateToSubCategory(String subCategory) {
+        click(subCategoryTitle(subCategory));
+    }
+
     //============================================ HELPERS ===========================================
 
     public String getUrl() {
@@ -96,10 +107,7 @@ public class StorefrontPage extends NavigationPage {
         if (findInText(getUrl(), "/admin")) {
             open(storefrontUrl);
         } else {
-            try {
-                elementIsPresent("//span[contains(@class, 'back-icon')]");
-                closeCart();
-            } catch (NoSuchElementException ignored) {}
+            refresh();
             try {
                 elementIsPresent("//a[contains(@class, 'login-link')]");
                 jsClick(logo());
@@ -108,7 +116,7 @@ public class StorefrontPage extends NavigationPage {
             }
         }
 
-        // if cart has line items -- remove them all
+        // if it's a guest session and cart is not empty -- remove all line items
         if (!checkCustomerAuth()) {
             if (!Objects.equals(cartQty().text(), "0")) {
                 openCart();

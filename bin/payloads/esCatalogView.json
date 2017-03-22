@@ -1,0 +1,20 @@
+{
+  "query": {
+    "bool": {
+      "filter": [{
+        "term": {
+          "context": "default"
+        }
+      }, {
+        "term": {
+          "tags": "APPETIZERS"
+        }
+      }],
+      "must_not": [{
+        "term": {
+          "tags": "GIFT-CARD"
+        }
+      }]
+    }
+  }
+}

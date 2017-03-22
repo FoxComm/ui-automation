@@ -196,4 +196,20 @@
             <class name="tests.storefront.guestsession.CartTest"/>
         </classes>
     </test>
+
+    <test name="SF: Abstract PDP Test">
+        <classes>
+            <class name="tests.storefront.products.AbstractPdpTest"/>
+        </classes>
+    </test>
+    <test name="SF: Catalog Test">
+        <classes>
+            <class name="tests.storefront.products.CatalogTest"/>
+        </classes>
+    </test>
+    <test name="SF: TPG Product Attributes">
+        <classes>
+            <class name="tests.storefront.products.TpgProductAttrsTest"/>
+        </classes>
+    </test>
 </suite>

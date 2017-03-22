@@ -1,0 +1,107 @@
+{
+  "slug": "",
+  "context": {
+    "name": "default",
+    "attributes": {
+      "lang": "en"
+    }
+  },
+  "attributes": {
+    "tags": {
+      "t": "tags",
+      "v": ["ENTRÉES", "MEAT"]
+    },
+    "Grill": {
+      "t": "string",
+      "v": "Grill Value"
+    },
+    "Price": {
+      "t": "string",
+      "v": "$17.00"
+    },
+    "Steam": {
+      "t": "string",
+      "v": "Steam Value"
+    },
+    "title": {
+      "t": "string",
+      "v": ""
+    },
+    "Defrost": {
+      "t": "string",
+      "v": "Defrost Value"
+    },
+    "Pan Fry": {
+      "t": "string",
+      "v": "Pan Fry Value"
+    },
+    "Microwave": {
+      "t": "string",
+      "v": "Microwave Value"
+    },
+    "activeFrom": {
+      "t": "datetime",
+      "v": "2016-11-22T21:57:34.364Z"
+    },
+    "Ingredients": {
+      "t": "string",
+      "v": "Ingredients Value"
+    },
+    "description": {
+      "t": "richText",
+      "v": "Description Value"
+    },
+    "Serving Size": {
+      "t": "string",
+      "v": "Serving Size Value"
+    },
+    "Allergy Alerts": {
+      "t": "string",
+      "v": "Allergy Alerts Value"
+    },
+    "Conventional Oven": {
+      "t": "string",
+      "v": "Conventional Oven Value"
+    },
+    "Amount of Servings": {
+      "t": "string",
+      "v": "Amount of Servings Value"
+    },
+    "Nutritional Information": {
+      "t": "string",
+      "v": "Nutritional Information Value"
+    }
+  },
+  "skus": [{
+    "id": 62,
+    "attributes": {
+      "code": {
+        "t": "string",
+        "v": "SKU-TST000U"
+      },
+      "title": {
+        "t": "string",
+        "v": "SKU-TST000U T"
+      },
+      "salePrice": {
+        "t": "price",
+        "v": {
+          "value": 5000,
+          "currency": "USD"
+        }
+      },
+      "activeFrom": {
+        "t": "datetime",
+        "v": "2016-11-22T21:57:34.364Z"
+      },
+      "retailPrice": {
+        "t": "price",
+        "v": {
+          "value": 4900,
+          "currency": "USD"
+        }
+      }
+    },
+    "albums": []
+  }]
+}

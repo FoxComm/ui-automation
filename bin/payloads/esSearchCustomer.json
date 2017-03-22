@@ -1,0 +1,16 @@
+{
+  "query": {
+    "bool": {
+      "filter": [{
+        "nested": {
+          "path": "customer",
+          "query": {
+            "term": {
+              "customer.id": 7427
+            }
+          }
+        }
+      }]
+    }
+  }
+}

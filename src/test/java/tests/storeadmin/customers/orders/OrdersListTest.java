@@ -31,6 +31,7 @@ public class OrdersListTest extends DataProvider {
     @Test(priority = 1)
     public void checkOrderOnList() throws IOException {
         provideTestData("customer with 2 orders in remorse hold");
+        waitForOrdersToAppearInES(customerId, 2);
 
         p = openPage(adminUrl + "/customers/" + customerId + "/transactions", CustomersPage.class);
         p.waitForDataToLoad();

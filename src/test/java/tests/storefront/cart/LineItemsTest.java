@@ -46,12 +46,12 @@ public class LineItemsTest extends DataProvider {
         p = openPage(storefrontUrl + storefrontCategory, StorefrontPage.class);
         p.logIn(customerEmail, "78qa22!#");
         p.openPDP(products.get(0));
-        p.setQty_PDP("2");
+        p.setQty_pdp("2");
         p.clickAddToCartBtn();
         p.closeCart();
         p.navigateToCategory(storefrontCategory);
         p.openPDP(products.get(1));
-        p.setQty_PDP("3");
+        p.setQty_pdp("3");
         p.clickAddToCartBtn();
         p.closeCart();
         p.cartQty().shouldHave(text("5"));

@@ -45,28 +45,29 @@ public class CartPage extends SearchPage {
         return $$(xpath("//div[contains(@class, 'line-items')]/div[contains(@class, 'box')]"));
     }
 
-    private SelenideElement priceSelector() {
-        return $(xpath("//div[contains(@class, 'price-selector')]"));
+    //TODO: id
+    private SelenideElement couponCodeFld() {
+        return $(xpath("//input[@placeholder='Coupon Code']"));
     }
 
-    private SelenideElement priceOption(String price) {
-        return $(xpath("//div[contains(@class, 'price-selector')]//option[text()='" + price + "']"));
+    //TODO: id
+    private SelenideElement applyCouponBtn() {
+        return $(xpath("//button[text()='Apply']"));
     }
 
-    private SelenideElement recipientNameFld() {
-        return $(xpath("//input[@name='giftCard.recipientName']"));
+    //TODO: id & classes
+    public SelenideElement appliedCoupon() {
+        return $(xpath("//div[contains(@class, 'coupon-code')]"));
     }
 
-    private SelenideElement recipientEmailFld() {
-        return $(xpath("//input[@name='giftCard.recipientEmail']"));
+    //TODO: class
+    private SelenideElement removeCouponBtn() {
+        return $(xpath("//span[contains(@class, 'delete-promo')]"));
     }
 
-    private SelenideElement giftCardMsgFld() {
-        return $(xpath("//textarea[@name='giftCard.message']"));
-    }
-
-    private SelenideElement senderNameFld() {
-        return $(xpath("//input[@name='giftCard.senderName']"));
+    //TODO: id
+    public SelenideElement adjustmentTotal_cart() {
+        return $(xpath("//div[contains(@class, 'coupon')]/span[1]"));
     }
 
     //---------------------------------------------- STEPS --------------------------------------------
@@ -92,37 +93,33 @@ public class CartPage extends SearchPage {
     }
 
     public void cleanCart() {
-        int cartQty = Integer.valueOf(cartQty().text());
-        for(int i = 0; i < cartQty; i++) {
+        int lineItemsAmount = lineItemsAmount().size();
+        for(int i = 0; i < lineItemsAmount; i++) {
             removeLineItem(String.valueOf(i+1));
-            shouldNotBeVisible(removeLineItemBtn_byIndex(String.valueOf(cartQty - i)), "oops");
+            shouldNotBeVisible(removeLineItemBtn_byIndex(String.valueOf(lineItemsAmount - i)), "oops");
         }
     }
 
-    @Step("Set GC price to <{0}>")
-    public void setPriceSelector(String price) {
-        click(priceSelector());
-        click(priceOption(price));
+    @Step("Set \"Coupon Code\" fld val to <{0}>")
+    protected void setCouponCode(String code) {
+        setFieldVal(couponCodeFld(), code);
     }
 
-    @Step("Set \"Recipient Name\" fld val to <{0}>")
-    public void setRecipientName(String name) {
-        setFieldVal(recipientNameFld(), name);
+    //TODO: id
+    @Step("Click \"Apply\" btn")
+    protected void clickApplyBtn_coupon() {
+        click(applyCouponBtn());
     }
 
-    @Step("Set \"Recipient Name\" fld val to <{0}>")
-    public void setRecipientEmail(String email) {
-        setFieldVal(recipientEmailFld(), email);
+    @Step("Apply coupon to cart, code: <{0}>")
+    public void applyCoupon(String code) {
+        setCouponCode(code);
+        clickApplyBtn_coupon();
     }
 
-    @Step("Set \"Message\" text area val to <{0}>")
-    public void setGiftCardMsg(String msg) {
-        setFieldVal(giftCardMsgFld(), msg);
-    }
-
-    @Step("Set \"Sender Name\" fld val to <{0}>")
-    public void setSenderName(String name) {
-        setFieldVal(senderNameFld(), name);
+    @Step("Remove coupon from cart")
+    public void removeCoupon() {
+        click(removeCouponBtn());
     }
 
 }

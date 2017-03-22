@@ -1,0 +1,59 @@
+{
+  "slug": "",
+  "context": {
+    "name": "default",
+    "attributes": {
+      "lang": "en"
+    }
+  },
+  "attributes": {
+    "title": {
+      "t": "string",
+      "v": ""
+    },
+    "tags": {
+      "t": "tags",
+      "v": []
+    },
+    "activeFrom": {
+      "t": "datetime",
+      "v": "2016-11-22T21:57:34.364Z"
+    },
+    "description": {
+      "t": "richText",
+      "v": ""
+    }
+  },
+  "skus": [{
+    "id": 1,
+    "attributes": {
+      "code": {
+        "t": "string",
+        "v": ""
+      },
+      "title": {
+        "t": "string",
+        "v": ""
+      },
+      "salePrice": {
+        "t": "price",
+        "v": {
+          "value": 5000,
+          "currency": "USD"
+        }
+      },
+      "activeFrom": {
+        "t": "datetime",
+        "v": "2016-11-22T21:57:34.364Z"
+      },
+      "retailPrice": {
+        "t": "price",
+        "v": {
+          "value": 4900,
+          "currency": "USD"
+        }
+      }
+    },
+    "albums": []
+  }]
+}
