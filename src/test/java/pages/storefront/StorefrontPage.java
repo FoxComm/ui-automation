@@ -25,20 +25,12 @@ public class StorefrontPage extends NavigationPage {
         return $(xpath("//span[contains(@class, 'username')]"));
     }
 
-    public SelenideElement menuLink(String linkText) {
+    public SelenideElement userMenuLink(String linkText) {
         return $(xpath("//ul[contains(@class, 'menu')]//a[text()='" + linkText + "']"));
     }
 
     public SelenideElement errorMessage(String errorText) {
         return $(xpath("//div[contains(@class, 'error') and text()='" + errorText + "']"));
-    }
-
-    private SelenideElement categoryTitle(String category) {
-        return $(xpath("//div[contains(@class, 'navigation')]//a[text()='" + category + "']"));
-    }
-
-    private SelenideElement subCategoryTitle(String subCategory) {
-        return $(xpath("//div[contains(@class, '_item_') and text()='" + subCategory + "']"));
     }
 
     public SelenideElement notFoundMsg(String msg) {
@@ -55,7 +47,7 @@ public class StorefrontPage extends NavigationPage {
 
     @Step("Select menu link <{0}>")
     private void selectMenuLink(String linkText){
-        click(menuLink(linkText));
+        click(userMenuLink(linkText));
     }
 
     @Step("Open \"User Menu\" and click <{0}>")
@@ -68,16 +60,6 @@ public class StorefrontPage extends NavigationPage {
     @Step("Click logo")
     public void clickLogo() {
         click(logo());
-    }
-
-    @Step("Navigate to category <{0}>")
-    public void navigateToCategory(String category) {
-        click(categoryTitle(category));
-    }
-
-    @Step("Navigate to sub-category <{0}>")
-    public void navigateToSubCategory(String subCategory) {
-        click(subCategoryTitle(subCategory));
     }
 
     //============================================ HELPERS ===========================================
@@ -96,7 +78,7 @@ public class StorefrontPage extends NavigationPage {
                 elementIsPresent("//a[contains(@class, 'login-link')]");
             } catch (NoSuchElementException ignored) {
                 userMenuBtn_sf().click();
-                menuLink("LOG OUT").click();
+                userMenuLink("LOG OUT").click();
                 logInLnk().shouldBe(visible);
             }
         }
@@ -130,7 +112,7 @@ public class StorefrontPage extends NavigationPage {
             elementIsPresent("//a[contains(@class, 'login-link')]");
         } catch (NoSuchElementException ignored) {
             userMenuBtn_sf().click();
-            menuLink("LOG OUT").click();
+            userMenuLink("LOG OUT").click();
             logInLnk().shouldBe(visible);
         }
     }

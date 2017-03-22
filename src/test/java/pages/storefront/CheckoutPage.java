@@ -118,8 +118,7 @@ public class CheckoutPage extends CartPage {
         return $(xpath("//div[contains(@class, 'form-header')]/following-sibling::div[" + index + "]//input[@name='delivery']"));
     }
 
-    //TODO: id
-    public SelenideElement selectShipMethodRbtn(int index) {
+    private SelenideElement selectShipMethodRbtn(int index) {
         return $(xpath("//div[contains(@class, 'form-header')]/following-sibling::div[" + index + "]//input[@name='delivery']"));
     }
 
