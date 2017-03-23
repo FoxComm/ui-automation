@@ -16,25 +16,6 @@ public class AbstractPdpTest extends Preconditions {
 
     private StorefrontPage p;
 
-    @org.testng.annotations.DataProvider
-    public Object[][] styledText() {
-        return new Object[][] {
-                {"p", "Paragraph"},
-                {"h1", "Heading One"},
-                {"h2", "Heading Two"},
-                {"h3", "Heading Three"},
-                {"h4", "Heading Four"},
-                {"h5", "Heading Five"},
-                {"h6", "Heading Six"},
-                {"strong", "Bold Text"},
-                {"em", "Italic Text"},
-                {"ins", "Underlined Text"},
-                {"ul", "UL Bullet Point"},
-                {"ol", "OL Point"},
-                {"ul", "UL Bullet Point"}
-        };
-    }
-
     @BeforeMethod(alwaysRun = true)
     public void cleanUp_before() {
         p = openPage(storefrontUrl, StorefrontPage.class);

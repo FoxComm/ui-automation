@@ -16,7 +16,7 @@ import java.util.Objects;
 import static com.codeborne.selenide.Selenide.sleep;
 import static org.testng.Assert.assertEquals;
 
-public class Preconditions extends BaseTest {
+public class Preconditions extends ApiRequests {
 
     protected static int customerId;
     protected static String cartId;

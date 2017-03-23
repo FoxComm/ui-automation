@@ -14,11 +14,6 @@ public class CatalogTest extends Preconditions {
 
     private StorefrontPage p;
 
-    @org.testng.annotations.DataProvider
-    public Object[][] entreesSubcategories() {
-        return new Object[][]{ {"POULTRY"}, {"SEAFOOD"}, {"MEAT"}, {"VEGETARIAN"} };
-    }
-
     @BeforeMethod(alwaysRun = true)
     public void cleanUp_before() {
         p = openPage(storefrontUrl, StorefrontPage.class);
