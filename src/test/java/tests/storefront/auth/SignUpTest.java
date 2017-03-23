@@ -5,14 +5,14 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import pages.storefront.StorefrontPage;
 import ru.yandex.qatools.allure.annotations.Description;
-import testdata.DataProvider;
+import testdata.Preconditions;
 
 import java.io.IOException;
 
 import static com.codeborne.selenide.Condition.matchText;
 import static com.codeborne.selenide.Condition.visible;
 
-public class SignUpTest extends DataProvider {
+public class SignUpTest extends Preconditions {
 
     private StorefrontPage p;
 
@@ -89,7 +89,7 @@ public class SignUpTest extends DataProvider {
     @Test(priority = 5)
     @Description("Can sign up with an email used for guest checkout earlier")
     public void canSignUp_guestCheckoutEmail() {
-        //TODO: add method to DataProvider that does guest checkout
+        //TODO: add method to Preconditions that does guest checkout
     }
 
     @Test(priority = 6)

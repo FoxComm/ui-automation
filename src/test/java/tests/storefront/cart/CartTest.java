@@ -3,9 +3,9 @@ package tests.storefront.cart;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import pages.storefront.StorefrontPage;
-import testdata.DataProvider;
+import testdata.Preconditions;
 
-public class CartTest extends DataProvider {
+public class CartTest extends Preconditions {
 
     private StorefrontPage p;
 

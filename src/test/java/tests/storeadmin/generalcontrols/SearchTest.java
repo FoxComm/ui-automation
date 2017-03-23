@@ -5,7 +5,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import pages.admin.LoginPage;
 import pages.admin.OrdersPage;
-import testdata.DataProvider;
+import testdata.Preconditions;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -13,7 +13,7 @@ import java.util.Objects;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.open;
 
-public class SearchTest extends DataProvider {
+public class SearchTest extends Preconditions {
 
     private OrdersPage p;
 

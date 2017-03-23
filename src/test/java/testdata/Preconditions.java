@@ -16,7 +16,7 @@ import java.util.Objects;
 import static com.codeborne.selenide.Selenide.sleep;
 import static org.testng.Assert.assertEquals;
 
-public class DataProvider extends BaseTest {
+public class Preconditions extends BaseTest {
 
     protected static int customerId;
     protected static String cartId;
@@ -52,12 +52,12 @@ public class DataProvider extends BaseTest {
     public static String singleCouponCode;
     public static List<String> bulkCodes = new ArrayList<>();
 
-    protected static String sku;
+    protected static String skuCode;
     protected static int skuId;
-    protected static List<String> skus = new ArrayList<>();
+    protected static List<String> skuCodes = new ArrayList<>();
     protected static String skuTitle;
     protected static int skuId_inventory;
-    protected static String productName;
+    protected static String productTitle;
     protected static String productSlug;
     protected static List<String> products = new ArrayList<>();
     protected static String productId;
@@ -184,8 +184,8 @@ public class DataProvider extends BaseTest {
 
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
-            JSONObject jsonData = new JSONObject(responseBody);
-            customerId = jsonData.getInt("id");
+            JSONObject responseJSON = new JSONObject(responseBody);
+            customerId = responseJSON.getInt("id");
             System.out.println("Customer ID: " + customerId);
             System.out.println("---- ---- ---- ----");
         } else {
@@ -219,10 +219,10 @@ public class DataProvider extends BaseTest {
 
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
-            JSONObject jsonData = new JSONObject(responseBody);
-            customerId = jsonData.getInt("id");
-            customerName = jsonData.getString("name");
-            customerEmail = jsonData.getString("email");
+            JSONObject responseJSON = new JSONObject(responseBody);
+            customerId = responseJSON.getInt("id");
+            customerName = responseJSON.getString("name");
+            customerEmail = responseJSON.getString("email");
             System.out.println("Customer ID: " + customerId);
             System.out.println("Customer Name: " + customerName);
             System.out.println("Customer Email: " + customerEmail);
@@ -285,8 +285,8 @@ public class DataProvider extends BaseTest {
 
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
-            JSONObject jsonData = new JSONObject(responseBody);
-            cartId = jsonData.getString("referenceNumber");
+            JSONObject responseJSON = new JSONObject(responseBody);
+            cartId = responseJSON.getString("referenceNumber");
 //            orderId = responseBody.substring(20, responseBody.indexOf(",", 20));
             System.out.println("Cart ID: <" + cartId + ">");
             System.out.println("---- ---- ---- ----");
@@ -316,8 +316,8 @@ public class DataProvider extends BaseTest {
 
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
-            JSONObject jsonData = new JSONObject(responseBody);
-            guestOrderEmail = jsonData.getJSONObject("result").getJSONObject("customer").getString("email");
+            JSONObject responseJSON = new JSONObject(responseBody);
+            guestOrderEmail = responseJSON.getJSONObject("result").getJSONObject("customer").getString("email");
             System.out.println("Cart ID: <" + cartId + ">");
             System.out.println("---- ---- ---- ----");
         } else {
@@ -345,13 +345,13 @@ public class DataProvider extends BaseTest {
 
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
-            JSONObject jsonData = new JSONObject(responseBody);
-            subTotal = jsonData.getJSONObject("result").getJSONObject("totals").getInt("subTotal");
-            taxes = jsonData.getJSONObject("result").getJSONObject("totals").getInt("taxes");
-            shipping = jsonData.getJSONObject("result").getJSONObject("totals").getInt("shipping");
-            adjustments = jsonData.getJSONObject("result").getJSONObject("totals").getInt("adjustments");
-            customersExpenses = jsonData.getJSONObject("result").getJSONObject("totals").getInt("customersExpenses");
-            total = jsonData.getJSONObject("result").getJSONObject("totals").getInt("total");
+            JSONObject responseJSON = new JSONObject(responseBody);
+            subTotal = responseJSON.getJSONObject("result").getJSONObject("totals").getInt("subTotal");
+            taxes = responseJSON.getJSONObject("result").getJSONObject("totals").getInt("taxes");
+            shipping = responseJSON.getJSONObject("result").getJSONObject("totals").getInt("shipping");
+            adjustments = responseJSON.getJSONObject("result").getJSONObject("totals").getInt("adjustments");
+            customersExpenses = responseJSON.getJSONObject("result").getJSONObject("totals").getInt("customersExpenses");
+            total = responseJSON.getJSONObject("result").getJSONObject("totals").getInt("total");
             System.out.println("Grand Total: <" + total + ">");
             System.out.println("---- ---- ---- ----");
         } else {
@@ -616,8 +616,8 @@ public class DataProvider extends BaseTest {
 
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
-            JSONArray jsonData = new JSONArray(responseBody);
-            addressId1 = jsonData.getJSONObject(0).getInt("id");
+            JSONArray responseJSON = new JSONArray(responseBody);
+            addressId1 = responseJSON.getJSONObject(0).getInt("id");
             System.out.println("Address 1: <" + addressId1 + ">");
             System.out.println("---- ---- ---- ----");
         } else {
@@ -722,8 +722,8 @@ public class DataProvider extends BaseTest {
 
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
-            JSONArray jsonData = new JSONArray(responseBody);
-            shipMethodId = jsonData.getJSONObject(0).getInt("id");
+            JSONArray responseJSON = new JSONArray(responseBody);
+            shipMethodId = responseJSON.getJSONObject(0).getInt("id");
             System.out.println("shipMethodId: <" + shipMethodId + ">");
             System.out.println("---- ---- ---- ----");
         } else {
@@ -807,8 +807,8 @@ public class DataProvider extends BaseTest {
 
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
-            org.json.JSONObject jsonData = new org.json.JSONObject(responseBody);
-            stripeToken = jsonData.getString("token");
+            org.json.JSONObject responseJSON = new org.json.JSONObject(responseBody);
+            stripeToken = responseJSON.getString("token");
             System.out.println("Stripe token: <" + stripeToken + ">");
             System.out.println("---- ---- ---- ----");
         } else {
@@ -860,8 +860,8 @@ public class DataProvider extends BaseTest {
 
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
-            org.json.JSONObject jsonData = new org.json.JSONObject(responseBody);
-            creditCardId = jsonData.getInt("id");
+            org.json.JSONObject responseJSON = new org.json.JSONObject(responseBody);
+            creditCardId = responseJSON.getInt("id");
             System.out.println("Credit Card ID: <" + creditCardId + ">");
             System.out.println("---- ---- ---- ----");
         } else {
@@ -890,10 +890,10 @@ public class DataProvider extends BaseTest {
         String responseMsg = response.message();
 
         if (responseCode == 200) {
-            JSONArray jsonData = new JSONArray(responseBody);
+            JSONArray responseJSON = new JSONArray(responseBody);
 
-            for (int i = 0; i < jsonData.length(); i++) {
-                creditCardId = jsonData.getJSONObject(i).getInt("id");
+            for (int i = 0; i < responseJSON.length(); i++) {
+                creditCardId = responseJSON.getJSONObject(i).getInt("id");
                 creditCardsIDs.add(creditCardId);
             }
             printIntList(creditCardsIDs);
@@ -960,8 +960,8 @@ public class DataProvider extends BaseTest {
 
         if (responseCode == 204) {
             System.out.println(responseCode + " " + responseMsg);
-            org.json.JSONObject jsonData = new org.json.JSONObject(responseBody);
-            creditCardId = jsonData.getInt("id");
+            org.json.JSONObject responseJSON = new org.json.JSONObject(responseBody);
+            creditCardId = responseJSON.getInt("id");
             System.out.println("Credit Card ID: <" + creditCardId + ">");
             System.out.println("---- ---- ---- ----");
         } else {
@@ -1031,8 +1031,8 @@ public class DataProvider extends BaseTest {
 
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
-            JSONObject jsonData = new JSONObject(responseBody);
-            scId = jsonData.getInt("id");
+            JSONObject responseJSON = new JSONObject(responseBody);
+            scId = responseJSON.getInt("id");
             System.out.println("Store Credit ID: <" + scId + ">...");
             System.out.println("---- ---- ---- ----");
         } else {
@@ -1069,8 +1069,8 @@ public class DataProvider extends BaseTest {
 
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
-            JSONObject jsonData = new JSONObject(responseBody);
-            scId = jsonData.getInt("id");
+            JSONObject responseJSON = new JSONObject(responseBody);
+            scId = responseJSON.getInt("id");
             System.out.println("Store Credit ID: <" + scId + ">...");
             System.out.println("---- ---- ---- ----");
         } else {
@@ -1171,8 +1171,8 @@ public class DataProvider extends BaseTest {
 
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
-            JSONObject jsonData = new JSONObject(responseBody);
-            gcCode = jsonData.getString("code");
+            JSONObject responseJSON = new JSONObject(responseBody);
+            gcCode = responseJSON.getString("code");
             System.out.println("GC code: <" + gcCode + ">");
             System.out.println("---- ---- ---- ----");
         } else {
@@ -1448,8 +1448,8 @@ public class DataProvider extends BaseTest {
 
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
-            JSONObject jsonData = new JSONObject(responseBody);
-            promotionId = String.valueOf(jsonData.getInt("id"));
+            JSONObject responseJSON = new JSONObject(responseBody);
+            promotionId = String.valueOf(responseJSON.getInt("id"));
             System.out.println("Promotion ID: " + promotionId);
             System.out.println("---- ---- ---- ----");
         } else {
@@ -1500,8 +1500,8 @@ public class DataProvider extends BaseTest {
 
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
-            JSONObject jsonData = new JSONObject(responseBody);
-            promotionId = String.valueOf(jsonData.getInt("id"));
+            JSONObject responseJSON = new JSONObject(responseBody);
+            promotionId = String.valueOf(responseJSON.getInt("id"));
             System.out.println("Promotion ID: " + promotionId);
             System.out.println("---- ---- ---- ----");
         } else {
@@ -1534,8 +1534,8 @@ public class DataProvider extends BaseTest {
 
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
-            JSONObject jsonData = new JSONObject(responseBody);
-            promotionId = String.valueOf(jsonData.getInt("id"));
+            JSONObject responseJSON = new JSONObject(responseBody);
+            promotionId = String.valueOf(responseJSON.getInt("id"));
             System.out.println("Promotion ID: " + promotionId);
             System.out.println("---- ---- ---- ----");
         } else {
@@ -1569,8 +1569,8 @@ public class DataProvider extends BaseTest {
 
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
-            JSONObject jsonData = new JSONObject(responseBody);
-            promotionId = String.valueOf(jsonData.getInt("id"));
+            JSONObject responseJSON = new JSONObject(responseBody);
+            promotionId = String.valueOf(responseJSON.getInt("id"));
             System.out.println("Promotion ID: " + promotionId);
             System.out.println("---- ---- ---- ----");
         } else {
@@ -1604,8 +1604,8 @@ public class DataProvider extends BaseTest {
 
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
-            JSONObject jsonData = new JSONObject(responseBody);
-            couponId = String.valueOf(jsonData.getInt("id"));
+            JSONObject responseJSON = new JSONObject(responseBody);
+            couponId = String.valueOf(responseJSON.getInt("id"));
             couponName = "test coupon " + randomId;
             System.out.println("Coupon ID: " + couponId);
             System.out.println("---- ---- ---- ----");
@@ -1687,9 +1687,9 @@ public class DataProvider extends BaseTest {
 //                startIndex += (length + 3);
 //            }
             bulkCodes.clear();
-            JSONArray jsonData = new JSONArray(responseBody);
-            for (int i = 0; i < jsonData.length(); i++) {
-                bulkCodes.add(jsonData.getString(i));
+            JSONArray responseJSON = new JSONArray(responseBody);
+            for (int i = 0; i < responseJSON.length(); i++) {
+                bulkCodes.add(responseJSON.getString(i));
             }
             System.out.println("Number of codes generated: <" + bulkCodes.size() + ">");
             assertEquals(bulkCodes.size(), quantity,
@@ -1802,13 +1802,11 @@ public class DataProvider extends BaseTest {
 
         System.out.println("Creating a new SKU, options: ACTIVE state...");
         String randomId = generateRandomID();
-        String skuCode = "SKU-" + randomId;
-        String title = "SKU Test Title " + randomId;
 
         OkHttpClient client = new OkHttpClient();
 
         MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"" + skuCode + "\"},\"title\":{\"t\":\"string\",\"v\":\"" + title + "\"},\"upc\":{\"t\":\"string\",\"v\":\"Test UPC\"},\"description\":{\"t\":\"richText\",\"v\":\"<p>Test description</p>\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":5000}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":5000}},\"unitCost\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":5000}},\"activeFrom\":{\"t\":\"datetime\",\"v\":\"" + getDate() + "T00:03:26.685Z\"},\"activeTo\":{\"t\":\"datetime\",\"v\":null}}}");
+        RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"SKU-" + randomId + "\"},\"title\":{\"t\":\"string\",\"v\":\"SKU Test Title " + randomId + "\"},\"upc\":{\"t\":\"string\",\"v\":\"Test UPC\"},\"description\":{\"t\":\"richText\",\"v\":\"<p>Test description</p>\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":5000}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":5000}},\"unitCost\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":5000}},\"activeFrom\":{\"t\":\"datetime\",\"v\":\"" + getDate() + "T00:03:26.685Z\"},\"activeTo\":{\"t\":\"datetime\",\"v\":null}}}");
         Request request = new Request.Builder()
                 .url(apiUrl + "/v1/skus/default")
                 .post(body)
@@ -1826,9 +1824,9 @@ public class DataProvider extends BaseTest {
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
             JSONObject responseJSON = new JSONObject(responseBody);
-            sku = skuCode;
-            skuTitle = title;
             skuId = responseJSON.getInt("id");
+            skuCode = responseJSON.getJSONObject("attributes").getJSONObject("code").getString("v");
+            skuTitle = responseJSON.getJSONObject("attributes").getJSONObject("title").getString("v");
             System.out.println("SKU code: <" + skuCode + ">.");
             System.out.println("---- ---- ---- ----");
         } else {
@@ -1842,12 +1840,11 @@ public class DataProvider extends BaseTest {
 
         System.out.println("Creating a new SKU, options: INACTIVE state...");
         String randomId = generateRandomID();
-        String skuCode = "SKU-" + randomId;
 
         OkHttpClient client = new OkHttpClient();
 
         MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"" + skuCode + "\"},\"title\":{\"t\":\"string\",\"v\":\"Test Product #" + randomId + "\"},\"upc\":{\"t\":\"string\",\"v\":\"Test UPC\"},\"description\":{\"t\":\"richText\",\"v\":\"<p>Just another test SKU.</p>\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":5000}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":5000}},\"unitCost\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":5000}}}}");
+        RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"SKU-" + randomId + "\"},\"title\":{\"t\":\"string\",\"v\":\"Test Product #" + randomId + "\"},\"upc\":{\"t\":\"string\",\"v\":\"Test UPC\"},\"description\":{\"t\":\"richText\",\"v\":\"<p>Just another test SKU.</p>\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":5000}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":5000}},\"unitCost\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":5000}}}}");
         Request request = new Request.Builder()
                 .url(apiUrl + "/v1/skus/default")
                 .post(body)
@@ -1864,7 +1861,10 @@ public class DataProvider extends BaseTest {
 
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
-            sku = skuCode;
+            JSONObject responseJSON = new JSONObject(responseBody);
+            skuId = responseJSON.getInt("id");
+            skuCode = responseJSON.getJSONObject("attributes").getJSONObject("code").getString("v");
+            skuTitle = responseJSON.getJSONObject("attributes").getJSONObject("title").getString("v");
             System.out.println("SKU code: <" + skuCode + ">.");
             System.out.println("---- ---- ---- ----");
         } else {
@@ -1878,12 +1878,11 @@ public class DataProvider extends BaseTest {
 
         System.out.println("Creating a new SKU, options: no title...");
         String randomId = generateRandomID();
-        String skuCode = "SKU-" + randomId;
 
         OkHttpClient client = new OkHttpClient();
 
         MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"" + skuCode + "\"},\"title\":{\"t\":\"string\",\"v\":\"\"},\"upc\":{\"t\":\"string\",\"v\":\"Test UPC\"},\"description\":{\"t\":\"richText\",\"v\":\"<p>Just another test SKU.</p>\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":1215}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":1215}},\"unitCost\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":1000}},\"activeFrom\":{\"t\":\"datetime\",\"v\":\"2016-07-29T00:03:26.685Z\"},\"activeTo\":{\"v\":null,\"t\":\"datetime\"}}}");
+        RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"SKU-" + randomId + "\"},\"title\":{\"t\":\"string\",\"v\":\"\"},\"upc\":{\"t\":\"string\",\"v\":\"Test UPC\"},\"description\":{\"t\":\"richText\",\"v\":\"<p>Just another test SKU.</p>\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":1215}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":1215}},\"unitCost\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":1000}},\"activeFrom\":{\"t\":\"datetime\",\"v\":\"2016-07-29T00:03:26.685Z\"},\"activeTo\":{\"v\":null,\"t\":\"datetime\"}}}");
         Request request = new Request.Builder()
                 .url(apiUrl + "/v1/skus/default")
                 .post(body)
@@ -1900,7 +1899,10 @@ public class DataProvider extends BaseTest {
 
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
-            sku = skuCode;
+            JSONObject responseJSON = new JSONObject(responseBody);
+            skuId = responseJSON.getInt("id");
+            skuCode = responseJSON.getJSONObject("attributes").getJSONObject("code").getString("v");
+            skuTitle = responseJSON.getJSONObject("attributes").getJSONObject("title").getString("v");
             System.out.println("SKU code: <" + skuCode + ">.");
             System.out.println("---- ---- ---- ----");
         } else {
@@ -1914,12 +1916,11 @@ public class DataProvider extends BaseTest {
 
         System.out.println("Creating a new SKU, options: no description...");
         String randomId = generateRandomID();
-        String skuCode = "SKU-" + randomId;
 
         OkHttpClient client = new OkHttpClient();
 
         MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"" + skuCode + "\"},\"title\":{\"t\":\"string\",\"v\":\"Test Product #" + randomId + "\"},\"upc\":{\"t\":\"string\",\"v\":\"Test UPC\"},\"description\":{\"t\":\"richText\",\"v\":\"\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":1215}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":1215}},\"unitCost\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":1000}},\"activeFrom\":{\"t\":\"datetime\",\"v\":\"2016-07-29T00:03:26.685Z\"},\"activeTo\":{\"v\":null,\"t\":\"datetime\"}}}");
+        RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"SKU-" + randomId + "\"},\"title\":{\"t\":\"string\",\"v\":\"Test Product #" + randomId + "\"},\"upc\":{\"t\":\"string\",\"v\":\"Test UPC\"},\"description\":{\"t\":\"richText\",\"v\":\"\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":1215}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":1215}},\"unitCost\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":1000}},\"activeFrom\":{\"t\":\"datetime\",\"v\":\"2016-07-29T00:03:26.685Z\"},\"activeTo\":{\"v\":null,\"t\":\"datetime\"}}}");
         Request request = new Request.Builder()
                 .url(apiUrl + "/v1/skus/default")
                 .post(body)
@@ -1936,7 +1937,10 @@ public class DataProvider extends BaseTest {
 
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
-            sku = skuCode;
+            JSONObject responseJSON = new JSONObject(responseBody);
+            skuId = responseJSON.getInt("id");
+            skuCode = responseJSON.getJSONObject("attributes").getJSONObject("code").getString("v");
+            skuTitle = responseJSON.getJSONObject("attributes").getJSONObject("title").getString("v");
             System.out.println("SKU code: <" + skuCode + ">.");
             System.out.println("---- ---- ---- ----");
         } else {
@@ -1950,12 +1954,11 @@ public class DataProvider extends BaseTest {
 
         System.out.println("Creating a new SKU, options: all prices equals <0>...");
         String randomId = generateRandomID();
-        String skuCode = "SKU-" + randomId;
 
         OkHttpClient client = new OkHttpClient();
 
         MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"" + skuCode + "\"},\"title\":{\"t\":\"string\",\"v\":\"Test Product #" + randomId + "\"},\"upc\":{\"t\":\"string\",\"v\":\"Test UPC\"},\"description\":{\"t\":\"richText\",\"v\":\"<p>Just another test SKU.</p>\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":null}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":null}},\"unitCost\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":null}},\"activeFrom\":{\"t\":\"datetime\",\"v\":\"2016-07-29T00:03:26.685Z\"},\"activeTo\":{\"v\":null,\"t\":\"datetime\"}}}");
+        RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"attributes\":{\"code\":{\"t\":\"string\",\"v\":\"SKU-" + randomId + "\"},\"title\":{\"t\":\"string\",\"v\":\"Test Product #" + randomId + "\"},\"upc\":{\"t\":\"string\",\"v\":\"Test UPC\"},\"description\":{\"t\":\"richText\",\"v\":\"<p>Just another test SKU.</p>\"},\"retailPrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":null}},\"salePrice\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":null}},\"unitCost\":{\"t\":\"price\",\"v\":{\"currency\":\"USD\",\"value\":null}},\"activeFrom\":{\"t\":\"datetime\",\"v\":\"2016-07-29T00:03:26.685Z\"},\"activeTo\":{\"v\":null,\"t\":\"datetime\"}}}");
         Request request = new Request.Builder()
                 .url(apiUrl + "/v1/skus/default")
                 .post(body)
@@ -1972,7 +1975,10 @@ public class DataProvider extends BaseTest {
 
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
-            sku = skuCode;
+            JSONObject responseJSON = new JSONObject(responseBody);
+            skuId = responseJSON.getInt("id");
+            skuCode = responseJSON.getJSONObject("attributes").getJSONObject("code").getString("v");
+            skuTitle = responseJSON.getJSONObject("attributes").getJSONObject("title").getString("v");
             System.out.println("SKU code: <" + skuCode + ">.");
             System.out.println("---- ---- ---- ----");
         } else {
@@ -2047,11 +2053,12 @@ public class DataProvider extends BaseTest {
 
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
-            productName = productName_local;
-            JSONObject jsonData = new JSONObject(responseBody);
-            productId = String.valueOf(jsonData.getInt("id"));
+            JSONObject responseJSON = new JSONObject(responseBody);
+            productId = String.valueOf(responseJSON.getInt("id"));
+            productTitle = responseJSON.getJSONObject("attributes").getJSONObject("title").getString("v");
+            productSlug = responseJSON.getString("slug");
             System.out.println("Product ID: <" + productId + ">.");
-            System.out.println("Product name: <" + productName + ">.");
+            System.out.println("Product name: <" + productTitle + ">.");
             System.out.println("---- ---- ---- ----");
         } else {
             failTest(responseBody, responseCode, responseMsg);
@@ -2086,12 +2093,12 @@ public class DataProvider extends BaseTest {
 
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
-            JSONObject jsonData = new JSONObject(responseBody);
-            productId = String.valueOf(jsonData.getInt("id"));
-            productName = productName_local;
-            productSlug = jsonData.getString("slug");
+            JSONObject responseJSON = new JSONObject(responseBody);
+            productId = String.valueOf(responseJSON.getInt("id"));
+            productTitle = responseJSON.getJSONObject("attributes").getJSONObject("title").getString("v");
+            productSlug = responseJSON.getString("slug");
             System.out.println("Product ID: <" + productId + ">");
-            System.out.println("Product name: <" + productName + ">");
+            System.out.println("Product name: <" + productTitle + ">");
             System.out.println("Slug: <" + productSlug + ">");
             System.out.println("---- ---- ---- ----");
         } else {
@@ -2145,10 +2152,10 @@ public class DataProvider extends BaseTest {
             System.out.println(responseCode + " " + responseMsg);
             JSONObject responseJSON = new JSONObject(responseBody);
             productId = String.valueOf(responseJSON.getInt("id"));
-            productName = responseJSON.getJSONObject("attributes").getJSONObject("title").getString("v");
+            productTitle = responseJSON.getJSONObject("attributes").getJSONObject("title").getString("v");
             productSlug = responseJSON.getString("slug");
             System.out.println("Product ID: <" + productId + ">");
-            System.out.println("Product name: <" + productName + ">");
+            System.out.println("Product name: <" + productTitle + ">");
             System.out.println("---- ---- ---- ----");
         } else {
             failTest(responseBody, responseCode, responseMsg);
@@ -2216,10 +2223,10 @@ public class DataProvider extends BaseTest {
             System.out.println(responseCode + " " + responseMsg);
             JSONObject responseJSON = new JSONObject(responseBody);
             productId = String.valueOf(responseJSON.getInt("id"));
-            productName = responseJSON.getJSONObject("attributes").getJSONObject("title").getString("v");
+            productTitle = responseJSON.getJSONObject("attributes").getJSONObject("title").getString("v");
             productSlug = responseJSON.getString("slug");
             System.out.println("Product ID: <" + productId + ">");
-            System.out.println("Product name: <" + productName + ">");
+            System.out.println("Product name: <" + productTitle + ">");
             System.out.println("---- ---- ---- ----");
         } else {
             failTest(responseBody, responseCode, responseMsg);
@@ -2253,11 +2260,12 @@ public class DataProvider extends BaseTest {
 
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
-            productName = productName_local;
-            JSONObject jsonData = new JSONObject(responseBody);
-            productId = String.valueOf(jsonData.getInt("id"));
+            JSONObject responseJSON = new JSONObject(responseBody);
+            productId = String.valueOf(responseJSON.getInt("id"));
+            productTitle = responseJSON.getJSONObject("attributes").getJSONObject("title").getString("v");
+            productSlug = responseJSON.getString("slug");
             System.out.println("Product ID: <" + productId + ">.");
-            System.out.println("Product name: <" + productName + ">.");
+            System.out.println("Product name: <" + productTitle + ">.");
             System.out.println("---- ---- ---- ----");
         } else {
             failTest(responseBody, responseCode, responseMsg);
@@ -2291,11 +2299,12 @@ public class DataProvider extends BaseTest {
 
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
-            productName = productName_local;
-            JSONObject jsonData = new JSONObject(responseBody);
-            productId = String.valueOf(jsonData.getInt("id"));
+            JSONObject responseJSON = new JSONObject(responseBody);
+            productId = String.valueOf(responseJSON.getInt("id"));
+            productTitle = responseJSON.getJSONObject("attributes").getJSONObject("title").getString("v");
+            productSlug = responseJSON.getString("slug");
             System.out.println("Product ID: <" + productId + ">.");
-            System.out.println("Product name: <" + productName + ">.");
+            System.out.println("Product name: <" + productTitle + ">.");
             System.out.println("---- ---- ---- ----");
         } else {
             failTest(responseBody, responseCode, responseMsg);
@@ -2329,11 +2338,12 @@ public class DataProvider extends BaseTest {
 
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
-            productName = productName_local;
-            JSONObject jsonData = new JSONObject(responseBody);
-            productId = String.valueOf(jsonData.getInt("id"));
+            JSONObject responseJSON = new JSONObject(responseBody);
+            productId = String.valueOf(responseJSON.getInt("id"));
+            productTitle = responseJSON.getJSONObject("attributes").getJSONObject("title").getString("v");
+            productSlug = responseJSON.getString("slug");
             System.out.println("Product ID: <" + productId + ">.");
-            System.out.println("Product name: <" + productName + ">.");
+            System.out.println("Product name: <" + productTitle + ">.");
             System.out.println("---- ---- ---- ----");
         } else {
             failTest(responseBody, responseCode, responseMsg);
@@ -2367,76 +2377,12 @@ public class DataProvider extends BaseTest {
 
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
-            productName = productName_local;
-            JSONObject jsonData = new JSONObject(responseBody);
-            productId = String.valueOf(jsonData.getInt("id"));
+            JSONObject responseJSON = new JSONObject(responseBody);
+            productId = String.valueOf(responseJSON.getInt("id"));
+            productTitle = responseJSON.getJSONObject("attributes").getJSONObject("title").getString("v");
+            productSlug = responseJSON.getString("slug");
             System.out.println("Product ID: <" + productId + ">.");
-            System.out.println("Product name: <" + productName + ">.");
-            System.out.println("---- ---- ---- ----");
-        } else {
-            failTest(responseBody, responseCode, responseMsg);
-        }
-
-    }
-
-    /**
-     * Product is active -- activeFrom equals the time of prod creation, activeTo is null
-     * Title -- parametrized
-     * 1 option with 2 values -- hardcoded
-     * 2 SKUs for each variant -- not parametrized, created using generateRandomId(), stored in variables
-     * SKU prices -- hardcoded
-     */
-    @Step("[API] Create product with variants")
-    private static void createProduct_variants(String title) throws IOException {
-
-        System.out.println("Creating a product with 2 variants...");
-        System.out.println("* * * * * * * * * *");
-        // create SKU, then store its code to a local var to use it in prod creation payload
-        createSKU_active();
-        String sku_1 = sku;
-        createSKU_active();
-        String sku_2 = sku;
-        System.out.println("* * * * * * * * * *");
-
-        JSONObject jsonObj = parse("bin/payloads/productWithVariants.json");
-        jsonObj.getJSONObject("attributes").getJSONObject("title").put("v", title);
-
-        JSONArray tempJSONArray;
-        // Store JSONArray with SKU code to variable, delete its only value, put a new value SKU code instead
-        // (check productWithVariants.json for schema details)
-        tempJSONArray = jsonObj.getJSONArray("variants").getJSONObject(0).getJSONArray("values").getJSONObject(0).getJSONArray("skuCodes");
-        tempJSONArray.remove(0);
-        tempJSONArray.put(sku_1);
-
-        tempJSONArray = jsonObj.getJSONArray("variants").getJSONObject(0).getJSONArray("values").getJSONObject(1).getJSONArray("skuCodes");
-        tempJSONArray.remove(0);
-        tempJSONArray.put(sku_2);
-
-        String payload = jsonObj.toString();
-
-        OkHttpClient client = new OkHttpClient();
-
-        MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, payload);
-        Request request = new Request.Builder()
-                .url(apiUrl + "/v1/products/default")
-                .post(body)
-                .addHeader("content-type", "application/json")
-                .addHeader("cache-control", "no-cache")
-                .addHeader("JWT", jwt)
-                .build();
-
-        Response response = client.newCall(request).execute();
-        String responseBody = response.body().string();
-        int responseCode = response.code();
-        String responseMsg = response.message();
-        // TODO: COMPLETE IT -- need to store variantSKU_1 and variantSKU_2 from response
-        JSONObject jsonData = new JSONObject(responseBody);
-        productName = jsonData.getJSONObject("attributes").getJSONObject("title").getString("v");
-        variantSKU_1 = (String) jsonData.getJSONArray("variants").getJSONObject(0).getJSONArray("values").getJSONObject(0).getJSONArray("skuCodes").get(0);
-        variantSKU_1 = (String) jsonData.getJSONArray("variants").getJSONObject(0).getJSONArray("values").getJSONObject(1).getJSONArray("skuCodes").get(0);
-        if (responseCode == 200) {
-            System.out.println(responseCode + " " + responseMsg);
+            System.out.println("Product name: <" + productTitle + ">.");
             System.out.println("---- ---- ---- ----");
         } else {
             failTest(responseBody, responseCode, responseMsg);
@@ -2589,8 +2535,8 @@ public class DataProvider extends BaseTest {
 
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
-            JSONObject jsonData = new JSONObject(responseBody);
-            String newTags = jsonData.getJSONObject("attributes").getJSONObject("tags").getJSONArray("v").toString();
+            JSONObject responseJSON = new JSONObject(responseBody);
+            String newTags = responseJSON.getJSONObject("attributes").getJSONObject("tags").getJSONArray("v").toString();
             System.out.println("New Tags JSONArray:\n" + newTags);
             System.out.println("---- ---- ---- ----");
         } else {
@@ -2624,9 +2570,9 @@ public class DataProvider extends BaseTest {
 
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
-            JSONObject jsonData = new JSONObject(responseBody);
-            searchCode = jsonData.getString("code");
-            searchId = jsonData.getInt("id");
+            JSONObject responseJSON = new JSONObject(responseBody);
+            searchCode = responseJSON.getString("code");
+            searchId = responseJSON.getInt("id");
             System.out.println("Search ID: <" + searchId + ">");
             System.out.println("Search code: <" + searchCode + ">");
             System.out.println("---- ---- ---- ----");
@@ -2672,9 +2618,9 @@ public class DataProvider extends BaseTest {
 
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
-            JSONObject jsonData = new JSONObject(responseBody);
-            searchId = jsonData.getInt("id");
-            searchCode = jsonData.getString("code");
+            JSONObject responseJSON = new JSONObject(responseBody);
+            searchId = responseJSON.getInt("id");
+            searchCode = responseJSON.getString("code");
             System.out.println("Search ID: <" + searchId + ">");
             System.out.println("Search code: <" + searchCode + ">");
             System.out.println("---- ---- ---- ----");
@@ -2709,9 +2655,9 @@ public class DataProvider extends BaseTest {
 
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
-            JSONObject jsonData = new JSONObject(responseBody);
-            searchCode = jsonData.getString("code");
-            searchId = jsonData.getInt("id");
+            JSONObject responseJSON = new JSONObject(responseBody);
+            searchCode = responseJSON.getString("code");
+            searchId = responseJSON.getInt("id");
             System.out.println("Search ID: <" + searchId + ">");
             System.out.println("Search code: <" + searchCode + ">");
             System.out.println("---- ---- ---- ----");
@@ -2749,9 +2695,9 @@ public class DataProvider extends BaseTest {
             System.out.println(responseCode + " " + responseMsg);
 
 //            searchId = Integer.valueOf( responseBody.substring(6, responseBody.indexOf(",", 6)) );
-            JSONObject jsonData = new JSONObject(responseBody);
-            searchCode = jsonData.getString("code");
-            searchId = jsonData.getInt("id");
+            JSONObject responseJSON = new JSONObject(responseBody);
+            searchCode = responseJSON.getString("code");
+            searchId = responseJSON.getInt("id");
             System.out.println("Search ID: <" + searchId + ">");
             System.out.println("Search code: <" + searchCode + ">");
             System.out.println("---- ---- ---- ----");
@@ -2820,8 +2766,8 @@ public class DataProvider extends BaseTest {
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
 
-            JSONObject jsonData = new JSONObject(responseBody);
-            JSONArray jsonArray = jsonData.getJSONArray("result");
+            JSONObject responseJSON = new JSONObject(responseBody);
+            JSONArray jsonArray = responseJSON.getJSONArray("result");
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject object = jsonArray.getJSONObject(i);
                 String adminName_local = object.getString("name");
@@ -2887,8 +2833,8 @@ public class DataProvider extends BaseTest {
 
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
-            JSONObject jsonData = new JSONObject(responseBody);
-            JSONObject obj = jsonData.getJSONArray("summary").getJSONObject(0);
+            JSONObject responseJSON = new JSONObject(responseBody);
+            JSONObject obj = responseJSON.getJSONArray("summary").getJSONObject(0);
             skuId_inventory = obj.getJSONObject("stockItem").getInt("id");
             System.out.println("SKU ID: <" + skuId_inventory + ">");
             System.out.println("---- ---- ---- ----");
@@ -2904,7 +2850,7 @@ public class DataProvider extends BaseTest {
     @Step("[API] Increase amount of sellable unites of <{0}> by <{1}>")
     protected static void increaseOnHandQty(String skuCode, String type, Integer qty) throws IOException {
 
-        checkInventoryAvailability(sku);
+        checkInventoryAvailability(skuCode);
         viewSKU_inventory(skuCode);
 
         System.out.println("Increase amount of sellable items by <" + qty + "> for SKU <" + skuCode + ">, ID: <" + skuId_inventory + ">...");
@@ -2973,7 +2919,7 @@ public class DataProvider extends BaseTest {
     @Step("Create test data using API -- <{0}>")
     protected void provideTestData(String testMethodName) throws IOException {
 
-        skus.clear();
+        skuCodes.clear();
         products.clear();
         System.out.println("==== ==== ==== ====");
         loginAsAdmin();
@@ -2992,47 +2938,47 @@ public class DataProvider extends BaseTest {
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(sku, "test");
+                createProduct_active(skuCode, "test");
                 createSKU_active();
-                createProduct_active(sku, "test");
-                skus.add(sku);
+                createProduct_active(skuCode, "test");
+                skuCodes.add(skuCode);
                 createSKU_active();
-                createProduct_active(sku, "test");
-                skus.add(sku);
+                createProduct_active(skuCode, "test");
+                skuCodes.add(skuCode);
                 createSKU_active();
-                createProduct_active(sku, "test");
-                skus.add(sku);
+                createProduct_active(skuCode, "test");
+                skuCodes.add(skuCode);
                 break;
 
             case "cart<1 SKU[active, qty: 1]>":
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(sku, "test");
-                updLineItems(cartId, sku, 1);
+                createProduct_active(skuCode, "test");
+                updLineItems(cartId, skuCode, 1);
                 break;
 
             case "cart with 3 items":
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(sku, "test");
-                skus.add(sku);
+                createProduct_active(skuCode, "test");
+                skuCodes.add(skuCode);
                 createSKU_active();
-                createProduct_active(sku, "test");
-                skus.add(sku);
+                createProduct_active(skuCode, "test");
+                skuCodes.add(skuCode);
                 createSKU_active();
-                createProduct_active(sku, "test");
-                skus.add(sku);
-                updLineItems_multiple(cartId, skus.get(0), 4, skus.get(1), 5, skus.get(2), 3);
+                createProduct_active(skuCode, "test");
+                skuCodes.add(skuCode);
+                updLineItems_multiple(cartId, skuCodes.get(0), 4, skuCodes.get(1), 5, skuCodes.get(2), 3);
                 break;
 
             case "cart with 1 item, qty: 3":
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(sku, "test");
-                updLineItems(cartId, sku, 3);
+                createProduct_active(skuCode, "test");
+                updLineItems(cartId, skuCode, 3);
                 break;
 
             //------------------------------------- CART SHIPPING ADDRESS -------------------------------------//
@@ -3052,8 +2998,8 @@ public class DataProvider extends BaseTest {
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(sku, "test");
-                updLineItems(cartId, sku, 1);
+                createProduct_active(skuCode, "test");
+                updLineItems(cartId, skuCode, 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 break;
 
@@ -3075,9 +3021,9 @@ public class DataProvider extends BaseTest {
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(sku, "test");
-                increaseOnHandQty(sku, "Sellable", 1);
-                updLineItems(cartId, sku, 1);
+                createProduct_active(skuCode, "test");
+                increaseOnHandQty(skuCode, "Sellable", 1);
+                updLineItems(cartId, skuCode, 1);
                 createAddress(customerId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 createAddress(customerId, "Paul Puga", 4177, 234, "Washington", "2101 Green Valley", "200 Suite", "Seattle", "98101", "5551237575", false);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "9879879876", false);
@@ -3095,9 +3041,9 @@ public class DataProvider extends BaseTest {
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(sku, "test");
-                increaseOnHandQty(sku, "Sellable", 10);
-                updLineItems(cartId, sku, 3);
+                createProduct_active(skuCode, "test");
+                increaseOnHandQty(skuCode, "Sellable", 10);
+                updLineItems(cartId, skuCode, 3);
                 createAddress(customerId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "9879879876", false);
                 listShipMethods(cartId);
@@ -3130,8 +3076,8 @@ public class DataProvider extends BaseTest {
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(sku, "test");
-                updLineItems(cartId, sku, 3);
+                createProduct_active(skuCode, "test");
+                updLineItems(cartId, skuCode, 3);
                 createPromotion_coupon();
                 createCoupon(promotionId);
                 generateSingleCode(couponId);
@@ -3141,8 +3087,8 @@ public class DataProvider extends BaseTest {
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(sku, "test");
-                updLineItems(cartId, sku, 3);
+                createProduct_active(skuCode, "test");
+                updLineItems(cartId, skuCode, 3);
                 createPromotion_coupon();
                 createCoupon(promotionId);
                 bulkGenerateCodes(couponId, "BULK CPNS ", 5, 3);
@@ -3152,8 +3098,8 @@ public class DataProvider extends BaseTest {
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(sku, "test");
-                updLineItems(cartId, sku, 3);
+                createProduct_active(skuCode, "test");
+                updLineItems(cartId, skuCode, 3);
                 createPromotion_coupon();
                 createCoupon(promotionId);
                 generateSingleCode(couponId);
@@ -3173,9 +3119,9 @@ public class DataProvider extends BaseTest {
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(sku, "test");
-                updLineItems(cartId, sku, 1);
-                increaseOnHandQty(sku, "Sellable", 1);
+                createProduct_active(skuCode, "test");
+                updLineItems(cartId, skuCode, 1);
+                increaseOnHandQty(skuCode, "Sellable", 1);
                 createAddress(customerId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 createAddress(customerId, "Paul Puga", 4177, 234, "Washington", "2101 Green Valley", "200 Suite", "Seattle", "98101", "5551237575", false);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "9879879876", false);
@@ -3192,9 +3138,9 @@ public class DataProvider extends BaseTest {
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(sku, "test");
-                updLineItems(cartId, sku, 1);
-                createSharedSearch_singleProduct(productName);
+                createProduct_active(skuCode, "test");
+                updLineItems(cartId, skuCode, 1);
+                createSharedSearch_singleProduct(productTitle);
                 createPromotion_coupon_itemsNoQual(searchId);
                 createCoupon(promotionId);
                 generateSingleCode(couponId);
@@ -3206,9 +3152,9 @@ public class DataProvider extends BaseTest {
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(sku, "test");
-                increaseOnHandQty(sku, "Sellable", 1);
-                updLineItems(cartId, sku, 1);
+                createProduct_active(skuCode, "test");
+                increaseOnHandQty(skuCode, "Sellable", 1);
+                updLineItems(cartId, skuCode, 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 break;
 
@@ -3216,9 +3162,9 @@ public class DataProvider extends BaseTest {
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(sku, "test");
-                increaseOnHandQty(sku, "Sellable", 1);
-                updLineItems(cartId, sku, 1);
+                createProduct_active(skuCode, "test");
+                increaseOnHandQty(skuCode, "Sellable", 1);
+                updLineItems(cartId, skuCode, 1);
                 issueGiftCard(50000, 1);
                 break;
 
@@ -3226,8 +3172,8 @@ public class DataProvider extends BaseTest {
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(sku, "test");
-                updLineItems(cartId, sku, 1);
+                createProduct_active(skuCode, "test");
+                updLineItems(cartId, skuCode, 1);
                 issueStoreCredit(customerId, 50000);
                 break;
 
@@ -3235,9 +3181,9 @@ public class DataProvider extends BaseTest {
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(sku, "test");
-                increaseOnHandQty(sku, "Sellable", 1);
-                updLineItems(cartId, sku, 1);
+                createProduct_active(skuCode, "test");
+                increaseOnHandQty(skuCode, "Sellable", 1);
+                updLineItems(cartId, skuCode, 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
@@ -3251,9 +3197,9 @@ public class DataProvider extends BaseTest {
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(sku, "test");
-                increaseOnHandQty(sku, "Sellable", 1);
-                updLineItems(cartId, sku, 1);
+                createProduct_active(skuCode, "test");
+                increaseOnHandQty(skuCode, "Sellable", 1);
+                updLineItems(cartId, skuCode, 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
@@ -3264,9 +3210,9 @@ public class DataProvider extends BaseTest {
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(sku, "test");
-                increaseOnHandQty(sku, "Sellable", 1);
-                updLineItems(cartId, sku, 1);
+                createProduct_active(skuCode, "test");
+                increaseOnHandQty(skuCode, "Sellable", 1);
+                updLineItems(cartId, skuCode, 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
@@ -3277,9 +3223,9 @@ public class DataProvider extends BaseTest {
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(sku, "test");
-                increaseOnHandQty(sku, "Sellable", 1);
-                updLineItems(cartId, sku, 1);
+                createProduct_active(skuCode, "test");
+                increaseOnHandQty(skuCode, "Sellable", 1);
+                updLineItems(cartId, skuCode, 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
@@ -3294,9 +3240,9 @@ public class DataProvider extends BaseTest {
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(sku, "test");
-                increaseOnHandQty(sku, "Sellable", 1);
-                updLineItems(cartId, sku, 1);
+                createProduct_active(skuCode, "test");
+                increaseOnHandQty(skuCode, "Sellable", 1);
+                updLineItems(cartId, skuCode, 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
@@ -3310,9 +3256,9 @@ public class DataProvider extends BaseTest {
             case "cart with 1 item, shipping method, issued SC and GC":
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(sku, "test");
-                increaseOnHandQty(sku, "Sellable", 1);
-                updLineItems(cartId, sku, 1);
+                createProduct_active(skuCode, "test");
+                increaseOnHandQty(skuCode, "Sellable", 1);
+                updLineItems(cartId, skuCode, 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
@@ -3325,9 +3271,9 @@ public class DataProvider extends BaseTest {
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(sku, "test");
-                increaseOnHandQty(sku, "Sellable", 1);
-                updLineItems(cartId, sku, 1);
+                createProduct_active(skuCode, "test");
+                increaseOnHandQty(skuCode, "Sellable", 1);
+                updLineItems(cartId, skuCode, 1);
                 issueStoreCredit(customerId, 50000);
                 updateSCState(scId, "onHold");
                 break;
@@ -3336,9 +3282,9 @@ public class DataProvider extends BaseTest {
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(sku, "test");
-                increaseOnHandQty(sku, "Sellable", 1);
-                updLineItems(cartId, sku, 1);
+                createProduct_active(skuCode, "test");
+                increaseOnHandQty(skuCode, "Sellable", 1);
+                updLineItems(cartId, skuCode, 1);
                 issueStoreCredit(customerId, 50000);
                 updateSCState(scId, "canceled");
                 break;
@@ -3347,12 +3293,12 @@ public class DataProvider extends BaseTest {
 
             case "cart<filled out, payment method: SC>":
                 createSKU_active();
-                createProduct_active(sku, "sunglasses");
-                increaseOnHandQty(sku, "Sellable", 20);
+                createProduct_active(skuCode, "sunglasses");
+                increaseOnHandQty(skuCode, "Sellable", 20);
                 createCustomer();
                 issueStoreCredit(customerId, 20000);
                 createCart(customerId);
-                updLineItems(cartId, sku, 1);
+                updLineItems(cartId, skuCode, 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
@@ -3362,12 +3308,12 @@ public class DataProvider extends BaseTest {
 
             case "cart<filled out, payment method: GC>":
                 createSKU_active();
-                createProduct_active(sku, "sunglasses");
-                increaseOnHandQty(sku, "Sellable", 20);
+                createProduct_active(skuCode, "sunglasses");
+                increaseOnHandQty(skuCode, "Sellable", 20);
                 createCustomer();
                 issueGiftCard(20000, 1);
                 createCart(customerId);
-                updLineItems(cartId, sku, 1);
+                updLineItems(cartId, skuCode, 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
@@ -3376,11 +3322,11 @@ public class DataProvider extends BaseTest {
 
             case "cart<filled out, payment method: CC>":
                 createSKU_active();
-                createProduct_active(sku, "sunglasses");
-                increaseOnHandQty(sku, "Sellable", 20);
+                createProduct_active(skuCode, "sunglasses");
+                increaseOnHandQty(skuCode, "Sellable", 20);
                 createCustomer();
                 createCart(customerId);
-                updLineItems(cartId, sku, 1);
+                updLineItems(cartId, skuCode, 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
@@ -3392,11 +3338,11 @@ public class DataProvider extends BaseTest {
 
             case "filled out cart, product with variants, SC as a payment method":
                 createSKU_active();
-                createProduct_active(sku, "sunglasses");
-                increaseOnHandQty(sku, "Sellable", 20);
+                createProduct_active(skuCode, "sunglasses");
+                increaseOnHandQty(skuCode, "Sellable", 20);
                 createCustomer();
                 createCart(customerId);
-                updLineItems(cartId, sku, 1);
+                updLineItems(cartId, skuCode, 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
@@ -3412,9 +3358,9 @@ public class DataProvider extends BaseTest {
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(sku, "test");
-                increaseOnHandQty(sku, "Sellable", 1);
-                updLineItems(cartId, sku, 1);
+                createProduct_active(skuCode, "test");
+                increaseOnHandQty(skuCode, "Sellable", 1);
+                updLineItems(cartId, skuCode, 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
@@ -3429,9 +3375,9 @@ public class DataProvider extends BaseTest {
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(sku, "test");
-                increaseOnHandQty(sku, "Sellable", 1);
-                updLineItems(cartId, sku, 1);
+                createProduct_active(skuCode, "test");
+                increaseOnHandQty(skuCode, "Sellable", 1);
+                updLineItems(cartId, skuCode, 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
@@ -3473,10 +3419,10 @@ public class DataProvider extends BaseTest {
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(sku, "test");
-                increaseOnHandQty(sku, "Sellable", 1);
-                skus.add(sku);
-                updLineItems(cartId, sku, 1);
+                createProduct_active(skuCode, "test");
+                increaseOnHandQty(skuCode, "Sellable", 1);
+                skuCodes.add(skuCode);
+                updLineItems(cartId, skuCode, 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
@@ -3488,10 +3434,10 @@ public class DataProvider extends BaseTest {
 
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(sku, "test");
-                increaseOnHandQty(sku, "Sellable", 1);
-                skus.add(sku);
-                updLineItems(cartId, sku, 1);
+                createProduct_active(skuCode, "test");
+                increaseOnHandQty(skuCode, "Sellable", 1);
+                skuCodes.add(skuCode);
+                updLineItems(cartId, skuCode, 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
@@ -3505,10 +3451,10 @@ public class DataProvider extends BaseTest {
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(sku, "test");
-                increaseOnHandQty(sku, "Sellable", 1);
-                updLineItems(cartId, sku, 1);
-                skus.add(sku);
+                createProduct_active(skuCode, "test");
+                increaseOnHandQty(skuCode, "Sellable", 1);
+                updLineItems(cartId, skuCode, 1);
+                skuCodes.add(skuCode);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
@@ -3520,10 +3466,10 @@ public class DataProvider extends BaseTest {
 
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(sku, "test");
-                increaseOnHandQty(sku, "Sellable", 2);
-                updLineItems(cartId, sku, 2);
-                skus.add(sku);
+                createProduct_active(skuCode, "test");
+                increaseOnHandQty(skuCode, "Sellable", 2);
+                updLineItems(cartId, skuCode, 2);
+                skuCodes.add(skuCode);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
@@ -3550,9 +3496,9 @@ public class DataProvider extends BaseTest {
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(sku, "test");
-                increaseOnHandQty(sku, "Sellable", 1);
-                updLineItems(cartId, sku, 1);
+                createProduct_active(skuCode, "test");
+                increaseOnHandQty(skuCode, "Sellable", 1);
+                updLineItems(cartId, skuCode, 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
@@ -3567,9 +3513,9 @@ public class DataProvider extends BaseTest {
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(sku, "test");
-                increaseOnHandQty(sku, "Sellable", 1);
-                updLineItems(cartId, sku, 1);
+                createProduct_active(skuCode, "test");
+                increaseOnHandQty(skuCode, "Sellable", 1);
+                updLineItems(cartId, skuCode, 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
@@ -3621,9 +3567,9 @@ public class DataProvider extends BaseTest {
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(sku, "test");
-                increaseOnHandQty(sku, "Sellable", 1);
-                updLineItems(cartId, sku, 1);
+                createProduct_active(skuCode, "test");
+                increaseOnHandQty(skuCode, "Sellable", 1);
+                updLineItems(cartId, skuCode, 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
@@ -3639,12 +3585,12 @@ public class DataProvider extends BaseTest {
 
             case "product in active state":
                 createSKU_active();
-                createProduct_active(sku, "sunglasses");
+                createProduct_active(skuCode, "sunglasses");
                 break;
 
             case "product in inactive state":
                 createSKU_active();
-                createProduct_inactive(sku, "sunglasses");
+                createProduct_inactive(skuCode, "sunglasses");
                 break;
 
             case "active SKU":
@@ -3669,63 +3615,63 @@ public class DataProvider extends BaseTest {
 
             case "product in active state, active SKU and tag":
                 createSKU_active();
-                createProduct_active(sku, "sunglasses");
+                createProduct_active(skuCode, "sunglasses");
                 break;
 
             //----------------
             case "active product, has tag, active SKU":
                 createSKU_active();
-                createProduct_active(sku, "sunglasses");
+                createProduct_active(skuCode, "sunglasses");
                 break;
 
             case "active product, no tag, active SKU":
                 createSKU_active();
-                createProduct_active_noTag(sku);
+                createProduct_active_noTag(skuCode);
                 break;
             case "inactive product, has tag, active SKU":
                 createSKU_active();
-                createProduct_inactive(sku, "sunglasses");
+                createProduct_inactive(skuCode, "sunglasses");
                 break;
 
             case "inactive product, no tag, active SKU":
                 createSKU_active();
-                createProduct_inactive_noTag(sku);
+                createProduct_inactive_noTag(skuCode);
                 break;
 
             case "active product, has tag, inactive SKU":
                 createSKU_inactive();
-                createProduct_active(sku, "sunglasses");
+                createProduct_active(skuCode, "sunglasses");
                 break;
 
             case "active product, no tag, inactive SKU":
                 createSKU_inactive();
-                createProduct_active_noTag(sku);
+                createProduct_active_noTag(skuCode);
                 break;
 
             case "inactive product, has tag, inactive SKU":
                 createSKU_inactive();
-                createProduct_inactive(sku, "sunglasses");
+                createProduct_inactive(skuCode, "sunglasses");
                 break;
 
             case "inactive product, no tag, inactive SKU":
                 createSKU_inactive();
-                createProduct_inactive_noTag(sku);
+                createProduct_inactive_noTag(skuCode);
                 break;
 
             //----------------------------------- INVENTORY -----------------------------------//
 
             case "active SKU for inventory":
                 createSKU_active();
-                checkInventoryAvailability(sku);
+                checkInventoryAvailability(skuCode);
                 break;
 
             case "cart with backorder SKU":
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(sku, "sunglasses");
-                increaseOnHandQty(sku, "Backorder", 1);
-                updLineItems(cartId, sku, 1);
+                createProduct_active(skuCode, "sunglasses");
+                increaseOnHandQty(skuCode, "Backorder", 1);
+                updLineItems(cartId, skuCode, 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
@@ -3739,10 +3685,10 @@ public class DataProvider extends BaseTest {
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(sku, "sunglasses");
-                increaseOnHandQty(sku, "Backorder", 1);
-                increaseOnHandQty(sku, "Sellable", 1);
-                updLineItems(cartId, sku, 2);
+                createProduct_active(skuCode, "sunglasses");
+                increaseOnHandQty(skuCode, "Backorder", 1);
+                increaseOnHandQty(skuCode, "Sellable", 1);
+                updLineItems(cartId, skuCode, 2);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
@@ -3756,13 +3702,13 @@ public class DataProvider extends BaseTest {
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(sku, "sunglasses");
-                increaseOnHandQty(sku, "Backorder", 1);
-                updLineItems(cartId, sku, 1);
+                createProduct_active(skuCode, "sunglasses");
+                increaseOnHandQty(skuCode, "Backorder", 1);
+                updLineItems(cartId, skuCode, 1);
                 createSKU_active();
-                createProduct_active(sku, "sunglasses");
-                increaseOnHandQty(sku, "Sellable", 1);
-                updLineItems(cartId, sku, 1);
+                createProduct_active(skuCode, "sunglasses");
+                increaseOnHandQty(skuCode, "Sellable", 1);
+                updLineItems(cartId, skuCode, 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
@@ -3783,9 +3729,9 @@ public class DataProvider extends BaseTest {
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(sku, "test");
-                increaseOnHandQty(sku, "Sellable", 1);
-                updLineItems(cartId, sku, 1);
+                createProduct_active(skuCode, "test");
+                increaseOnHandQty(skuCode, "Sellable", 1);
+                updLineItems(cartId, skuCode, 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
@@ -3828,9 +3774,9 @@ public class DataProvider extends BaseTest {
                 signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(sku, storefrontCategory);
-                increaseOnHandQty(sku, "Sellable", 1);
-                updLineItems(cartId, sku, 1);
+                createProduct_active(skuCode, storefrontCategory);
+                increaseOnHandQty(skuCode, "Sellable", 1);
+                updLineItems(cartId, skuCode, 1);
                 setShipAddress(cartId,
                         "John Doe",
                         4177, 234,
@@ -3853,34 +3799,34 @@ public class DataProvider extends BaseTest {
                 randomId = generateRandomID();
                 signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
                 createSKU_active();
-                createProduct_active(sku, "test");
+                createProduct_active(skuCode, "test");
                 createCart(customerId);
-                updLineItems(cartId, sku, 1);
+                updLineItems(cartId, skuCode, 1);
                 break;
 
             case "registered customer, active product on storefront":
                 randomId = generateRandomID();
                 signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
                 createSKU_active();
-                createProduct_active(sku, storefrontCategory);
+                createProduct_active(skuCode, storefrontCategory);
                 break;
 
             case "registered customer, 2 active products on storefront":
                 randomId = generateRandomID();
                 signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
                 createSKU_active();
-                createProduct_active(sku, storefrontCategory);
-                products.add(productName);
+                createProduct_active(skuCode, storefrontCategory);
+                products.add(productTitle);
                 createSKU_active();
-                createProduct_active(sku, storefrontCategory);
-                products.add(productName);
+                createProduct_active(skuCode, storefrontCategory);
+                products.add(productTitle);
                 break;
 
             case "a customer signed up on storefront, product<active>, coupon<any, single code>":
                 randomId = generateRandomID();
                 signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
                 createSKU_active();
-                createProduct_active(sku, storefrontCategory);
+                createProduct_active(skuCode, storefrontCategory);
                 createPromotion_coupon();
                 createCoupon(promotionId);
                 generateSingleCode(couponId);
@@ -3888,7 +3834,7 @@ public class DataProvider extends BaseTest {
 
             case "product<active>, coupon<any, single code>":
                 createSKU_active();
-                createProduct_active(sku, storefrontCategory);
+                createProduct_active(skuCode, storefrontCategory);
                 createPromotion_coupon();
                 createCoupon(promotionId);
                 generateSingleCode(couponId);
@@ -3899,8 +3845,8 @@ public class DataProvider extends BaseTest {
                 signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(sku, storefrontCategory);
-                updLineItems(cartId, sku, 1);
+                createProduct_active(skuCode, storefrontCategory);
+                updLineItems(cartId, skuCode, 1);
                 createPromotion_coupon();
                 createCoupon(promotionId);
                 generateSingleCode(couponId);
@@ -3909,7 +3855,7 @@ public class DataProvider extends BaseTest {
 
             case "an active product visible on storefront":
                 createSKU_active();
-                createProduct_active(sku, storefrontCategory);
+                createProduct_active(skuCode, storefrontCategory);
                 checkProductPresenceInCategoryView("int", "productId", productId);
                 break;
 
@@ -3951,8 +3897,8 @@ public class DataProvider extends BaseTest {
                 signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(sku, storefrontCategory);
-                updLineItems(cartId, sku, 1);
+                createProduct_active(skuCode, storefrontCategory);
+                updLineItems(cartId, skuCode, 1);
                 break;
 
             case "a storefront signed up customer with a shipping address and a product in cart":
@@ -3960,8 +3906,8 @@ public class DataProvider extends BaseTest {
                 signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(sku, storefrontCategory);
-                updLineItems(cartId, sku, 1);
+                createProduct_active(skuCode, storefrontCategory);
+                updLineItems(cartId, skuCode, 1);
                 createAddress(customerId,
                         "John Doe",
                         4177, 234,
@@ -4011,8 +3957,8 @@ public class DataProvider extends BaseTest {
                         "5551237575", true);
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(sku, storefrontCategory);
-                updLineItems(cartId, sku, 1);
+                createProduct_active(skuCode, storefrontCategory);
+                updLineItems(cartId, skuCode, 1);
                 break;
 
             case "a storefront signed up customer, a cart with 1 product, 2 shipping addresses, NO default address":
@@ -4034,8 +3980,8 @@ public class DataProvider extends BaseTest {
                         "5551237575", false);
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(sku, storefrontCategory);
-                updLineItems(cartId, sku, 1);
+                createProduct_active(skuCode, storefrontCategory);
+                updLineItems(cartId, skuCode, 1);
                 break;
 
             case "a storefront signed up customer, a cart with 1 product, 2 shipping addresses, HAS default address":
@@ -4057,8 +4003,8 @@ public class DataProvider extends BaseTest {
                         "5551237575", false);
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(sku, storefrontCategory);
-                updLineItems(cartId, sku, 1);
+                createProduct_active(skuCode, storefrontCategory);
+                updLineItems(cartId, skuCode, 1);
                 break;
 
             case "a storefront signed up customer with active product in cart and applied shipping address":
@@ -4066,8 +4012,8 @@ public class DataProvider extends BaseTest {
                 signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(sku, storefrontCategory);
-                updLineItems(cartId, sku, 1);
+                createProduct_active(skuCode, storefrontCategory);
+                updLineItems(cartId, skuCode, 1);
                 setShipAddress(cartId,
                         "John Doe",
                         4177, 234,
@@ -4082,9 +4028,9 @@ public class DataProvider extends BaseTest {
                 signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(sku, storefrontCategory);
-                increaseOnHandQty(sku, "Sellable", 1);
-                updLineItems(cartId, sku, 1);
+                createProduct_active(skuCode, storefrontCategory);
+                increaseOnHandQty(skuCode, "Sellable", 1);
+                updLineItems(cartId, skuCode, 1);
                 setShipAddress(cartId,
                         "John Doe",
                         4177, 234,
@@ -4108,9 +4054,9 @@ public class DataProvider extends BaseTest {
                 signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(sku, storefrontCategory);
-                increaseOnHandQty(sku, "Sellable", 1);
-                updLineItems(cartId, sku, 1);
+                createProduct_active(skuCode, storefrontCategory);
+                increaseOnHandQty(skuCode, "Sellable", 1);
+                updLineItems(cartId, skuCode, 1);
                 setShipAddress(cartId,
                         "John Doe",
                         4177, 234,
@@ -4131,9 +4077,9 @@ public class DataProvider extends BaseTest {
                 signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(sku, storefrontCategory);
-                increaseOnHandQty(sku, "Sellable", 1);
-                updLineItems(cartId, sku, 1);
+                createProduct_active(skuCode, storefrontCategory);
+                increaseOnHandQty(skuCode, "Sellable", 1);
+                updLineItems(cartId, skuCode, 1);
                 setShipAddress(cartId,
                         "John Doe",
                         4177, 234,
@@ -4158,9 +4104,9 @@ public class DataProvider extends BaseTest {
                 signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(sku, storefrontCategory);
-                increaseOnHandQty(sku, "Sellable", 1);
-                updLineItems(cartId, sku, 1);
+                createProduct_active(skuCode, storefrontCategory);
+                increaseOnHandQty(skuCode, "Sellable", 1);
+                updLineItems(cartId, skuCode, 1);
                 setShipAddress(cartId,
                         "John Doe",
                         4177, 234,
@@ -4182,9 +4128,9 @@ public class DataProvider extends BaseTest {
                 signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(sku, storefrontCategory);
-                increaseOnHandQty(sku, "Sellable", 1);
-                updLineItems(cartId, sku, 1);
+                createProduct_active(skuCode, storefrontCategory);
+                increaseOnHandQty(skuCode, "Sellable", 1);
+                updLineItems(cartId, skuCode, 1);
                 createAddress(customerId,
                         "John Doe",
                         4177, 234,
@@ -4199,9 +4145,9 @@ public class DataProvider extends BaseTest {
                 signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(sku, storefrontCategory);
-                increaseOnHandQty(sku, "Sellable", 1);
-                updLineItems(cartId, sku, 1);
+                createProduct_active(skuCode, storefrontCategory);
+                increaseOnHandQty(skuCode, "Sellable", 1);
+                updLineItems(cartId, skuCode, 1);
                 setShipAddress(cartId,
                         "John Doe",
                         4177, 234,
@@ -4216,8 +4162,8 @@ public class DataProvider extends BaseTest {
                 signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(sku, storefrontCategory);
-                increaseOnHandQty(sku, "Sellable", 1);
+                createProduct_active(skuCode, storefrontCategory);
+                increaseOnHandQty(skuCode, "Sellable", 1);
                 break;
 
             case "a storefront signed up blacklisted customer ready for checkout":
@@ -4225,9 +4171,9 @@ public class DataProvider extends BaseTest {
                 signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(sku, storefrontCategory);
-                increaseOnHandQty(sku, "Sellable", 1);
-                updLineItems(cartId, sku, 1);
+                createProduct_active(skuCode, storefrontCategory);
+                increaseOnHandQty(skuCode, "Sellable", 1);
+                updLineItems(cartId, skuCode, 1);
                 setShipAddress(cartId,
                         "John Doe",
                         4177, 234,
@@ -4249,9 +4195,9 @@ public class DataProvider extends BaseTest {
                 signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(sku, storefrontCategory);
-                increaseOnHandQty(sku, "Sellable", 1);
-                updLineItems(cartId, sku, 1);
+                createProduct_active(skuCode, storefrontCategory);
+                increaseOnHandQty(skuCode, "Sellable", 1);
+                updLineItems(cartId, skuCode, 1);
                 setShipAddress(cartId,
                         "John Doe",
                         4177, 234,
@@ -4274,9 +4220,9 @@ public class DataProvider extends BaseTest {
                 signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(sku, storefrontCategory);
-                increaseOnHandQty(sku, "Sellable", 1);
-                updLineItems(cartId, sku, 1);
+                createProduct_active(skuCode, storefrontCategory);
+                increaseOnHandQty(skuCode, "Sellable", 1);
+                updLineItems(cartId, skuCode, 1);
                 setShipAddress(cartId,
                         "John Doe",
                         4177, 234,
@@ -4298,15 +4244,15 @@ public class DataProvider extends BaseTest {
                 signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(sku, storefrontCategory);
-                skus.add(sku);
-                products.add(productName);
-                increaseOnHandQty(sku, "Sellable", 1);
-                updLineItems(cartId, sku, 1);
+                createProduct_active(skuCode, storefrontCategory);
+                skuCodes.add(skuCode);
+                products.add(productTitle);
+                increaseOnHandQty(skuCode, "Sellable", 1);
+                updLineItems(cartId, skuCode, 1);
                 createSKU_active();
-                createProduct_active(sku, storefrontCategory);
-                skus.add(sku);
-                products.add(productName);
+                createProduct_active(skuCode, storefrontCategory);
+                skuCodes.add(skuCode);
+                products.add(productTitle);
                 setShipAddress(cartId,
                         "John Doe",
                         4177, 234,
@@ -4327,19 +4273,19 @@ public class DataProvider extends BaseTest {
                 signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(sku, storefrontCategory);
-                skus.add(sku);
-                products.add(productName);
-                updLineItems(cartId, sku, 1);
+                createProduct_active(skuCode, storefrontCategory);
+                skuCodes.add(skuCode);
+                products.add(productTitle);
+                updLineItems(cartId, skuCode, 1);
                 createSKU_active();
-                createProduct_active(sku, storefrontCategory);
-                skus.add(sku);
-                products.add(productName);
+                createProduct_active(skuCode, storefrontCategory);
+                skuCodes.add(skuCode);
+                products.add(productTitle);
                 break;
 
             case "an active product, a gift card":
                 createSKU_active();
-                createProduct_active(sku, storefrontCategory);
+                createProduct_active(skuCode, storefrontCategory);
                 issueGiftCard(1000, 1);
                 break;
 
@@ -4348,14 +4294,14 @@ public class DataProvider extends BaseTest {
                 signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(sku, storefrontCategory);
-                skus.add(sku);
-                products.add(productName);
-                updLineItems(cartId, sku, 1);
+                createProduct_active(skuCode, storefrontCategory);
+                skuCodes.add(skuCode);
+                products.add(productTitle);
+                updLineItems(cartId, skuCode, 1);
                 createSKU_active();
-                createProduct_active(sku, storefrontCategory);
-                skus.add(sku);
-                products.add(productName);
+                createProduct_active(skuCode, storefrontCategory);
+                skuCodes.add(skuCode);
+                products.add(productTitle);
                 createPromotion_coupon();
                 createCoupon(promotionId);
                 generateSingleCode(couponId);
@@ -4365,156 +4311,156 @@ public class DataProvider extends BaseTest {
                 randomId = generateRandomID();
                 signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
                 createSKU_active();
-                createProduct_active(sku, storefrontCategory);
+                createProduct_active(skuCode, storefrontCategory);
                 break;
 
             //------------------------------------- SF: PDP ------------------------------------//
 
             case "active product with tags <ENTRÉES> and <POULTRY>":
                 createSKU_active();
-                createProduct_active(sku, "ENTRÉES");
+                createProduct_active(skuCode, "ENTRÉES");
                 addTag_product(productId, "POULTRY");
                 checkProductPresenceInCategoryView("int", "productId", productId);
                 break;
 
             case "active product with tags <ENTRÉES> and <SEAFOOD>":
                 createSKU_active();
-                createProduct_active(sku, "ENTRÉES");
+                createProduct_active(skuCode, "ENTRÉES");
                 addTag_product(productId, "SEAFOOD");
                 checkProductPresenceInCategoryView("int", "productId", productId);
                 break;
 
             case "active product with tags <ENTRÉES> and <MEAT>":
                 createSKU_active();
-                createProduct_active(sku, "ENTRÉES");
+                createProduct_active(skuCode, "ENTRÉES");
                 addTag_product(productId, "MEAT");
                 checkProductPresenceInCategoryView("int", "productId", productId);
                 break;
 
             case "active product with tags <ENTRÉES> and <VEGETARIAN>":
                 createSKU_active();
-                createProduct_active(sku, "ENTRÉES");
+                createProduct_active(skuCode, "ENTRÉES");
                 addTag_product(productId, "VEGETARIAN");
                 checkProductPresenceInCategoryView("int", "productId", productId);
                 break;
 
             case "active product with tags <ENTRÉES> and <>":
                 createSKU_active();
-                createProduct_active(sku, "ENTRÉES");
+                createProduct_active(skuCode, "ENTRÉES");
                 checkProductPresenceInCategoryView("int", "productId", productId);
                 break;
 
             case "products with tags with entrees subcategories names":
                 createSKU_active();
-                createProduct_active(sku, "ENTRÉES");
+                createProduct_active(skuCode, "ENTRÉES");
                 addTag_product(productId, "POULTRY");
-                products.add(productName);
+                products.add(productTitle);
                 createSKU_active();
-                createProduct_active(sku, "ENTRÉES");
+                createProduct_active(skuCode, "ENTRÉES");
                 addTag_product(productId, "SEAFOOD");
-                products.add(productName);
+                products.add(productTitle);
                 createSKU_active();
-                createProduct_active(sku, "ENTRÉES");
+                createProduct_active(skuCode, "ENTRÉES");
                 addTag_product(productId, "MEAT");
-                products.add(productName);
+                products.add(productTitle);
                 createSKU_active();
-                createProduct_active(sku, "ENTRÉES");
+                createProduct_active(skuCode, "ENTRÉES");
                 addTag_product(productId, "VEGETARIAN");
-                products.add(productName);
+                products.add(productTitle);
                 createSKU_active();
-                createProduct_active(sku, "ENTRÉES");
-                products.add(productName);
+                createProduct_active(skuCode, "ENTRÉES");
+                products.add(productTitle);
                 createSKU_active();
                 checkProductPresenceInCategoryView("int", "productId", productId);
                 break;
 
             case "an active product with tpg-specific custom properties":
                 createSKU_active();
-                createProduct_tpgProps(skuId, sku, skuTitle);
+                createProduct_tpgProps(skuId, skuCode, skuTitle);
                 checkProductPresenceInCategoryView("int", "productId", productId);
                 break;
 
             case "an active product with <p> in description":
                 randomId = generateRandomID();
                 createSKU_active();
-                createActiveProduct_styledDescription(sku, storefrontCategory, "p", "Paragraph");
+                createActiveProduct_styledDescription(skuCode, storefrontCategory, "p", "Paragraph");
                 checkProductPresenceInCategoryView("int", "productId", productId);
                 break;
 
             case "an active product with <h1> in description":
                 randomId = generateRandomID();
                 createSKU_active();
-                createActiveProduct_styledDescription(sku, storefrontCategory, "h1", "Heading One");
+                createActiveProduct_styledDescription(skuCode, storefrontCategory, "h1", "Heading One");
                 checkProductPresenceInCategoryView("int", "productId", productId);
                 break;
 
             case "an active product with <h2> in description":
                 randomId = generateRandomID();
                 createSKU_active();
-                createActiveProduct_styledDescription(sku, storefrontCategory, "h2", "Heading Two");
+                createActiveProduct_styledDescription(skuCode, storefrontCategory, "h2", "Heading Two");
                 checkProductPresenceInCategoryView("int", "productId", productId);
                 break;
 
             case "an active product with <h3> in description":
                 randomId = generateRandomID();
                 createSKU_active();
-                createActiveProduct_styledDescription(sku, storefrontCategory, "h3", "Heading Three");
+                createActiveProduct_styledDescription(skuCode, storefrontCategory, "h3", "Heading Three");
                 checkProductPresenceInCategoryView("int", "productId", productId);
                 break;
 
             case "an active product with <h4> in description":
                 randomId = generateRandomID();
                 createSKU_active();
-                createActiveProduct_styledDescription(sku, storefrontCategory, "h4", "Heading Four");
+                createActiveProduct_styledDescription(skuCode, storefrontCategory, "h4", "Heading Four");
                 checkProductPresenceInCategoryView("int", "productId", productId);
                 break;
 
             case "an active product with <h5> in description":
                 randomId = generateRandomID();
                 createSKU_active();
-                createActiveProduct_styledDescription(sku, storefrontCategory, "h5", "Heading Five");
+                createActiveProduct_styledDescription(skuCode, storefrontCategory, "h5", "Heading Five");
                 checkProductPresenceInCategoryView("int", "productId", productId);
                 break;
 
             case "an active product with <h6> in description":
                 randomId = generateRandomID();
                 createSKU_active();
-                createActiveProduct_styledDescription(sku, storefrontCategory, "h6", "Heading Six");
+                createActiveProduct_styledDescription(skuCode, storefrontCategory, "h6", "Heading Six");
                 checkProductPresenceInCategoryView("int", "productId", productId);
                 break;
 
             case "an active product with <strong> in description":
                 randomId = generateRandomID();
                 createSKU_active();
-                createActiveProduct_styledDescription(sku, storefrontCategory, "strong", "Bold Text");
+                createActiveProduct_styledDescription(skuCode, storefrontCategory, "strong", "Bold Text");
                 checkProductPresenceInCategoryView("int", "productId", productId);
                 break;
 
             case "an active product with <em> in description":
                 randomId = generateRandomID();
                 createSKU_active();
-                createActiveProduct_styledDescription(sku, storefrontCategory, "em", "Italic Text");
+                createActiveProduct_styledDescription(skuCode, storefrontCategory, "em", "Italic Text");
                 checkProductPresenceInCategoryView("int", "productId", productId);
                 break;
 
             case "an active product with <ins> in description":
                 randomId = generateRandomID();
                 createSKU_active();
-                createActiveProduct_styledDescription(sku, storefrontCategory, "ins", "Underlined Text");
+                createActiveProduct_styledDescription(skuCode, storefrontCategory, "ins", "Underlined Text");
                 checkProductPresenceInCategoryView("int", "productId", productId);
                 break;
 
             case "an active product with <ul> in description":
                 randomId = generateRandomID();
                 createSKU_active();
-                createActiveProduct_styledDescription(sku, storefrontCategory, "ul", "UL Bullet Point");
+                createActiveProduct_styledDescription(skuCode, storefrontCategory, "ul", "UL Bullet Point");
                 checkProductPresenceInCategoryView("int", "productId", productId);
                 break;
 
             case "an active product with <ol> in description":
                 randomId = generateRandomID();
                 createSKU_active();
-                createActiveProduct_styledDescription(sku, storefrontCategory, "ol", "OL Point");
+                createActiveProduct_styledDescription(skuCode, storefrontCategory, "ol", "OL Point");
                 checkProductPresenceInCategoryView("int", "productId", productId);
                 break;
         }

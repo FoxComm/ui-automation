@@ -5,7 +5,7 @@ import org.testng.annotations.Test;
 import ru.yandex.qatools.allure.annotations.Description;
 import pages.admin.LoginPage;
 import pages.admin.OrderDetailsPage;
-import testdata.DataProvider;
+import testdata.Preconditions;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -13,7 +13,7 @@ import java.util.Objects;
 import static com.codeborne.selenide.Condition.matchesText;
 import static com.codeborne.selenide.Selenide.open;
 
-public class OrderStateTest extends DataProvider {
+public class OrderStateTest extends Preconditions {
 
     private OrderDetailsPage p;
 

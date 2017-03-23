@@ -5,13 +5,13 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import pages.storefront.StorefrontPage;
 import ru.yandex.qatools.allure.annotations.Description;
-import testdata.DataProvider;
+import testdata.Preconditions;
 
 import java.io.IOException;
 
 import static com.codeborne.selenide.Condition.*;
 
-public class BillingTest extends DataProvider {
+public class BillingTest extends Preconditions {
 
     private StorefrontPage p;
 

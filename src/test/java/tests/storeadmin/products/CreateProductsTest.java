@@ -6,7 +6,7 @@ import pages.admin.LoginPage;
 import pages.admin.ProductsPage;
 import pages.admin.StorefrontCategoryPage;
 import ru.yandex.qatools.allure.annotations.Description;
-import testdata.DataProvider;
+import testdata.Preconditions;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -16,7 +16,7 @@ import static com.codeborne.selenide.Condition.value;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.open;
 
-public class CreateProductsTest extends DataProvider {
+public class CreateProductsTest extends Preconditions {
 
     private ProductsPage p;
     private StorefrontCategoryPage sf;
@@ -39,13 +39,13 @@ public class CreateProductsTest extends DataProvider {
     @Test(priority = 1)
     public void productIsDisplayed_admin() throws IOException {
         provideTestData("active SKU");
-        checkInventoryAvailability(sku);
+        checkInventoryAvailability(skuCode);
         String randomId = generateRandomID();
         String productTitle = "Test Product " + randomId;
 
         p = openPage(adminUrl + "/products", ProductsPage.class);
         p.clickAddNewProduct();
-        p.createProduct(productTitle, sku, "27.18", "27.18", "sunglasses", "Active");
+        p.createProduct(productTitle, skuCode, "27.18", "27.18", "sunglasses", "Active");
         p.navigateTo("Products");
         p.waitForDataToLoad();
         p.search(randomId);
@@ -56,20 +56,20 @@ public class CreateProductsTest extends DataProvider {
     @Test(priority = 2)
     public void skuIsApplied() throws IOException {
         provideTestData("active product, has tag, active SKU");
-        checkInventoryAvailability(sku);
+        checkInventoryAvailability(skuCode);
         p = openPage(adminUrl + "/products/default/" + productId, ProductsPage.class);
-        p.sku(sku).shouldBe(visible);
+        p.sku(skuCode).shouldBe(visible);
     }
 
     @Test(priority = 3)
     @Description("retailPrice and salePrice are atuofilled with price values of the selected SKU")
     public void pricesAutofilled() throws IOException {
         provideTestData("active SKU");
-        checkInventoryAvailability(sku);
+        checkInventoryAvailability(skuCode);
 
         p = openPage(adminUrl + "/products", ProductsPage.class);
         p.clickAddNewProduct();
-        p.addExistingSKU(sku);
+        p.addExistingSKU(skuCode);
 
         p.skuSalePriceFld("1").shouldHave(value("50.00"));
         p.skuRetailPriceFld("1").shouldHave(value("50.00"));
@@ -88,9 +88,9 @@ public class CreateProductsTest extends DataProvider {
 //        sf = open(storefrontUrl + "/sunglasses?type=men", StorefrontCategoryPage.class);
 //        sf.waitForDataToLoad_sf();
 //
-//        shouldBeVisible(sf.product(productName), "Product isn't displayed on the category page on sf.");
-//        sf.openProduct(productName);
-//        sf.titleVal().shouldHave(text(productName)
+//        shouldBeVisible(sf.product(productTitle), "Product isn't displayed on the category page on sf.");
+//        sf.openProduct(productTitle);
+//        sf.titleVal().shouldHave(text(productTitle)
 //                .because("Incorrect product title is displayed on PDP."));
 //        sf.priceVal().shouldHave(text("$50.00")
 //                .because("Incorrect product price is displayed on PDP."));
@@ -108,7 +108,7 @@ public class CreateProductsTest extends DataProvider {
 //
 //        sf = open(storefrontUrl + "/sunglasses?type=men", StorefrontCategoryPage.class);
 //        sf.waitForDataToLoad_sf();
-//        sf.product(productName).shouldNotBe(visible
+//        sf.product(productTitle).shouldNotBe(visible
 //                .because("Product is displayed on the category page on sf."));
 //
 //    }
@@ -122,9 +122,9 @@ public class CreateProductsTest extends DataProvider {
 ////        p.assertSKUApplied();
 //
 //        sf = open(storefrontUrl + "/sunglasses?type=men", StorefrontCategoryPage.class);
-//        sf.search(productName);
+//        sf.search(productTitle);
 //        sf.waitForSearchResultsToLoad();
-//        sf.product(productName).shouldBe(visible
+//        sf.product(productTitle).shouldBe(visible
 //                .because("Product isn't found by search."));
 //
 //    }
@@ -139,7 +139,7 @@ public class CreateProductsTest extends DataProvider {
 //
 //        sf = open(storefrontUrl + "/sunglasses?type=men", StorefrontCategoryPage.class);
 //        sf.waitForDataToLoad_sf();
-//        sf.product(productName).shouldNotBe(visible
+//        sf.product(productTitle).shouldNotBe(visible
 //                .because("Product is displayed on the category page on sf."));
 //
 //    }
@@ -153,9 +153,9 @@ public class CreateProductsTest extends DataProvider {
 ////        p.assertSKUApplied();
 //
 //        sf = open(storefrontUrl + "/sunglasses?type=men", StorefrontCategoryPage.class);
-//        sf.search(productName);
+//        sf.search(productTitle);
 //        sf.waitForSearchResultsToLoad();
-//        sf.product(productName).shouldNotBe(visible
+//        sf.product(productTitle).shouldNotBe(visible
 //                .because("Product isn't found by search."));
 //
 //    }
@@ -170,7 +170,7 @@ public class CreateProductsTest extends DataProvider {
 //
 //        sf = open(storefrontUrl + "/sunglasses?type=men", StorefrontCategoryPage.class);
 //        sf.waitForDataToLoad_sf();
-//        sf.product(productName).shouldNotBe(visible
+//        sf.product(productTitle).shouldNotBe(visible
 //                .because("Product is displayed on the category page on sf."));
 //
 //    }
@@ -184,9 +184,9 @@ public class CreateProductsTest extends DataProvider {
 ////        p.assertSKUApplied();
 //
 //        sf = open(storefrontUrl + "/sunglasses?type=men", StorefrontCategoryPage.class);
-//        sf.search(productName);
+//        sf.search(productTitle);
 //        sf.waitForSearchResultsToLoad();
-//        sf.product(productName).shouldNotBe(visible
+//        sf.product(productTitle).shouldNotBe(visible
 //                .because("Product is found by search."));
 //
 //    }
@@ -201,7 +201,7 @@ public class CreateProductsTest extends DataProvider {
 //
 //        sf = open(storefrontUrl + "/sunglasses?type=men", StorefrontCategoryPage.class);
 //        sf.waitForDataToLoad_sf();
-//        sf.product(productName).shouldNotBe(visible
+//        sf.product(productTitle).shouldNotBe(visible
 //                .because("Product is displayed on the category page on sf."));
 //
 //    }
@@ -215,9 +215,9 @@ public class CreateProductsTest extends DataProvider {
 ////        p.assertSKUApplied();
 //
 //        sf = open(storefrontUrl + "/sunglasses?type=men", StorefrontCategoryPage.class);
-//        sf.search(productName);
+//        sf.search(productTitle);
 //        sf.waitForSearchResultsToLoad();
-//        sf.product(productName).shouldNotBe(visible
+//        sf.product(productTitle).shouldNotBe(visible
 //                .because("Product is found by search."));
 //
 //    }
@@ -232,7 +232,7 @@ public class CreateProductsTest extends DataProvider {
 //
 //        sf = open(storefrontUrl + "/sunglasses?type=men", StorefrontCategoryPage.class);
 //        sf.waitForDataToLoad_sf();
-//        sf.product(productName).shouldNotBe(visible
+//        sf.product(productTitle).shouldNotBe(visible
 //                .because("Product is displayed on the category page on sf."));
 //
 //    }
@@ -246,9 +246,9 @@ public class CreateProductsTest extends DataProvider {
 ////        p.assertSKUApplied();
 //
 //        sf = open(storefrontUrl + "/sunglasses?type=men", StorefrontCategoryPage.class);
-//        sf.search(productName);
+//        sf.search(productTitle);
 //        sf.waitForSearchResultsToLoad();
-//        sf.product(productName).shouldNotBe(visible
+//        sf.product(productTitle).shouldNotBe(visible
 //                .because("Product is found by search."));
 //
 //    }
@@ -259,12 +259,12 @@ public class CreateProductsTest extends DataProvider {
     @Description("A just created product is displayed in category_view, its PDP can be accessed")
     public void createProduct_SKU_inactive() throws IOException {
         provideTestData("inactive SKU");
-        checkInventoryAvailability(sku);
+        checkInventoryAvailability(skuCode);
         String randomId = generateRandomID();
         String productTitle = "Test Product " + randomId;
 
         p = open(adminUrl+ "/products/default/new", ProductsPage.class);
-        p.createProduct(productTitle, sku, "27.18", "27.18", "sunglasses", "Active");
+        p.createProduct(productTitle, skuCode, "27.18", "27.18", "sunglasses", "Active");
         p.clickSave_wait();
         p.navigateTo("Products");
         p.waitForDataToLoad();
@@ -278,12 +278,12 @@ public class CreateProductsTest extends DataProvider {
     @Description("A just created product is displayed in category_view, its PDP can be accessed")
     public void createProduct_SKU_noTitle() throws IOException {
         provideTestData("SKU with no title");
-        checkInventoryAvailability(sku);
+        checkInventoryAvailability(skuCode);
         String randomId = generateRandomID();
         String productTitle = "Test Product " + randomId;
 
         p = openPage(adminUrl + "/products/default/new", ProductsPage.class);
-        p.createProduct(productTitle, sku, "27.18", "27.18", "sunglasses", "Active");
+        p.createProduct(productTitle, skuCode, "27.18", "27.18", "sunglasses", "Active");
         p.clickSave_wait();
         p.navigateTo("Products");
         p.waitForDataToLoad();
@@ -295,12 +295,12 @@ public class CreateProductsTest extends DataProvider {
     @Test(priority = 16)
     public void createProduct_SKU_noDescription() throws IOException {
         provideTestData("SKU with no description");
-        checkInventoryAvailability(sku);
+        checkInventoryAvailability(skuCode);
         String randomId = generateRandomID();
         String productTitle = "Test Product " + randomId;
 
         p = openPage(adminUrl + "/products/default/new", ProductsPage.class);
-        p.createProduct(productTitle, sku, "27.18", "27.18", "sunglasses", "Active");
+        p.createProduct(productTitle, skuCode, "27.18", "27.18", "sunglasses", "Active");
         p.clickSave_wait();
         p.navigateTo("Products");
         p.waitForDataToLoad();
@@ -318,14 +318,14 @@ public class CreateProductsTest extends DataProvider {
 //        String productTitle = "Test Product " + randomId;
 //
 //        p = openPage(adminUrl + "/products/default/new", ProductsPage.class);
-//        p.createProduct(productTitle, sku, "27.18", "27.18", "sunglasses", "Active");
+//        p.createProduct(productTitle, skuCode, "27.18", "27.18", "sunglasses", "Active");
 //        p.clickSave_wait();
 //        p.navigateTo("Products");
 //        p.waitForDataToLoad();
 //        p.search(randomId);
 //        p.openProduct(productTitle);
 //
-//        p.sku(sku).shouldBe(visible);
+//        p.sku(skuCode).shouldBe(visible);
 //    }
 
 }

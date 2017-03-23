@@ -5,7 +5,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import pages.storefront.StorefrontPage;
 import ru.yandex.qatools.allure.annotations.Description;
-import testdata.DataProvider;
+import testdata.Preconditions;
 
 import java.io.IOException;
 
@@ -13,7 +13,7 @@ import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.refresh;
 import static org.testng.Assert.assertEquals;
 
-public class GuestCheckoutTest extends DataProvider {
+public class GuestCheckoutTest extends Preconditions {
 
     private StorefrontPage p;
 
@@ -30,7 +30,7 @@ public class GuestCheckoutTest extends DataProvider {
 
         p = openPage(storefrontUrl, StorefrontPage.class);
         p.navigateToCategory(storefrontCategory);
-        p.openPDP(productName);
+        p.openPDP(productTitle);
         p.clickAddToCartBtn();
         p.clickCheckoutBtn_cart();
 
@@ -47,7 +47,7 @@ public class GuestCheckoutTest extends DataProvider {
 
         p = openPage(storefrontUrl, StorefrontPage.class);
         p.navigateToCategory(storefrontCategory);
-        p.openPDP(productName);
+        p.openPDP(productTitle);
         p.clickAddToCartBtn();
         p.clickCheckoutBtn_cart();
         p.setGuestEmail_auth("qatest2278+" + generateRandomID() + "@gmail.com");
@@ -119,7 +119,7 @@ public class GuestCheckoutTest extends DataProvider {
 
         p = openPage(storefrontUrl, StorefrontPage.class);
         p.navigateToCategory(storefrontCategory);
-        p.openPDP(productName);
+        p.openPDP(productTitle);
         p.clickAddToCartBtn();
         p.clickCheckoutBtn_cart();
         p.clickSignUpLnk();
@@ -127,7 +127,7 @@ public class GuestCheckoutTest extends DataProvider {
         p.setEmail("qatest2278+" + randomId + "@gmail.com");
         p.clickSignUpBtn();
 
-        p.lineItem_checkout(productName).shouldBe(visible);
+        p.lineItem_checkout(productTitle).shouldBe(visible);
         p.lineItems_checkout().shouldHaveSize(1);
     }
 
@@ -138,7 +138,7 @@ public class GuestCheckoutTest extends DataProvider {
 
         p = openPage(storefrontUrl, StorefrontPage.class);
         p.navigateToCategory(storefrontCategory);
-        p.openPDP(productName);
+        p.openPDP(productTitle);
         p.clickAddToCartBtn();
         p.applyCoupon(singleCouponCode);
         p.clickCheckoutBtn_cart();
@@ -168,7 +168,7 @@ public class GuestCheckoutTest extends DataProvider {
 
         p = openPage(storefrontUrl, StorefrontPage.class);
         p.navigateToCategory(storefrontCategory);
-        p.openPDP(productName);
+        p.openPDP(productTitle);
         p.clickAddToCartBtn();
         p.closeCart();
         p.clickLogInLnk();
@@ -180,7 +180,7 @@ public class GuestCheckoutTest extends DataProvider {
         p.cartQty().shouldHave(text("1"));
         p.openCart();
         p.lineItemsAmount().shouldHaveSize(1);
-        p.lineItemByName_cart(productName).shouldBe(visible);
+        p.lineItemByName_cart(productTitle).shouldBe(visible);
     }
 
     @Test(priority = 9)
@@ -191,7 +191,7 @@ public class GuestCheckoutTest extends DataProvider {
 
         p = openPage(storefrontUrl, StorefrontPage.class);
         p.navigateToCategory(storefrontCategory);
-        p.openPDP(productName);
+        p.openPDP(productTitle);
         p.clickAddToCartBtn();
         p.applyCoupon(singleCouponCode);
         shouldBeVisible(p.appliedCoupon(), "");
@@ -214,7 +214,7 @@ public class GuestCheckoutTest extends DataProvider {
 
         p = openPage(storefrontUrl, StorefrontPage.class);
         p.navigateToCategory(storefrontCategory);
-        p.openPDP(productName);
+        p.openPDP(productTitle);
         p.clickAddToCartBtn();
         p.clickCheckoutBtn_cart();
         p.setGuestEmail_auth("qatest2278+" + randomId + "@gmail.com");
@@ -248,7 +248,7 @@ public class GuestCheckoutTest extends DataProvider {
 
         p = openPage(storefrontUrl, StorefrontPage.class);
         p.navigateToCategory(storefrontCategory);
-        p.openPDP(productName);
+        p.openPDP(productTitle);
         p.clickAddToCartBtn();
         p.clickCheckoutBtn_cart();
         p.setGuestEmail_auth("qatest2278+" + randomId + "@gmail.com");
@@ -276,7 +276,7 @@ public class GuestCheckoutTest extends DataProvider {
 
         p = openPage(storefrontUrl, StorefrontPage.class);
         p.navigateToCategory(storefrontCategory);
-        p.openPDP(productName);
+        p.openPDP(productTitle);
         p.clickAddToCartBtn();
         p.clickCheckoutBtn_cart();
         p.setGuestEmail_auth("qatest2278@gmail.com");
@@ -304,7 +304,7 @@ public class GuestCheckoutTest extends DataProvider {
 
         p = openPage(storefrontUrl, StorefrontPage.class);
         p.navigateToCategory(storefrontCategory);
-        p.openPDP(productName);
+        p.openPDP(productTitle);
         p.clickAddToCartBtn();
         p.clickCheckoutBtn_cart();
         p.setGuestEmail_auth(customerEmail);

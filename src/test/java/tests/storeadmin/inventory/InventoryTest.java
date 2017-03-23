@@ -6,7 +6,7 @@ import pages.admin.CartPage;
 import pages.admin.InventoryPage;
 import pages.admin.LoginPage;
 import ru.yandex.qatools.allure.annotations.Description;
-import testdata.DataProvider;
+import testdata.Preconditions;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -17,7 +17,7 @@ import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.Selenide.refresh;
 import static org.openqa.selenium.By.xpath;
 
-public class InventoryTest extends DataProvider {
+public class InventoryTest extends Preconditions {
 
     private InventoryPage p;
     private CartPage cartPage;
@@ -36,7 +36,7 @@ public class InventoryTest extends DataProvider {
     public void editOnHand_sellable() throws IOException {
         provideTestData("active SKU for inventory");
 
-        p = openPage(adminUrl + "/skus/" + sku + "/inventory", InventoryPage.class);
+        p = openPage(adminUrl + "/skus/" + skuCode + "/inventory", InventoryPage.class);
         p.expandWarehouse("default");
         p.setOnHand("Sellable", "1");
         p.clickSave_wait();
@@ -49,7 +49,7 @@ public class InventoryTest extends DataProvider {
     public void editOnHand_nonsellable() throws IOException {
         provideTestData("active SKU for inventory");
 
-        p = openPage(adminUrl + "/skus/" + sku + "/inventory", InventoryPage.class);
+        p = openPage(adminUrl + "/skus/" + skuCode + "/inventory", InventoryPage.class);
         p.expandWarehouse("default");
         p.setOnHand("Non-sellable", "1");
         p.clickSave_wait();
@@ -62,7 +62,7 @@ public class InventoryTest extends DataProvider {
     public void editOnHand_backorder() throws IOException {
         provideTestData("active SKU for inventory");
 
-        p = openPage(adminUrl + "/skus/" + sku + "/inventory", InventoryPage.class);
+        p = openPage(adminUrl + "/skus/" + skuCode + "/inventory", InventoryPage.class);
         p.expandWarehouse("default");
         p.setOnHand("Backorder", "1");
         p.clickSave_wait();
@@ -75,7 +75,7 @@ public class InventoryTest extends DataProvider {
     public void editOnHand_preorder() throws IOException {
         provideTestData("active SKU for inventory");
 
-        p = openPage(adminUrl + "/skus/" + sku + "/inventory", InventoryPage.class);
+        p = openPage(adminUrl + "/skus/" + skuCode + "/inventory", InventoryPage.class);
         p.expandWarehouse("default");
         p.setOnHand("Preorder", "1");
         p.clickSave_wait();
@@ -89,7 +89,7 @@ public class InventoryTest extends DataProvider {
     public void editOnHand_multipleTypes() throws IOException {
         provideTestData("active SKU for inventory");
 
-        p = openPage(adminUrl + "/skus/" + sku + "/inventory", InventoryPage.class);
+        p = openPage(adminUrl + "/skus/" + skuCode + "/inventory", InventoryPage.class);
         p.expandWarehouse("default");
         p.setOnHand("Preorder", "1");
         p.setOnHand("Backorder", "1");
@@ -105,7 +105,7 @@ public class InventoryTest extends DataProvider {
     public void editOnHand_arrowBtns() throws IOException {
         provideTestData("active SKU for inventory");
 
-        p = openPage(adminUrl + "/skus/" + sku + "/inventory", InventoryPage.class);
+        p = openPage(adminUrl + "/skus/" + skuCode + "/inventory", InventoryPage.class);
         p.expandWarehouse("default");
         p.increaseOnHand_arrowBtn("Sellable", 2);
         p.onHandFld("Sellable").shouldHave(value("2"));
@@ -122,7 +122,7 @@ public class InventoryTest extends DataProvider {
     public void visibilityOfAdjustQty() throws IOException {
         provideTestData("active SKU for inventory");
 
-        p = openPage(adminUrl + "/skus/" + sku + "/inventory", InventoryPage.class);
+        p = openPage(adminUrl + "/skus/" + skuCode + "/inventory", InventoryPage.class);
         p.expandWarehouse("default");
         p.setOnHand("Preorder", "1");
 
@@ -134,7 +134,7 @@ public class InventoryTest extends DataProvider {
     public void transactionsLog() throws IOException {
         provideTestData("active SKU for inventory");
 
-        p = openPage(adminUrl + "/skus/" + sku + "/inventory", InventoryPage.class);
+        p = openPage(adminUrl + "/skus/" + skuCode + "/inventory", InventoryPage.class);
         p.expandWarehouse("default");
         p.setOnHand("Sellable", "1");
         p.clickSave_wait();

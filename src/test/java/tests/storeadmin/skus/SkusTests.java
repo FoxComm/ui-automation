@@ -5,7 +5,7 @@ import org.testng.annotations.Test;
 import pages.admin.LoginPage;
 import pages.admin.SkusPage;
 import ru.yandex.qatools.allure.annotations.Description;
-import testdata.DataProvider;
+import testdata.Preconditions;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -14,7 +14,7 @@ import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.Selenide.refresh;
 
-public class SkusTests extends DataProvider {
+public class SkusTests extends Preconditions {
 
     private SkusPage p;
 
@@ -46,7 +46,7 @@ public class SkusTests extends DataProvider {
     public void addCustomProp_text() throws IOException {
         provideTestData("active SKU");
 
-        p = openPage(adminUrl + "/skus/" + sku, SkusPage.class);
+        p = openPage(adminUrl + "/skus/" + skuCode, SkusPage.class);
         p.addCustomProp("Text", "text fld");
         p.setCustomProp_text("text fld", "test val");
         p.clickSave_wait();
@@ -60,7 +60,7 @@ public class SkusTests extends DataProvider {
     public void addCustomProp_richText() throws IOException {
         provideTestData("active SKU");
 
-        p = openPage(adminUrl + "/skus/" + sku, SkusPage.class);
+        p = openPage(adminUrl + "/skus/" + skuCode, SkusPage.class);
         p.addCustomProp("Rich Text", "richtextfld");
         p.setCustomProp_richText("richtextfld", "test val");
         p.clickSave_wait();
@@ -73,11 +73,11 @@ public class SkusTests extends DataProvider {
     public void editTitle_categoryView() throws IOException {
         provideTestData("active SKU");
 
-        p = openPage(adminUrl + "/skus/" + sku, SkusPage.class);
+        p = openPage(adminUrl + "/skus/" + skuCode, SkusPage.class);
         p.setTitle("Edited SKU Title");
         p.clickSave_wait();
         p.navigateTo("SKUs");
-        p.search( sku.substring(4, sku.length()) );
+        p.search( skuCode.substring(4, skuCode.length()) );
 
         p.getSKUParamVal("1", "Title").shouldHave(text("Edited SKU Title"));
     }
@@ -86,13 +86,13 @@ public class SkusTests extends DataProvider {
     public void editTitle_PDP() throws IOException {
         provideTestData("active SKU");
 
-        p = openPage(adminUrl + "/skus/" + sku, SkusPage.class);
+        p = openPage(adminUrl + "/skus/" + skuCode, SkusPage.class);
         p.setTitle("Edited SKU Title");
         p.clickSave_wait();
         p.navigateTo("SKUs");
-        p.search( sku.substring(4, sku.length()) );
+        p.search( skuCode.substring(4, skuCode.length()) );
         shouldHaveText(p.getSKUParamVal("1", "Title"), "Edited SKU Title", "SKU title isn't updated on the list.");
-        p.openSKU(sku);
+        p.openSKU(skuCode);
 
         p.titleFld().shouldHave(value("Edited SKU Title"));
     }
@@ -101,12 +101,12 @@ public class SkusTests extends DataProvider {
     public void editUPC() throws IOException {
         provideTestData("active SKU");
 
-        p = openPage(adminUrl + "/skus/" + sku, SkusPage.class);
+        p = openPage(adminUrl + "/skus/" + skuCode, SkusPage.class);
         p.setUpc("Edited UPC");
         p.clickSave_wait();
         p.navigateTo("SKUs");
-        p.search(sku.substring(4, sku.length()));
-        p.openSKU(sku);
+        p.search(skuCode.substring(4, skuCode.length()));
+        p.openSKU(skuCode);
 
         p.upcFld().shouldHave(value("Edited UPC"));
     }
@@ -115,13 +115,13 @@ public class SkusTests extends DataProvider {
     public void editDescription() throws IOException {
         provideTestData("active SKU");
 
-        p = openPage(adminUrl + "/skus/" + sku, SkusPage.class);
+        p = openPage(adminUrl + "/skus/" + skuCode, SkusPage.class);
         clearField( p.descriptionFld() );
         p.setDescription("Edited description");
         p.clickSave_wait();
         p.navigateTo("SKUs");
-        p.search(sku.substring(4, sku.length()));
-        p.openSKU(sku);
+        p.search(skuCode.substring(4, skuCode.length()));
+        p.openSKU(skuCode);
 
         p.descriptionFld().shouldHave(text("Edited description"));
     }
@@ -130,11 +130,11 @@ public class SkusTests extends DataProvider {
     public void editRetailPrice_categoryView() throws IOException {
         provideTestData("active SKU");
 
-        p = openPage(adminUrl + "/skus/" + sku, SkusPage.class);
+        p = openPage(adminUrl + "/skus/" + skuCode, SkusPage.class);
         p.setRetailPrice("70.00");
         p.clickSave_wait();
         p.navigateTo("SKUs");
-        p.search(sku.substring(4, sku.length()));
+        p.search(skuCode.substring(4, skuCode.length()));
 
         p.getSKUParamVal("1", "Retail Price").shouldHave(text("70.00"));
     }
@@ -143,13 +143,13 @@ public class SkusTests extends DataProvider {
     public void editRetailPrice_PDP() throws IOException {
         provideTestData("active SKU");
 
-        p = openPage(adminUrl + "/skus/" + sku, SkusPage.class);
+        p = openPage(adminUrl + "/skus/" + skuCode, SkusPage.class);
         p.setRetailPrice("70.00");
         p.clickSave_wait();
         p.navigateTo("SKUs");
-        p.search(sku.substring(4, sku.length()));
+        p.search(skuCode.substring(4, skuCode.length()));
         p.getSKUParamVal("1", "Retail Price").shouldHave(text("70.00"));
-        p.openSKU(sku);
+        p.openSKU(skuCode);
 
         p.retailPriceFld().shouldHave(value("70.00"));
     }
@@ -158,11 +158,11 @@ public class SkusTests extends DataProvider {
     public void editSalePrice_categoryView() throws IOException {
         provideTestData("active SKU");
 
-        p = openPage(adminUrl + "/skus/" + sku, SkusPage.class);
+        p = openPage(adminUrl + "/skus/" + skuCode, SkusPage.class);
         p.setSalePrice("70.00");
         p.clickSave_wait();
         p.navigateTo("SKUs");
-        p.search(sku.substring(4, sku.length()));
+        p.search(skuCode.substring(4, skuCode.length()));
 
         p.getSKUParamVal("1", "Sale Price").shouldHave(text("70.00"));
     }
@@ -171,13 +171,13 @@ public class SkusTests extends DataProvider {
     public void editSalePrice_PDP() throws IOException {
         provideTestData("active SKU");
 
-        p = openPage(adminUrl + "/skus/" + sku, SkusPage.class);
+        p = openPage(adminUrl + "/skus/" + skuCode, SkusPage.class);
         p.setSalePrice("70.00");
         p.clickSave_wait();
         p.navigateTo("SKUs");
-        p.search(sku.substring(4, sku.length()));
+        p.search(skuCode.substring(4, skuCode.length()));
         shouldHaveText(p.getSKUParamVal("1", "Sale Price"), "70.00", "Sale price isn't updated on the list.");
-        p.openSKU(sku);
+        p.openSKU(skuCode);
 
         p.salePriceFld().shouldHave(value("70.00"));
     }
@@ -186,12 +186,12 @@ public class SkusTests extends DataProvider {
     public void editState_PDP() throws IOException {
         provideTestData("active SKU");
 
-        p = openPage(adminUrl + "/skus/" + sku, SkusPage.class);
+        p = openPage(adminUrl + "/skus/" + skuCode, SkusPage.class);
         p.setState("Inactive");
         p.clickSave_wait();
         p.navigateTo("SKUs");
-        p.search(sku.substring(4, sku.length()));
-        p.openSKU(sku);
+        p.search(skuCode.substring(4, skuCode.length()));
+        p.openSKU(skuCode);
 
         p.stateVal().shouldHave(text("Inactive"));
     }
@@ -202,7 +202,7 @@ public class SkusTests extends DataProvider {
     @Description("Title isn't blanked after creating a product with a pre-created SKU")
     public void titleReset() throws IOException {
         provideTestData("active SKU");
-        p = openPage(adminUrl + "/skus/" + sku, SkusPage.class);
+        p = openPage(adminUrl + "/skus/" + skuCode, SkusPage.class);
         p.titleFld().shouldHave(value(skuTitle));
     }
 
@@ -213,7 +213,7 @@ public class SkusTests extends DataProvider {
 
         p = openPage(adminUrl + "/skus", SkusPage.class);
         p.clickAddNewSKU();
-        p.setSKUCode(sku);
+        p.setSKUCode(skuCode);
         p.clickSave();
 
         p.errorMsg("already exists").shouldBe(visible);
@@ -223,13 +223,13 @@ public class SkusTests extends DataProvider {
     @Description("Can't use skuCode of an existing SKU as a new skuCode for another SKU")
     public void useExistingSKUCode_editSKU() throws IOException {
         provideTestData("active SKU");
-        String skuToEdit = sku;
+        String skuToEdit = skuCode;
         provideTestData("active SKU");
 
         p = openPage(adminUrl + "/skus", SkusPage.class);
         p.search(skuToEdit);
         p.openSKU(skuToEdit);
-        p.setSKUCode(sku);
+        p.setSKUCode(skuCode);
         p.clickSave();
 
         p.errorMsg("already exists").shouldBe(visible);

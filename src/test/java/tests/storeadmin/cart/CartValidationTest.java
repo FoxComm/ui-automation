@@ -5,7 +5,7 @@ import org.testng.annotations.Test;
 import pages.admin.CartPage;
 import pages.admin.LoginPage;
 import ru.yandex.qatools.allure.annotations.Description;
-import testdata.DataProvider;
+import testdata.Preconditions;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -15,7 +15,7 @@ import static com.codeborne.selenide.Condition.enabled;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.open;
 
-public class CartValidationTest extends DataProvider {
+public class CartValidationTest extends Preconditions {
 
     private CartPage p;
 
@@ -174,7 +174,7 @@ public class CartValidationTest extends DataProvider {
 //    public void cartWarning_skuArchived() throws IOException {
 //        provideTestData("cart<filled out, payment method: SC>");
 //
-//        archiveSKU(sku);
+//        archiveSKU(skuCode);
 //        p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
 //
 //        p.itemsWarn().shouldBe(visible);

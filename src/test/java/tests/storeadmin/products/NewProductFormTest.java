@@ -5,7 +5,7 @@ import org.testng.annotations.Test;
 import pages.admin.LoginPage;
 import pages.admin.ProductsPage;
 import ru.yandex.qatools.allure.annotations.Description;
-import testdata.DataProvider;
+import testdata.Preconditions;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -16,7 +16,7 @@ import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.Selenide.refresh;
 
-public class NewProductFormTest extends DataProvider {
+public class NewProductFormTest extends Preconditions {
 
     private ProductsPage p;
 
@@ -43,10 +43,10 @@ public class NewProductFormTest extends DataProvider {
     @Test(priority = 2)
     public void titleIsRequired() throws IOException {
         provideTestData("active SKU");
-        checkInventoryAvailability(sku);
+        checkInventoryAvailability(skuCode);
 
         p = openPage(adminUrl + "/products/default/new", ProductsPage.class);
-        p.addExistingSKU(sku);
+        p.addExistingSKU(skuCode);
         p.clickSave();
 
         p.errorMsg("title is a required field").shouldBe(visible);
@@ -157,13 +157,13 @@ public class NewProductFormTest extends DataProvider {
     @Description("Options are saved correctly")
     public void optionsAreSaved() throws IOException {
         provideTestData("active SKU");
-        checkInventoryAvailability(sku);
+        checkInventoryAvailability(skuCode);
 
         p = openPage(adminUrl + "/products/default/new", ProductsPage.class);
         p.setTitle("Product " + generateRandomID());
         p.addOption("color");
         p.addOptionValue("color", "red");
-        p.addExistingSKU(sku);
+        p.addExistingSKU(skuCode);
         p.clickSave_wait();
         refresh();
 
@@ -175,17 +175,17 @@ public class NewProductFormTest extends DataProvider {
     @Description("Options are saved correctly")
     public void variantSpecificSkuIsSaved() throws IOException {
         provideTestData("active SKU");
-        checkInventoryAvailability(sku);
+        checkInventoryAvailability(skuCode);
 
         p = openPage(adminUrl + "/products/default/new", ProductsPage.class);
         p.setTitle("Product " + generateRandomID());
         p.addOption("color");
         p.addOptionValue("color", "red");
-        p.addExistingSKU(sku);
+        p.addExistingSKU(skuCode);
         p.clickSave_wait();
         refresh();
 
-        p.sku(sku).shouldBe(visible);
+        p.sku(skuCode).shouldBe(visible);
         p.sku_byOptVal("red").shouldBe(visible);
     }
 

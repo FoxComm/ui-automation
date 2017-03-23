@@ -4,7 +4,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import pages.admin.CartPage;
 import pages.admin.LoginPage;
-import testdata.DataProvider;
+import testdata.Preconditions;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -14,7 +14,7 @@ import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 
-public class PaymentMethodTest extends DataProvider {
+public class PaymentMethodTest extends Preconditions {
 
     private CartPage p;
 //    private GiftCardsPage gcp;

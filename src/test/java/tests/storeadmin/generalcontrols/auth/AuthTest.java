@@ -8,7 +8,7 @@ import pages.admin.LoginPage;
 import pages.admin.OrdersPage;
 import pages.storefront.StorefrontPage;
 import ru.yandex.qatools.allure.annotations.Description;
-import testdata.DataProvider;
+import testdata.Preconditions;
 
 import java.io.IOException;
 
@@ -17,7 +17,7 @@ import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.refresh;
 import static org.testng.Assert.assertEquals;
 
-public class AuthTest extends DataProvider {
+public class AuthTest extends Preconditions {
 
     private LoginPage lp;
     private StorefrontPage sfp;

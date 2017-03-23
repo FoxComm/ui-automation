@@ -3,11 +3,11 @@ package tests.storefront.products;
 import org.testng.annotations.*;
 import pages.storefront.StorefrontPage;
 import ru.yandex.qatools.allure.annotations.Description;
-import testdata.DataProvider;
+import testdata.Preconditions;
 
 import java.io.IOException;
 
-public class TpgProductAttrsTest extends DataProvider {
+public class TpgProductAttrsTest extends Preconditions {
 
     private StorefrontPage p;
 

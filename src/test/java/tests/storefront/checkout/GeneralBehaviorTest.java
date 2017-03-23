@@ -5,13 +5,13 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import pages.storefront.StorefrontPage;
 import ru.yandex.qatools.allure.annotations.Description;
-import testdata.DataProvider;
+import testdata.Preconditions;
 
 import java.io.IOException;
 
 import static com.codeborne.selenide.Condition.*;
 
-public class GeneralBehaviorTest extends DataProvider {
+public class GeneralBehaviorTest extends Preconditions {
 
     private StorefrontPage p;
 
@@ -140,7 +140,7 @@ public class GeneralBehaviorTest extends DataProvider {
 
         p = openPage(storefrontUrl + storefrontCategory, StorefrontPage.class);
         p.logIn(customerEmail, "78qa22!#");
-        p.openPDP(productName);
+        p.openPDP(productTitle);
         p.clickAddToCartBtn();
         p.clickCheckoutBtn_cart();
         p.fillOutAddressForm("John Doe", "7500 Roosevelt Way NE", "Block 42", "98115", "9879879876");

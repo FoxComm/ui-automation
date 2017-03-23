@@ -5,7 +5,7 @@ import org.testng.annotations.Test;
 import pages.admin.CartPage;
 import pages.admin.LoginPage;
 import ru.yandex.qatools.allure.annotations.Description;
-import testdata.DataProvider;
+import testdata.Preconditions;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -14,7 +14,7 @@ import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.open;
 
-public class ItemsTest extends DataProvider {
+public class ItemsTest extends Preconditions {
 
     private CartPage p;
 
@@ -33,11 +33,11 @@ public class ItemsTest extends DataProvider {
         provideTestData("empty cart and 3 active products");
 
         p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
-        p.addItemToCart(skus.get(0));
-        p.addItemToCart(skus.get(1));
+        p.addItemToCart(skuCodes.get(0));
+        p.addItemToCart(skuCodes.get(1));
 
-        p.lineItem_byName(skus.get(0)).shouldBe(visible);
-        p.lineItem_byName(skus.get(1)).shouldBe(visible);
+        p.lineItem_byName(skuCodes.get(0)).shouldBe(visible);
+        p.lineItem_byName(skuCodes.get(1)).shouldBe(visible);
     }
 
     @Test (priority = 2)
@@ -65,7 +65,7 @@ public class ItemsTest extends DataProvider {
 
         p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
         p.clickEditBtn("Line Items");
-        p.setItemQty(sku, "3");
+        p.setItemQty(skuCode, "3");
         shouldHaveText(p.itemTotalPrice("1"), "$150.00", "");
         p.clickDoneBtn("Line Items");
 
@@ -107,7 +107,7 @@ public class ItemsTest extends DataProvider {
         p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
         shouldBeVisible(p.itemQty("1"), "Failed to open cart page");
         p.clickEditBtn("Line Items");
-        p.setItemQty(sku, "3");
+        p.setItemQty(skuCode, "3");
         p.clickDoneBtn("Line Items");
         shouldHaveText(p.itemQty("1"), "1", "Failed to edit Qty");
         open(adminUrl + "/customers/" + customerId + "/cart");

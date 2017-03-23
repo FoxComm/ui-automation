@@ -5,14 +5,14 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import pages.storefront.StorefrontPage;
 import ru.yandex.qatools.allure.annotations.Description;
-import testdata.DataProvider;
+import testdata.Preconditions;
 
 import java.io.IOException;
 
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 
-public class CartTest extends DataProvider {
+public class CartTest extends Preconditions {
 
     private StorefrontPage p;
 
@@ -29,10 +29,10 @@ public class CartTest extends DataProvider {
 
         p = openPage(storefrontUrl, StorefrontPage.class);
         p.navigateToCategory(storefrontCategory);
-        p.openPDP(productName);
+        p.openPDP(productTitle);
         p.clickAddToCartBtn();
 
-        p.lineItemByName_cart(productName).shouldBe(visible);
+        p.lineItemByName_cart(productTitle).shouldBe(visible);
     }
 
     @Test(priority = 2)
@@ -42,7 +42,7 @@ public class CartTest extends DataProvider {
 
         p = openPage(storefrontUrl, StorefrontPage.class);
         p.navigateToCategory(storefrontCategory);
-        p.openPDP(productName);
+        p.openPDP(productTitle);
         p.clickAddToCartBtn();
         p.removeLineItem("1");
         p.closeCart();
@@ -51,7 +51,7 @@ public class CartTest extends DataProvider {
 
         p.cartQty().shouldHave(text("1"));
         p.openCart();
-        p.lineItemByName_cart(productName).shouldBe(visible);
+        p.lineItemByName_cart(productTitle).shouldBe(visible);
     }
 
     @Test(priority = 3)

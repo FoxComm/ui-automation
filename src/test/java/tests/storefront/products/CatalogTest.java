@@ -3,14 +3,14 @@ package tests.storefront.products;
 import org.testng.annotations.*;
 import pages.storefront.StorefrontPage;
 import ru.yandex.qatools.allure.annotations.Description;
-import testdata.DataProvider;
+import testdata.Preconditions;
 
 import java.io.IOException;
 
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 
-public class CatalogTest extends DataProvider {
+public class CatalogTest extends Preconditions {
 
     private StorefrontPage p;
 
@@ -33,7 +33,7 @@ public class CatalogTest extends DataProvider {
         p = openPage(storefrontUrl, StorefrontPage.class);
         p.navigateToCategory(storefrontCategory);
 
-        p.productTitle_catalog(productName).shouldBe(visible);
+        p.productTitle_catalog(productTitle).shouldBe(visible);
     }
 
     @Test(priority = 2)
@@ -43,11 +43,11 @@ public class CatalogTest extends DataProvider {
 
         p = openPage(storefrontUrl + storefrontCategory, StorefrontPage.class);
         p.navigateToCategory(storefrontCategory);
-        scrollToElement(p.productTitle_catalog(productName));
-        p.clickAddToCartBtn_catalog(productName);
+        scrollToElement(p.productTitle_catalog(productTitle));
+        p.clickAddToCartBtn_catalog(productTitle);
 
         p.lineItemsAmount().shouldHaveSize(1);
-        p.lineItemByName_cart(productName).shouldBe(visible);
+        p.lineItemByName_cart(productTitle).shouldBe(visible);
         p.closeCart();
         p.cartQty().shouldHave(text("1"));
     }
@@ -58,11 +58,11 @@ public class CatalogTest extends DataProvider {
         provideTestData("an active product visible on storefront");
 
         p = openPage(storefrontUrl + storefrontCategory, StorefrontPage.class);
-        scrollToElement(p.productImage(productName));
-        p.productImage(productName).hover();
+        scrollToElement(p.productImage(productTitle));
+        p.productImage(productTitle).hover();
 
-        p.additionalDescription(productName).shouldBe(visible);
-        p.additionalDescription(productName).shouldHave(text("The best thing to buy in 2016!"));
+        p.additionalDescription(productTitle).shouldBe(visible);
+        p.additionalDescription(productTitle).shouldHave(text("The best thing to buy in 2016!"));
     }
 
     @Test(priority = 4, enabled = false)
@@ -71,11 +71,11 @@ public class CatalogTest extends DataProvider {
         provideTestData("an active product visible on storefront");
 
         p = openPage(storefrontUrl + storefrontCategory, StorefrontPage.class);
-        scrollToElement(p.imagePlaceholder(productName));
-        p.imagePlaceholder(productName).hover();
+        scrollToElement(p.imagePlaceholder(productTitle));
+        p.imagePlaceholder(productTitle).hover();
 
-        p.additionalDescription(productName).shouldBe(visible);
-        p.additionalDescription(productName).shouldHave(text("The best thing to buy in 2016!"));
+        p.additionalDescription(productTitle).shouldBe(visible);
+        p.additionalDescription(productTitle).shouldHave(text("The best thing to buy in 2016!"));
     }
 
     @Test(priority = 5)
@@ -100,7 +100,7 @@ public class CatalogTest extends DataProvider {
     public void entreesSubCategories(String subCategory) throws IOException {
         provideTestData("active product with tags <ENTRÉES> and <" + subCategory + ">");
         p = openPage(storefrontUrl + "/ENTRÉES" + "/" + subCategory, StorefrontPage.class);
-        p.productTitle_catalog(productName).shouldBe(visible);
+        p.productTitle_catalog(productTitle).shouldBe(visible);
     }
 
     @Test(priority = 7)
@@ -109,7 +109,7 @@ public class CatalogTest extends DataProvider {
         provideTestData("an active product visible on storefront");
 
         p = openPage(storefrontUrl + storefrontCategory, StorefrontPage.class);
-        p.openPDP(productName);
+        p.openPDP(productTitle);
 
         p.description_pdp().shouldBe(visible);
     }
@@ -123,7 +123,7 @@ public class CatalogTest extends DataProvider {
         editProductSlug(productId, "new-slug-" + randomId);
         p = openPage(storefrontUrl + "/products/" + productSlug, StorefrontPage.class);
 
-        p.productTitle_pdp().shouldHave(text(productName));
+        p.productTitle_pdp().shouldHave(text(productTitle));
     }
 
     @Test(priority = 9)

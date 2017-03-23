@@ -5,14 +5,14 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import pages.storefront.StorefrontPage;
 import ru.yandex.qatools.allure.annotations.Description;
-import testdata.DataProvider;
+import testdata.Preconditions;
 
 import java.io.IOException;
 
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 
-public class AbstractPdpTest extends DataProvider {
+public class AbstractPdpTest extends Preconditions {
 
     private StorefrontPage p;
 
@@ -49,7 +49,7 @@ public class AbstractPdpTest extends DataProvider {
         p = openPage(storefrontUrl + "/products/" + productSlug, StorefrontPage.class);
 
         p.productTitle_pdp().shouldBe(visible);
-        p.productTitle_pdp().shouldHave(text(productName));
+        p.productTitle_pdp().shouldHave(text(productTitle));
     }
 
     @Test(priority = 2)
@@ -79,7 +79,7 @@ public class AbstractPdpTest extends DataProvider {
         provideTestData("an active product visible on storefront");
 
         p = openPage(storefrontUrl + storefrontCategory, StorefrontPage.class);
-        p.openPDP(productName);
+        p.openPDP(productTitle);
         p.setQty_pdp("3");
         p.clickAddToCartBtn();
         p.closeCart();

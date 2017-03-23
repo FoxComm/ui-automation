@@ -1,9 +1,9 @@
 package tests.storeadmin.products;
 import org.testng.annotations.Test;
-import testdata.DataProvider;
+import testdata.Preconditions;
 import java.io.IOException;
 
-public class ProductsTest extends DataProvider {
+public class ProductsTest extends Preconditions {
 
 
     // Active product, active SKU, has tag, has sellable stockitems in MWH
@@ -11,8 +11,8 @@ public class ProductsTest extends DataProvider {
     public void activeProduct_activeSKU_hasTag_hasSellableItems() throws IOException {
         loginAsAdmin();
         createSKU_active();
-        createProduct_active(sku, "modern");
-        increaseOnHandQty(sku, "Sellable", 20);
+        createProduct_active(skuCode, "modern");
+        increaseOnHandQty(skuCode, "Sellable", 20);
     }
 
     // Active product, active SKU, no tag, has sellable stockitems in MWH
@@ -20,8 +20,8 @@ public class ProductsTest extends DataProvider {
     public void activeProduct_activeSKU_noTag_hasSellableItems() throws IOException {
         loginAsAdmin();
         createSKU_active();
-        createProduct_active_noTag(sku);
-        increaseOnHandQty(sku, "Sellable", 20);
+        createProduct_active_noTag(skuCode);
+        increaseOnHandQty(skuCode, "Sellable", 20);
     }
 
     // Active product, inactive SKU, has tag
@@ -29,7 +29,7 @@ public class ProductsTest extends DataProvider {
     public void activeProduct_inactiveSKU_noTag() throws IOException {
         loginAsAdmin();
         createSKU_inactive();
-        createProduct_active(sku, "modern");
+        createProduct_active(skuCode, "modern");
     }
 
     // Inactive product, active SKU, has tag
@@ -37,7 +37,7 @@ public class ProductsTest extends DataProvider {
     public void inactiveProduct_activeSKU_hasTag() throws IOException {
         loginAsAdmin();
         createSKU_active();
-        createProduct_inactive(sku, "modern");
+        createProduct_inactive(skuCode, "modern");
     }
 
     // Inactive product, inactive SKU, has tag
@@ -45,7 +45,7 @@ public class ProductsTest extends DataProvider {
     public void inactiveProduct_inactiveSKU_hasTag() throws IOException {
         loginAsAdmin();
         createSKU_inactive();
-        createProduct_inactive(sku, "modern");
+        createProduct_inactive(skuCode, "modern");
     }
 
 }

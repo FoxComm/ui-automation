@@ -3,13 +3,13 @@ package tests.storeadmin.cart;
 import org.testng.annotations.BeforeClass;
 import pages.admin.LoginPage;
 import pages.admin.OrderDetailsPage;
-import testdata.DataProvider;
+import testdata.Preconditions;
 
 import java.util.Objects;
 
 import static com.codeborne.selenide.Selenide.open;
 
-public class PlaceOrderTest extends DataProvider {
+public class PlaceOrderTest extends Preconditions {
 
     private OrderDetailsPage p;
 

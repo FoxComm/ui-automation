@@ -7,7 +7,7 @@ import pages.admin.CartPage;
 import pages.admin.LoginPage;
 import pages.admin.OrderDetailsPage;
 import ru.yandex.qatools.allure.annotations.Description;
-import testdata.DataProvider;
+import testdata.Preconditions;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -17,7 +17,7 @@ import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 
-public class CartCouponsTest extends DataProvider {
+public class CartCouponsTest extends Preconditions {
 
     private CartPage p;
 

@@ -5,14 +5,14 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import pages.storefront.StorefrontPage;
 import ru.yandex.qatools.allure.annotations.Description;
-import testdata.DataProvider;
+import testdata.Preconditions;
 
 import java.io.IOException;
 
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.refresh;
 
-public class CouponsAndPromosTest extends DataProvider {
+public class CouponsAndPromosTest extends Preconditions {
 
     private StorefrontPage p;
 
@@ -29,7 +29,7 @@ public class CouponsAndPromosTest extends DataProvider {
 
         p = openPage(storefrontUrl + storefrontCategory, StorefrontPage.class);
         p.logIn(customerEmail, "78qa22!#");
-        p.openPDP(productName);
+        p.openPDP(productTitle);
         p.clickAddToCartBtn();
         p.applyCoupon(singleCouponCode);
 
@@ -44,7 +44,7 @@ public class CouponsAndPromosTest extends DataProvider {
         provideTestData("product<active>, coupon<any, single code>");
 
         p = openPage(storefrontUrl + storefrontCategory, StorefrontPage.class);
-        p.openPDP(productName);
+        p.openPDP(productTitle);
         p.clickAddToCartBtn();
         p.applyCoupon(singleCouponCode);
 

@@ -6,7 +6,7 @@ import org.testng.annotations.Test;
 import pages.admin.GiftCardsPage;
 import pages.admin.LoginPage;
 import ru.yandex.qatools.allure.annotations.Description;
-import testdata.DataProvider;
+import testdata.Preconditions;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -15,7 +15,7 @@ import static com.codeborne.selenide.CollectionCondition.size;
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
 
-public class GiftCardsTest extends DataProvider {
+public class GiftCardsTest extends Preconditions {
 
     private GiftCardsPage p;
 

@@ -4,7 +4,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import pages.admin.CustomersPage;
 import pages.admin.LoginPage;
-import testdata.DataProvider;
+import testdata.Preconditions;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -14,7 +14,7 @@ import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.open;
 import static org.testng.Assert.assertEquals;
 
-public class OrdersListTest extends DataProvider {
+public class OrdersListTest extends Preconditions {
 
     private CustomersPage p;
 
@@ -75,7 +75,7 @@ public class OrdersListTest extends DataProvider {
 
         p = openPage(adminUrl + "/customers/" + customerId + "/transactions", CustomersPage.class);
         waitForDataToLoad();
-        p.addFilter("Items", "Product Name", productName);
+        p.addFilter("Items", "Product Name", productTitle);
 
         p.ordersOnList().shouldHaveSize(1);
     }
@@ -86,7 +86,7 @@ public class OrdersListTest extends DataProvider {
 
         p = openPage(adminUrl + "/customers/" + customerId + "/transactions", CustomersPage.class);
         waitForDataToLoad();
-        p.addFilter("Items", "Product SKU", skus.get(0));
+        p.addFilter("Items", "Product SKU", skuCodes.get(0));
 
         p.ordersOnList().shouldHaveSize(1);
     }

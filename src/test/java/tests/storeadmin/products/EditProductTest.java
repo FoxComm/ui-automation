@@ -5,7 +5,7 @@ import org.testng.annotations.Test;
 import pages.admin.LoginPage;
 import pages.admin.ProductsPage;
 import pages.admin.StorefrontCategoryPage;
-import testdata.DataProvider;
+import testdata.Preconditions;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -13,7 +13,7 @@ import java.util.Objects;
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
 
-public class EditProductTest extends DataProvider {
+public class EditProductTest extends Preconditions {
 
     private ProductsPage p;
     private StorefrontCategoryPage sf;
@@ -31,8 +31,8 @@ public class EditProductTest extends DataProvider {
     @Test(priority = 1)
     public void editTitle_admin_PDP() throws IOException {
         provideTestData("product in active state");
-        checkInventoryAvailability(sku);
-        String uid = productName.substring(13, 20);
+        checkInventoryAvailability(skuCode);
+        String uid = productTitle.substring(13, 20);
 
         p = openPage(adminUrl + "/products/default/" + productId, ProductsPage.class);
         clearField(p.titleFld());
@@ -46,8 +46,8 @@ public class EditProductTest extends DataProvider {
     @Test(priority = 2)
     public void editTitle_admin_list() throws IOException {
         provideTestData("product in active state");
-        checkInventoryAvailability(sku);
-        String uid = productName.substring(13, 20);
+        checkInventoryAvailability(skuCode);
+        String uid = productTitle.substring(13, 20);
 
         p = openPage(adminUrl + "/products/default/" + productId, ProductsPage.class);
         clearField(p.titleFld());
@@ -65,7 +65,7 @@ public class EditProductTest extends DataProvider {
 //
 //        provideTestData("product in active state");
 //        p = openPage(adminUrl + "/products/default/" + productId, ProductsPage.class);
-//        String uid = productName.substring(13, 20);
+//        String uid = productTitle.substring(13, 20);
 //
 //        clearField(p.titleFld());
 //        p.setTitle("Edited Product " + uid);
@@ -82,7 +82,7 @@ public class EditProductTest extends DataProvider {
 //
 //        provideTestData("product in active state");
 //        p = openPage(adminUrl + "/products/default/" + productId, ProductsPage.class);
-//        String uid = productName.substring(13, 20);
+//        String uid = productTitle.substring(13, 20);
 //
 //        clearField(p.titleFld());
 //        p.setTitle("Edited Product " + uid);
@@ -98,7 +98,7 @@ public class EditProductTest extends DataProvider {
     @Test(priority = 5)
     public void editDescription_admin_PDP() throws IOException {
         provideTestData("product in active state");
-        checkInventoryAvailability(sku);
+        checkInventoryAvailability(skuCode);
 
         p = openPage(adminUrl + "/products/default/" + productId, ProductsPage.class);
         clearField(p.descriptionFld());
@@ -128,7 +128,7 @@ public class EditProductTest extends DataProvider {
     @Test(priority = 7)
     public void editState_admin_PDP() throws IOException {
         provideTestData("product in active state");
-        checkInventoryAvailability(sku);
+        checkInventoryAvailability(skuCode);
 
         p = openPage(adminUrl + "/products/default/" + productId, ProductsPage.class);
         p.setState("Inactive");
@@ -143,8 +143,8 @@ public class EditProductTest extends DataProvider {
     @Test(priority = 8)
     public void editState_admin_category() throws IOException {
         provideTestData("product in active state");
-        checkInventoryAvailability(sku);
-        String uid = productName.substring(13, 20);
+        checkInventoryAvailability(skuCode);
+        String uid = productTitle.substring(13, 20);
 
         p = openPage(adminUrl + "/products/default/" + productId, ProductsPage.class);
         p.setState("Inactive");
@@ -167,7 +167,7 @@ public class EditProductTest extends DataProvider {
 //
 //        sf = open(storefrontUrl + "/sunglasses?type=men", StorefrontCategoryPage.class);
 //        sf.waitForDataToLoad_sf();
-//        sf.product(productName).shouldBe(visible
+//        sf.product(productTitle).shouldBe(visible
 //                .because("Failed to edit product state - product isn't displayed on the category page on storefront."));
 //
 //    }
@@ -175,7 +175,7 @@ public class EditProductTest extends DataProvider {
     @Test(priority = 10)
     public void editRetailPrice_admin_PDP() throws IOException {
         provideTestData("product in active state");
-        checkInventoryAvailability(sku);
+        checkInventoryAvailability(skuCode);
 
         p = openPage(adminUrl + "/products/default/" + productId, ProductsPage.class);
         p.setRetailPrice("1", "35.18");
@@ -188,7 +188,7 @@ public class EditProductTest extends DataProvider {
     @Test(priority = 11)
     public void editSalePrice_admin_PDP() throws IOException {
         provideTestData("product in active state");
-        checkInventoryAvailability(sku);
+        checkInventoryAvailability(skuCode);
 
         p = openPage(adminUrl + "/products/default/" + productId, ProductsPage.class);
         p.setSalePrice("1", "35.18");
@@ -216,7 +216,7 @@ public class EditProductTest extends DataProvider {
     @Test(priority = 13)
     public void editTag_admin() throws IOException {
         provideTestData("product in active state");
-        checkInventoryAvailability(sku);
+        checkInventoryAvailability(skuCode);
 
         p = openPage(adminUrl + "/products/default/" + productId, ProductsPage.class);
         p.removeTag("sunglasses");
@@ -243,7 +243,7 @@ public class EditProductTest extends DataProvider {
 //
 //        sf = open(storefrontUrl + "/sunglasses?type=men", StorefrontCategoryPage.class);
 //        sf.waitForDataToLoad_sf();
-//        sf.product(productName).shouldBe(visible
+//        sf.product(productTitle).shouldBe(visible
 //                .because("Product isn't displayed on storefront category page."));
 //
 //    }
@@ -251,7 +251,7 @@ public class EditProductTest extends DataProvider {
     @Test(priority = 15)
     public void removeTag_admin() throws IOException {
         provideTestData("product in active state");
-        checkInventoryAvailability(sku);
+        checkInventoryAvailability(skuCode);
 
         p = openPage(adminUrl + "/products/default/" + productId, ProductsPage.class);
         p.removeTag("sunglasses");
@@ -275,7 +275,7 @@ public class EditProductTest extends DataProvider {
 //        sf = open(storefrontUrl + "/eyeglasses?type=men", StorefrontCategoryPage.class);
 //        sf.waitForDataToLoad_sf();
 //
-//        assertTwice(sf.product(productName), "should not be visible",
+//        assertTwice(sf.product(productTitle), "should not be visible",
 //                "Product is displayed on the storefront category (it shouldn't)");
 //
 //    }

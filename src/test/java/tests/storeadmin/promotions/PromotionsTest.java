@@ -5,7 +5,7 @@ import org.testng.annotations.Test;
 import pages.admin.LoginPage;
 import pages.admin.PromotionsPage;
 import ru.yandex.qatools.allure.annotations.Description;
-import testdata.DataProvider;
+import testdata.Preconditions;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -16,7 +16,7 @@ import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.Selenide.refresh;
 
-public class PromotionsTest extends DataProvider {
+public class PromotionsTest extends Preconditions {
 
     private PromotionsPage p;
 

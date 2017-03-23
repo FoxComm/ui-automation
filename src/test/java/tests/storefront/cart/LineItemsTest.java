@@ -5,13 +5,13 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import pages.storefront.StorefrontPage;
 import ru.yandex.qatools.allure.annotations.Description;
-import testdata.DataProvider;
+import testdata.Preconditions;
 
 import java.io.IOException;
 
 import static com.codeborne.selenide.Condition.*;
 
-public class LineItemsTest extends DataProvider {
+public class LineItemsTest extends Preconditions {
 
     private StorefrontPage p;
 
@@ -28,10 +28,10 @@ public class LineItemsTest extends DataProvider {
 
         p = openPage(storefrontUrl + storefrontCategory, StorefrontPage.class);
         p.logIn(customerEmail, "78qa22!#");
-        p.openPDP(productName);
+        p.openPDP(productTitle);
         p.clickAddToCartBtn();
 
-        p.lineItemByName_cart(productName).shouldBe(visible);
+        p.lineItemByName_cart(productTitle).shouldBe(visible);
         p.subTotal_cart().shouldHave(text("$50.00"));
 
         p.closeCart();
@@ -118,7 +118,7 @@ public class LineItemsTest extends DataProvider {
         p.checkoutBtn_cart().shouldBe(disabled);
 
         p = openPage(storefrontUrl + storefrontCategory, StorefrontPage.class);
-        p.openPDP(productName);
+        p.openPDP(productTitle);
         p.clickAddToCartBtn();
         p.checkoutBtn_cart().shouldBe(enabled);
         p.clickCheckoutBtn_cart();
