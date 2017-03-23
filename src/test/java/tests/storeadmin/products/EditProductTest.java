@@ -12,6 +12,7 @@ import java.util.Objects;
 
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
+import static testdata.api.collection.Inventory.checkInventoryAvailability;
 
 public class EditProductTest extends Preconditions {
 

@@ -14,6 +14,9 @@ import static com.codeborne.selenide.Condition.disabled;
 import static com.codeborne.selenide.Condition.enabled;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.open;
+import static testdata.api.collection.Customers.deleteAddress;
+import static testdata.api.collection.GiftCards.setGiftCardState;
+import static testdata.api.collection.StoreCredits.setStoreCreditState;
 
 public class CartValidationTest extends Preconditions {
 

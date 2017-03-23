@@ -9,6 +9,7 @@ import java.io.IOException;
 
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
+import static testdata.api.collection.Products.editProductSlug;
 
 public class CatalogTest extends Preconditions {
 

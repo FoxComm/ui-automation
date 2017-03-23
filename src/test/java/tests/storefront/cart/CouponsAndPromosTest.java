@@ -11,6 +11,10 @@ import java.io.IOException;
 
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.refresh;
+import static testdata.api.collection.Coupons.archiveCoupon;
+import static testdata.api.collection.Coupons.setCouponState;
+import static testdata.api.collection.Promotions.archivePromo;
+import static testdata.api.collection.Promotions.setPromoState;
 
 public class CouponsAndPromosTest extends Preconditions {
 

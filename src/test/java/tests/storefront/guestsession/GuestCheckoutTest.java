@@ -12,6 +12,8 @@ import java.io.IOException;
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.refresh;
 import static org.testng.Assert.assertEquals;
+import static testdata.api.collection.Auth.loginAsAdmin;
+import static testdata.api.collection.Cart.getGuestOrderEmail;
 
 public class GuestCheckoutTest extends Preconditions {
 

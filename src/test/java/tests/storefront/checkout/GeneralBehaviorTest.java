@@ -10,6 +10,7 @@ import testdata.Preconditions;
 import java.io.IOException;
 
 import static com.codeborne.selenide.Condition.*;
+import static testdata.api.collection.Cart.getCartTotals;
 
 public class GeneralBehaviorTest extends Preconditions {
 

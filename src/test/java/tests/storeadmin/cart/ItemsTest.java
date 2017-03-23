@@ -13,6 +13,7 @@ import java.util.Objects;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.open;
+import static testdata.api.collection.Cart.checkoutCart;
 
 public class ItemsTest extends Preconditions {
 

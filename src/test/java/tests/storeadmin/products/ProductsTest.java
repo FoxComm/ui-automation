@@ -3,6 +3,14 @@ import org.testng.annotations.Test;
 import testdata.Preconditions;
 import java.io.IOException;
 
+import static testdata.api.collection.Auth.loginAsAdmin;
+import static testdata.api.collection.Inventory.increaseOnHandQty;
+import static testdata.api.collection.Products.createProduct_active;
+import static testdata.api.collection.Products.createProduct_active_noTag;
+import static testdata.api.collection.Products.createProduct_inactive;
+import static testdata.api.collection.Skus.createSKU_active;
+import static testdata.api.collection.Skus.createSKU_inactive;
+
 public class ProductsTest extends Preconditions {
 
 
