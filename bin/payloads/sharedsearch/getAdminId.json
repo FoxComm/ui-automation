@@ -1,0 +1,13 @@
+{
+  "query":{
+    "bool":{
+    }
+  },
+  "sort":[
+    {
+      "createdAt":{
+        "order":"desc"
+      }
+    }
+  ]
+}

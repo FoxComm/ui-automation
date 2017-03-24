@@ -27,6 +27,7 @@ public class Preconditions extends Helpers {
 
         skuCodes.clear();
         products.clear();
+        bulkCodes.clear();
         System.out.println("==== ==== ==== ====");
         loginAsAdmin();
 
@@ -136,8 +137,7 @@ public class Preconditions extends Helpers {
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
                 listCustomerAddresses(customerId);
-                getCustomerAddress(customerId, addressId1);
-                createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard");
+                createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard", addressId1);
                 setPayment_creditCard(cartId, creditCardId);
                 issueStoreCredit(customerId, 50000);
                 setPayment_storeCredit(cartId, 10000);
@@ -155,8 +155,7 @@ public class Preconditions extends Helpers {
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
                 listCustomerAddresses(customerId);
-                getCustomerAddress(customerId, addressId1);
-                createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard");
+                createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard", addressId1);
                 setPayment_creditCard(cartId, creditCardId);
                 issueStoreCredit(customerId, 50000);
                 setPayment_storeCredit(cartId, 10000);
@@ -271,7 +270,7 @@ public class Preconditions extends Helpers {
                 createProduct_active(skuCode, "test");
                 increaseOnHandQty(skuCode, "Sellable", 1);
                 updLineItems(cartId, skuCode, 1);
-                issueGiftCard(50000, 1);
+                createGiftCard(50000, 1);
                 break;
 
             case "cart with 1 item && customer with SC":
@@ -294,8 +293,7 @@ public class Preconditions extends Helpers {
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
                 listCustomerAddresses(customerId);
-                getCustomerAddress(customerId, addressId1);
-                createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard");
+                createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard", addressId1);
                 setPayment_creditCard(cartId, creditCardId);
                 break;
 
@@ -322,7 +320,7 @@ public class Preconditions extends Helpers {
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
-                issueGiftCard(50000, 1);
+                createGiftCard(50000, 1);
                 break;
 
             case "cart with 1 item, shipping method, credit card payment and issued SC":
@@ -336,8 +334,7 @@ public class Preconditions extends Helpers {
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
                 listCustomerAddresses(customerId);
-                getCustomerAddress(customerId, addressId1);
-                createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard");
+                createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard", addressId1);
                 setPayment_creditCard(cartId, creditCardId);
                 issueStoreCredit(customerId, 50000);
                 break;
@@ -353,10 +350,9 @@ public class Preconditions extends Helpers {
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
                 listCustomerAddresses(customerId);
-                getCustomerAddress(customerId, addressId1);
-                createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard");
+                createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard", addressId1);
                 setPayment_creditCard(cartId, creditCardId);
-                issueGiftCard(50000, 1);
+                createGiftCard(50000, 1);
                 break;
 
             case "cart with 1 item, shipping method, issued SC and GC":
@@ -369,7 +365,7 @@ public class Preconditions extends Helpers {
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
                 listCustomerAddresses(customerId);
-                issueGiftCard(50000, 1);
+                createGiftCard(50000, 1);
                 issueStoreCredit(customerId, 50000);
                 break;
 
@@ -381,7 +377,7 @@ public class Preconditions extends Helpers {
                 increaseOnHandQty(skuCode, "Sellable", 1);
                 updLineItems(cartId, skuCode, 1);
                 issueStoreCredit(customerId, 50000);
-                updateSCState(scId, "onHold");
+                setStoreCreditState(scId, "onHold");
                 break;
 
             case "cart with 1 item && SC canceled":
@@ -392,7 +388,7 @@ public class Preconditions extends Helpers {
                 increaseOnHandQty(skuCode, "Sellable", 1);
                 updLineItems(cartId, skuCode, 1);
                 issueStoreCredit(customerId, 50000);
-                updateSCState(scId, "canceled");
+                setStoreCreditState(scId, "canceled");
                 break;
 
             //----------------------------------- CART VALIDATION -----------------------------------//
@@ -417,7 +413,7 @@ public class Preconditions extends Helpers {
                 createProduct_active(skuCode, "sunglasses");
                 increaseOnHandQty(skuCode, "Sellable", 20);
                 createCustomer();
-                issueGiftCard(20000, 1);
+                createGiftCard(20000, 1);
                 createCart(customerId);
                 updLineItems(cartId, skuCode, 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
@@ -437,8 +433,7 @@ public class Preconditions extends Helpers {
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
                 listCustomerAddresses(customerId);
-                getCustomerAddress(customerId, addressId1);
-                createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard");
+                createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard", addressId1);
                 setPayment_creditCard(cartId, creditCardId);
                 break;
 
@@ -453,8 +448,7 @@ public class Preconditions extends Helpers {
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
                 listCustomerAddresses(customerId);
-                getCustomerAddress(customerId, addressId1);
-                createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard");
+                createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard", addressId1);
                 setPayment_creditCard(cartId, creditCardId);
                 break;
 
@@ -471,8 +465,7 @@ public class Preconditions extends Helpers {
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
                 listCustomerAddresses(customerId);
-                getCustomerAddress(customerId, addressId1);
-                createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard");
+                createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard", addressId1);
                 setPayment_creditCard(cartId, creditCardId);
                 checkoutCart(cartId);
                 break;
@@ -505,8 +498,7 @@ public class Preconditions extends Helpers {
                 createCustomer();
                 createAddress(customerId, customerName, 4177, 234, "Washington", "2101 Green Valley", "Suite 300", "Seattle", "98101", "9879879876", false);
                 listCustomerAddresses(customerId);
-                getCustomerAddress(customerId, addressId1);
-                createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard");
+                createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard", addressId1);
                 break;
 
             case "customer with a credit card and 2 addresses":
@@ -514,8 +506,7 @@ public class Preconditions extends Helpers {
                 createAddress(customerId, customerName, 4164, 234, "New York", "545 Narrow Ave", "Suite 15", "New Jersey", "10201", "5551118888", false);
                 createAddress(customerId, customerName, 4177, 234, "Washington", "2101 Green Valley", "Suite 300", "Seattle", "98101", "9879879876", false);
                 listCustomerAddresses(customerId);
-                getCustomerAddress(customerId, addressId1);
-                createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard");
+                createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard", addressId1);
                 break;
 
             //----------------------------------- CUSTOMER'S ORDERS -----------------------------------//
@@ -533,8 +524,7 @@ public class Preconditions extends Helpers {
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
                 listCustomerAddresses(customerId);
-                getCustomerAddress(customerId, addressId1);
-                createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard");
+                createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard", addressId1);
                 setPayment_creditCard(cartId, creditCardId);
                 checkoutCart(cartId);
 
@@ -565,8 +555,7 @@ public class Preconditions extends Helpers {
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
                 listCustomerAddresses(customerId);
-                getCustomerAddress(customerId, addressId1);
-                createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard");
+                createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard", addressId1);
                 setPayment_creditCard(cartId, creditCardId);
                 checkoutCart(cartId);
 
@@ -595,7 +584,7 @@ public class Preconditions extends Helpers {
 
             case "a customer && GC":
                 createCustomer();
-                issueGiftCard(12500, 1);
+                createGiftCard(12500, 1);
                 break;
 
             case "order in Remorse Hold, payed with SC (CSR Appeasement)":
@@ -626,7 +615,7 @@ public class Preconditions extends Helpers {
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
                 listCustomerAddresses(customerId);
-                issueGiftCard(50000, 1);
+                createGiftCard(50000, 1);
                 issueStoreCredit_gcTransfer(customerId, gcCode);
                 getCartTotals(cartId);
                 setPayment_storeCredit(cartId, total);
@@ -680,8 +669,7 @@ public class Preconditions extends Helpers {
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
                 listCustomerAddresses(customerId);
-                getCustomerAddress(customerId, addressId1);
-                createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard");
+                createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard", addressId1);
                 setPayment_creditCard(cartId, creditCardId);
                 applyCouponCode(cartId, singleCouponCode);
                 checkoutCart(cartId);
@@ -696,7 +684,7 @@ public class Preconditions extends Helpers {
 
             case "product in inactive state":
                 createSKU_active();
-                createProduct_inactive(skuCode, "sunglasses");
+                createProduct_inactive(skuId, skuCode, "sunglasses");
                 break;
 
             case "active SKU":
@@ -732,16 +720,16 @@ public class Preconditions extends Helpers {
 
             case "active product, no tag, active SKU":
                 createSKU_active();
-                createProduct_active_noTag(skuCode);
+                createProduct_active_noTag(skuId, skuCode);
                 break;
             case "inactive product, has tag, active SKU":
                 createSKU_active();
-                createProduct_inactive(skuCode, "sunglasses");
+                createProduct_inactive(skuId, skuCode, "sunglasses");
                 break;
 
             case "inactive product, no tag, active SKU":
                 createSKU_active();
-                createProduct_inactive_noTag(skuCode);
+                createProduct_inactive_noTag(skuId, skuCode);
                 break;
 
             case "active product, has tag, inactive SKU":
@@ -751,17 +739,17 @@ public class Preconditions extends Helpers {
 
             case "active product, no tag, inactive SKU":
                 createSKU_inactive();
-                createProduct_active_noTag(skuCode);
+                createProduct_active_noTag(skuId, skuCode);
                 break;
 
             case "inactive product, has tag, inactive SKU":
                 createSKU_inactive();
-                createProduct_inactive(skuCode, "sunglasses");
+                createProduct_inactive(skuId, skuCode, "sunglasses");
                 break;
 
             case "inactive product, no tag, inactive SKU":
                 createSKU_inactive();
-                createProduct_inactive_noTag(skuCode);
+                createProduct_inactive_noTag(skuId, skuCode);
                 break;
 
             //----------------------------------- INVENTORY -----------------------------------//
@@ -782,8 +770,7 @@ public class Preconditions extends Helpers {
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
                 listCustomerAddresses(customerId);
-                getCustomerAddress(customerId, addressId1);
-                createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard");
+                createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard", addressId1);
                 setPayment_creditCard(cartId, creditCardId);
                 break;
 
@@ -799,8 +786,7 @@ public class Preconditions extends Helpers {
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
                 listCustomerAddresses(customerId);
-                getCustomerAddress(customerId, addressId1);
-                createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard");
+                createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard", addressId1);
                 setPayment_creditCard(cartId, creditCardId);
                 break;
 
@@ -819,19 +805,18 @@ public class Preconditions extends Helpers {
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
                 listCustomerAddresses(customerId);
-                getCustomerAddress(customerId, addressId1);
-                createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard");
+                createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard", addressId1);
                 setPayment_creditCard(cartId, creditCardId);
                 break;
 
             //----------------------------------- GIFT CARDS -----------------------------------//
 
             case "gift card":
-                issueGiftCard(5000, 1);
+                createGiftCard(5000, 1);
                 break;
 
             case "used gift card":
-                issueGiftCard(20000, 1);
+                createGiftCard(20000, 1);
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
@@ -847,7 +832,7 @@ public class Preconditions extends Helpers {
                 break;
 
             case "gift card on hold":
-                issueGiftCard(20000, 1);
+                createGiftCard(20000, 1);
                 setGiftCardState(gcCode, "onHold");
                 break;
 
@@ -893,8 +878,7 @@ public class Preconditions extends Helpers {
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
                 listCustomerAddresses(customerId);
-                getCustomerAddress(customerId, addressId1);
-                createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard");
+                createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard", addressId1);
                 setPayment_creditCard(cartId, creditCardId);
                 break;
 
@@ -1147,8 +1131,7 @@ public class Preconditions extends Helpers {
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
                 listCustomerAddresses(customerId);
-                getCustomerAddress(customerId, addressId1);
-                createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard");
+                createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard", addressId1);
                 setPayment_creditCard(cartId, creditCardId);
                 createPromotion_coupon();
                 createCoupon(promotionId);
@@ -1173,9 +1156,8 @@ public class Preconditions extends Helpers {
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
                 listCustomerAddresses(customerId);
-                getCustomerAddress(customerId, addressId1);
-                createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard");
-                createCreditCard(customerId, customerName, "4242424242424242", 3, 2020, 123, "Visa");
+                createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard", addressId1);
+                createCreditCard(customerId, customerName, "4242424242424242", 3, 2020, 123, "Visa", addressId1);
                 break;
 
             case "a storefront signed up customer, with no qualifier coupon code applied":
@@ -1196,8 +1178,7 @@ public class Preconditions extends Helpers {
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
                 listCustomerAddresses(customerId);
-                getCustomerAddress(customerId, addressId1);
-                createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard");
+                createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard", addressId1);
                 setPayment_creditCard(cartId, creditCardId);
                 createPromotion_coupon();
                 createCoupon(promotionId);
@@ -1223,9 +1204,8 @@ public class Preconditions extends Helpers {
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
                 listCustomerAddresses(customerId);
-                getCustomerAddress(customerId, addressId1);
-                createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard");
-                createCreditCard(customerId, customerName, "4242424242424242", 3, 2020, 123, "Visa");
+                createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard", addressId1);
+                createCreditCard(customerId, customerName, "4242424242424242", 3, 2020, 123, "Visa", addressId1);
                 setCardAsDefault(customerId, creditCardId);
                 break;
 
@@ -1290,8 +1270,7 @@ public class Preconditions extends Helpers {
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
                 listCustomerAddresses(customerId);
-                getCustomerAddress(customerId, addressId1);
-                createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard");
+                createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard", addressId1);
                 setPayment_creditCard(cartId, creditCardId);
                 blacklistCustomer(customerId);
                 break;
@@ -1314,10 +1293,9 @@ public class Preconditions extends Helpers {
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
                 listCustomerAddresses(customerId);
-                getCustomerAddress(customerId, addressId1);
-                createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard");
+                createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard", addressId1);
                 setPayment_creditCard(cartId, creditCardId);
-                issueGiftCard(1000, 1);
+                createGiftCard(1000, 1);
                 setPayment_giftCard(cartId, gcCode, 1000);
                 break;
 
@@ -1339,10 +1317,9 @@ public class Preconditions extends Helpers {
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
                 listCustomerAddresses(customerId);
-                getCustomerAddress(customerId, addressId1);
-                createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard");
+                createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard", addressId1);
                 setPayment_creditCard(cartId, creditCardId);
-                issueGiftCard(1000, 1);
+                createGiftCard(1000, 1);
                 break;
 
             case "a customer ready to checkout, 2 active products, 1 in cart":
@@ -1369,8 +1346,7 @@ public class Preconditions extends Helpers {
                 listShipMethods(cartId);
                 setShipMethod(cartId, shipMethodId);
                 listCustomerAddresses(customerId);
-                getCustomerAddress(customerId, addressId1);
-                createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard");
+                createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard", addressId1);
                 setPayment_creditCard(cartId, creditCardId);
                 break;
 
@@ -1392,7 +1368,7 @@ public class Preconditions extends Helpers {
             case "an active product, a gift card":
                 createSKU_active();
                 createProduct_active(skuCode, storefrontCategory);
-                issueGiftCard(1000, 1);
+                createGiftCard(1000, 1);
                 break;
 
             case "a storefront registered customer, 2 active products, 1 in cart, coupon<no qualifier, 10% off, single code>":
@@ -1489,84 +1465,84 @@ public class Preconditions extends Helpers {
             case "an active product with <p> in description":
                 randomId = generateRandomID();
                 createSKU_active();
-                createActiveProduct_styledDescription(skuCode, storefrontCategory, "p", "Paragraph");
+                createActiveProduct_styledDescription(skuId, skuCode, storefrontCategory, "p", "Paragraph");
                 checkProductPresenceInCategoryView("int", "productId", productId);
                 break;
 
             case "an active product with <h1> in description":
                 randomId = generateRandomID();
                 createSKU_active();
-                createActiveProduct_styledDescription(skuCode, storefrontCategory, "h1", "Heading One");
+                createActiveProduct_styledDescription(skuId, skuCode, storefrontCategory, "h1", "Heading One");
                 checkProductPresenceInCategoryView("int", "productId", productId);
                 break;
 
             case "an active product with <h2> in description":
                 randomId = generateRandomID();
                 createSKU_active();
-                createActiveProduct_styledDescription(skuCode, storefrontCategory, "h2", "Heading Two");
+                createActiveProduct_styledDescription(skuId, skuCode, storefrontCategory, "h2", "Heading Two");
                 checkProductPresenceInCategoryView("int", "productId", productId);
                 break;
 
             case "an active product with <h3> in description":
                 randomId = generateRandomID();
                 createSKU_active();
-                createActiveProduct_styledDescription(skuCode, storefrontCategory, "h3", "Heading Three");
+                createActiveProduct_styledDescription(skuId, skuCode, storefrontCategory, "h3", "Heading Three");
                 checkProductPresenceInCategoryView("int", "productId", productId);
                 break;
 
             case "an active product with <h4> in description":
                 randomId = generateRandomID();
                 createSKU_active();
-                createActiveProduct_styledDescription(skuCode, storefrontCategory, "h4", "Heading Four");
+                createActiveProduct_styledDescription(skuId, skuCode, storefrontCategory, "h4", "Heading Four");
                 checkProductPresenceInCategoryView("int", "productId", productId);
                 break;
 
             case "an active product with <h5> in description":
                 randomId = generateRandomID();
                 createSKU_active();
-                createActiveProduct_styledDescription(skuCode, storefrontCategory, "h5", "Heading Five");
+                createActiveProduct_styledDescription(skuId, skuCode, storefrontCategory, "h5", "Heading Five");
                 checkProductPresenceInCategoryView("int", "productId", productId);
                 break;
 
             case "an active product with <h6> in description":
                 randomId = generateRandomID();
                 createSKU_active();
-                createActiveProduct_styledDescription(skuCode, storefrontCategory, "h6", "Heading Six");
+                createActiveProduct_styledDescription(skuId, skuCode, storefrontCategory, "h6", "Heading Six");
                 checkProductPresenceInCategoryView("int", "productId", productId);
                 break;
 
             case "an active product with <strong> in description":
                 randomId = generateRandomID();
                 createSKU_active();
-                createActiveProduct_styledDescription(skuCode, storefrontCategory, "strong", "Bold Text");
+                createActiveProduct_styledDescription(skuId, skuCode, storefrontCategory, "strong", "Bold Text");
                 checkProductPresenceInCategoryView("int", "productId", productId);
                 break;
 
             case "an active product with <em> in description":
                 randomId = generateRandomID();
                 createSKU_active();
-                createActiveProduct_styledDescription(skuCode, storefrontCategory, "em", "Italic Text");
+                createActiveProduct_styledDescription(skuId, skuCode, storefrontCategory, "em", "Italic Text");
                 checkProductPresenceInCategoryView("int", "productId", productId);
                 break;
 
             case "an active product with <ins> in description":
                 randomId = generateRandomID();
                 createSKU_active();
-                createActiveProduct_styledDescription(skuCode, storefrontCategory, "ins", "Underlined Text");
+                createActiveProduct_styledDescription(skuId, skuCode, storefrontCategory, "ins", "Underlined Text");
                 checkProductPresenceInCategoryView("int", "productId", productId);
                 break;
 
             case "an active product with <ul> in description":
                 randomId = generateRandomID();
                 createSKU_active();
-                createActiveProduct_styledDescription(skuCode, storefrontCategory, "ul", "UL Bullet Point");
+                createActiveProduct_styledDescription(skuId, skuCode, storefrontCategory, "ul", "UL Bullet Point");
                 checkProductPresenceInCategoryView("int", "productId", productId);
                 break;
 
             case "an active product with <ol> in description":
                 randomId = generateRandomID();
                 createSKU_active();
-                createActiveProduct_styledDescription(skuCode, storefrontCategory, "ol", "OL Point");
+                createActiveProduct_styledDescription(skuId, skuCode, storefrontCategory, "ol", "OL Point");
                 checkProductPresenceInCategoryView("int", "productId", productId);
                 break;
         }

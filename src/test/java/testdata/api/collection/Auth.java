@@ -1,6 +1,7 @@
 package testdata.api.collection;
 
 import com.squareup.okhttp.*;
+import org.json.JSONObject;
 import ru.yandex.qatools.allure.annotations.Step;
 import testdata.api.Helpers;
 
@@ -10,38 +11,22 @@ public class Auth extends Helpers {
 
     @Step("[API] Log in as admin")
     public static void loginAsAdmin() throws IOException {
-
         System.out.println("Authorizing as an admin...");
 
-        OkHttpClient client = new OkHttpClient();
+        JSONObject payload = parseObj("bin/payloads/auth/loginAsAdmin.json");
+        payload.putOpt("email", adminEmail);
+        payload.putOpt("password", adminPassword);
+        payload.putOpt("org", adminOrg);
 
-        MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, "{" +
-                "\n    \"email\": \"" + adminEmail + "\"," +
-                "\n    \"password\": \"" + adminPassword + "\"," +
-                "\n    \"org\": \"" + adminOrg + "\"\n}");
+        Response response = request.post_noJWT(apiUrl + "/v1/public/login", payload.toString());
 
-        Request request = new Request.Builder()
-                .url(apiUrl + "/v1/public/login")
-                .post(body)
-                .addHeader("accept", "application/json")
-                .addHeader("content-type", "application/json")
-                .addHeader("cache-control", "no-cache")
-                .build();
-
-        Response response = client.newCall(request).execute();
-        String responseBody = response.body().string();
-        int responseCode = response.code();
-        String responseMsg = response.message();
-
-        if (responseCode == 200) {
-            System.out.println(responseCode + " " + responseMsg);
+        if (response.code() == 200) {
+            System.out.println(response.code() + " " + response.message());
             jwt = response.header("JWT");
             System.out.println("---- ---- ---- ----");
         } else {
-            failTest(responseBody, responseCode, responseMsg);
+            failTest(response.body().string(), response.code(), response.message());
         }
-
     }
 
 }

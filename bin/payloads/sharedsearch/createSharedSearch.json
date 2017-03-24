@@ -1,0 +1,42 @@
+{
+  "title": "",
+  "query": [{
+    "term": "archivedAt",
+    "hidden": true,
+    "operator": "missing",
+    "value": {
+      "type": "exists"
+    }
+  },
+    {
+      "display": "",
+      "term": "_all",
+      "operator": "eq",
+      "value": {
+        "type": "string",
+        "value": ""
+      }
+    }
+  ],
+  "scope": "productsScope",
+  "rawQuery": {
+    "query": {
+      "bool": {
+        "filter": [{
+          "missing": {
+            "field": "archivedAt"
+          }
+        }],
+        "must": [{
+          "match": {
+            "_all": {
+              "query": "",
+              "analyzer": "standard",
+              "operator": "and"
+            }
+          }
+        }]
+      }
+    }
+  }
+}

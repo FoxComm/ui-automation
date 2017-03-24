@@ -11,73 +11,44 @@ import java.io.IOException;
 public class Customers extends Helpers {
 
     @Step("[API] Create new customer")
-    protected static void createCustomer() throws IOException {
-
+    public static void createCustomer() throws IOException {
         System.out.println("Creating a new customer...");
-
         String randomID = generateRandomID();
-        customerName = "Test Buddy-" + randomID;
-        customerEmail = "qatest2278+" + randomID + "@gmail.com";
 
-        OkHttpClient client = new OkHttpClient();
+        JSONObject payload = parseObj("bin/payloads/customers/createCustomer.json");
+        payload.putOpt("name", "Test Buddy-" + randomID);
+        payload.putOpt("email", "qatest2278+" + randomID + "@gmail.com");
 
-        MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, "{" +
-                "\n    \"name\": \"" + customerName + "\"," +
-                "\n    \"email\": \"" + customerEmail + "\"\n}");
-
-        Request request = new Request.Builder()
-                .url(apiUrl + "/v1/customers")
-                .post(body)
-                .addHeader("content-type", "application/json")
-                .addHeader("accept", "application/json")
-                .addHeader("authorization", "Basic YWRtaW5AYWRtaW4uY29tOnBhc3N3b3Jr")
-                .addHeader("cache-control", "no-cache")
-                .addHeader("JWT", jwt)
-                .build();
-
-        Response response = client.newCall(request).execute();
+        Response response = request.post(apiUrl + "/v1/customers", payload.toString());
         String responseBody = response.body().string();
-        int responseCode = response.code();
-        String responseMsg = response.message();
 
-        if (responseCode == 200) {
-            System.out.println(responseCode + " " + responseMsg);
+        if (response.code() == 200) {
+            System.out.println(response.code() + " " + response.message());
             JSONObject responseJSON = new JSONObject(responseBody);
             customerId = responseJSON.getInt("id");
+            customerName = responseJSON.getString("name");
+            customerEmail = responseJSON.getString("email");
             System.out.println("Customer ID: " + customerId);
             System.out.println("---- ---- ---- ----");
         } else {
-            failTest(responseBody, responseCode, responseMsg);
+            failTest(responseBody, response.code(), response.message());
         }
-
     }
 
     @Step("[API] Sign up a new customer -- name:<{0}> email:<{1}>")
-    protected static void signUpCustomer(String name, String email) throws IOException {
+    public static void signUpCustomer(String name, String email) throws IOException {
         System.out.println("Registering a new customer on Storefront...");
+        String randomID = generateRandomID();
 
-        OkHttpClient client = new OkHttpClient();
-        MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, "{\"email\": \""+email+"\"," +
-                "\"name\": \""+name+"\"," +
-                "\"password\": \"78qa22!#\"}");
-        Request request = new Request.Builder()
-                .url(apiUrl + "/v1/public/registrations/new")
-                .post(body)
-                .addHeader("content-type", "application/json")
-                .addHeader("accept", "application/json")
-                .addHeader("cache-control", "no-cache")
-                .addHeader("JWT", jwt)
-                .build();
+        JSONObject payload = parseObj("bin/payloads/customers/signUpCustomer.json");
+        payload.putOpt("name", "Test Buddy-" + randomID);
+        payload.putOpt("email", "qatest2278+" + randomID + "@gmail.com");
 
-        Response response = client.newCall(request).execute();
+        Response response = request.post(apiUrl + "/v1/public/registrations/new", payload.toString());
         String responseBody = response.body().string();
-        int responseCode = response.code();
-        String responseMsg = response.message();
 
-        if (responseCode == 200) {
-            System.out.println(responseCode + " " + responseMsg);
+        if (response.code() == 200) {
+            System.out.println(response.code() + " " + response.message());
             JSONObject responseJSON = new JSONObject(responseBody);
             customerId = responseJSON.getInt("id");
             customerName = responseJSON.getString("name");
@@ -87,39 +58,23 @@ public class Customers extends Helpers {
             System.out.println("Customer Email: " + customerEmail);
             System.out.println("---- ---- ---- ----");
         } else {
-            failTest(responseBody, responseCode, responseMsg);
+            failTest(responseBody, response.code(), response.message());
         }
-
     }
 
     @Step("[API] Blacklist customer ID:<{0}>")
-    protected static void blacklistCustomer(int customerId) throws IOException {
+    public static void blacklistCustomer(int customerId) throws IOException {
         System.out.println("Blacklisting customer ID:<" + customerId + ">...");
 
-        OkHttpClient client = new OkHttpClient();
-        MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, "{\n  \"blacklisted\": true\n}");
-        Request request = new Request.Builder()
-                .url(apiUrl + "/v1/customers/" + customerId + "/blacklist")
-                .post(body)
-                .addHeader("content-type", "application/json")
-                .addHeader("accept", "application/json")
-                .addHeader("cache-control", "no-cache")
-                .addHeader("JWT", jwt)
-                .build();
+        Response response = request.post(apiUrl + "/v1/customers/" + customerId + "/blacklist",
+                "{\"blacklisted\": true}");
 
-        Response response = client.newCall(request).execute();
-        String responseBody = response.body().string();
-        int responseCode = response.code();
-        String responseMsg = response.message();
-
-        if (responseCode == 200) {
-            System.out.println(responseCode + " " + responseMsg);
+        if (response.code() == 200) {
+            System.out.println(response.code() + " " + response.message());
             System.out.println("---- ---- ---- ----");
         } else {
-            failTest(responseBody, responseCode, responseMsg);
+            failTest(response.body().string(), response.code(), response.message());
         }
-
     }
 
     @Step("[API] View customer <{0}>")
@@ -127,258 +82,218 @@ public class Customers extends Helpers {
 
         System.out.println("Getting name and email of customer <" + customerId + ">...");
 
-        OkHttpClient client = new OkHttpClient();
-
-        Request request = new Request.Builder()
-                .url(apiUrl + "/v1/customers/" + customerId)
-                .get()
-                .addHeader("content-type", "application/json")
-                .addHeader("accept", "application/json")
-                .addHeader("cache-control", "no-cache")
-                .addHeader("JWT", jwt)
-                .build();
-
-        Response response = client.newCall(request).execute();
+        Response response = request.get(apiUrl + "/v1/customers/" + customerId);
         String responseBody = response.body().string();
-        int responseCode = response.code();
-        String responseMsg = response.message();
 
-        if (responseCode == 200) {
-            System.out.println(responseCode + " " + responseMsg);
-            customerName = responseBody.substring(55, 73);
-            customerEmail = responseBody.substring(20, 45);
+        if (response.code() == 200) {
+            System.out.println(response.code() + " " + response.message());
+            JSONObject responseJSON = new JSONObject(responseBody);
+            customerName = responseJSON.getString("name");
+            customerEmail = responseJSON.getString("email");
             System.out.println("Customer name: <" + customerName + ">");
             System.out.println("Customer email: <" + customerEmail + ">");
             System.out.println("---- ---- ---- ----");
         } else {
-            failTest(responseBody, responseCode, responseMsg);
+            failTest(responseBody, response.code(), response.message());
         }
-
     }
 
     @Step("[API] Create new shipping address for customer <{0}>")
-    protected static void createAddress(int customerId, String name, int regionId, int countryId, String region_name, String address1, String address2, String city, String zip, String phoneNumber, boolean isDefault)
-            throws IOException {
-
+    public static void createAddress(int customerId,
+                                     String name,
+                                     int regionId,
+                                     int countryId,
+                                     String region_name,
+                                     String address1,
+                                     String address2,
+                                     String city,
+                                     String zip,
+                                     String phoneNumber,
+                                     boolean isDefault
+    ) throws IOException {
         System.out.println("Creating a new address for customer " + customerId + "...");
 
-        OkHttpClient client = new OkHttpClient();
+        JSONObject payload = parseObj("bin/payloads/cart/setShipAddress.json");
+        payload.putOpt("name", name);
+        payload.putOpt("regionId", regionId);
+        payload.putOpt("address1", address1);
+        payload.putOpt("address2", address2);
+        payload.putOpt("city", city);
+        payload.putOpt("zip", zip);
+        payload.putOpt("isDefault", isDefault);
+        payload.putOpt("phoneNumber", phoneNumber);
 
-        MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, "{" +
-                "\"name\":\"" + name + "\"," +
-                "\"regionId\":" + regionId + "," +
-                "\"countryId\":" + countryId + "," +
-                "\"region_name\":\"" + region_name + "\"," +
-                "\"address1\":\"" + address1 + "\"," +
-                "\"address2\":\"" + address2 + "\"," +
-                "\"city\":\""+ city + "\"," +
-                "\"zip\":\"" + zip + "\"," +
-                "\"phoneNumber\":\"" + phoneNumber + "\"," +
-                "\"isDefault\":" + isDefault + "}");
-        Request request = new Request.Builder()
-                .url(apiUrl + "/v1/customers/" + customerId + "/addresses")
-                .post(body)
-                .addHeader("content-type", "application/json")
-                .addHeader("accept", "application/json")
-                .addHeader("cache-control", "no-cache")
-                .addHeader("JWT", jwt)
-                .build();
+        Response response = request.post(apiUrl + "/v1/customers/" + customerId + "/addresses", payload.toString());
 
-        Response response = client.newCall(request).execute();
-        String responseBody = response.body().string();
-        int responseCode = response.code();
-        String responseMsg = response.message();
-
-        if (responseCode == 200) {
-            System.out.println(responseCode + " " + responseMsg);
+        if (response.code() == 200) {
+            System.out.println(response.code() + " " + response.message());
             System.out.println("---- ---- ---- ----");
         } else {
-            failTest(responseBody, responseCode, responseMsg);
+            failTest(response.body().string(), response.code(), response.message());
         }
-
     }
 
     @Step("[API] Delete address <ID:{1}> from customer <ID:{0}>")
     public static void deleteAddress(int customerId, int addressId) throws IOException {
         System.out.println("Deleting address <ID:" + addressId + "> from customer <ID:" + customerId + "> address book");
 
-        OkHttpClient client = new OkHttpClient();
-        Request request = new Request.Builder()
-                .url(apiUrl + "/v1/customers/" + customerId + "/addresses/" + addressId)
-                .delete(null)
-                .addHeader("content-type", "application/json")
-                .addHeader("accept", "application/json")
-                .addHeader("cache-control", "no-cache")
-                .addHeader("JWT", jwt)
-                .build();
+        Response response = request.delete(apiUrl + "/v1/customers/" + customerId + "/addresses/" + addressId);
 
-        Response response = client.newCall(request).execute();
-        String responseBody = response.body().string();
-        int responseCode = response.code();
-        String responseMsg = response.message();
-
-        if (responseCode == 204) {
-            System.out.println(responseCode + " " + responseMsg);
+        if (response.code() == 204) {
+            System.out.println(response.code() + " " + response.message());
             System.out.println("---- ---- ---- ----");
         } else {
-            failTest(responseBody, responseCode, responseMsg);
+            failTest(response.body().string(), response.code(), response.message());
         }
     }
 
     @Step("[API] List all shipping addresses of customer <{0}>")
-    protected static void listCustomerAddresses(int customerId) throws IOException {
+    public static void listCustomerAddresses(int customerId) throws IOException {
 
         System.out.println("Listing all addresses of customer " + customerId + "...");
         OkHttpClient client = new OkHttpClient();
 
-        Request request = new Request.Builder()
-                .url(apiUrl + "/v1/customers/" + customerId + "/addresses")
-                .get()
-                .addHeader("content-type", "application/json")
-                .addHeader("accept", "application/json")
-                .addHeader("cache-control", "no-cache")
-                .addHeader("JWT", jwt)
-                .build();
-
-        Response response = client.newCall(request).execute();
+        Response response = request.get(apiUrl + "/v1/customers/" + customerId + "/addresses");
         String responseBody = response.body().string();
-        int responseCode = response.code();
-        String responseMsg = response.message();
 
-        if (responseCode == 200) {
-            System.out.println(responseCode + " " + responseMsg);
+        if (response.code() == 200) {
+            System.out.println(response.code() + " " + response.message());
             JSONArray responseJSON = new JSONArray(responseBody);
             addressId1 = responseJSON.getJSONObject(0).getInt("id");
             System.out.println("Address 1: <" + addressId1 + ">");
             System.out.println("---- ---- ---- ----");
         } else {
-            failTest(responseBody, responseCode, responseMsg);
+            failTest(responseBody, response.code(), response.message());
         }
-
     }
 
     @Step("[API] View address details, customerID: <{0}>, addressID: <{1}>")
-    protected static void getCustomerAddress(int customerId, int addressId) throws IOException {
-
-        listCustomerAddresses(customerId);
+    private static String getCustomerAddress(int customerId, int addressId) throws IOException {
         System.out.println("Getting address with ID <" + addressId + "> of customer <" + customerId + ">...");
-        OkHttpClient client = new OkHttpClient();
+        listCustomerAddresses(customerId);
 
-        Request request = new Request.Builder()
-                .url(apiUrl + "/v1/customers/" + customerId + "/addresses/" + addressId)
-                .get()
-                .addHeader("content-type", "application/json")
-                .addHeader("accept", "application/json")
-                .addHeader("cache-control", "no-cache")
-                .addHeader("JWT", jwt)
-                .build();
+        Response response = request.get(apiUrl + "/v1/customers/" + customerId + "/addresses/" + addressId);
 
-        Response response = client.newCall(request).execute();
-        String responseBody = response.body().string();
-        int responseCode = response.code();
-        String responseMsg = response.message();
-
-        if (responseCode == 200) {
-            System.out.println(responseCode + " " + responseMsg);
-            addressPayload = responseBody;
-            System.out.println("Address 1: <" + addressId1 + ">");
+        if (response.code() == 200) {
+            System.out.println(response.code() + " " + response.message());
             System.out.println("---- ---- ---- ----");
         } else {
-            failTest(responseBody, responseCode, responseMsg);
+            failTest(response.body().string(), response.code(), response.message());
         }
 
+        return response.body().string();
+    }
+
+    private static void getStripeToken(int customerId, int addressId, String cardNumber, int expMonth, int expYear, int cvv) throws IOException {
+
+        JSONObject payload = parseObj("bin/payloads/customers/getStripeToken.json");
+
+        // create JSONObject from addressPayload and from "address" obj in .JSON that will be used as a payload
+        JSONObject address_tmp = new JSONObject(getCustomerAddress(customerId, addressId));
+        JSONObject billAddress = payload.getJSONObject("address");
+
+        // write data from addressPayload JSONObj to "address" obj of payload .JSON
+        billAddress.putOpt("name", address_tmp.getString("name"));
+        billAddress.putOpt("zip", address_tmp.getString("zip"));
+        billAddress.putOpt("city", address_tmp.getString("city"));
+        billAddress.putOpt("address1", address_tmp.getString("address1"));
+        billAddress.putOpt("regionId", address_tmp.getJSONObject("region").getInt("id"));
+
+        payload.putOpt("customerId", customerId);
+        payload.putOpt("address", billAddress);
+        payload.putOpt("cardNumber", cardNumber);
+        payload.putOpt("expMonth", expMonth);
+        payload.putOpt("expYear", expYear);
+        payload.putOpt("cvv", cvv);
+
+        Response response = request.post(apiUrl + "/v1/credit-card-token", payload.toString());
+        String responseBody = response.body().string();
+
+        if (response.code() == 200) {
+            System.out.println(response.code() + " " + response.message());
+            org.json.JSONObject responseJSON = new org.json.JSONObject(responseBody);
+            stripeToken = responseJSON.getString("token");
+            System.out.println("Stripe token: <" + stripeToken + ">");
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, response.code(), response.message());
+        }
     }
 
     @Step("[API] Update shipping address details. addressID: <{1}>, customerId: <{0}>")
-    protected static void updateCustomerShipAddress(int customerId, int addressId1, String customerName, int regionId, String address1, String address2, String city, String zip, String phoneNumber) throws IOException {
-
+    protected static void updateCustomerShipAddress(int customerId,
+                                                    int addressId1,
+                                                    String name,
+                                                    int regionId,
+                                                    String address1,
+                                                    String address2,
+                                                    String city,
+                                                    String zip,
+                                                    boolean isDefault,
+                                                    String phoneNumber
+    ) throws IOException {
         System.out.println("Updating shipping address ID:<" + addressId1 + "> for customer <" + customerId + ">...");
 
-        OkHttpClient client = new OkHttpClient();
+        JSONObject payload = parseObj("bin/payloads/cart/setShipAddress.json");
+        payload.putOpt("name", name);
+        payload.putOpt("regionId", regionId);
+        payload.putOpt("address1", address1);
+        payload.putOpt("address2", address2);
+        payload.putOpt("city", city);
+        payload.putOpt("zip", zip);
+        payload.putOpt("isDefault", isDefault);
+        payload.putOpt("phoneNumber", phoneNumber);
 
-        MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, "{" +
-                "\"name\":\"" + customerName + "\"," +
-                "\"regionId\":" + regionId + "," +
-                "\"address1\":\"" + address1 + "\"," +
-                "\"address2\":\"" + address2 + "\"," +
-                "\"city\":\"" + city + "\"," +
-                "\"zip\":\"" + zip + "\"," +
-                "\"isDefault\":false," +
-                "\"phoneNumber\":\"" + phoneNumber + "\"}");
-        Request request = new Request.Builder()
-                .url(apiUrl + "/v1/customers/" + customerId + "/addresses/" + addressId1)
-                .patch(body)
-                .addHeader("content-type", "application/json")
-                .addHeader("accept", "application/json")
-                .addHeader("cache-control", "no-cache")
-                .addHeader("JWT", jwt)
-                .build();
+        Response response = request.patch(apiUrl + "/v1/customers/" + customerId + "/addresses/" + addressId1, payload.toString());
 
-        Response response = client.newCall(request).execute();
-        String responseBody = response.body().string();
-        int responseCode = response.code();
-        String responseMsg = response.message();
-
-        if (responseCode == 200) {
-            System.out.println(responseCode + " " + responseMsg);
+        if (response.code() == 200) {
+            System.out.println(response.code() + " " + response.message());
             System.out.println("---- ---- ---- ----");
         } else {
-            failTest(responseBody, responseCode, responseMsg);
+            failTest(response.body().string(), response.code(), response.message());
         }
-
     }
 
     @Step("[API] Create credit card")
-    protected static void createCreditCard(int customerId, String holderName, String cardNumber, int expMonth, int expYear, int cvv, String brand) throws IOException {
-
-        getStripeToken(customerId, cardNumber, expMonth, expYear, cvv);
-
+    public static void createCreditCard(int customerId,
+                                        String holderName,
+                                        String cardNumber,
+                                        int expMonth,
+                                        int expYear,
+                                        int cvv,
+                                        String brand,
+                                        int addressId
+    ) throws IOException {
         System.out.println("Create a new credit card for customer <" + customerId + ">...");
 
-        JSONObject jsonObj = parse("bin/payloads/createCreditCard.json");
-        JSONObject address = new JSONObject(addressPayload);
+        getStripeToken(customerId, addressId, cardNumber, expMonth, expYear, cvv);
+
+        JSONObject payload = parseObj("bin/payloads/customers/createCreditCard.json");
+        JSONObject address = new JSONObject(getCustomerAddress(customerId, addressId));
         JSONObject region = address.getJSONObject("region");
 
-        jsonObj.putOpt("token", stripeToken);
-        jsonObj.putOpt("holderName", holderName);
-        jsonObj.putOpt("lastFour", cardNumber.substring(12, 16));
-        jsonObj.putOpt("expMonth", expMonth);
-        jsonObj.putOpt("expYear", expYear);
-        jsonObj.putOpt("brand", brand);
-        jsonObj.putOpt("billingAddress", address);
-        jsonObj.getJSONObject("billingAddress").putOpt("regionId", region.getInt("id"));
-        jsonObj.getJSONObject("billingAddress").putOpt("state", region.getString("name"));
-        jsonObj.getJSONObject("billingAddress").putOpt("country", "United States");
-        String payload = jsonObj.toString();
+        payload.putOpt("token", stripeToken);
+        payload.putOpt("holderName", holderName);
+        payload.putOpt("lastFour", cardNumber.substring(12, 16));
+        payload.putOpt("expMonth", expMonth);
+        payload.putOpt("expYear", expYear);
+        payload.putOpt("brand", brand);
+        payload.putOpt("billingAddress", address);
+        payload.getJSONObject("billingAddress").putOpt("regionId", region.getInt("id"));
+        payload.getJSONObject("billingAddress").putOpt("state", region.getString("name"));
+        payload.getJSONObject("billingAddress").putOpt("country", "United States");
 
-        OkHttpClient client = new OkHttpClient();
-
-        MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, payload);
-        Request request = new Request.Builder()
-                .url(apiUrl + "/v1/customers/" + customerId + "/payment-methods/credit-cards")
-                .post(body)
-                .addHeader("content-type", "application/json")
-                .addHeader("accept", "application/json")
-                .addHeader("cache-control", "no-cache")
-                .addHeader("JWT", jwt)
-                .build();
-
-        Response response = client.newCall(request).execute();
+        Response response = request.post(apiUrl + "/v1/customers/" + customerId + "/payment-methods/credit-cards", payload.toString());
         String responseBody = response.body().string();
-        int responseCode = response.code();
-        String responseMsg = response.message();
 
-        if (responseCode == 200) {
-            System.out.println(responseCode + " " + responseMsg);
-            org.json.JSONObject responseJSON = new org.json.JSONObject(responseBody);
+        if (response.code() == 200) {
+            System.out.println(response.code() + " " + response.message());
+            JSONObject responseJSON = new JSONObject(responseBody);
             creditCardId = responseJSON.getInt("id");
             System.out.println("Credit Card ID: <" + creditCardId + ">");
             System.out.println("---- ---- ---- ----");
         } else {
-            failTest(responseBody, responseCode, responseMsg);
+            failTest(responseBody, response.code(), response.message());
         }
     }
 
@@ -386,67 +301,37 @@ public class Customers extends Helpers {
     protected static void listCreditCards(String customerId) throws IOException {
         System.out.println("List all credit cards of customer ID:<{0}");
 
-        OkHttpClient client = new OkHttpClient();
-
-        Request request = new Request.Builder()
-                .url(apiUrl + "/v1/customers/" + customerId + "/payment-methods/credit-cards")
-                .get()
-                .addHeader("content-type", "application/json")
-                .addHeader("accept", "application/json")
-                .addHeader("cache-control", "no-cache")
-                .addHeader("JWT", jwt)
-                .build();
-
-        Response response = client.newCall(request).execute();
+        Response response = request.get(apiUrl + "/v1/customers/" + customerId + "/payment-methods/credit-cards");
         String responseBody = response.body().string();
-        int responseCode = response.code();
-        String responseMsg = response.message();
 
-        if (responseCode == 200) {
+        if (response.code() == 200) {
             JSONArray responseJSON = new JSONArray(responseBody);
-
             for (int i = 0; i < responseJSON.length(); i++) {
                 creditCardId = responseJSON.getJSONObject(i).getInt("id");
                 creditCardsIDs.add(creditCardId);
             }
             printIntList(creditCardsIDs);
 
-            System.out.println(responseCode + " " + responseMsg);
-            System.out.println("Success!");
+            System.out.println(response.code() + " " + response.message());
             System.out.println("---- ---- ---- ----");
         } else {
-            failTest(responseBody, responseCode, responseMsg);
+            failTest(responseBody, response.code(), response.message());
         }
     }
 
     @Step("[API] Set credit card ID:<{1}> as default card for customer ID:<{0}>")
-    protected static void setCardAsDefault(int customerId, int creditCardId) throws IOException {
+    public static void setCardAsDefault(int customerId, int creditCardId) throws IOException {
         System.out.println("Set credit card ID:<" + customerId + "> as default for customer ID:<" + creditCardId + ">...");
 
-        OkHttpClient client = new OkHttpClient();
+        Response response = request.post(apiUrl + "/v1/customers/"+customerId+"/payment-methods/credit-cards/"+creditCardId+"/default",
+                "{\"isDefault\": true}");
 
-        MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, "{\n    \"isDefault\": true\n}");
-        Request request = new Request.Builder()
-                .url(apiUrl + "/v1/customers/" + customerId + "/payment-methods/credit-cards/" + creditCardId + "/default")
-                .post(body)
-                .addHeader("content-type", "application/json")
-                .addHeader("accept", "application/json")
-                .addHeader("cache-control", "no-cache")
-                .addHeader("JWT", jwt)
-                .build();
-
-        Response response = client.newCall(request).execute();
-        String responseBody = response.body().string();
-        int responseCode = response.code();
-        String responseMsg = response.message();
-
-        if (responseCode == 200) {
-            System.out.println(responseCode + " " + responseMsg);
+        if (response.code() == 200) {
+            System.out.println(response.code() + " " + response.message());
             System.out.println("Success!");
             System.out.println("---- ---- ---- ----");
         } else {
-            failTest(responseBody, responseCode, responseMsg);
+            failTest(response.body().string(), response.code(), response.message());
         }
     }
 
@@ -455,30 +340,17 @@ public class Customers extends Helpers {
 
         System.out.println("Deleting credit cart <ID:{1} of customer <ID:{0}>...");
 
-        OkHttpClient client = new OkHttpClient();
-
-        Request request = new Request.Builder()
-                .url(apiUrl + "/v1/customers/" + customerId + "/payment-methods/credit-cards/" + creditCardId)
-                .delete(null)
-                .addHeader("content-type", "application/json")
-                .addHeader("accept", "application/json")
-                .addHeader("cache-control", "no-cache")
-                .addHeader("JWT", jwt)
-                .build();
-
-        Response response = client.newCall(request).execute();
+        Response response = request.delete(apiUrl + "/v1/customers/" + customerId + "/payment-methods/credit-cards/" + creditCardId);
         String responseBody = response.body().string();
-        int responseCode = response.code();
-        String responseMsg = response.message();
 
-        if (responseCode == 204) {
-            System.out.println(responseCode + " " + responseMsg);
+        if (response.code() == 204) {
+            System.out.println(response.code() + " " + response.message());
             org.json.JSONObject responseJSON = new org.json.JSONObject(responseBody);
             creditCardId = responseJSON.getInt("id");
             System.out.println("Credit Card ID: <" + creditCardId + ">");
             System.out.println("---- ---- ---- ----");
         } else {
-            failTest(responseBody, responseCode, responseMsg);
+            failTest(responseBody, response.code(), response.message());
         }
 
     }

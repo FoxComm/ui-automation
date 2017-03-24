@@ -10,41 +10,24 @@ import java.io.IOException;
 public class GiftCards extends Helpers {
 
     @Step("[API] Issue GC <balance: {0}>, <QTY: {1}>")
-    public static void issueGiftCard(int balance, int quantity) throws IOException {
-
+    public static void createGiftCard(int balance, int quantity) throws IOException {
         System.out.println("Creating new gift card...");
+        JSONObject payload = parseObj("bin/payloads/giftcards/createGiftCard.json");
+        payload.putOpt("balance", balance);
+        payload.putOpt("quantity", quantity);
 
-        OkHttpClient client = new OkHttpClient();
-
-        MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, "{" +
-                "\"balance\": " + balance + "," +
-                "\"quantity\": " + quantity + "," +
-                "\"reasonId\": 1}");
-        Request request = new Request.Builder()
-                .url(apiUrl + "/v1/gift-cards")
-                .post(body)
-                .addHeader("content-type", "application/json")
-                .addHeader("accept", "application/json")
-                .addHeader("cache-control", "no-cache")
-                .addHeader("JWT", jwt)
-                .build();
-
-        Response response = client.newCall(request).execute();
+        Response response = request.post(apiUrl + "/v1/gift-cards", payload.toString());
         String responseBody = response.body().string();
-        int responseCode = response.code();
-        String responseMsg = response.message();
 
-        if (responseCode == 200) {
-            System.out.println(responseCode + " " + responseMsg);
+        if (response.code() == 200) {
+            System.out.println(response.code() + " " + response.message());
             JSONObject responseJSON = new JSONObject(responseBody);
             gcCode = responseJSON.getString("code");
             System.out.println("GC code: <" + gcCode + ">");
             System.out.println("---- ---- ---- ----");
         } else {
-            failTest(responseBody, responseCode, responseMsg);
+            failTest(responseBody, response.code(), response.message());
         }
-
     }
 
     /**
@@ -52,34 +35,18 @@ public class GiftCards extends Helpers {
      */
     @Step("[API] Set GC <{0}> state to <{1}>")
     public static void setGiftCardState(String gcNumber, String state) throws IOException {
-
         System.out.println("Putting <" + gcNumber + "> on hold..." );
 
-        OkHttpClient client = new OkHttpClient();
+        JSONObject payload = parseObj("bin/payloads/giftcards/setGiftCardState.json");
+        payload.putOpt("state", state);
 
-        MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, "{" +
-                "\"state\": \"" + state + "\"," +
-                "\"reasonId\": 1}");
-        Request request = new Request.Builder()
-                .url(apiUrl + "/v1/gift-cards/" + gcNumber)
-                .patch(body)
-                .addHeader("content-type", "application/json")
-                .addHeader("accept", "application/json")
-                .addHeader("cache-control", "no-cache")
-                .addHeader("JWT", jwt)
-                .build();
+        Response response = request.patch(apiUrl + "/v1/gift-cards/" + gcNumber, payload.toString());
 
-        Response response = client.newCall(request).execute();
-        String responseBody = response.body().string();
-        int responseCode = response.code();
-        String responseMsg = response.message();
-
-        if (responseCode == 200) {
-            System.out.println(responseCode + " " + responseMsg);
+        if (response.code() == 200) {
+            System.out.println(response.code() + " " + response.message());
             System.out.println("---- ---- ---- ----");
         } else {
-            failTest(responseBody, responseCode, responseMsg);
+            failTest(response.body().string(), response.code(), response.message());
         }
 
     }

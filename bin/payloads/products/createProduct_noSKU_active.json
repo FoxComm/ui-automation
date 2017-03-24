@@ -1,11 +1,5 @@
 {
-  "context":{
-    "name":"default",
-    "attributes": {
-      "lang":"en",
-      "modality":"desktop"
-    }
-  },
+  "id":null,
   "attributes":{
     "metaDescription":{
       "t":"string",
@@ -25,10 +19,10 @@
     },
     "title":{
       "t":"string",
-      "v":"Test Product 007"
+      "v":"productName_local"
     },
     "activeFrom":{
-      "v":"2016-09-01T18:06:29.890Z",
+      "v":"2016-07-27T23:47:27.518Z",
       "t":"datetime"
     },
     "activeTo":{
@@ -42,43 +36,33 @@
       ]
     }
   },
-  "albums":[],
   "skus":[
     {
+      "feCode":"ODB4UPHFJ11UK4HOLXR",
       "attributes":{
         "code":{
           "t":"string",
-          "v":"SKU-TST999"
+          "v":"SKU-"
+        },
+        "title":{
+          "t":"string",
+          "v":""
         },
         "retailPrice":{
           "t":"price",
           "v":{
             "currency":"USD",
-            "value":5000
+            "value":2718
           }
         },
         "salePrice":{
           "t":"price",
           "v":{
             "currency":"USD",
-            "value":5000
+            "value":2718
           }
-        },
-        "unitCost":{
-          "t":"price",
-          "v":{
-            "currency":"USD",
-            "value":5000
-          }
-        },
-        "title":{
-          "v":"THATS A TITLE"
-        },
-        "context":{
-          "v":"default"
         }
-      },
-      "albums":[]
+      }
     }
   ]
 }

@@ -1,0 +1,51 @@
+{
+  "id": null,
+  "createdAt": null,
+  "attributes": {
+    "name": {
+      "t": "string",
+      "v": "new promo randomId"
+    },
+    "storefrontName": {
+      "t": "richText",
+      "v": "<p>sf name</p>"
+    },
+    "description": {
+      "t": "text",
+      "v": "promo description"
+    },
+    "details": {
+      "t": "richText",
+      "v": "<p>promo details</p>"
+    },
+    "activeFrom": {
+      "v": "2016-09-01T18:06:29.890Z",
+      "t": "datetime"
+    },
+    "activeTo": {
+      "v": null,
+      "t": "datetime"
+    }
+  },
+  "discounts": [{
+    "id": null,
+    "createdAt": null,
+    "attributes": {
+      "qualifier": {
+        "t": "qualifier",
+        "v": {
+          "orderAny": {}
+        }
+      },
+      "offer": {
+        "t": "offer",
+        "v": {
+          "orderPercentOff": {
+            "discount": 10
+          }
+        }
+      }
+    }
+  }],
+  "applyType": "auto"
+}

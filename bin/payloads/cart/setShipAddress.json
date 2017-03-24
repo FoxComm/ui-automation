@@ -1,0 +1,10 @@
+{
+  "name": "John Doe",
+  "regionId": 1,
+  "address1": "555 E Lake Union St.",
+  "address2": "Suite 200",
+  "city": "Seattle",
+  "zip": "98124",
+  "isDefault": false,
+  "phoneNumber": "555555555"
+}

@@ -28,7 +28,7 @@ public class ProductsTest extends Preconditions {
     public void activeProduct_activeSKU_noTag_hasSellableItems() throws IOException {
         loginAsAdmin();
         createSKU_active();
-        createProduct_active_noTag(skuCode);
+        createProduct_active_noTag(skuId, skuCode);
         increaseOnHandQty(skuCode, "Sellable", 20);
     }
 
@@ -45,7 +45,7 @@ public class ProductsTest extends Preconditions {
     public void inactiveProduct_activeSKU_hasTag() throws IOException {
         loginAsAdmin();
         createSKU_active();
-        createProduct_inactive(skuCode, "modern");
+        createProduct_inactive(skuId, skuCode, "modern");
     }
 
     // Inactive product, inactive SKU, has tag
@@ -53,7 +53,7 @@ public class ProductsTest extends Preconditions {
     public void inactiveProduct_inactiveSKU_hasTag() throws IOException {
         loginAsAdmin();
         createSKU_inactive();
-        createProduct_inactive(skuCode, "modern");
+        createProduct_inactive(skuId, skuCode, "modern");
     }
 
 }

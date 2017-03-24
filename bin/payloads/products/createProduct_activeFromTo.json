@@ -1,0 +1,66 @@
+{
+  "id": null,
+  "productId": null,
+  "attributes": {
+    "metaDescription": {
+      "t": "string",
+      "v": null
+    },
+    "metaTitle": {
+      "t": "string",
+      "v": null
+    },
+    "url": {
+      "t": "string",
+      "v": null
+    },
+    "description": {
+      "t": "richText",
+      "v": "<p>The best thing to buy in 2016!</p>"
+    },
+    "title": {
+      "t": "string",
+      "v": ""
+    },
+    "activeFrom": {
+      "t": "datetime",
+      "v": "startDate+T07:00:17.729Z"
+    },
+    "activeTo": {
+      "t": "datetime",
+      "v": "endDate+T19:00:00.810Z"
+    },
+    "tags": {
+      "t": "tags",
+      "v": ["sunglasses"]
+    }
+  },
+  "skus": [{
+    "feCode": "CIEP39Z2WPQ1ETFVQUXR",
+    "attributes": {
+      "code": {
+        "t": "string",
+        "v": "sku"
+      },
+      "title": {
+        "t": "string",
+        "v": ""
+      },
+      "retailPrice": {
+        "t": "price",
+        "v": {
+          "currency": "USD",
+          "value": 2718
+        }
+      },
+      "salePrice": {
+        "t": "price",
+        "v": {
+          "currency": "USD",
+          "value": 2718
+        }
+      }
+    }
+  }],
+  "context": ""
+}

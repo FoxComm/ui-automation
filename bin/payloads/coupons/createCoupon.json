@@ -1,0 +1,41 @@
+{
+  "id": 1,
+  "createdAt": null,
+  "attributes": {
+    "usageRules": {
+      "t": "usageRules",
+      "v": {
+        "isExclusive": false,
+        "isUnlimitedPerCode": true,
+        "usesPerCode": 1,
+        "isUnlimitedPerCustomer": true,
+        "usesPerCustomer": 1
+      }
+    },
+    "name": {
+      "t": "string",
+      "v": "test coupon 2278"
+    },
+    "storefrontName": {
+      "t": "richText",
+      "v": "storefront name 2278"
+    },
+    "description": {
+      "t": "text",
+      "v": "test description"
+    },
+    "details": {
+      "t": "richText",
+      "v": "<p>test details</p>"
+    },
+    "activeFrom": {
+      "v": "2017-01-24T22:03:58.698Z",
+      "t": "datetime"
+    },
+    "activeTo": {
+      "v": null,
+      "t": "datetime"
+    }
+  },
+  "promotion": 10937
+}

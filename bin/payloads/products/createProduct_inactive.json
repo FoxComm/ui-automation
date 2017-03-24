@@ -1,0 +1,58 @@
+{
+  "id": null,
+  "attributes": {
+    "metaDescription": {
+      "t": "string",
+      "v": null
+    },
+    "metaTitle": {
+      "t": "string",
+      "v": null
+    },
+    "url": {
+      "t": "string",
+      "v": null
+    },
+    "description": {
+      "t": "richText",
+      "v": "The best thing to buy in 2016!"
+    },
+    "title": {
+      "t": "string",
+      "v": "productName_local"
+    },
+    "tags": {
+      "t": "tags",
+      "v": [
+        "tag"
+      ]
+    }
+  },
+  "skus": [{
+    "id": 1,
+    "attributes": {
+      "code": {
+        "t": "string",
+        "v": "sku"
+      },
+      "title": {
+        "t": "string",
+        "v": ""
+      },
+      "retailPrice": {
+        "t": "price",
+        "v": {
+          "currency": "USD",
+          "value": 2718
+        }
+      },
+      "salePrice": {
+        "t": "price",
+        "v": {
+          "currency": "USD",
+          "value": 2718
+        }
+      }
+    }
+  }]
+}

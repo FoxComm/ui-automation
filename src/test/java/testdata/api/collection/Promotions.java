@@ -12,33 +12,22 @@ public class Promotions extends Helpers {
     @Step("[API] Create promotion -- <Apply type: 'Coupon'>")
     public static void createPromotion_coupon() throws IOException {
         System.out.println("Creating a new promotion...");
+        String randomId = generateRandomID();
 
-        OkHttpClient client = new OkHttpClient();
+        JSONObject payload = parseObj("bin/payloads/promotions/createPromotion_coupon.json");
+        payload = setName_promo(payload, "Test Promo " + randomId);
 
-        MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, "{\"id\": null,\"createdAt\": null,\"attributes\": {\"name\": {\"t\": \"string\",\"v\": \"new promo\"},\"storefrontName\": {\"t\": \"richText\",\"v\": \"<p>SF new promo</p>\"},\"description\": {\"t\": \"text\",\"v\": \"new promo Description\"},\"details\": {\"t\": \"richText\",\"v\": \"<p>new promo 775 Details</p>\"\n    }\n  },\n  \"discounts\": [{\n    \"id\": null,\n    \"createdAt\": null,\n    \"attributes\": {\n      \"qualifier\": {\n        \"t\": \"qualifier\",\n        \"v\": {\n          \"orderAny\": {}}},\"offer\": {\"t\": \"offer\",\"v\": {\"orderPercentOff\": {\"discount\": 10}}}}}],\"applyType\": \"coupon\"}");
-        Request request = new Request.Builder()
-                .url(apiUrl + "/v1/promotions/default")
-                .post(body)
-                .addHeader("content-type", "application/json")
-                .addHeader("accept", "application/json")
-                .addHeader("cache-control", "no-cache")
-                .addHeader("JWT", jwt)
-                .build();
-
-        Response response = client.newCall(request).execute();
+        Response response = request.post(apiUrl + "/v1/promotions/default", payload.toString());
         String responseBody = response.body().string();
-        int responseCode = response.code();
-        String responseMsg = response.message();
 
-        if (responseCode == 200) {
-            System.out.println(responseCode + " " + responseMsg);
+        if (response.code() == 200) {
+            System.out.println(response.code() + " " + response.message());
             JSONObject responseJSON = new JSONObject(responseBody);
             promotionId = String.valueOf(responseJSON.getInt("id"));
             System.out.println("Promotion ID: " + promotionId);
             System.out.println("---- ---- ---- ----");
         } else {
-            failTest(responseBody, responseCode, responseMsg);
+            failTest(responseBody, response.code(), response.message());
         }
     }
 
@@ -47,8 +36,10 @@ public class Promotions extends Helpers {
         System.out.println("Creating a new promotion...");
         String randomId = generateRandomID();
 
-        JSONObject jsonObj = parse("bin/payloads/createPromotion_coupon_itemsNoQual.json");
-        jsonObj.getJSONArray("discounts")
+        JSONObject payload = parseObj("bin/payloads/promotions/createPromotion_coupon_itemsNoQual.json");
+        payload = setName_promo(payload, "Test Promo " + randomId);
+        payload = setSfName_promo(payload, "SF Test Promo" + randomId);
+        payload.getJSONArray("discounts")
                 .getJSONObject(0)
                 .getJSONObject("attributes")
                 .getJSONObject("qualifier")
@@ -57,111 +48,65 @@ public class Promotions extends Helpers {
                 .getJSONArray("search")
                 .getJSONObject(0)
                 .putOpt("productSearchId", searchId);
-        jsonObj.getJSONObject("attributes")
-                .getJSONObject("name")
-                .putOpt("v", "Test Promo" + randomId);
-        jsonObj.getJSONObject("attributes")
-                .getJSONObject("storefrontName")
-                .putOpt("v", "SF Test Promo" + randomId);
-        String payload = jsonObj.toString();
 
-        OkHttpClient client = new OkHttpClient();
-
-        MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, payload);
-        Request request = new Request.Builder()
-                .url(apiUrl + "/v1/promotions/default")
-                .post(body)
-                .addHeader("content-type", "application/json")
-                .addHeader("accept", "application/json")
-                .addHeader("cache-control", "no-cache")
-                .addHeader("JWT", jwt)
-                .build();
-
-        Response response = client.newCall(request).execute();
+        Response response = request.post(apiUrl + "/v1/promotions/default", payload.toString());
         String responseBody = response.body().string();
-        int responseCode = response.code();
-        String responseMsg = response.message();
 
-        if (responseCode == 200) {
-            System.out.println(responseCode + " " + responseMsg);
+        if (response.code() == 200) {
+            System.out.println(response.code() + " " + response.message());
             JSONObject responseJSON = new JSONObject(responseBody);
             promotionId = String.valueOf(responseJSON.getInt("id"));
             System.out.println("Promotion ID: " + promotionId);
             System.out.println("---- ---- ---- ----");
         } else {
-            failTest(responseBody, responseCode, responseMsg);
+            failTest(responseBody, response.code(), response.message());
         }
     }
 
     @Step("[API] Create promotion -- <Apply type: 'Auto'>, <State: 'Inactive'>")
     public static void createPromotion_auto_inactive() throws IOException {
-
         System.out.println("Creating a new promotion...");
+        String randomId = generateRandomID();
 
-        OkHttpClient client = new OkHttpClient();
+        JSONObject payload = parseObj("bin/payloads/promotions/createPromotion_auto_inactive.json");
+        payload = setName_promo(payload, "Test Promo " + randomId);
+        payload = setSfName_promo(payload, "SF Test Promo" + randomId);
 
-        MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, "{\"id\":null,\"createdAt\":null,\"attributes\":{\"name\":{\"t\":\"string\",\"v\":\"new promo " + generateRandomID() + "\"},\"storefrontName\":{\"t\":\"richText\",\"v\":\"<p>sf new promo</p>\"},\"description\":{\"t\":\"text\",\"v\":\"promo description\"},\"details\":{\"t\":\"richText\",\"v\":\"<p>promo details</p>\"}},\"discounts\":[{\"id\":null,\"createdAt\":null,\"attributes\":{\"qualifier\":{\"t\":\"qualifier\",\"v\":{\"orderAny\":{}}},\"offer\":{\"t\":\"offer\",\"v\":{\"orderPercentOff\":{\"discount\":10}}}}}],\"applyType\":\"auto\"}");
-        Request request = new Request.Builder()
-                .url(apiUrl + "/v1/promotions/default")
-                .post(body)
-                .addHeader("content-type", "application/json")
-                .addHeader("accept", "application/json")
-                .addHeader("cache-control", "no-cache")
-                .addHeader("JWT", jwt)
-                .build();
-
-        Response response = client.newCall(request).execute();
+        Response response = request.post(apiUrl + "/v1/promotions/default", payload.toString());
         String responseBody = response.body().string();
-        int responseCode = response.code();
-        String responseMsg = response.message();
 
-        if (responseCode == 200) {
-            System.out.println(responseCode + " " + responseMsg);
+        if (response.code() == 200) {
+            System.out.println(response.code() + " " + response.message());
             JSONObject responseJSON = new JSONObject(responseBody);
             promotionId = String.valueOf(responseJSON.getInt("id"));
             System.out.println("Promotion ID: " + promotionId);
             System.out.println("---- ---- ---- ----");
         } else {
-            failTest(responseBody, responseCode, responseMsg);
+            failTest(responseBody, response.code(), response.message());
         }
-
     }
 
     @Step("[API] Create promotion -- <Apply type: 'Auto'>, <State: 'Active'>")
     public static void createPromotion_auto_active() throws IOException {
-
         System.out.println("Creating a new promotion...");
+        String randomId = generateRandomID();
 
-        OkHttpClient client = new OkHttpClient();
+        JSONObject payload = parseObj("bin/payloads/promotions/createPromotion_auto_active.json");
+        payload = setName_promo(payload, "Test Promo " + randomId);
+        payload = setSfName_promo(payload, "SF Test Promo" + randomId);
 
-        MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, "{\"id\": null,\"createdAt\": null,\"attributes\": {\"name\": {\"t\": \"string\",\"v\": \"new promo " + generateRandomID() + "\"},\"storefrontName\": {\"t\": \"richText\",\"v\": \"<p>sf name</p>\"},\"description\": {\"t\": \"text\",\"v\": \"promo description\"},\"details\": {\"t\": \"richText\",\"v\": \"<p>promo details</p>\"},\"activeFrom\": {\"v\": \"" + getDate() + "T13:53:00.092Z\",\"t\": \"datetime\"},\"activeTo\": {\"v\": null,\"t\": \"datetime\"}},\"discounts\": [{\"id\": null,\"createdAt\": null,\"attributes\": {\"qualifier\": {\"t\": \"qualifier\",\"v\": {\"orderAny\": {}}},\"offer\": {\"t\": \"offer\",\"v\": {\"orderPercentOff\": {\"discount\": 10}}}}}],\"applyType\": \"auto\"}");
-        Request request = new Request.Builder()
-                .url(apiUrl + "/v1/promotions/default")
-                .post(body)
-                .addHeader("content-type", "application/json")
-                .addHeader("accept", "application/json")
-                .addHeader("cache-control", "no-cache")
-                .addHeader("JWT", jwt)
-                .build();
-
-        Response response = client.newCall(request).execute();
+        Response response = request.post(apiUrl + "/v1/promotions/default", payload.toString());
         String responseBody = response.body().string();
-        int responseCode = response.code();
-        String responseMsg = response.message();
 
-        if (responseCode == 200) {
-            System.out.println(responseCode + " " + responseMsg);
+        if (response.code() == 200) {
+            System.out.println(response.code() + " " + response.message());
             JSONObject responseJSON = new JSONObject(responseBody);
             promotionId = String.valueOf(responseJSON.getInt("id"));
             System.out.println("Promotion ID: " + promotionId);
             System.out.println("---- ---- ---- ----");
         } else {
-            failTest(responseBody, responseCode, responseMsg);
+            failTest(responseBody, response.code(), response.message());
         }
-
     }
 
     @Step("[API] Set promo <ID:{0}> state to <{1}>")

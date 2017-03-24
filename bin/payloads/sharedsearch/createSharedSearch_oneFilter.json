@@ -1,0 +1,26 @@
+{
+  "title": "Search ",
+  "query": [{
+    "display": "Order : Total : > : $0",
+    "term": "total",
+    "operator": "gt",
+    "value": {
+      "type": "currency",
+      "value": "000"
+    }
+  }],
+  "scope": "ordersScope",
+  "rawQuery": {
+    "query": {
+      "bool": {
+        "filter": [{
+          "range": {
+            "total": {
+              "gt": "000"
+            }
+          }
+        }]
+      }
+    }
+  }
+}

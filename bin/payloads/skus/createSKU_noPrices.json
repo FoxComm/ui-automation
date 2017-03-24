@@ -1,0 +1,50 @@
+{
+  "id": null,
+  "attributes": {
+    "code": {
+      "t": "string",
+      "v": "SKU-randomId"
+    },
+    "title": {
+      "t": "string",
+      "v": "Test Product randomId"
+    },
+    "upc": {
+      "t": "string",
+      "v": "Test UPC"
+    },
+    "description": {
+      "t": "richText",
+      "v": "<p>Just another test SKU.</p>"
+    },
+    "retailPrice": {
+      "t": "price",
+      "v": {
+        "currency": "USD",
+        "value": null
+      }
+    },
+    "salePrice": {
+      "t": "price",
+      "v": {
+        "currency": "USD",
+        "value": null
+      }
+    },
+    "unitCost": {
+      "t": "price",
+      "v": {
+        "currency": "USD",
+        "value": null
+      }
+    },
+    "activeFrom": {
+      "t": "datetime",
+      "v": "2016-07-29T00:03:26.685Z"
+    },
+    "activeTo": {
+      "v": null,
+      "t": "datetime"
+    }
+  }
+}

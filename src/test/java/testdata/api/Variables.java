@@ -56,6 +56,5 @@ public class Variables extends TestNGDataProviders {
     protected static int searchId;
     protected static String searchRandomId;
     protected static String searchCode;
-    protected static int adminId;
 
 }

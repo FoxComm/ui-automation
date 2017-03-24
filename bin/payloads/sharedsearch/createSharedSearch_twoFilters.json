@@ -1,0 +1,44 @@
+{
+  "title":"searchRandomId",
+  "query":[
+    {
+      "display":"Order : State : Remorse Hold",
+      "term":"state",
+      "operator":"eq",
+      "value":{
+        "type":"enum",
+        "value":"remorseHold"
+      }
+    },
+    {
+      "display":"Order : Total : > : $1",
+      "term":"total",
+      "operator":"gt",
+      "value":{
+        "type":"currency",
+        "value":"100"
+      }
+    }
+  ],
+  "scope":"ordersScope",
+  "rawQuery":{
+    "query":{
+      "bool":{
+        "filter":[
+          {
+            "term":{
+              "state":"remorseHold"
+            }
+          },
+          {
+            "range":{
+              "total":{
+                "gt":"100"
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

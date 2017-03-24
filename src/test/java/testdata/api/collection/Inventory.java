@@ -10,36 +10,21 @@ import java.io.IOException;
 public class Inventory extends Helpers {
 
     private static void viewSKU_inventory(String skuCode) throws IOException {
-
         System.out.println("Viewing inventory summary of SKU <" + skuCode + ">...");
 
-        OkHttpClient client = new OkHttpClient();
-
-        Request request = new Request.Builder()
-                .url(apiUrl + "/v1/inventory/summary/" + skuCode)
-                .get()
-                .addHeader("content-type", "application/json")
-                .addHeader("accept", "application/json")
-                .addHeader("cache-control", "no-cache")
-                .addHeader("JWT", jwt)
-                .build();
-
-        Response response = client.newCall(request).execute();
+        Response response = request.get(apiUrl + "/v1/inventory/summary/" + skuCode);
         String responseBody = response.body().string();
-        int responseCode = response.code();
-        String responseMsg = response.message();
 
-        if (responseCode == 200) {
-            System.out.println(responseCode + " " + responseMsg);
+        if (response.code() == 200) {
+            System.out.println(response.code() + " " + response.message());
             JSONObject responseJSON = new JSONObject(responseBody);
             JSONObject obj = responseJSON.getJSONArray("summary").getJSONObject(0);
             skuId_inventory = obj.getJSONObject("stockItem").getInt("id");
             System.out.println("SKU ID: <" + skuId_inventory + ">");
             System.out.println("---- ---- ---- ----");
         } else {
-            failTest(responseBody, responseCode, responseMsg);
+            failTest(responseBody, response.code(), response.message());
         }
-
     }
 
     /**
@@ -47,45 +32,27 @@ public class Inventory extends Helpers {
      */
     @Step("[API] Increase amount of sellable unites of <{0}> by <{1}>")
     public static void increaseOnHandQty(String skuCode, String type, Integer qty) throws IOException {
+        System.out.println("Increase amount of sellable items by <" + qty + "> for SKU <" + skuCode + ">, ID: <" + skuId_inventory + ">...");
 
         checkInventoryAvailability(skuCode);
         viewSKU_inventory(skuCode);
 
-        System.out.println("Increase amount of sellable items by <" + qty + "> for SKU <" + skuCode + ">, ID: <" + skuId_inventory + ">...");
+        JSONObject payload = parseObj("bin/payloads/inventory/increaseOnHandQty.json");
+        payload.putOpt("qty", qty);
+        payload.putOpt("type", type);
 
-        OkHttpClient client = new OkHttpClient();
+        Response response = request.patch(apiUrl + "/v1/inventory/stock-items/" + skuId_inventory + "/increment", payload.toString());
 
-        MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, "{" +
-                "\"qty\":" + qty + "," +
-                "\"type\":\"" + type + "\"," +
-                "\"status\":\"onHand\"}");
-        Request request = new Request.Builder()
-                .url(apiUrl + "/v1/inventory/stock-items/" + skuId_inventory + "/increment")
-                .patch(body)
-                .addHeader("accept", "application/json")
-                .addHeader("content-type", "application/json")
-                .addHeader("cache-control", "no-cache")
-                .addHeader("JWT", jwt)
-                .build();
-
-        Response response = client.newCall(request).execute();
-        String responseBody = response.body().string();
-        int responseCode = response.code();
-        String responseMsg = response.message();
-
-        if (responseCode == 204) {
-            System.out.println(responseCode + " " + responseMsg);
+        if (response.code() == 204) {
+            System.out.println(response.code() + " " + response.message());
             System.out.println("---- ---- ---- ----");
         } else {
-            failTest(responseBody, responseCode, responseMsg);
+            failTest(response.body().string(), response.code(), response.message());
         }
-
     }
 
     @Step("[API] Check if Inventory is available")
     public static void checkInventoryAvailability(String sku) throws IOException {
-
         System.out.println("Checking if inventory of SKU <" + sku + "> is available...");
 
         int responseCode = 0;
@@ -95,17 +62,8 @@ public class Inventory extends Helpers {
         long end = time + 15000;
         int totalTries = 0;
 
-        OkHttpClient client = new OkHttpClient();
-
-        Request request = new Request.Builder()
-                .url(apiUrl + "/v1/inventory/summary/" + sku)
-                .get()
-                .addHeader("cache-control", "no-cache")
-                .addHeader("JWT", jwt)
-                .build();
-
         while((System.currentTimeMillis() < end) && (responseCode != 200)) {
-            Response response = client.newCall(request).execute();
+            Response response = request.get(apiUrl + "/v1/inventory/summary/" + sku);
             responseBody = response.body().string();
             responseCode = response.code();
             responseMsg = response.message();
@@ -120,7 +78,6 @@ public class Inventory extends Helpers {
         } else {
             failTest(responseBody, responseCode, responseMsg);
         }
-
     }
 
 }

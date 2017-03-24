@@ -12,7 +12,9 @@ import java.util.Objects;
 
 public class Helpers extends Variables {
 
-    protected static JSONObject parse(String rout) throws IOException {
+    //------------------------------------- JSON HELPERS -------------------------------------
+
+    protected static JSONObject parseObj(String rout) throws IOException {
         String jsonData = "";
         String line;
         BufferedReader bufferedReader = new BufferedReader(new FileReader(rout));
@@ -21,6 +23,17 @@ public class Helpers extends Variables {
         }
         bufferedReader.close();
         return new JSONObject(Objects.requireNonNull(jsonData));
+    }
+
+    protected static JSONArray parseArr(String rout) throws IOException {
+        String jsonData = "";
+        String line;
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(rout));
+        while ((line = bufferedReader.readLine()) != null) {
+            jsonData += line + "\n";
+        }
+        bufferedReader.close();
+        return new JSONArray(Objects.requireNonNull(jsonData));
     }
 
     protected static boolean assertProductExists_es(String jsonAttrType, String attrName, String attrVal, String responseBody) {
@@ -58,72 +71,90 @@ public class Helpers extends Variables {
         }
     }
 
-    protected static void getStripeToken(int customerId, String cardNumber, int expMonth, int expYear, int cvv) throws IOException {
+    protected static JSONObject setProductTitle(JSONObject payload, String title) {
+        payload.getJSONObject("attributes")
+                .getJSONObject("title")
+                .putOpt("v", title);
+        return payload;
+    }
 
-        JSONObject jsonObj = parse("bin/payloads/getStripeToken.json");
+    /**
+     * Only for single SKU product
+     */
+    protected static JSONObject setSkuId_product(JSONObject payload, int skuId) {
+        payload.getJSONArray("skus")
+                .getJSONObject(0)
+                .putOpt("id", skuId);
+        return payload;
+    }
 
-        // Create JSONObject from addressPayload and from "address" obj in .JSON that will be used as a payload
-        JSONObject address_tmp = new JSONObject(addressPayload);
-        JSONObject address = jsonObj.getJSONObject("address");
+    /**
+     * Only for single SKU product
+     */
+    protected static JSONObject setSkuCode_product(JSONObject payload, String skuCode) {
+        payload.getJSONArray("skus")
+                .getJSONObject(0)
+                .getJSONObject("attributes")
+                .getJSONObject("code")
+                .putOpt("v", skuCode);
+        return payload;
+    }
 
-        // Merge data from addressPayload JSONObj into "address" obj of payload .JSON
-        address.putOpt("name", address_tmp.getString("name"));
-        address.putOpt("zip", address_tmp.getString("zip"));
-        address.putOpt("city", address_tmp.getString("city"));
-        address.putOpt("address1", address_tmp.getString("address1"));
-        address.putOpt("regionId", address_tmp.getJSONObject("region").getInt("id"));
+    /**
+     * Only for single SKU product
+     */
+    protected static JSONObject setSkuTitle_product(JSONObject payload, String skuTitle) {
+        payload.getJSONArray("skus")
+                .getJSONObject(0)
+                .getJSONObject("attributes")
+                .getJSONObject("title")
+                .putOpt("v", skuTitle);
+        return payload;
+    }
 
-        jsonObj.putOpt("customerId", customerId);
-        jsonObj.putOpt("address", address);
-        jsonObj.putOpt("cardNumber", cardNumber);
-        jsonObj.putOpt("expMonth", expMonth);
-        jsonObj.putOpt("expYear", expYear);
-        jsonObj.putOpt("cvv", cvv);
-        String payload = jsonObj.toString();
+    /**
+     * Only for single tag product
+     */
+    protected static JSONObject setTag_product(JSONObject payload, String tag) {
+        JSONArray tagsArr = payload
+                .getJSONObject("attributes")
+                .getJSONObject("tags")
+                .getJSONArray("v");
+        tagsArr.put(tagsArr.length(), tag);
+        return payload;
+    }
 
-        OkHttpClient client = new OkHttpClient();
+    protected static JSONObject setSkuCode_SKUs(JSONObject payload, String skuCode) {
+        payload.getJSONObject("attributes")
+                .getJSONObject("code")
+                .putOpt("v", skuCode);
+        return payload;
+    }
 
-        MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, payload);
-        Request request = new Request.Builder()
-                .url(apiUrl + "/v1/credit-card-token")
-                .post(body)
-                .addHeader("content-type", "application/json")
-                .addHeader("cache-control", "no-cache")
-                .addHeader("JWT", jwt)
-                .build();
+    protected static JSONObject setName_promo(JSONObject payload, String name) {
+        payload.getJSONObject("attributes")
+                .getJSONObject("name")
+                .putOpt("v", name);
+        return payload;
+    }
 
-        Response response = client.newCall(request).execute();
-        String responseBody = response.body().string();
-        int responseCode = response.code();
-        String responseMsg = response.message();
+    protected static JSONObject setSfName_promo(JSONObject payload, String sfName) {
+        payload.getJSONObject("attributes")
+                .getJSONObject("storefrontName")
+                .putOpt("v", sfName);
+        return payload;
+    }
 
-        if (responseCode == 200) {
-            System.out.println(responseCode + " " + responseMsg);
-            org.json.JSONObject responseJSON = new org.json.JSONObject(responseBody);
-            stripeToken = responseJSON.getString("token");
-            System.out.println("Stripe token: <" + stripeToken + ">");
-            System.out.println("---- ---- ---- ----");
-        } else {
-            failTest(responseBody, responseCode, responseMsg);
-        }
-
+    protected static JSONObject setSkuTitle_SKUs(JSONObject payload, String title) {
+        payload.getJSONObject("attributes")
+                .getJSONObject("title")
+                .putOpt("v", title);
+        return payload;
     }
 
     @Step("[API] Wait for <{1}> orders to apeear in ES")
-    public static void waitForOrdersToAppearInES(int customerId, int ordersExpectedAmount) throws IOException {
+    protected static void waitForOrdersToAppearInES(int customerId, int ordersExpectedAmount) throws IOException {
         System.out.println("Wait for <" + ordersExpectedAmount + "> orders to appear in ES");
-
-        JSONObject jsonObj = parse("bin/payloads/esSearchCustomer.json");
-        jsonObj.getJSONObject("query")
-                .getJSONObject("bool")
-                .getJSONArray("filter")
-                .getJSONObject(0)
-                .getJSONObject("nested")
-                .getJSONObject("query")
-                .getJSONObject("term")
-                .putOpt("customer.id", customerId);
-        String payload = jsonObj.toString();
 
         int responseCode = 0;
         String responseBody = "";
@@ -133,20 +164,18 @@ public class Helpers extends Variables {
         int ordersInEs = 0;
         int totalTries = 0;
 
-        OkHttpClient client = new OkHttpClient();
-        MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, payload);
-        Request request = new Request.Builder()
-                .url(apiUrl + "/search/admin/orders_search_view/_search?size=50")
-                .post(body)
-                .addHeader("content-type", "application/json")
-                .addHeader("accept", "application/json")
-                .addHeader("cache-control", "no-cache")
-                .addHeader("JWT", jwt)
-                .build();
+        JSONObject payload = parseObj("bin/payloads/helpers/esSearchCustomer.json");
+        payload.getJSONObject("query")
+                .getJSONObject("bool")
+                .getJSONArray("filter")
+                .getJSONObject(0)
+                .getJSONObject("nested")
+                .getJSONObject("query")
+                .getJSONObject("term")
+                .putOpt("customer.id", customerId);
 
         while((System.currentTimeMillis() < end) && (ordersInEs != ordersExpectedAmount)) {
-            Response response = client.newCall(request).execute();
+            Response response = request.post(apiUrl + "/search/admin/orders_search_view/_search?size=50", payload.toString());
             responseBody = response.body().string();
             responseCode = response.code();
             responseMsg = response.message();
@@ -172,9 +201,6 @@ public class Helpers extends Variables {
     protected static void checkProductPresenceInCategoryView(String attrType, String attrName, String attrVal) throws IOException {
         System.out.println("Checking if product<("+attrType+") "+attrName+": "+attrVal+"> is present in category view on storefront...");
 
-        JSONObject jsonObj = parse("bin/payloads/esCatalogView.json");
-        String payload = jsonObj.toString();
-
         int responseCode = 0;
         String responseBody = "";
         String responseMsg = "";
@@ -183,19 +209,11 @@ public class Helpers extends Variables {
         int totalTries = 0;
         boolean productInEs = false;
 
-        OkHttpClient client = new OkHttpClient();
-        MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, payload);
-        Request request = new Request.Builder()
-                .url(apiUrl + "/search/public/products_catalog_view/_search?size=1000")
-                .post(body)
-                .addHeader("content-type", "application/json")
-                .addHeader("cache-control", "no-cache")
-                .addHeader("JWT", jwt)
-                .build();
+        JSONObject jsonObj = parseObj("bin/payloads/helpers/esCatalogView.json");
+        String payload = jsonObj.toString();
 
         while((System.currentTimeMillis() < end) && (productInEs != true)) {
-            Response response = client.newCall(request).execute();
+            Response response = request.post(apiUrl + "/search/public/products_catalog_view/_search?size=1000", payload.toString());
             responseBody = response.body().string();
             responseCode = response.code();
             responseMsg = response.message();
@@ -213,7 +231,88 @@ public class Helpers extends Variables {
         } else {
             failTest(responseBody, responseCode, responseMsg);
         }
+    }
 
+    protected static class request {
+
+        public static Response get(String url) throws IOException {
+            OkHttpClient client = new OkHttpClient();
+
+            Request request = new Request.Builder()
+                    .url(url)
+                    .get()
+                    .addHeader("content-type", "application/json")
+                    .addHeader("accept", "application/json")
+                    .addHeader("cache-control", "no-cache")
+                    .addHeader("JWT", jwt)
+                    .build();
+
+            return client.newCall(request).execute();
+        }
+
+        public static Response post_noJWT(String url, String payload) throws IOException {
+            OkHttpClient client = new OkHttpClient();
+            MediaType mediaType = MediaType.parse("application/json");
+
+            RequestBody body = RequestBody.create(mediaType, payload);
+            Request request = new Request.Builder()
+                    .url(url)
+                    .post(body)
+                    .addHeader("accept", "application/json")
+                    .addHeader("content-type", "application/json")
+                    .addHeader("cache-control", "no-cache")
+                    .build();
+
+            return client.newCall(request).execute();
+        }
+
+        public static Response post(String url, String payload) throws IOException {
+            OkHttpClient client = new OkHttpClient();
+            MediaType mediaType = MediaType.parse("application/json");
+
+            RequestBody body = RequestBody.create(mediaType, payload);
+            Request request = new Request.Builder()
+                    .url(url)
+                    .post(body)
+                    .addHeader("accept", "application/json")
+                    .addHeader("content-type", "application/json")
+                    .addHeader("cache-control", "no-cache")
+                    .addHeader("JWT", jwt)
+                    .build();
+
+            return client.newCall(request).execute();
+        }
+
+        public static Response patch(String url, String payload) throws IOException {
+            OkHttpClient client = new OkHttpClient();
+            MediaType mediaType = MediaType.parse("application/json");
+
+            RequestBody body = RequestBody.create(mediaType, payload);
+            Request request = new Request.Builder()
+                    .url(url)
+                    .patch(body)
+                    .addHeader("content-type", "application/json")
+                    .addHeader("accept", "application/json")
+                    .addHeader("cache-control", "no-cache")
+                    .addHeader("JWT", jwt)
+                    .build();
+
+            return client.newCall(request).execute();
+        }
+
+        public static Response delete(String url) throws IOException {
+            OkHttpClient client = new OkHttpClient();
+            Request request = new Request.Builder()
+                    .url(url)
+                    .delete(null)
+                    .addHeader("content-type", "application/json")
+                    .addHeader("accept", "application/json")
+                    .addHeader("cache-control", "no-cache")
+                    .addHeader("JWT", jwt)
+                    .build();
+
+            return client.newCall(request).execute();
+        }
 
     }
 
