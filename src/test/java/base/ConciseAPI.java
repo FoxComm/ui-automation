@@ -64,6 +64,7 @@ public class ConciseAPI implements IHookable {
     @Step("Open <{0}>")
     protected static <PageObjectClass> PageObjectClass openPage(String relativeOrAbsoluteUrl,
                                                                 Class<PageObjectClass> pageObjectClassClass) {
+        relativeOrAbsoluteUrl = relativeOrAbsoluteUrl.replaceAll("(?<!(http:|https:))[//]+", "/");
         return open(relativeOrAbsoluteUrl, "", "", "", pageObjectClassClass);
     }
 
