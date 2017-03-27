@@ -1,6 +1,6 @@
 package testdata.api.collection;
 
-import com.squareup.okhttp.*;
+import com.squareup.okhttp.Response;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import ru.yandex.qatools.allure.annotations.Step;
@@ -20,6 +20,7 @@ public class Coupons extends Helpers {
         JSONObject payload = parseObj("bin/payloads/coupons/createCoupon.json");
         payload.getJSONObject("attributes").getJSONObject("name").putOpt("v", "test coupon " + randomId);
         payload.getJSONObject("attributes").getJSONObject("storefrontName").putOpt("v", "storefront name " + randomId);
+        payload.putOpt("promotion", Integer.valueOf(promotionId));
 
         Response response = request.post(apiUrl + "/v1/coupons/default", payload.toString());
         String responseBody = response.body().string();

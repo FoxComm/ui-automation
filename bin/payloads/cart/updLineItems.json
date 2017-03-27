@@ -1,4 +1,4 @@
 [{
-  "sku": "",
-  "quantity": ""
+  "sku": "skuCode",
+  "quantity": 1
 }]

@@ -92,11 +92,11 @@ public class Cart extends Helpers{
     public static void updLineItems(String cartId, String skuCode, int quantity) throws IOException {
         System.out.println("Updating SKUs: setting <" + skuCode + "> quantity to <" + quantity + ">...");
 
-        JSONObject payload = parseObj("bin/payloads/cart/updLineItems.json");
-        payload.putOpt("sku", skuCode);
-        payload.putOpt("quantity", quantity);
+        JSONArray payload = parseArr("bin/payloads/cart/updLineItems.json");
+        payload.getJSONObject(0).putOpt("sku", skuCode);
+        payload.getJSONObject(0).putOpt("quantity", quantity);
 
-        Response response = request.post(apiUrl + "/v1/orders/"+cartId+"/line-items", payload.toString());
+        Response response = request.post(apiUrl + "/v1/carts/"+cartId+"/line-items", payload.toString());
 
         if (response.code() == 200) {
             System.out.println(response.code() + " " + response.message());
