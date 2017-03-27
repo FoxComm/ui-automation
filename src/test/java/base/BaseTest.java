@@ -10,10 +10,10 @@ public class BaseTest extends ConciseAPI {
     public String getUrl() {
         return getWebDriver().getCurrentUrl();
     }
-    protected static String apiUrl = System.getenv("API_URL") + "/api";
-    protected static String adminUrl = System.getenv("API_URL") + "/admin";
+    protected static String apiUrl = System.getenv("API_URL__TESTS");
+    protected static String adminUrl = System.getenv("ASHES_URL");
+    public static String storefrontUrl = System.getenv("STOREFRONT_URL");
     private static String storefront = System.getenv("STOREFRONT");
-    public static String storefrontUrl = System.getenv("API_URL") + storefront;
     protected static String adminOrg = "tenant";
     protected static String adminEmail = "admin@admin.com";
     protected static String adminPassword;
@@ -32,26 +32,24 @@ public class BaseTest extends ConciseAPI {
     }
 
     private void setAdminPassword() {
-        if (System.getenv("API_URL").equals("https://td-prod.foxcommerce.com")) {
+        if (System.getenv("ENV").equals("stage-td")) {
             adminPassword = "Fluffybunny";
         } else {
             adminPassword = "password";
         }
     }
 
-    private void setStorefrontCategory() {
-        if (System.getenv("API_URL").equals("https://stage.foxcommerce.com") && storefront.equals("/top-drawer")) {
-            storefrontCategory = "/MODERN";
-        } else if (System.getenv("API_URL").equals("https://td-prod.foxcommerce.com") && storefront.equals("")) {
-            storefrontCategory = "/MODERN";
-        } else if (System.getenv("API_URL").equals("https://stage.foxcommerce.com") && storefront.equals("/perfect-gourmet")) {
-            storefrontCategory = "/APPETIZERS";
-        } else if (System.getenv("API_URL").equals("https://stage-tpg.foxcommerce.com") && storefront.equals("")) {
-            storefrontCategory = "/APPETIZERS";
-        } else if ((System.getenv("API_URL").equals("https://stage.foxcommerce.com") && storefront.equals(""))) {
-            storefrontCategory = "/sunglasses";
-        } else {
-            storefrontCategory = "";
+    private static void setStorefrontCategory() {
+        switch (storefront) {
+            case "perfect-gourmet":
+                storefrontCategory = "APPETIZERS";
+                break;
+            case "top-drawer":
+                storefrontCategory = "MODERN";
+                break;
+            case "firebrand":
+                storefrontCategory = "sunglasses";
+                break;
         }
     }
 

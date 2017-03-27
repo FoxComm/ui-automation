@@ -31,7 +31,7 @@ public class CouponsAndPromosTest extends Preconditions {
     public void canApplyCoupon_registeredCustomer() throws IOException {
         provideTestData("a customer signed up on storefront, product<active>, coupon<any, single code>");
 
-        p = openPage(storefrontUrl + storefrontCategory, StorefrontPage.class);
+        p = openPage(storefrontUrl + "/" + storefrontCategory, StorefrontPage.class);
         p.logIn(customerEmail, "78qa22!#");
         p.openPDP(productTitle);
         p.clickAddToCartBtn();
@@ -47,7 +47,7 @@ public class CouponsAndPromosTest extends Preconditions {
     public void canApplyCoupon_guest() throws IOException {
         provideTestData("product<active>, coupon<any, single code>");
 
-        p = openPage(storefrontUrl + storefrontCategory, StorefrontPage.class);
+        p = openPage(storefrontUrl + "/" + storefrontCategory, StorefrontPage.class);
         p.openPDP(productTitle);
         p.clickAddToCartBtn();
         p.applyCoupon(singleCouponCode);

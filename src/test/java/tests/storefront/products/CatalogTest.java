@@ -95,7 +95,7 @@ public class CatalogTest extends Preconditions {
     @Description("Products with \"ENTRÉES\" category sub-category names tags are displayed in corresponding sub-categories")
     public void entreesSubCategories(String subCategory) throws IOException {
         provideTestData("active product with tags <ENTRÉES> and <" + subCategory + ">");
-        p = openPage(storefrontUrl + "/ENTRÉES" + "/" + subCategory, StorefrontPage.class);
+        p = openPage(storefrontUrl + "/ENTRÉES/" + subCategory, StorefrontPage.class);
         p.productTitle_catalog(productTitle).shouldBe(visible);
     }
 

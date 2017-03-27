@@ -1,13 +1,16 @@
 #!/bin/bash
 
 if [ "$BROWSER" == "chrome" ]; then
-	echo Browser=`google-chrome -version` >> target/allure-results/environment.properties
+	echo BROWSER=`google-chrome -version` >> target/allure-results/environment.properties
 elif [ "$BROWSER" == "firefox" ]; then
-	echo Browser=`firefox -version` >> target/allure-results/environment.properties
+	echo BROWSER=`firefox -version` >> target/allure-results/environment.properties
 else
-	echo Browser="Browser=Couldn't identify browser" >> target/allure-results/environment.properties
+	echo BROWSER="Browser=Couldn't identify browser" >> target/allure-results/environment.properties
 fi
 
-echo Environment=$API_URL >> target/allure-results/environment.properties
-
-echo Test Suite=$SUITE >> target/allure-results/environment.properties
+echo ENVIRONMENT=$ENV >> target/allure-results/environment.properties
+echo API_URL__TESTS=$API_URL__TESTS >> target/allure-results/environment.properties
+echo ASHES_URL=$ASHES_URL >> target/allure-results/environment.properties
+echo STOREFRONT_URL=$STOREFRONT_URL >> target/allure-results/environment.properties
+echo STOREFRONT=$STOREFRONT >> target/allure-results/environment.properties
+echo TEST_SUITE=$SUITE >> target/allure-results/environment.properties

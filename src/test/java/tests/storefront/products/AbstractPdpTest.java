@@ -59,7 +59,7 @@ public class AbstractPdpTest extends Preconditions {
     public void changeProductQty() throws IOException {
         provideTestData("an active product visible on storefront");
 
-        p = openPage(storefrontUrl + storefrontCategory, StorefrontPage.class);
+        p = openPage(storefrontUrl + "/" + storefrontCategory, StorefrontPage.class);
         p.openPDP(productTitle);
         p.setQty_pdp("3");
         p.clickAddToCartBtn();

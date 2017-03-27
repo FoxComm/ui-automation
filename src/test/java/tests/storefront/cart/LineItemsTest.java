@@ -26,7 +26,7 @@ public class LineItemsTest extends Preconditions {
     public void addProductToCart_lineItemIsVisible() throws IOException {
         provideTestData("registered customer, active product on storefront");
 
-        p = openPage(storefrontUrl + storefrontCategory, StorefrontPage.class);
+        p = openPage(storefrontUrl + "/" + storefrontCategory, StorefrontPage.class);
         p.logIn(customerEmail, "78qa22!#");
         p.openPDP(productTitle);
         p.clickAddToCartBtn();
