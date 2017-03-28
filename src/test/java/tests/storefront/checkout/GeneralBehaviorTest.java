@@ -139,7 +139,7 @@ public class GeneralBehaviorTest extends Preconditions {
     public void happyPath() throws IOException {
         provideTestData("happy path");
 
-        p = openPage(storefrontUrl + storefrontCategory, StorefrontPage.class);
+        p = openPage(storefrontUrl + "/" + storefrontCategory, StorefrontPage.class);
         p.logIn(customerEmail, "78qa22!#");
         p.openPDP(productTitle);
         p.clickAddToCartBtn();

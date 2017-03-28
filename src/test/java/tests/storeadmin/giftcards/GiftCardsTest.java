@@ -182,8 +182,11 @@ public class GiftCardsTest extends Preconditions {
     @Test(priority = 11)
     public void gcAsPaymentMethod_availableBalance() throws IOException {
         provideTestData("used gift card");
+        String expectedBalance = totalToString(20000 - total);
+
         p = openPage(adminUrl + "/gift-cards/" + gcCode, GiftCardsPage.class);
-        p.availableBalance().shouldHave(text("135.00"));
+
+        p.availableBalance().shouldHave(text(expectedBalance));
     }
 
     //Feature got removed temporarily

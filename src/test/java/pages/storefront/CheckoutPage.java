@@ -238,6 +238,7 @@ public class CheckoutPage extends CartPage {
     public void logIn_guestAuth(String email, String password) {
         setEmail_guestAuth(email);
         setPassword(password);
+        clickLogInBtn();
     }
 
     @Step("Set \"EMAIL\" fld val to <{0}>")
@@ -378,16 +379,16 @@ public class CheckoutPage extends CartPage {
     public void redeemGiftCard(String gcCode) {
         expandGiftCardBlock();
         setGiftCardNumb(gcCode);
-        click(redeemBtn());
+        clickRedeemBtn();
     }
 
     @Step("Set \"GIFT CARD NUMBER\" fld val to <{0}>")
-    public void setGiftCardNumb(String gcCode) {
+    private void setGiftCardNumb(String gcCode) {
         setFieldVal(gcNumberFld(), gcCode);
     }
 
     @Step("Click \"X\" btn at applied gift card")
-    public void clickRemoveGcBtn() {
+    private void clickRemoveGcBtn() {
         click(removeGiftCardBtn());
     }
 
@@ -395,6 +396,11 @@ public class CheckoutPage extends CartPage {
     public void removeGiftCard() {
         expandGiftCardBlock();
         clickRemoveGcBtn();
+    }
+
+    @Step("Click \"REDEEM\" btn")
+    private void clickRedeemBtn() {
+        click(redeemBtn());
     }
 
     @Step("Click \"EDIT\" at <{0}> step")

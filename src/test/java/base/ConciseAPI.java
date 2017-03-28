@@ -391,6 +391,10 @@ public class ConciseAPI implements IHookable {
 
     //------------------------- HELPERS -------------------------//
 
+    protected static void fullScreen(SelenideElement element) {
+        element.sendKeys(Keys.chord(Keys.CONTROL, Keys.RETURN));
+    }
+
     //------------ MATH
     protected String addToString(String string1, String string2) {
         Integer intString1 = Integer.valueOf(string1);

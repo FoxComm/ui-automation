@@ -43,7 +43,7 @@ public class LineItemsTest extends Preconditions {
     public void addProductToCart_indicatorUpdated() throws IOException {
         provideTestData("registered customer, 2 active products on storefront");
 
-        p = openPage(storefrontUrl + storefrontCategory, StorefrontPage.class);
+        p = openPage(storefrontUrl + "/" + storefrontCategory, StorefrontPage.class);
         p.logIn(customerEmail, "78qa22!#");
         p.openPDP(products.get(0));
         p.setQty_pdp("2");

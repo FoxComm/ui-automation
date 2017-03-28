@@ -650,7 +650,7 @@ public class Preconditions extends Helpers {
                 createPromotion_coupon();
                 sleep(5000);
                 createCoupon(promotionId);
-                bulkGenerateCodes(couponId, "BLKNWCPN" + couponId + "-", 4, 5);
+                bulkGenerateCodes(couponId, "BLKNWCPN" + couponId + "-", 14, 5);
                 break;
 
 
@@ -828,6 +828,7 @@ public class Preconditions extends Helpers {
                 setShipMethod(cartId, shipMethodId);
                 listCustomerAddresses(customerId);
                 setPayment_giftCard(cartId, gcCode, 10000);
+                getCartTotals(cartId);
                 checkoutCart(cartId);
                 break;
 
@@ -889,7 +890,7 @@ public class Preconditions extends Helpers {
                 randomId = generateRandomID();
                 signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
                 createSKU_active();
-                createProduct_active(skuCode, "test");
+                createProduct_active(skuCode, storefrontCategory);
                 createCart(customerId);
                 updLineItems(cartId, skuCode, 1);
                 break;
@@ -947,6 +948,19 @@ public class Preconditions extends Helpers {
                 createSKU_active();
                 createProduct_active(skuCode, storefrontCategory);
                 checkProductPresenceInCategoryView("int", "productId", productId);
+                increaseOnHandQty(skuCode, "Sellable", 1);
+                break;
+
+            case "registered customer, 2 active products on storefront, 1 product in cart":
+                randomId = generateRandomID();
+                signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
+                createSKU_active();
+                createProduct_active(skuCode, storefrontCategory);
+                products.add(productTitle);
+                updLineItems(cartId, skuCode, 1);
+                createSKU_active();
+                createProduct_active(skuCode, storefrontCategory);
+                products.add(productTitle);
                 break;
 
             //---------------------------------- SF: SHIPPING ADDRESS --------------------------------//
@@ -1394,6 +1408,7 @@ public class Preconditions extends Helpers {
                 signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
                 createSKU_active();
                 createProduct_active(skuCode, storefrontCategory);
+                increaseOnHandQty(skuCode, "Sellable", 1);
                 break;
 
             //------------------------------------- SF: PDP ------------------------------------//

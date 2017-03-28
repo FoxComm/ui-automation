@@ -10,6 +10,7 @@ import testdata.Preconditions;
 import java.io.IOException;
 
 import static com.codeborne.selenide.Condition.*;
+import static com.codeborne.selenide.Selenide.close;
 import static com.codeborne.selenide.Selenide.refresh;
 import static org.testng.Assert.assertEquals;
 import static testdata.api.collection.Auth.loginAsAdmin;
@@ -39,7 +40,7 @@ public class GuestCheckoutTest extends Preconditions {
         p.logInBtn().shouldBe(visible);
         p.signUpLnk().shouldBe(visible);
         p.checkoutBtn_guestAuth().shouldBe(visible);
-        assertUrl(getUrl(), storefrontUrl + "checkout");
+        assertUrl(getUrl(), storefrontUrl + "/checkout");
     }
 
     @Test(priority = 2)
@@ -56,7 +57,7 @@ public class GuestCheckoutTest extends Preconditions {
         p.clickCheckoutBtn_guestAuth();
 
         p.grandTotal().shouldBe(visible);
-        assertUrl(getUrl(), storefrontUrl + "checkout");
+        assertUrl(getUrl(), storefrontUrl + "/checkout");
     }
 
     @Test(priority = 3)
@@ -66,21 +67,21 @@ public class GuestCheckoutTest extends Preconditions {
 
         p = openPage(storefrontUrl, StorefrontPage.class);
         p.navigateToCategory(storefrontCategory);
-        p.openPDP(products.get(1));
+        p.openPDP(productTitle);
         p.clickAddToCartBtn();
         p.clickCheckoutBtn_cart();
         p.setGuestEmail_auth(customerEmail);
         p.clickCheckoutBtn_guestAuth();
 
         p.grandTotal().shouldBe(visible);
-        p.lineItem_checkout(products.get(1)).shouldBe(visible);
-        assertUrl(getUrl(), storefrontUrl + "checkout");
+        p.lineItem_checkout(productTitle).shouldBe(visible);
+        assertUrl(getUrl(), storefrontUrl + "/checkout");
     }
 
     @Test(priority = 4)
     @Description("If customer signs in at pre-checkout page, guest cart line items are merged into registered customer cart")
     public void guestCartMergedIntoRegisteredOnCheckout_lineItems() throws IOException {
-        provideTestData("a customer ready to checkout");
+        provideTestData("a customer ready to checkout, 2 active products, 1 in cart");
 
         p = openPage(storefrontUrl, StorefrontPage.class);
         p.navigateToCategory(storefrontCategory);
@@ -101,11 +102,12 @@ public class GuestCheckoutTest extends Preconditions {
 
         p = openPage(storefrontUrl, StorefrontPage.class);
         p.navigateToCategory(storefrontCategory);
-        p.openPDP(products.get(1));
+        p.openPDP(productTitle);
         p.clickAddToCartBtn();
         p.applyCoupon(singleCouponCode);
         p.clickCheckoutBtn_cart();
         p.logIn_guestAuth(customerEmail, "78qa22!#");
+        p.clickContinueBtn();
         p.setShipMethod("1");
         p.clickContinueBtn();
         p.expandCouponCodeBlock();
@@ -115,9 +117,9 @@ public class GuestCheckoutTest extends Preconditions {
 
     @Test(priority = 6)
     @Description("Line items in guest cart are saved if customer signs up right before proceeding to checkout")
-    public void guestCartIsSavedOnSignUp_checkoutAuth_lineItems() throws IOException {
+    public void checkoutSignUp_guestCartSaved_lineItems() throws IOException {
         provideTestData("an active product visible on storefront");
-        randomId = generateRandomID();
+        String randomId = generateRandomID();
 
         p = openPage(storefrontUrl, StorefrontPage.class);
         p.navigateToCategory(storefrontCategory);
@@ -135,8 +137,9 @@ public class GuestCheckoutTest extends Preconditions {
 
     @Test(priority = 7)
     @Description("Coupon in guest cart is saved if customer signs up right before proceeding to checkout")
-    public void guestCartIsSavedOnSignUp_checkoutAuth_coupon() throws IOException {
+    public void checkoutSignUp_guestCartSaved_coupon() throws IOException {
         provideTestData("product<active>, coupon<any, single code>");
+        String randomId = generateRandomID();
 
         p = openPage(storefrontUrl, StorefrontPage.class);
         p.navigateToCategory(storefrontCategory);
@@ -166,7 +169,7 @@ public class GuestCheckoutTest extends Preconditions {
     @Description("Line items in guest cart are saved if customer signs up while browsing the store")
     public void guestCartIsSavedOnSignUp_storeBrowsing_lineItems() throws IOException {
         provideTestData("an active product visible on storefront");
-        randomId = generateRandomID();
+        String randomId = generateRandomID();
 
         p = openPage(storefrontUrl, StorefrontPage.class);
         p.navigateToCategory(storefrontCategory);
@@ -189,7 +192,7 @@ public class GuestCheckoutTest extends Preconditions {
     @Description("Coupon in guest cart is saved if customer signs up while browsing the store")
     public void guestCartIsSavedOnSignUp_storeBrowsing_coupon() throws IOException {
         provideTestData("product<active>, coupon<any, single code>");
-        randomId = generateRandomID();
+        String randomId = generateRandomID();
 
         p = openPage(storefrontUrl, StorefrontPage.class);
         p.navigateToCategory(storefrontCategory);
@@ -208,11 +211,12 @@ public class GuestCheckoutTest extends Preconditions {
         p.appliedCoupon().shouldBe(visible);
     }
 
+    // broken due to bug with guest & registered cart sync
     @Test(priority = 10)
     @Description("Gift card applied to cart as a payment during guest checkout should remain in the cart if guest signs up with the same email")
     public void guestCartIsSavedOnSignUp_paymentGiftCard() throws IOException {
         provideTestData("an active product, a gift card");
-        randomId = generateRandomID();
+        String randomId = generateRandomID();
 
         p = openPage(storefrontUrl, StorefrontPage.class);
         p.navigateToCategory(storefrontCategory);
@@ -223,11 +227,10 @@ public class GuestCheckoutTest extends Preconditions {
         p.clickCheckoutBtn_guestAuth();
         p.fillOutAddressForm("John Doe", "7500 Roosevelt Way NE", "Suit 42", "98115", "9879879876");
         p.clickSaveAddressBtn();
-        p.selectAddressRbtn("1").shouldBe(selected);
-        p.clickContinueBtn();
         p.setShipMethod("1");
         p.clickContinueBtn();
         p.redeemGiftCard(gcCode);
+
         scrollPageUp();
         p.clickLogo();
         p.clickLogInLnk();
@@ -242,11 +245,12 @@ public class GuestCheckoutTest extends Preconditions {
         p.appliedGiftCard().shouldBe(visible);
     }
 
+    // broken due to bug with guest & registered cart sync
     @Test(priority = 11)
     @Description("If customer has added a shipping address at checkout, then left checkout and signed up -- shipping address should be saved")
     public void guestAddressIsSavedAfterSignUp() throws IOException {
         provideTestData("an active product visible on storefront");
-        randomId = generateRandomID();
+        String randomId = generateRandomID();
 
         p = openPage(storefrontUrl, StorefrontPage.class);
         p.navigateToCategory(storefrontCategory);
@@ -257,6 +261,7 @@ public class GuestCheckoutTest extends Preconditions {
         p.clickCheckoutBtn_guestAuth();
         p.fillOutAddressForm("John Doe", "7500 Roosevelt Way NE", "Suit 42", "98115", "9879879876");
         p.clickSaveAddressBtn();
+
         scrollPageUp();
         p.clickLogo();
         p.clickLogInLnk();
@@ -274,7 +279,7 @@ public class GuestCheckoutTest extends Preconditions {
     @Description("A guest customer's email can be changed before placing the order")
     public void canEditGuestEmailBeforePlacingOrder() throws IOException {
         provideTestData("an active product visible on storefront");
-        randomId = generateRandomID();
+        String randomId = generateRandomID();
 
         p = openPage(storefrontUrl, StorefrontPage.class);
         p.navigateToCategory(storefrontCategory);
@@ -318,7 +323,7 @@ public class GuestCheckoutTest extends Preconditions {
         p.clickContinueBtn();
         p.fillOutCardForm("Test Buddy + " + randomId, "4242424242424242", "123", "10", "2020", false);
         p.clickPlaceOrderBtn();
-        shouldBeVisible(p.confirmationOrderNumber(), "");
+        shouldBeVisible(p.confirmationOrderNumber(), "Failed to place order");
         p.clickLogo();
         p.logIn(customerEmail, "78qa22!#");
 
@@ -328,6 +333,7 @@ public class GuestCheckoutTest extends Preconditions {
     @AfterMethod(alwaysRun = true)
     public void cleanUp_after() {
         p.cleanUp_afterMethod();
+        close();
     }
 
 }

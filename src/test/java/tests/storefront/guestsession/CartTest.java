@@ -38,11 +38,11 @@ public class CartTest extends Preconditions {
     @Test(priority = 2)
     @Description("Guest cart doesn't override registered customer cart")
     public void emptyGuestCartDoesntOverrideRegisteredCart() throws IOException {
-        provideTestData("registered customer, active product in cart");
+        provideTestData("registered customer, 2 active products on storefront, 1 product in cart");
 
         p = openPage(storefrontUrl, StorefrontPage.class);
         p.navigateToCategory(storefrontCategory);
-        p.openPDP(productTitle);
+        p.openPDP(products.get(1));
         p.clickAddToCartBtn();
         p.removeLineItem("1");
         p.closeCart();
