@@ -333,7 +333,6 @@ public class GuestCheckoutTest extends Preconditions {
     @AfterMethod(alwaysRun = true)
     public void cleanUp_after() {
         p.cleanUp_afterMethod();
-        close();
     }
 
 }
