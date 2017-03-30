@@ -6,9 +6,7 @@ import org.openqa.selenium.Keys;
 import ru.yandex.qatools.allure.annotations.Step;
 
 import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.$$;
 import static org.openqa.selenium.By.xpath;
-import static org.testng.Assert.assertTrue;
 
 public class SkusPage extends BasePage {
 
@@ -223,9 +221,5 @@ public class SkusPage extends BasePage {
         click($(xpath("//tbody/a/td[contains(@class, 'skuCode') and text()='" + skuCode + "']")));
         shouldBeVisible(saveBtn(), "Failed to open <" + skuCode + "> SKU");
     }
-
-
-
-
 
 }

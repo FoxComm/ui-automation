@@ -10,12 +10,12 @@ import java.io.IOException;
 
 public class Products extends Helpers {
 
-    @Step("[API] Create product; <SKU: auto-created with product>, <State:'Active'>")
-    private static void createProduct_noSKU_active() throws IOException {
+    @Step("[API] Create product; <SKU: auto-created with product>, <state:active>")
+    public static void createProduct_newSKU_active() throws IOException {
         System.out.println("Creating a new product... No SKU code is provided, so a new one will be created.");
         String randomId = generateRandomID();
 
-        JSONObject payload = parseObj("bin/payloads/products/createProduct_noSKU_active.json");
+        JSONObject payload = parseObj("bin/payloads/products/createProduct_newSKU_active.json");
         payload = setProductTitle(payload, "Test Product " + randomId);
         payload = setSkuCode_product(payload, "SKU-" + randomId);
         payload = setSkuTitle_product(payload, "SKU-" + randomId + " Title");
@@ -27,10 +27,105 @@ public class Products extends Helpers {
             System.out.println(response.code() + " " + response.message());
             JSONObject responseJSON = new JSONObject(responseBody);
             productId = String.valueOf(responseJSON.getInt("id"));
-            productTitle = responseJSON.getJSONObject("attributes").getJSONObject("title").getString("v");
+            productTitle = responseJSON.getJSONObject("attributes")
+                                        .getJSONObject("title")
+                                        .getString("v");
             productSlug = responseJSON.getString("slug");
+            skuId = responseJSON.getJSONArray("skus")
+                                .getJSONObject(0)
+                                .getInt("id");
+            skuCode = responseJSON.getJSONArray("skus")
+                                    .getJSONObject(0)
+                                    .getJSONObject("attributes")
+                                    .getJSONObject("code")
+                                    .getString("v");
             System.out.println("Product ID: <" + productId + ">.");
             System.out.println("Product name: <" + productTitle + ">.");
+            System.out.println("Slug: <" + productSlug + ">");
+            System.out.println("SKU ID: <" + skuId + ">");
+            System.out.println("SKU Code: <" + skuCode + ">");
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, response.code(), response.message());
+        }
+    }
+
+    @Step("[API] Create product; <SKU: auto-created with product>, <state:active>, <tag:{0}>")
+    public static void createProduct_newSKU_active_hasTag(String tag) throws IOException {
+        System.out.println("Creating a new product with tag <" + tag + ">... Will create a new SKU since none is provided");
+        String randomId = generateRandomID();
+
+        JSONObject payload = parseObj("bin/payloads/products/createProduct_newSKU_active_hasTag.json");
+        payload = setProductTitle(payload, "Test Product " + randomId);
+        payload = setSkuCode_product(payload, "SKU-" + randomId);
+        payload = setSkuTitle_product(payload, "SKU-" + randomId + " Title");
+        payload = setTag_product(payload, tag);
+
+        Response response = request.post(apiUrl + "/v1/products/default", payload.toString());
+        String responseBody = response.body().string();
+
+        if (response.code() == 200) {
+            System.out.println(response.code() + " " + response.message());
+            JSONObject responseJSON = new JSONObject(responseBody);
+            productId = String.valueOf(responseJSON.getInt("id"));
+            productTitle = responseJSON.getJSONObject("attributes")
+                    .getJSONObject("title")
+                    .getString("v");
+            productSlug = responseJSON.getString("slug");
+            skuId = responseJSON.getJSONArray("skus")
+                    .getJSONObject(0)
+                    .getInt("id");
+            skuCode = responseJSON.getJSONArray("skus")
+                    .getJSONObject(0)
+                    .getJSONObject("attributes")
+                    .getJSONObject("code")
+                    .getString("v");
+            System.out.println("Product ID: <" + productId + ">");
+            System.out.println("Product name: <" + productTitle + ">");
+            System.out.println("Slug: <" + productSlug + ">");
+            System.out.println("SKU ID: <" + skuId + ">");
+            System.out.println("SKU Code: <" + skuCode + ">");
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, response.code(), response.message());
+        }
+    }
+
+    @Step("[API] Create product; <SKU: auto-created with product>, <state:inactive>, <tag:{0}>")
+    public static void createProduct_inactive_newSKU_hasTag(String tag) throws IOException {
+        System.out.println("Creating a new product with tag <" + tag + ">... Will create a new SKU since none is provided");
+        String randomId = generateRandomID();
+
+        JSONObject payload = parseObj("bin/payloads/products/createProduct_inactive_newSKU_hasTag.json");
+        payload = setProductTitle(payload, "Test Product " + randomId);
+        payload = setSkuCode_product(payload, "SKU-" + randomId);
+        payload = setSkuTitle_product(payload, "SKU-" + randomId + " Title");
+        payload = setTag_product(payload, tag);
+
+        Response response = request.post(apiUrl + "/v1/products/default", payload.toString());
+        String responseBody = response.body().string();
+
+        if (response.code() == 200) {
+            System.out.println(response.code() + " " + response.message());
+            JSONObject responseJSON = new JSONObject(responseBody);
+            productId = String.valueOf(responseJSON.getInt("id"));
+            productTitle = responseJSON.getJSONObject("attributes")
+                    .getJSONObject("title")
+                    .getString("v");
+            productSlug = responseJSON.getString("slug");
+            skuId = responseJSON.getJSONArray("skus")
+                    .getJSONObject(0)
+                    .getInt("id");
+            skuCode = responseJSON.getJSONArray("skus")
+                    .getJSONObject(0)
+                    .getJSONObject("attributes")
+                    .getJSONObject("code")
+                    .getString("v");
+            System.out.println("Product ID: <" + productId + ">");
+            System.out.println("Product name: <" + productTitle + ">");
+            System.out.println("Slug: <" + productSlug + ">");
+            System.out.println("SKU ID: <" + skuId + ">");
+            System.out.println("SKU Code: <" + skuCode + ">");
             System.out.println("---- ---- ---- ----");
         } else {
             failTest(responseBody, response.code(), response.message());
@@ -135,7 +230,7 @@ public class Products extends Helpers {
         }
     }
 
-    @Step("[API] Create product; <SKU:'{0}'> <State:'Active'>, no tag")
+    @Step("[API] Create product; <SKU:{0}> <State:Active>, no tag")
     public static void createProduct_active_noTag(int skuId, String skuCode) throws IOException {
         System.out.println("Creating a new product with SKU <" + skuCode + ">...");
         String randomId = generateRandomID();
@@ -162,7 +257,7 @@ public class Products extends Helpers {
         }
     }
 
-    @Step("[API] Create product; <SKU:'{0}'>, <Tag:'{1}'>, <State:'Inactive'>")
+    @Step("[API] Create product; <SKU:{0}>, <Tag:{1}>, <State:Inactive>")
     public static void createProduct_inactive(int skuId, String skuCode, String tag) throws IOException {
         System.out.println("Creating a new product with SKU <" + skuCode + ">...");
         String randomId = generateRandomID();
@@ -190,7 +285,7 @@ public class Products extends Helpers {
         }
     }
 
-    @Step("[API] Create product; <SKU:'{0}'>, no tag, <State:'Inactive'>")
+    @Step("[API] Create product; <SKU:{0}>, no tag, <State:Inactive>")
     public static void createProduct_inactive_noTag(int skuId, String skuCode) throws IOException {
         System.out.println("Creating a new product with SKU <" + skuCode + ">...");
         String randomId = generateRandomID();
@@ -218,7 +313,7 @@ public class Products extends Helpers {
 
     }
 
-    @Step("[API] Create product; <SKU:'{0}'>, <Tag:'sunglasses'>, <Active From:'{1}'>, <Active To:'{2}'>")
+    @Step("[API] Create product; <SKU:{0}>, <Tag:sunglasses>, <Active From:{1}>, <Active To:{2}>")
     private static void createProduct_activeFromTo(String sku, String startDate, String endDate) throws IOException {
         System.out.println("Creating product with active from-to dates; SKU: <" + sku + ">...");
         String randomId = generateRandomID();
@@ -254,8 +349,8 @@ public class Products extends Helpers {
 
     }
 
-    @Step("[API] Archive product <ID:'{0}'>")
-    protected static void archiveProduct(String productId) throws IOException {
+    @Step("[API] Archive product <ID:{0}>")
+    public static void archiveProduct(String productId) throws IOException {
         System.out.println("Archiving product with ID <" + productId + ">...");
 
         Response response = request.delete(apiUrl + "/v1/products/default/" + productId);
@@ -266,9 +361,24 @@ public class Products extends Helpers {
         } else {
             failTest(response.body().string(), response.code(), response.message());
         }
-
     }
 
+    @Step("[API] Archive product <ID:{0}> -- expect 400")
+    public static void archiveProduct_expectFail(String productId) throws IOException {
+        System.out.println("Archiving product with ID <" + productId + ">...");
+
+        Response response = request.delete(apiUrl + "/v1/products/default/" + productId);
+
+        if (response.code() == 400) {
+            System.out.println(response.code() + " " + response.message());
+            System.out.println("Product archiving has failed as expected");
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(response.body().string(), response.code(), response.message());
+        }
+    }
+
+    @Step("[API] Get product slug <ID:{0}>")
     public static void getProductSlug(String productId) throws IOException {
         System.out.println("Getting slug of product <" + productId + ">...");
 
@@ -338,6 +448,28 @@ public class Products extends Helpers {
             System.out.println("---- ---- ---- ----");
         } else {
             failTest(responseBody, response.code(), response.message());
+        }
+    }
+
+    @Step("[API] Set product <ID:{0}> state to <{1}>")
+    public static void setProductState(String productId, String newState) throws IOException {
+        System.out.println("Setting product <ID:" + productId + "> state to <" + newState + ">...");
+
+        JSONObject payload = viewProduct(productId);
+        if (newState.equals("active")) {
+            payload.getJSONObject("attributes").getJSONObject("activeFrom").putOpt("v", "2016-09-01T18:06:29.890Z");
+        } else {
+            payload.getJSONObject("attributes").getJSONObject("activeFrom").putOpt("v", null);
+            payload.getJSONObject("attributes").getJSONObject("activeTo").putOpt("v", null);
+        }
+
+        Response response = request.patch(apiUrl + "/v1/products/default" + productId, payload.toString());
+
+        if (response.code() == 200) {
+            System.out.println(response.code() + " " + response.message());
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(response.body().toString(), response.code(), response.message());
         }
     }
 

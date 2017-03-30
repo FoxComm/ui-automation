@@ -22,12 +22,12 @@
       "v":"productName_local"
     },
     "activeFrom":{
-      "v":"2016-07-27T23:47:27.518Z",
-      "t":"datetime"
+      "t":"datetime",
+      "v":"2016-07-27T23:47:27.518Z"
     },
     "activeTo":{
-      "v":null,
-      "t":"datetime"
+      "t":"datetime",
+      "v":null
     },
     "tags":{
       "t":"tags",
@@ -40,11 +40,11 @@
       "attributes":{
         "code":{
           "t":"string",
-          "v":"SKU-"
+          "v":"SKU-QWE123"
         },
         "title":{
           "t":"string",
-          "v":""
+          "v":"SKU-QWE123 T"
         },
         "retailPrice":{
           "t":"price",

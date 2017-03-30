@@ -10,7 +10,6 @@ import testdata.Preconditions;
 import java.io.IOException;
 
 import static com.codeborne.selenide.Condition.*;
-import static com.codeborne.selenide.Selenide.close;
 import static com.codeborne.selenide.Selenide.refresh;
 import static org.testng.Assert.assertEquals;
 import static testdata.api.collection.Auth.loginAsAdmin;
@@ -298,7 +297,7 @@ public class GuestCheckoutTest extends Preconditions {
         p.clickPlaceOrderBtn();
         String orderNumber = p.confirmationOrderNumber().text();
 
-        loginAsAdmin();
+        loginAsAdmin(adminEmail, adminPassword, adminOrg);
         refresh();
         getGuestOrderEmail(orderNumber);
         assertEquals(guestOrderEmail, "qatest2278+" + randomId + "@gmail.com");

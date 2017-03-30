@@ -30,7 +30,7 @@ public class PdpPage extends CatalogPage {
         return $(xpath("//div[contains(@class, 'cart-actions')]//select/option[@value='" + qty + "']"));
     }
 
-    private SelenideElement addToCartBtn_pdp() {
+    public SelenideElement addToCartBtn_pdp() {
         return $(xpath("//button[contains(@class, 'add-to-cart-btn')]"));
     }
 

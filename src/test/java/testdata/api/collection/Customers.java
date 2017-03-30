@@ -149,9 +149,7 @@ public class Customers extends Helpers {
 
     @Step("[API] List all shipping addresses of customer <{0}>")
     public static void listCustomerAddresses(int customerId) throws IOException {
-
         System.out.println("Listing all addresses of customer " + customerId + "...");
-        OkHttpClient client = new OkHttpClient();
 
         Response response = request.get(apiUrl + "/v1/customers/" + customerId + "/addresses");
         String responseBody = response.body().string();

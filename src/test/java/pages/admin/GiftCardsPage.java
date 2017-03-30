@@ -5,16 +5,11 @@ import com.codeborne.selenide.SelenideElement;
 import ru.yandex.qatools.allure.annotations.Step;
 
 import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.sleep;
 import static org.openqa.selenium.By.xpath;
 
 public class GiftCardsPage extends BasePage {
 
     //------------------------------ ELEMENTS --------------------------------//
-
-    public SelenideElement counter() {
-        return $(xpath("//span[@id='total-counter-value']"));
-    }
 
     public SelenideElement addNewGCBtn() {
         return $(xpath("//span[text()='Gift Card']/.."));

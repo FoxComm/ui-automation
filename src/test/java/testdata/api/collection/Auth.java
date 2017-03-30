@@ -10,13 +10,13 @@ import java.io.IOException;
 public class Auth extends Helpers {
 
     @Step("[API] Log in as admin")
-    public static void loginAsAdmin() throws IOException {
+    public static void loginAsAdmin(String email, String password, String org) throws IOException {
         System.out.println("Authorizing as an admin...");
 
         JSONObject payload = parseObj("bin/payloads/auth/loginAsAdmin.json");
-        payload.putOpt("email", adminEmail);
-        payload.putOpt("password", adminPassword);
-        payload.putOpt("org", adminOrg);
+        payload.putOpt("email", email);
+        payload.putOpt("password", password);
+        payload.putOpt("org", org);
 
         Response response = request.post_noJWT(apiUrl + "/v1/public/login", payload.toString());
 

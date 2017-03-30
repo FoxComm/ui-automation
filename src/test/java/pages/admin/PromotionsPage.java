@@ -86,7 +86,7 @@ public class PromotionsPage extends BasePage {
         return $(xpath("//*[@id='fct-promo-offer-block']//div[contains(@class, 'select-product-search-dd')]"));
     }
 
-    public SelenideElement promoIdBreadcumb() {
+    public SelenideElement promoIdBreadcrumb() {
         return $(xpath("//a[@id='fct-breadcrumbs-id']"));
     }
 
@@ -209,7 +209,7 @@ public class PromotionsPage extends BasePage {
         setOffer("Percent off order", "10");
         setDdVal( stateDd(), "Active" );
         clickSave_wait();
-        shouldNotHaveText(promoIdBreadcumb(), "new", "Failed to create a new promotion.");
+        shouldNotHaveText(promoIdBreadcrumb(), "new", "Failed to create a new promotion.");
     }
 
     @Step("Set qualifier's \"Spend\" input fld to <{0}>")

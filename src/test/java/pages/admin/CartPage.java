@@ -214,7 +214,7 @@ public class CartPage extends BasePage {
         return String.valueOf(itemsInCartAmount());
     }
 
-    private SelenideElement lineItemSearchView_byName(String itemName) {
+    public SelenideElement lineItemSearchView_byName(String itemName) {
         return $(xpath("//ul[@class='fc-typeahead__items']//*[text()='" + itemName + "']"));
     }
 
@@ -240,7 +240,7 @@ public class CartPage extends BasePage {
     }
 
     @Step("Set \"Search\" field val to <{0}>")
-    private void searchForItem(String searchQuery) {
+    public void searchForItem(String searchQuery) {
         setFieldVal(lineItemSearchFld(), searchQuery);
     }
 

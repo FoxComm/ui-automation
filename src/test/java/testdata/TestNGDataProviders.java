@@ -26,7 +26,253 @@ public class TestNGDataProviders extends BaseTest {
 
     @DataProvider
     public Object[][] entreesSubcategories() {
-        return new Object[][]{ {"POULTRY"}, {"SEAFOOD"}, {"MEAT"}, {"VEGETARIAN"} };
+        return new Object[][] { {"POULTRY"}, {"SEAFOOD"}, {"MEAT"}, {"VEGETARIAN"} };
+    }
+
+    @DataProvider
+    public Object[][] productCategoryViewDisplayed() {
+        return new Object[][] {
+                {"active product, has tag, active SKU, has sellable stockitems"},
+                {"active product, has tag, active SKU, no sellable stockitems"},
+                {"active product, has tag, new SKU, has sellable stockitems"},
+                {"active product, has tag, active SKU, has sellable stockitems, is present in at least 1 cart > archive SKU"},
+                {"active product, has tag, active SKU, has sellable stockitems, is present in at least 1 cart > archive product"}
+        };
+    }
+
+    @DataProvider
+    public Object[][] productCategoryViewNotDisplayed() {
+        return new Object[][] {
+                {"active product, no tag, active SKU, has sellable stockitems"},
+                {"active product, no tag, active SKU, no sellable stockitems"},
+                {"active product, has tag, inactive SKU"},
+                {"inactive product, has tag, active SKU"},
+                {"inactive product, has tag, inactive SKU"},
+                {"inactive product, has tag, new SKU"},
+                {"active product, has tag, active SKU, has sellable stockitems > archive SKU"},
+                {"active product, has tag, active SKU, has sellable stockitems > archive product"},
+                {"active product, has tag, active SKU, no sellable stockitems, not present in any carts, has purchases > archive SKU"},
+                {"active product, has tag, active SKU, no sellable stockitems, not present in any carts, has purchases > archive product"},
+                {"active product, has tag, active SKU, has sellable stockitems, not present in any carts, has purchases > archive SKU"},
+                {"active product, has tag, active SKU, has sellable stockitems, not present in any carts, has purchases > archive product"},
+                {"inactive product, has tag, inactive SKU, has sellable stockitems"},
+                {"active product, has tag, active SKU, has sellable stockitems > product state goes inactive"},
+                {"active product, has tag, active SKU, has sellable stockitems > SKU state goes inactive"}
+        };
+    }
+
+    @DataProvider
+    public Object[][] productCanBeSearched() {
+        return new Object[][] {
+                {"active product, has tag, active SKU, has sellable stockitems"},
+                {"active product, has tag, active SKU, no sellable stockitems"},
+                {"active product, no tag, active SKU, has sellable stockitems"},
+                {"active product, no tag, active SKU, no sellable stockitems"},
+                {"active product, has tag, new SKU, has sellable stockitems"},
+                {"active product, has tag, active SKU, has sellable stockitems, is present in at least 1 cart > archive SKU"},
+                {"active product, has tag, active SKU, has sellable stockitems, is present in at least 1 cart > archive product"}
+        };
+    }
+
+    @DataProvider
+    public Object[][] productCannotBeSearched() {
+        return new Object[][] {
+                {"active product, has tag, inactive SKU"},
+                {"inactive product, has tag, active SKU"},
+                {"inactive product, has tag, inactive SKU"},
+                {"inactive product, has tag, new SKU"},
+                {"active product, has tag, active SKU, has sellable stockitems > archive SKU"},
+                {"active product, has tag, active SKU, has sellable stockitems > archive product"},
+                {"active product, has tag, active SKU, no sellable stockitems, not present in any carts, has purchases > archive SKU"},
+                {"active product, has tag, active SKU, no sellable stockitems, not present in any carts, has purchases > archive product"},
+                {"active product, has tag, active SKU, has sellable stockitems, not present in any carts, has purchases > archive SKU"},
+                {"active product, has tag, active SKU, has sellable stockitems, not present in any carts, has purchases > archive product"},
+                {"inactive product, has tag, inactive SKU, has sellable stockitems"},
+                {"active product, has tag, active SKU, has sellable stockitems > product state goes inactive"},
+                {"active product, has tag, active SKU, has sellable stockitems > SKU state goes inactive"}
+        };
+    }
+
+    @DataProvider
+    public Object[][] canAccessPDP() {
+        return new Object[][] {
+                {"active product, has tag, active SKU, has sellable stockitems"},
+                {"active product, has tag, active SKU, no sellable stockitems"},
+                {"active product, no tag, active SKU, has sellable stockitems"},
+                {"active product, no tag, active SKU, no sellable stockitems"},
+                {"active product, has tag, new SKU, has sellable stockitems"},
+                {"active product, has tag, active SKU, has sellable stockitems, is present in at least 1 cart > archive SKU"},
+                {"active product, has tag, active SKU, has sellable stockitems, is present in at least 1 cart > archive product"},
+
+        };
+    }
+
+    @DataProvider
+    public Object[][] cannotAccessPDP() {
+        return new Object[][] {
+                {"active product, has tag, inactive SKU"},
+                {"inactive product, has tag, active SKU"},
+                {"inactive product, has tag, inactive SKU"},
+                {"inactive product, has tag, new SKU"},
+                {"active product, has tag, active SKU, has sellable stockitems > archive SKU"},
+                {"active product, has tag, active SKU, has sellable stockitems > archive product"},
+                {"active product, has tag, active SKU, no sellable stockitems, not present in any carts, has purchases > archive SKU"},
+                {"active product, has tag, active SKU, no sellable stockitems, not present in any carts, has purchases > archive product"},
+                {"active product, has tag, active SKU, has sellable stockitems, not present in any carts, has purchases > archive SKU"},
+                {"active product, has tag, active SKU, has sellable stockitems, not present in any carts, has purchases > archive product"},
+                {"inactive product, has tag, inactive SKU, has sellable stockitems"}
+        };
+    }
+
+    @DataProvider
+    public Object[][] productCanPassCheckout() {
+        return new Object[][] {
+                {"active product, has tag, active SKU, has sellable stockitems"},
+                {"active product, no tag, active SKU, has sellable stockitems"},
+                {"active product, has tag, new SKU, has sellable stockitems"},
+                {"active product, has tag, active SKU, has sellable stockitems, is present in at least 1 cart > archive SKU"},
+                {"active product, has tag, active SKU, has sellable stockitems, is present in at least 1 cart > archive product"}
+        };
+    }
+
+    @DataProvider
+    public Object[][] productCannotPassCheckout() {
+        return new Object[][] {
+                {"active product, has tag, active SKU, no sellable stockitems"},
+                {"active product, no tag, active SKU, no sellable stockitems"}
+        };
+    }
+
+    @DataProvider
+    public Object[][] canAddProductToCart_storefront() {
+        return new Object[][] {
+                {"active product, has tag, active SKU, has sellable stockitems"},
+                {"active product, no tag, active SKU, has sellable stockitems"},
+                {"active product, has tag, new SKU, has sellable stockitems"},
+                {"active product, has tag, active SKU, no sellable stockitems"},
+                {"active product, no tag, active SKU, no sellable stockitems"},
+                {"active product, has tag, active SKU, has sellable stockitems, is present in at least 1 cart > archive SKU"},
+                {"active product, has tag, active SKU, has sellable stockitems, is present in at least 1 cart > archive product"}
+        };
+    }
+
+    @DataProvider
+    public Object[][] canAddProductToCart_admin() {
+        return new Object[][] {
+                {"active product, has tag, active SKU, has sellable stockitems"},
+                {"active product, no tag, active SKU, has sellable stockitems"},
+                {"active product, has tag, new SKU, has sellable stockitems"},
+                {"active product, has tag, active SKU, no sellable stockitems"},
+                {"active product, no tag, active SKU, no sellable stockitems"},
+                {"active product, has tag, active SKU, has sellable stockitems, is present in at least 1 cart > archive SKU"},
+                {"active product, has tag, active SKU, has sellable stockitems, is present in at least 1 cart > archive product"}
+        };
+    }
+
+    @DataProvider
+    public Object[][] productNotDisplayedLineItemsSearchView() {
+        return new Object[][] {
+                {"active product, has tag, inactive SKU"},
+                {"inactive product, has tag, active SKU"},
+                {"inactive product, has tag, inactive SKU"},
+                {"inactive product, has tag, new SKU"},
+                {"active product, has tag, active SKU, has sellable stockitems > archive SKU"},
+                {"active product, has tag, active SKU, has sellable stockitems > archive product"},
+                {"active product, has tag, active SKU, no sellable stockitems, not present in any carts, has purchases > archive SKU"},
+                {"active product, has tag, active SKU, no sellable stockitems, not present in any carts, has purchases > archive product"},
+                {"active product, has tag, active SKU, has sellable stockitems, not present in any carts, has purchases > archive SKU"},
+                {"active product, has tag, active SKU, has sellable stockitems, not present in any carts, has purchases > archive product"},
+                {"inactive product, has tag, inactive SKU, has sellable stockitems"},
+                {"active product, has tag, active SKU, has sellable stockitems > product state goes inactive"},
+                {"active product, has tag, active SKU, has sellable stockitems > SKU state goes inactive"}
+        };
+    }
+
+    @DataProvider
+    public Object[][] canAddSkuToCart_admin() {
+        return new Object[][] {
+                {"active product, has tag, active SKU, has sellable stockitems"},
+                {"active product, has tag, active SKU, no sellable stockitems"},
+                {"active product, no tag, active SKU, has sellable stockitems"},
+                {"active product, no tag, active SKU, no sellable stockitems"},
+                {"active product, has tag, new SKU, has sellable stockitems"},
+                {"active product, has tag, active SKU, has sellable stockitems, is present in at least 1 cart > archive SKU"},
+                {"active product, has tag, active SKU, has sellable stockitems, is present in at least 1 cart > archive product"}
+        };
+    }
+
+    @DataProvider
+    public Object[][] skuNotDisplayedLineItemsSearchView() {
+        return new Object[][] {
+                {"active product, has tag, inactive SKU"},
+                {"inactive product, has tag, active SKU"},
+                {"inactive product, has tag, inactive SKU"},
+                {"inactive product, has tag, new SKU"},
+                {"active product, has tag, active SKU, has sellable stockitems > archive SKU"},
+                {"active product, has tag, active SKU, has sellable stockitems > archive product"},
+                {"active product, has tag, active SKU, no sellable stockitems, not present in any carts, has purchases > archive SKU"},
+                {"active product, has tag, active SKU, no sellable stockitems, not present in any carts, has purchases > archive product"},
+                {"active product, has tag, active SKU, has sellable stockitems, not present in any carts, has purchases > archive SKU"},
+                {"active product, has tag, active SKU, has sellable stockitems, not present in any carts, has purchases > archive product"},
+                {"inactive product, has tag, inactive SKU, has sellable stockitems"},
+                {"active product, has tag, active SKU, has sellable stockitems > product state goes inactive"},
+                {"active product, has tag, active SKU, has sellable stockitems > SKU state goes inactive"}
+        };
+    }
+
+    @DataProvider
+    public Object[][] skuCreatedAlongWithProduct() {
+        return new Object[][] {
+                {"active product, has tag, new SKU, has sellable stockitems"},
+                {"inactive product, has tag, new SKU"}
+        };
+    }
+
+    @DataProvider
+    public Object[][] newSkuInheritsProductState() {
+        return new Object[][] {
+                {"active product, has tag, new SKU, has sellable stockitems", "active"},
+                {"inactive product, has tag, new SKU", "inactive"}
+        };
+    }
+
+    @DataProvider
+    public Object[][] productIsNotArchived() {
+        return new Object[][] {
+                {"active product, has tag, active SKU, has sellable stockitems > archive SKU"},
+                {"active product, has tag, active SKU, no sellable stockitems, not present in any carts, has purchases > archive SKU"},
+                {"active product, has tag, active SKU, has sellable stockitems, not present in any carts, has purchases > archive SKU"},
+                {"active product, has tag, active SKU, has sellable stockitems, is present in at least 1 cart > archive product"}
+        };
+    }
+
+    @DataProvider
+    public Object[][] skuIsNotArchived() {
+        return new Object[][] {
+                {"active product, has tag, active SKU, has sellable stockitems > archive product"},
+                {"active product, has tag, active SKU, no sellable stockitems, not present in any carts, has purchases > archive product"},
+                {"active product, has tag, active SKU, has sellable stockitems, not present in any carts, has purchases > archive product"},
+                {"active product, has tag, active SKU, has sellable stockitems, is present in at least 1 cart > archive SKU"}
+        };
+    }
+
+    @DataProvider
+    public Object[][] archivedSkuRemovedFromGeneralCategoryView() {
+        return new Object[][] {
+                {"active product, has tag, active SKU, has sellable stockitems > archive SKU"},
+                {"active product, has tag, active SKU, no sellable stockitems, not present in any carts, has purchases > archive SKU"},
+                {"active product, has tag, active SKU, has sellable stockitems, not present in any carts, has purchases > archive SKU"},
+
+        };
+    }
+
+    @DataProvider
+    public Object[][] archivedProductRemovedFromGeneralCategoryView() {
+        return new Object[][] {
+                {"active product, has tag, active SKU, has sellable stockitems > archive product"},
+                {"еactive product, has tag, active SKU, no sellable stockitems, not present in any carts, has purchases > archive product"},
+                {"еactive product, has tag, active SKU, has sellable stockitems, not present in any carts, has purchases > archive product"}
+        };
     }
 
 }

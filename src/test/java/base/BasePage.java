@@ -10,7 +10,6 @@ import ru.yandex.qatools.allure.annotations.Step;
 import java.util.List;
 import java.util.Objects;
 
-import static com.codeborne.selenide.Condition.type;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
 import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
@@ -19,6 +18,10 @@ import static org.openqa.selenium.By.xpath;
 public class BasePage extends ConciseAPI {
 
     //---------------------------------- GENERAL CONTROLS -----------------------------------//
+
+    public SelenideElement counter() {
+        return $(xpath("//span[@id='fct-total-counter-value']"));
+    }
 
     public SelenideElement userMenuBtn() {
         return $(xpath("//*[@id='fct-user-menu-btn']"));
@@ -48,6 +51,10 @@ public class BasePage extends ConciseAPI {
 
     public SelenideElement yesBtn() {
         return $(By.xpath("//span[contains(text(), 'Yes')]/.."));
+    }
+
+    public SelenideElement breadcrumb() {
+        return $(xpath("//a[@id='fct-breadcrumbs-id']"));
     }
 
     @Step("Click \"Yes\" btn")
@@ -291,7 +298,7 @@ public class BasePage extends ConciseAPI {
         return $(xpath("//div[@title='" + filterTitle + "']/a"));
     }
 
-    private SelenideElement noSearchResultsMsg() {
+    public SelenideElement noSearchResultsMsg() {
         return $(By.xpath("//div[@class='fc-content-box__empty-row']"));
     }
 
@@ -317,6 +324,15 @@ public class BasePage extends ConciseAPI {
 
     private List<SelenideElement> allSearchFilters() {
         return $$(By.xpath("//div[@class='fc-pilled-input__pill']/a"));
+    }
+
+    public SelenideElement searchTab(String title) {
+        return $(xpath("//div[@class='fc-editable-tab']/li[text()='" + title + "']"));
+    }
+
+    @Step("Switch to <{0}> saved search tab")
+    public void switchToSearchTab(String tabTitle) {
+        click(searchTab(tabTitle));
     }
 
     public SelenideElement today() {
@@ -471,12 +487,6 @@ public class BasePage extends ConciseAPI {
     public void sortListBy(int columnIndex) {
         click(columnLabel(columnIndex));
         waitForDataToLoad();
-    }
-
-    @Step("Search should return no results -- \"No orders found\" msg should be displayed")
-    public void assertNoSearchResults() {
-        noSearchResultsMsg().shouldBe(visible
-                .because("Search output isn't empty"));
     }
 
 }

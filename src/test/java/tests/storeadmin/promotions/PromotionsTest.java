@@ -37,8 +37,8 @@ public class PromotionsTest extends Preconditions {
         p = openPage(adminUrl + "/promotions/new", PromotionsPage.class);
         p.fillOutNewPromoForm("Coupon", randomId);
         p.clickSave_wait();
-        shouldNotHaveText(p.promoIdBreadcumb(), "new", "\"new\" isn't changed to promoId value of a just created promo");
-        String promoId = p.promoIdBreadcumb().text();
+        shouldNotHaveText(p.promoIdBreadcrumb(), "new", "\"new\" isn't changed to promoId value of a just created promo");
+        String promoId = p.promoIdBreadcrumb().text();
         p.navigateTo("Promotions");
         p.search(randomId);
 
@@ -62,7 +62,7 @@ public class PromotionsTest extends Preconditions {
         p = openPage(adminUrl + "/promotions/new", PromotionsPage.class);
         p.fillOutNewPromoForm("Coupon", randomId);
         p.clickSave_wait();
-        shouldNotHaveText(p.promoIdBreadcumb(), "new", "\"new\" isn't changed to promoId value of a just created promo");
+        shouldNotHaveText(p.promoIdBreadcrumb(), "new", "\"new\" isn't changed to promoId value of a just created promo");
         p.navigateTo("Promotions");
         p.search(promotionId);
 

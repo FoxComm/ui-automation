@@ -29,7 +29,7 @@ public class Preconditions extends Helpers {
         products.clear();
         bulkCodes.clear();
         System.out.println("==== ==== ==== ====");
-        loginAsAdmin();
+        loginAsAdmin(adminEmail, adminPassword, adminOrg);
 
         switch(testMethodName) {
 
@@ -722,6 +722,7 @@ public class Preconditions extends Helpers {
                 createSKU_active();
                 createProduct_active_noTag(skuId, skuCode);
                 break;
+
             case "inactive product, has tag, active SKU":
                 createSKU_active();
                 createProduct_inactive(skuId, skuCode, "sunglasses");
@@ -734,7 +735,7 @@ public class Preconditions extends Helpers {
 
             case "active product, has tag, inactive SKU":
                 createSKU_inactive();
-                createProduct_active(skuCode, "sunglasses");
+                createProduct_active(skuCode, storefrontCategory);
                 break;
 
             case "active product, no tag, inactive SKU":
@@ -750,6 +751,160 @@ public class Preconditions extends Helpers {
             case "inactive product, no tag, inactive SKU":
                 createSKU_inactive();
                 createProduct_inactive_noTag(skuId, skuCode);
+                break;
+
+            case "active product, has tag, active SKU, has sellable stockitems":
+                createSKU_active();
+                createProduct_active(skuCode, storefrontCategory);
+                increaseOnHandQty(skuCode, "Sellable", 1);
+                break;
+
+            case "active product, has tag, new SKU, has sellable stockitems":
+                createSKU_active();
+                createProduct_newSKU_active_hasTag(storefrontCategory);
+                increaseOnHandQty(skuCode, "Sellable", 1);
+                break;
+
+            case "active product, has tag, active SKU, no sellable stockitems":
+                createSKU_active();
+                createProduct_newSKU_active_hasTag(storefrontCategory);
+                break;
+
+            case "active product, no tag, active SKU, has sellable stockitems":
+                createSKU_active();
+                createProduct_active_noTag(skuId, skuCode);
+                increaseOnHandQty(skuCode, "Sellable", 1);
+                break;
+
+            case "active product, no tag, active SKU, no sellable stockitems":
+                createSKU_active();
+                createProduct_active_noTag(skuId, skuCode);
+                break;
+
+            case "inactive product, has tag, new SKU":
+                createProduct_inactive_newSKU_hasTag(storefrontCategory);
+                break;
+
+            case "active product, has tag, active SKU, has sellable stockitems > archive SKU":
+                createSKU_active();
+                createProduct_active(skuCode, storefrontCategory);
+                increaseOnHandQty(skuCode, "Sellable", 1);
+                archiveSKU(skuCode);
+                break;
+
+            case "active product, has tag, active SKU, has sellable stockitems > archive product":
+                createSKU_active();
+                createProduct_active(skuCode, storefrontCategory);
+                increaseOnHandQty(skuCode, "Sellable", 1);
+                archiveProduct(productId);
+                break;
+
+            case "active product, has tag, active SKU, no sellable stockitems, not present in any carts, has purchases > archive SKU":
+                createCustomer();
+                createCart(customerId);
+                createSKU_active();
+                createProduct_active(skuCode, storefrontCategory);
+                increaseOnHandQty(skuCode, "Sellable", 1);
+                updLineItems(cartId, skuCode, 1);
+                setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
+                listShipMethods(cartId);
+                setShipMethod(cartId, shipMethodId);
+                listCustomerAddresses(customerId);
+                createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard", addressId1);
+                setPayment_creditCard(cartId, creditCardId);
+                checkoutCart(cartId);
+                archiveSKU(skuCode);
+                break;
+
+            case "active product, has tag, active SKU, no sellable stockitems, not present in any carts, has purchases > archive product":
+                createCustomer();
+                createCart(customerId);
+                createSKU_active();
+                createProduct_active(skuCode, storefrontCategory);
+                increaseOnHandQty(skuCode, "Sellable", 1);
+                updLineItems(cartId, skuCode, 1);
+                setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
+                listShipMethods(cartId);
+                setShipMethod(cartId, shipMethodId);
+                listCustomerAddresses(customerId);
+                createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard", addressId1);
+                setPayment_creditCard(cartId, creditCardId);
+                checkoutCart(cartId);
+                archiveProduct(productId);
+                break;
+
+            case "active product, has tag, active SKU, has sellable stockitems, not present in any carts, has purchases > archive SKU":
+                createCustomer();
+                createCart(customerId);
+                createSKU_active();
+                createProduct_active(skuCode, storefrontCategory);
+                increaseOnHandQty(skuCode, "Sellable", 2);
+                updLineItems(cartId, skuCode, 1);
+                setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
+                listShipMethods(cartId);
+                setShipMethod(cartId, shipMethodId);
+                listCustomerAddresses(customerId);
+                createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard", addressId1);
+                setPayment_creditCard(cartId, creditCardId);
+                checkoutCart(cartId);
+                archiveSKU(skuCode);
+                break;
+
+            case "active product, has tag, active SKU, has sellable stockitems, not present in any carts, has purchases > archive product":
+                createCustomer();
+                createCart(customerId);
+                createSKU_active();
+                createProduct_active(skuCode, storefrontCategory);
+                increaseOnHandQty(skuCode, "Sellable", 2);
+                updLineItems(cartId, skuCode, 1);
+                setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
+                listShipMethods(cartId);
+                setShipMethod(cartId, shipMethodId);
+                listCustomerAddresses(customerId);
+                createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard", addressId1);
+                setPayment_creditCard(cartId, creditCardId);
+                checkoutCart(cartId);
+                archiveProduct(productTitle);
+                break;
+
+            case "active product, has tag, active SKU, has sellable stockitems, is present in at least 1 cart > archive SKU":
+                createCustomer();
+                createCart(customerId);
+                createSKU_active();
+                createProduct_active(skuCode, storefrontCategory);
+                increaseOnHandQty(skuCode, "Sellable", 2);
+                updLineItems(cartId, skuCode, 1);
+                archiveSKU_expectFail(skuCode);
+                break;
+
+            case "active product, has tag, active SKU, has sellable stockitems, is present in at least 1 cart > archive product":
+                createCustomer();
+                createCart(customerId);
+                createSKU_active();
+                createProduct_active(skuCode, storefrontCategory);
+                increaseOnHandQty(skuCode, "Sellable", 2);
+                updLineItems(cartId, skuCode, 1);
+                archiveProduct_expectFail(productId);
+                break;
+
+            case "inactive product, has tag, inactive SKU, has sellable stockitems":
+                createSKU_inactive();
+                createProduct_inactive(skuId, skuCode, storefrontCategory);
+                increaseOnHandQty(skuCode, "Sellable", 1);
+                break;
+
+            case "active product, has tag, active SKU, has sellable stockitems > product state goes inactive":
+                createSKU_active();
+                createProduct_inactive(skuId, skuCode, storefrontCategory);
+                increaseOnHandQty(skuCode, "Sellable", 1);
+                setProductState(productId, "inactive");
+                break;
+
+            case "active product, has tag, active SKU, has sellable stockitems > SKU state goes inactive":
+                createSKU_active();
+                createProduct_inactive(skuId, skuCode, storefrontCategory);
+                increaseOnHandQty(skuCode, "Sellable", 1);
+                setSkuState(skuCode, "inactive");
                 break;
 
             //----------------------------------- INVENTORY -----------------------------------//
@@ -1561,6 +1716,29 @@ public class Preconditions extends Helpers {
                 checkProductPresenceInCategoryView("int", "productId", productId);
                 break;
         }
+    }
+
+    public static void main(String[] args) throws IOException {
+        loginAsAdmin("admin@admin.com", "password", "tenant");
+        randomId = generateRandomID();
+        signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
+        createCart(customerId);
+        createSKU_active();
+        createProduct_active(skuCode, "APPETIZERS");
+        increaseOnHandQty(skuCode, "Sellable", 1);
+        updLineItems(cartId, skuCode, 1);
+        setShipAddress(cartId,
+                "John Doe",
+                4177, 234,
+                "Washington", "7500 Roosevelt Way NE",
+                "Block 42",
+                "Seattle", "98115",
+                "5038234000", false);
+        listShipMethods(cartId);
+        setShipMethod(cartId, shipMethodId);
+        listCustomerAddresses(customerId);
+        createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard", addressId1);
+        setPayment_creditCard(cartId, creditCardId);
     }
 
 }

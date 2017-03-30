@@ -1,59 +1,167 @@
 package tests.storeadmin.products;
+import org.openqa.selenium.By;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import pages.admin.CartPage;
+import pages.admin.LoginPage;
+import pages.admin.ProductsPage;
+import pages.admin.SkusPage;
+import ru.yandex.qatools.allure.annotations.Description;
 import testdata.Preconditions;
-import java.io.IOException;
 
-import static testdata.api.collection.Auth.loginAsAdmin;
-import static testdata.api.collection.Inventory.increaseOnHandQty;
-import static testdata.api.collection.Products.createProduct_active;
-import static testdata.api.collection.Products.createProduct_active_noTag;
-import static testdata.api.collection.Products.createProduct_inactive;
-import static testdata.api.collection.Skus.createSKU_active;
-import static testdata.api.collection.Skus.createSKU_inactive;
+import java.io.IOException;
+import java.util.Objects;
+
+import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.open;
 
 public class ProductsTest extends Preconditions {
 
+    private CartPage cartPage;
+    private SkusPage skusPage;
+    private ProductsPage productsPage;
 
-    // Active product, active SKU, has tag, has sellable stockitems in MWH
-    @Test(priority = 1)
-    public void activeProduct_activeSKU_hasTag_hasSellableItems() throws IOException {
-        loginAsAdmin();
-        createSKU_active();
-        createProduct_active(skuCode, "modern");
-        increaseOnHandQty(skuCode, "Sellable", 20);
+    @BeforeClass(alwaysRun = true)
+    public void setUp() {
+        open(adminUrl);
+        if ( (Objects.equals(getUrl(), adminUrl + "/login")) ) {
+            LoginPage loginPage = openPage(adminUrl + "/login", LoginPage.class);
+            loginPage.login(adminOrg, adminEmail, adminPassword);
+            shouldBeVisible(loginPage.userMenuBtn(), "Failed to log in");
+        }
     }
 
-    // Active product, active SKU, no tag, has sellable stockitems in MWH
-    @Test(priority = 2)
-    public void activeProduct_activeSKU_noTag_hasSellableItems() throws IOException {
-        loginAsAdmin();
-        createSKU_active();
-        createProduct_active_noTag(skuId, skuCode);
-        increaseOnHandQty(skuCode, "Sellable", 20);
+    //--------------------- CART
+    @Test(priority = 1, dataProvider = "canAddProductToCart_admin")
+    @Description("Product is displayed in line items search view in admin and can be added to cart")
+    public void canAddProductToCart_admin(String testData) throws IOException {
+        provideTestData(testData);
+
+        cartPage = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
+        cartPage.addItemToCart(productTitle);
+
+        cartPage.lineItem_byName(productTitle).shouldBe(visible);
     }
 
-    // Active product, inactive SKU, has tag
-    @Test(priority = 3)
-    public void activeProduct_inactiveSKU_noTag() throws IOException {
-        loginAsAdmin();
-        createSKU_inactive();
-        createProduct_active(skuCode, "modern");
+    @Test(priority = 2, dataProvider = "productNotDisplayedLineItemsSearchView")
+    @Description("Product isn't displayed in line items search view in admin")
+    public void productNotDisplayedLineItemsSearchView(String testData) throws IOException {
+        provideTestData(testData);
+
+        cartPage = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
+        cartPage.clickEditBtn("Line Items");
+        cartPage.searchForItem(productTitle);
+
+        cartPage.lineItemSearchView_byName(productTitle).shouldNotBe(visible);
     }
 
-    // Inactive product, active SKU, has tag
-    @Test(priority = 4)
-    public void inactiveProduct_activeSKU_hasTag() throws IOException {
-        loginAsAdmin();
-        createSKU_active();
-        createProduct_inactive(skuId, skuCode, "modern");
+    @Test(priority = 3, dataProvider = "canAddSkuToCart_admin")
+    @Description("SKU is found in line items search view in admin and can be added to cart")
+    public void canAddSkuToCart_admin(String testData) throws IOException {
+        provideTestData(testData);
+
+        cartPage = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
+        cartPage.clickEditBtn("Line Items");
+        cartPage.searchForItem(skuCode);
+
+        cartPage.lineItemSearchView_byName(skuCode).shouldBe(visible);
     }
 
-    // Inactive product, inactive SKU, has tag
-    @Test(priority = 5)
-    public void inactiveProduct_inactiveSKU_hasTag() throws IOException {
-        loginAsAdmin();
-        createSKU_inactive();
-        createProduct_inactive(skuId, skuCode, "modern");
+    @Test(priority = 4, dataProvider = "skuNotDisplayedLineItemsSearchView")
+    @Description("SKU is not found in line items search view in admin and can be added to cart")
+    public void skuNotDisplayedLineItemsSearchView(String testData) throws IOException {
+        provideTestData(testData);
+
+        cartPage = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
+        cartPage.clickEditBtn("Line Items");
+        cartPage.searchForItem(skuCode);
+
+        cartPage.lineItemSearchView_byName(skuCode).shouldNotBe(visible);
+    }
+
+    //--------------------- SKUS
+    @Test(priority = 5, dataProvider = "skuCreatedAlongWithProduct")
+    @Description("SKU is created along with the product")
+    public void skuCreatedAlongWithProduct(String testData) throws IOException {
+        provideTestData(testData);
+
+
+        skusPage = openPage(adminUrl + "/skus", SkusPage.class);
+        skusPage.search(skuCode);
+        skusPage.openSKU(skuCode);
+
+        skusPage.breadcrumb().shouldHave(text(skuCode));
+    }
+
+    @Test(priority = 6, dataProvider = "newSkuInheritsProductState")
+    @Description("SKU created along with product inherits product's state")
+    public void newSkuInheritsProductState(String testData, String expState) throws IOException {
+        provideTestData(testData);
+
+        skusPage = openPage(adminUrl + "/skus/" + skuCode, SkusPage.class);
+
+        skusPage.stateVal().shouldHave(text(expState));
+    }
+
+    @Test(priority = 7, dataProvider = "skuIsNotArchived")
+    @Description("SKU is not archived")
+    public void skuIsNotArchived(String testData) throws IOException {
+        provideTestData(testData);
+
+        skusPage = openPage(adminUrl + "/skus", SkusPage.class);
+        skusPage.search(skuCode);
+        skusPage.openSKU(skuCode);
+
+        skusPage.breadcrumb().shouldHave(text(skuCode));
+    }
+
+    @Test(priority = 8, dataProvider = "archivedSkuRemovedFromGeneralCategoryView")
+    @Description("Archived SKU is not displayed on the category view in admin")
+    public void archivedSkuRemovedFromGeneralCategoryView(String testData) throws IOException {
+        provideTestData(testData);
+
+        skusPage = openPage(adminUrl + "/skus", SkusPage.class);
+        skusPage.search(skuCode);
+        skusPage.noSearchResultsMsg().shouldBe(visible);
+
+        skusPage.switchToSearchTab("Archived");
+        click(skusPage.searchFld());
+        click(skusPage.counter());
+
+        $(By.xpath("//*[text()='" + skuCode + "']")).shouldBe(visible);
+    }
+
+
+    //--------------------- PRODUCTS
+    @Test(priority = 9, dataProvider = "productIsNotArchived")
+    @Description("Product is not archived")
+    public void productIsNotArchived(String testData) throws IOException {
+        provideTestData(testData);
+
+        productsPage = openPage(adminUrl + "/products", ProductsPage.class);
+
+        productsPage.search(productTitle);
+        productsPage.openProduct(productTitle);
+
+        productsPage.breadcrumb().shouldHave(text(productTitle));
+    }
+
+    @Test(priority = 10, dataProvider = "archivedProductRemovedFromGeneralCategoryView")
+    @Description("Archived product is not displayed on the category view in admin")
+    public void archivedProductRemovedFromGeneralCategoryView(String testData) throws IOException {
+        provideTestData(testData);
+
+        productsPage = openPage(adminUrl + "/products", ProductsPage.class);
+        productsPage.search(productTitle);
+        productsPage.noSearchResultsMsg().shouldBe(visible);
+
+        productsPage.switchToSearchTab("Archived");
+        click(productsPage.searchFld());
+        click(productsPage.counter());
+
+        $(By.xpath("//*[text()='" + productTitle + "']")).shouldBe(visible);
     }
 
 }

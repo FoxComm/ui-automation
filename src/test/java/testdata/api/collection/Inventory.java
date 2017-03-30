@@ -18,9 +18,11 @@ public class Inventory extends Helpers {
         if (response.code() == 200) {
             System.out.println(response.code() + " " + response.message());
             JSONObject responseJSON = new JSONObject(responseBody);
-            JSONObject obj = responseJSON.getJSONArray("summary").getJSONObject(0);
-            skuId_inventory = obj.getJSONObject("stockItem").getInt("id");
-            System.out.println("SKU ID: <" + skuId_inventory + ">");
+            skuId_inventory = responseJSON.getJSONArray("summary")
+                                            .getJSONObject(0)
+                                            .getJSONObject("stockItem")
+                                            .getInt("id");
+            System.out.println("skuId_inventory: <" + skuId_inventory + ">");
             System.out.println("---- ---- ---- ----");
         } else {
             failTest(responseBody, response.code(), response.message());
