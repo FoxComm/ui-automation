@@ -468,7 +468,6 @@ public class BasePage extends ConciseAPI {
         hitEnter();
         click(searchFld());
         click($(xpath("//h1")));
-        shouldBeVisible(contentOnList(), "Search request returned no results.");
     }
 
     @Step("Remove all search filters from search field")

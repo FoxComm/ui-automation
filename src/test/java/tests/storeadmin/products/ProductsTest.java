@@ -40,9 +40,11 @@ public class ProductsTest extends Preconditions {
         provideTestData(testData);
 
         cartPage = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
-        cartPage.addItemToCart(productTitle);
+        cartPage.clickEditBtn("Line Items");
+        cartPage.searchForItem(productTitle);
+        cartPage.addFoundItem(productTitle);
 
-        cartPage.lineItem_byName(productTitle).shouldBe(visible);
+        cartPage.lineItem_editing(productTitle).shouldBe(visible);
     }
 
     @Test(priority = 2, dataProvider = "productNotDisplayedLineItemsSearchView")
@@ -65,8 +67,9 @@ public class ProductsTest extends Preconditions {
         cartPage = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
         cartPage.clickEditBtn("Line Items");
         cartPage.searchForItem(skuCode);
+        cartPage.addFoundItem(skuCode);
 
-        cartPage.lineItemSearchView_byName(skuCode).shouldBe(visible);
+        cartPage.lineItem_editing(skuCode).shouldBe(visible);
     }
 
     @Test(priority = 4, dataProvider = "skuNotDisplayedLineItemsSearchView")
@@ -145,7 +148,7 @@ public class ProductsTest extends Preconditions {
         productsPage.search(productTitle);
         productsPage.openProduct(productTitle);
 
-        productsPage.breadcrumb().shouldHave(text(productTitle));
+        productsPage.breadcrumb().shouldHave(text(productId));
     }
 
     @Test(priority = 10, dataProvider = "archivedProductRemovedFromGeneralCategoryView")

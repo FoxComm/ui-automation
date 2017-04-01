@@ -202,6 +202,10 @@ public class CartPage extends BasePage {
         return $(xpath("//tbody[@id='fct-cart-line-items']//a[text()='" + itemName + "']"));
     }
 
+    public SelenideElement lineItem_editing(String name) {
+        return $(xpath("//td[@class='line-item-name' and text()='" + name + "']"));
+    }
+
     public ElementsCollection lineItems() {
         return $$(xpath("//tbody[@id='fct-cart-line-items']/tr"));
     }
@@ -245,7 +249,7 @@ public class CartPage extends BasePage {
     }
 
     @Step("Click <{0}> in search view")
-    private void addFoundItem(String searchQuery) {
+    public void addFoundItem(String searchQuery) {
         click(lineItemSearchView_byName(searchQuery));
     }
 

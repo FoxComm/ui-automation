@@ -66,6 +66,7 @@ public class GiftCardsTest extends Preconditions {
         String gcNumber = p.getGCNumber(getUrl(), adminUrl);
         p.navigateTo("Gift Cards");
         p.search(gcNumber);
+        shouldBeVisible(contentOnList(), "Search request returned no results.");
 
         p.getGCParamVal("1", "Gift Card Number").shouldHave(text(gcNumber));
 
@@ -83,6 +84,7 @@ public class GiftCardsTest extends Preconditions {
         String gcNumber = p.getGCNumber(getUrl(), adminUrl);
         p.navigateTo("Gift Cards");
         p.search(gcNumber);
+        shouldBeVisible(contentOnList(), "Search request returned no results.");
 
         p.getGCParamVal("1", "State").shouldHave(text("Active"));
     }
@@ -142,6 +144,7 @@ public class GiftCardsTest extends Preconditions {
         shouldNotBeVisible(p.yesBtn(), "Failed to wait untill yesBtn won't be visible");
         p.navigateTo("Gift Cards");
         p.search(gcCode);
+        shouldBeVisible(contentOnList(), "Search request returned no results.");
 
         p.getGCParamVal("1", "State").shouldHave(text("On Hold"));
     }

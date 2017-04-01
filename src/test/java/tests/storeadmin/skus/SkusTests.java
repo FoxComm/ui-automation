@@ -38,6 +38,7 @@ public class SkusTests extends Preconditions {
         shouldHaveText(p.skuCodeVal(), "SKU-" + randomId, "Failed to create new SKU");
         p.navigateTo("SKUs");
         p.search(randomId);
+        shouldBeVisible(contentOnList(), "Search request returned no results.");
 
         p.getSKUParamVal("1", "Code").shouldHave(text("SKU-" + randomId));
     }
@@ -78,6 +79,7 @@ public class SkusTests extends Preconditions {
         p.clickSave_wait();
         p.navigateTo("SKUs");
         p.search( skuCode.substring(4, skuCode.length()) );
+        shouldBeVisible(contentOnList(), "Search request returned no results.");
 
         p.getSKUParamVal("1", "Title").shouldHave(text("Edited SKU Title"));
     }
@@ -91,6 +93,7 @@ public class SkusTests extends Preconditions {
         p.clickSave_wait();
         p.navigateTo("SKUs");
         p.search( skuCode.substring(4, skuCode.length()) );
+        shouldBeVisible(contentOnList(), "Search request returned no results.");
         shouldHaveText(p.getSKUParamVal("1", "Title"), "Edited SKU Title", "SKU title isn't updated on the list.");
         p.openSKU(skuCode);
 
@@ -106,6 +109,7 @@ public class SkusTests extends Preconditions {
         p.clickSave_wait();
         p.navigateTo("SKUs");
         p.search(skuCode.substring(4, skuCode.length()));
+        shouldBeVisible(contentOnList(), "Search request returned no results.");
         p.openSKU(skuCode);
 
         p.upcFld().shouldHave(value("Edited UPC"));
@@ -121,6 +125,7 @@ public class SkusTests extends Preconditions {
         p.clickSave_wait();
         p.navigateTo("SKUs");
         p.search(skuCode.substring(4, skuCode.length()));
+        shouldBeVisible(contentOnList(), "Search request returned no results.");
         p.openSKU(skuCode);
 
         p.descriptionFld().shouldHave(text("Edited description"));
@@ -135,6 +140,7 @@ public class SkusTests extends Preconditions {
         p.clickSave_wait();
         p.navigateTo("SKUs");
         p.search(skuCode.substring(4, skuCode.length()));
+        shouldBeVisible(contentOnList(), "Search request returned no results.");
 
         p.getSKUParamVal("1", "Retail Price").shouldHave(text("70.00"));
     }
@@ -148,6 +154,7 @@ public class SkusTests extends Preconditions {
         p.clickSave_wait();
         p.navigateTo("SKUs");
         p.search(skuCode.substring(4, skuCode.length()));
+        shouldBeVisible(contentOnList(), "Search request returned no results.");
         p.getSKUParamVal("1", "Retail Price").shouldHave(text("70.00"));
         p.openSKU(skuCode);
 
@@ -163,6 +170,7 @@ public class SkusTests extends Preconditions {
         p.clickSave_wait();
         p.navigateTo("SKUs");
         p.search(skuCode.substring(4, skuCode.length()));
+        shouldBeVisible(contentOnList(), "Search request returned no results.");
 
         p.getSKUParamVal("1", "Sale Price").shouldHave(text("70.00"));
     }
@@ -176,6 +184,7 @@ public class SkusTests extends Preconditions {
         p.clickSave_wait();
         p.navigateTo("SKUs");
         p.search(skuCode.substring(4, skuCode.length()));
+        shouldBeVisible(contentOnList(), "Search request returned no results.");
         shouldHaveText(p.getSKUParamVal("1", "Sale Price"), "70.00", "Sale price isn't updated on the list.");
         p.openSKU(skuCode);
 
@@ -191,6 +200,7 @@ public class SkusTests extends Preconditions {
         p.clickSave_wait();
         p.navigateTo("SKUs");
         p.search(skuCode.substring(4, skuCode.length()));
+        shouldBeVisible(contentOnList(), "Search request returned no results.");
         p.openSKU(skuCode);
 
         p.stateVal().shouldHave(text("Inactive"));
@@ -228,6 +238,7 @@ public class SkusTests extends Preconditions {
 
         p = openPage(adminUrl + "/skus", SkusPage.class);
         p.search(skuToEdit);
+        shouldBeVisible(contentOnList(), "Search request returned no results.");
         p.openSKU(skuToEdit);
         p.setSKUCode(skuCode);
         p.clickSave();

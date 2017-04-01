@@ -41,6 +41,7 @@ public class PromotionsTest extends Preconditions {
         String promoId = p.promoIdBreadcrumb().text();
         p.navigateTo("Promotions");
         p.search(randomId);
+        shouldBeVisible(contentOnList(), "Search request returned no results.");
 
         p.getPromoParamVal("1", "Promotion ID").shouldHave(text(promoId));
     }
@@ -51,6 +52,7 @@ public class PromotionsTest extends Preconditions {
 
         p = openPage(adminUrl + "/promotions", PromotionsPage.class);
         p.search(promotionId);
+        shouldBeVisible(contentOnList(), "Search request returned no results.");
 
         p.getPromoParamVal("1", "Promotion ID").shouldHave(text(promotionId));
     }
@@ -65,6 +67,7 @@ public class PromotionsTest extends Preconditions {
         shouldNotHaveText(p.promoIdBreadcrumb(), "new", "\"new\" isn't changed to promoId value of a just created promo");
         p.navigateTo("Promotions");
         p.search(promotionId);
+        shouldBeVisible(contentOnList(), "Search request returned no results.");
 
         p.getPromoParamVal("1", "State").shouldHave(text("Active"));
     }
@@ -78,6 +81,7 @@ public class PromotionsTest extends Preconditions {
         p.clickSave_wait();
         p.navigateTo("Promotions");
         p.search(promotionId);
+        shouldBeVisible(contentOnList(), "Search request returned no results.");
         p.getPromoParamVal("1", "Name").shouldHave(text("Edited Promo Name")
                 .because("An old promo name is displayed on the list."));
         p.openPromo(promotionId);
@@ -95,6 +99,7 @@ public class PromotionsTest extends Preconditions {
         p.clickSave_wait();
         p.navigateTo("Promotions");
         p.search(promotionId);
+        shouldBeVisible(contentOnList(), "Search request returned no results.");
         p.getPromoParamVal("1", "Storefront Name").shouldHave(text("Edited Promo Storefront Name")
                 .because("An old promo storefront name is displayed on the list."));
         p.openPromo(promotionId);
@@ -112,6 +117,7 @@ public class PromotionsTest extends Preconditions {
         p.clickSave_wait();
         p.navigateTo("Promotions");
         p.search(promotionId);
+        shouldBeVisible(contentOnList(), "Search request returned no results.");
         p.openPromo(promotionId);
 
         p.descriptionFld().shouldHave(text("Edited Promo Description"));
@@ -127,6 +133,7 @@ public class PromotionsTest extends Preconditions {
         p.clickSave_wait();
         p.navigateTo("Promotions");
         p.search(promotionId);
+        shouldBeVisible(contentOnList(), "Search request returned no results.");
         p.openPromo(promotionId);
 
         p.detailsFld().shouldHave(text("Edited Promo Details"));
@@ -142,6 +149,7 @@ public class PromotionsTest extends Preconditions {
         p.clickSave_wait();
         p.navigateTo("Promotions");
         p.search(promotionId);
+        shouldBeVisible(contentOnList(), "Search request returned no results.");
         p.getPromoParamVal("1", "Apply Type").shouldHave(text("auto"));
         p.openPromo(promotionId);
 
@@ -158,6 +166,7 @@ public class PromotionsTest extends Preconditions {
         p.clickSave_wait();
         p.navigateTo("Promotions");
         p.search(promotionId);
+        shouldBeVisible(contentOnList(), "Search request returned no results.");
         p.getPromoParamVal("1", "State").shouldHave(text("Inactive"));
         p.openPromo(promotionId);
 
@@ -174,6 +183,7 @@ public class PromotionsTest extends Preconditions {
         p.clickSave_wait();
         p.navigateTo("Promotions");
         p.search(promotionId);
+        shouldBeVisible(contentOnList(), "Search request returned no results.");
         p.getPromoParamVal("1", "State").shouldHave(text("Active"));
         p.openPromo(promotionId);
 

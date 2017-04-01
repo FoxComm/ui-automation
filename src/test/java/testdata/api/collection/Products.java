@@ -8,6 +8,8 @@ import testdata.api.Helpers;
 
 import java.io.IOException;
 
+import static org.json.JSONObject.NULL;
+
 public class Products extends Helpers {
 
     @Step("[API] Create product; <SKU: auto-created with product>, <state:active>")
@@ -418,7 +420,7 @@ public class Products extends Helpers {
     }
 
     @Step("[API] Get JSON schema of product <{0}>")
-    private static JSONObject viewProduct(String productId) throws IOException {
+    public static JSONObject viewProduct(String productId) throws IOException {
         Response response = request.get(apiUrl + "/v1/products/default/" + productId);
         String responseBody = response.body().string();
 
@@ -459,17 +461,17 @@ public class Products extends Helpers {
         if (newState.equals("active")) {
             payload.getJSONObject("attributes").getJSONObject("activeFrom").putOpt("v", "2016-09-01T18:06:29.890Z");
         } else {
-            payload.getJSONObject("attributes").getJSONObject("activeFrom").putOpt("v", null);
-            payload.getJSONObject("attributes").getJSONObject("activeTo").putOpt("v", null);
+            payload.getJSONObject("attributes").getJSONObject("activeFrom").putOpt("v", NULL);
+            payload.getJSONObject("attributes").getJSONObject("activeTo").putOpt("v", NULL);
         }
 
-        Response response = request.patch(apiUrl + "/v1/products/default" + productId, payload.toString());
+        Response response = request.patch(apiUrl + "/v1/products/default/" + productId, payload.toString());
 
         if (response.code() == 200) {
             System.out.println(response.code() + " " + response.message());
             System.out.println("---- ---- ---- ----");
         } else {
-            failTest(response.body().toString(), response.code(), response.message());
+            failTest(response.body().string(), response.code(), response.message());
         }
     }
 

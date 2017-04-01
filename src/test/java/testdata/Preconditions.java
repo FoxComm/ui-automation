@@ -814,6 +814,7 @@ public class Preconditions extends Helpers {
                 setPayment_creditCard(cartId, creditCardId);
                 checkoutCart(cartId);
                 archiveSKU(skuCode);
+                createCart(customerId);
                 break;
 
             case "active product, has tag, active SKU, no sellable stockitems, not present in any carts, has purchases > archive product":
@@ -864,7 +865,7 @@ public class Preconditions extends Helpers {
                 createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard", addressId1);
                 setPayment_creditCard(cartId, creditCardId);
                 checkoutCart(cartId);
-                archiveProduct(productTitle);
+                archiveProduct(productId);
                 break;
 
             case "active product, has tag, active SKU, has sellable stockitems, is present in at least 1 cart > archive SKU":
@@ -895,14 +896,14 @@ public class Preconditions extends Helpers {
 
             case "active product, has tag, active SKU, has sellable stockitems > product state goes inactive":
                 createSKU_active();
-                createProduct_inactive(skuId, skuCode, storefrontCategory);
+                createProduct_active(skuCode, storefrontCategory);
                 increaseOnHandQty(skuCode, "Sellable", 1);
                 setProductState(productId, "inactive");
                 break;
 
             case "active product, has tag, active SKU, has sellable stockitems > SKU state goes inactive":
                 createSKU_active();
-                createProduct_inactive(skuId, skuCode, storefrontCategory);
+                createProduct_active(skuCode, storefrontCategory);
                 increaseOnHandQty(skuCode, "Sellable", 1);
                 setSkuState(skuCode, "inactive");
                 break;
@@ -1719,26 +1720,10 @@ public class Preconditions extends Helpers {
     }
 
     public static void main(String[] args) throws IOException {
+        storefrontCategory = "test";
         loginAsAdmin("admin@admin.com", "password", "tenant");
-        randomId = generateRandomID();
-        signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
-        createCart(customerId);
-        createSKU_active();
-        createProduct_active(skuCode, "APPETIZERS");
-        increaseOnHandQty(skuCode, "Sellable", 1);
-        updLineItems(cartId, skuCode, 1);
-        setShipAddress(cartId,
-                "John Doe",
-                4177, 234,
-                "Washington", "7500 Roosevelt Way NE",
-                "Block 42",
-                "Seattle", "98115",
-                "5038234000", false);
-        listShipMethods(cartId);
-        setShipMethod(cartId, shipMethodId);
-        listCustomerAddresses(customerId);
-        createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard", addressId1);
-        setPayment_creditCard(cartId, creditCardId);
+        viewSKU("SKU-8303619");
+        viewProduct("17076");
     }
 
 }

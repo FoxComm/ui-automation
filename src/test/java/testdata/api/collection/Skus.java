@@ -7,16 +7,19 @@ import testdata.api.Helpers;
 
 import java.io.IOException;
 
+import static org.json.JSONObject.NULL;
+
 public class Skus extends Helpers {
 
     @Step("[API] View SKU <{0}>")
     public static JSONObject viewSKU(String skuCode) throws IOException {
         Response response = request.get(apiUrl + "/v1/skus/default/" + skuCode);
+        String responseBody = response.body().string();
 
         if (response.code() == 200) {
-            return new JSONObject(response.body().toString());
+            return new JSONObject(responseBody);
         } else {
-            failTest(response.body().toString(), response.code(), response.message());
+            failTest(response.body().string(), response.code(), response.message());
             return new JSONObject("{}");
         }
     }
@@ -182,8 +185,8 @@ public class Skus extends Helpers {
         if (newState.equals("active")) {
             payload.getJSONObject("attributes").getJSONObject("activeFrom").putOpt("v", "2016-09-01T18:06:29.890Z");
         } else {
-            payload.getJSONObject("attributes").getJSONObject("activeFrom").putOpt("v", null);
-            payload.getJSONObject("attributes").getJSONObject("activeTo").putOpt("v", null);
+            payload.getJSONObject("attributes").getJSONObject("activeFrom").putOpt("v", NULL);
+            payload.getJSONObject("attributes").getJSONObject("activeTo").putOpt("v", NULL);
         }
 
         Response response = request.patch(apiUrl + "/v1/products/default" + productId, payload.toString());

@@ -46,6 +46,7 @@ public class CouponsTest extends Preconditions {
         p.navigateTo("Coupons");
         p.waitForDataToLoad();
         p.search("test coupon " + randomId);
+        shouldBeVisible(contentOnList(), "Search request returned no results.");
         p.getCouponParamVal("1", "Name").shouldHave(text("test coupon " + randomId));
     }
 
@@ -95,6 +96,7 @@ public class CouponsTest extends Preconditions {
         p.clickSave_wait();
         p.navigateTo("Coupons");
         p.search("edited coupon " + randomId);
+        shouldBeVisible(contentOnList(), "Search request returned no results.");
 
         p.getCouponParamVal("1", "Name").shouldHave(text("edited coupon " + randomId));
     }
@@ -109,6 +111,7 @@ public class CouponsTest extends Preconditions {
         p.clickSave_wait();
         p.navigateTo("Coupons");
         p.search(couponId);
+        shouldBeVisible(contentOnList(), "Search request returned no results.");
 
         p.getCouponParamVal("1", "Storefront Name").shouldHave(text("<p>edited SF name</p>"));
     }
@@ -123,6 +126,7 @@ public class CouponsTest extends Preconditions {
         p.clickSave_wait();
         p.navigateTo("Coupons");
         p.search(couponId);
+        shouldBeVisible(contentOnList(), "Search request returned no results.");
         p.openCoupon(couponId);
 
         p.descriptionFld().shouldHave(text("edited description"));
@@ -138,6 +142,7 @@ public class CouponsTest extends Preconditions {
         p.clickSave_wait();
         p.navigateTo("Coupons");
         p.search(couponId);
+        shouldBeVisible(contentOnList(), "Search request returned no results.");
         p.openCoupon(couponId);
 
         p.detailsFld().shouldHave(text("edited details"));
@@ -152,6 +157,7 @@ public class CouponsTest extends Preconditions {
         p.clickSave_wait();
         p.navigateTo("Coupons");
         p.search(couponId);
+        shouldBeVisible(contentOnList(), "Search request returned no results.");
 
         p.getCouponParamVal("1", "State").shouldHave(text("Inactive"));
     }
@@ -163,6 +169,7 @@ public class CouponsTest extends Preconditions {
 
         p = openPage(adminUrl + "/coupons/", CouponsPage.class);
         p.search(couponId);
+        shouldBeVisible(contentOnList(), "Search request returned no results.");
 
         p.getCouponParamVal("1", "Total Uses").shouldHave(text("1"));
     }
@@ -174,6 +181,7 @@ public class CouponsTest extends Preconditions {
 
         p = openPage(adminUrl + "/coupons/", CouponsPage.class);
         p.search(couponId);
+        shouldBeVisible(contentOnList(), "Search request returned no results.");
 
         p.getCouponParamVal("1", "Current Carts").shouldHave(text("1"));
     }

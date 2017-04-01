@@ -56,6 +56,7 @@ public class EditProductTest extends Preconditions {
         p.clickSave_wait();
         p.navigateTo("Products");
         p.search(uid);
+        shouldBeVisible(contentOnList(), "Search request returned no results.");
 
         p.getProductParamVal("1", "Title").shouldHave(text("Edited Product " + uid));
 
@@ -153,6 +154,7 @@ public class EditProductTest extends Preconditions {
         p.navigateTo("Products");
         p.navigateTo("Products");
         p.search(uid);
+        shouldBeVisible(contentOnList(), "Search request returned no results.");
 
         p.getProductParamVal("1", "State").shouldHave(text("Inactive"));
     }

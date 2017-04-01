@@ -50,6 +50,7 @@ public class CreateProductsTest extends Preconditions {
         p.navigateTo("Products");
         p.waitForDataToLoad();
         p.search(randomId);
+        shouldBeVisible(contentOnList(), "Search request returned no results.");
 
         p.getProductParamVal("1", "Title").shouldHave(text(productTitle));
     }
@@ -270,6 +271,7 @@ public class CreateProductsTest extends Preconditions {
         p.navigateTo("Products");
         p.waitForDataToLoad();
         p.search(randomId);
+        shouldBeVisible(contentOnList(), "Search request returned no results.");
 
         p.getProductParamVal("1", "Title").shouldHave(text(productTitle));
     }
@@ -289,6 +291,7 @@ public class CreateProductsTest extends Preconditions {
         p.navigateTo("Products");
         p.waitForDataToLoad();
         p.search(randomId);
+        shouldBeVisible(contentOnList(), "Search request returned no results.");
 
         p.getProductParamVal("1", "Title").shouldHave(text(productTitle));
     }
@@ -306,6 +309,7 @@ public class CreateProductsTest extends Preconditions {
         p.navigateTo("Products");
         p.waitForDataToLoad();
         p.search(randomId);
+        shouldBeVisible(contentOnList(), "Search request returned no results.");
 
         p.getProductParamVal("1", "Title").shouldHave(text(productTitle));
     }
