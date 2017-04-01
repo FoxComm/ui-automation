@@ -189,13 +189,13 @@ public class Skus extends Helpers {
             payload.getJSONObject("attributes").getJSONObject("activeTo").putOpt("v", NULL);
         }
 
-        Response response = request.patch(apiUrl + "/v1/products/default" + productId, payload.toString());
+        Response response = request.patch(apiUrl + "/v1/skus/default/" + skuCode, payload.toString());
 
         if (response.code() == 200) {
             System.out.println(response.code() + " " + response.message());
             System.out.println("---- ---- ---- ----");
         } else {
-            failTest(response.body().toString(), response.code(), response.message());
+            failTest(response.body().string(), response.code(), response.message());
         }
     }
 

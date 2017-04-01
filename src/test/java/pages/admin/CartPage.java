@@ -202,8 +202,11 @@ public class CartPage extends BasePage {
         return $(xpath("//tbody[@id='fct-cart-line-items']//a[text()='" + itemName + "']"));
     }
 
-    public SelenideElement lineItem_editing(String name) {
-        return $(xpath("//td[@class='line-item-name' and text()='" + name + "']"));
+    /**
+     * Works with any parameter of a line item
+     */
+    public SelenideElement lineItem_editing(String param) {
+        return $(xpath("//tr[@class='line-item']//*[text()='" + param + "']"));
     }
 
     public ElementsCollection lineItems() {

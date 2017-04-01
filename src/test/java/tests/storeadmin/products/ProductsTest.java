@@ -16,6 +16,8 @@ import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
+import static testdata.api.collection.Cart.createCart;
+import static testdata.api.collection.Customers.createCustomer;
 
 public class ProductsTest extends Preconditions {
 
@@ -51,6 +53,8 @@ public class ProductsTest extends Preconditions {
     @Description("Product isn't displayed in line items search view in admin")
     public void productNotDisplayedLineItemsSearchView(String testData) throws IOException {
         provideTestData(testData);
+        createCustomer();
+        createCart(customerId);
 
         cartPage = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
         cartPage.clickEditBtn("Line Items");
@@ -63,6 +67,8 @@ public class ProductsTest extends Preconditions {
     @Description("SKU is found in line items search view in admin and can be added to cart")
     public void canAddSkuToCart_admin(String testData) throws IOException {
         provideTestData(testData);
+        createCustomer();
+        createCart(customerId);
 
         cartPage = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
         cartPage.clickEditBtn("Line Items");
@@ -76,6 +82,8 @@ public class ProductsTest extends Preconditions {
     @Description("SKU is not found in line items search view in admin and can be added to cart")
     public void skuNotDisplayedLineItemsSearchView(String testData) throws IOException {
         provideTestData(testData);
+        createCustomer();
+        createCart(customerId);
 
         cartPage = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
         cartPage.clickEditBtn("Line Items");
@@ -134,6 +142,7 @@ public class ProductsTest extends Preconditions {
         click(skusPage.counter());
 
         $(By.xpath("//*[text()='" + skuCode + "']")).shouldBe(visible);
+        assertTwice($(By.xpath("//*[text()='" + skuCode + "']")), "should be visible", "");
     }
 
 
@@ -164,7 +173,7 @@ public class ProductsTest extends Preconditions {
         click(productsPage.searchFld());
         click(productsPage.counter());
 
-        $(By.xpath("//*[text()='" + productTitle + "']")).shouldBe(visible);
+        assertTwice($(By.xpath("//*[text()='" + productTitle + "']")), "should be visible", "");
     }
 
 }

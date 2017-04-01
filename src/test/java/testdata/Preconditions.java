@@ -1722,8 +1722,8 @@ public class Preconditions extends Helpers {
     public static void main(String[] args) throws IOException {
         storefrontCategory = "test";
         loginAsAdmin("admin@admin.com", "password", "tenant");
-        viewSKU("SKU-8303619");
-        viewProduct("17076");
+        viewSKU("SKU-9402563");
+        setSkuState("SKU-9402563", "inactive");
     }
 
 }

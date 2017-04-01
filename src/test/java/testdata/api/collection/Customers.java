@@ -38,11 +38,10 @@ public class Customers extends Helpers {
     @Step("[API] Sign up a new customer -- name:<{0}> email:<{1}>")
     public static void signUpCustomer(String name, String email) throws IOException {
         System.out.println("Registering a new customer on Storefront...");
-        String randomID = generateRandomID();
 
         JSONObject payload = parseObj("bin/payloads/customers/signUpCustomer.json");
-        payload.putOpt("name", "Test Buddy-" + randomID);
-        payload.putOpt("email", "qatest2278+" + randomID + "@gmail.com");
+        payload.putOpt("name", name);
+        payload.putOpt("email", email);
 
         Response response = request.post(apiUrl + "/v1/public/registrations/new", payload.toString());
         String responseBody = response.body().string();

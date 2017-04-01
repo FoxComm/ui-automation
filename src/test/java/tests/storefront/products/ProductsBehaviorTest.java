@@ -12,6 +12,7 @@ import java.io.IOException;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.sleep;
+import static testdata.api.collection.Customers.signUpCustomer;
 
 public class ProductsBehaviorTest extends Preconditions {
 
@@ -27,7 +28,10 @@ public class ProductsBehaviorTest extends Preconditions {
     @Description("Product should be displayed in the category view on storefront")
     public void productDisplayedInCategoryView(String testData) throws IOException {
         provideTestData(testData);
+        checkProductPresenceInCategoryView("int", "productId", productId);
+
         p = openPage(storefrontUrl + "/" + storefrontCategory, StorefrontPage.class);
+
         p.productTitle_catalog(productTitle).shouldBe(visible);
     }
 
@@ -88,6 +92,8 @@ public class ProductsBehaviorTest extends Preconditions {
     @Description("Cart with this product can pass checkout")
     public void productCanPassCheckout(String testData) throws IOException {
         provideTestData(testData);
+        String randomId = generateRandomID();
+        signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
 
         p = openPage(storefrontUrl + "/" + storefrontCategory, StorefrontPage.class);
         p.logIn(customerEmail, "78qa22!#");
@@ -103,6 +109,8 @@ public class ProductsBehaviorTest extends Preconditions {
     @Description("Cart with this product can't pass checkout")
     public void productCannotPassCheckout(String testData) throws IOException {
         provideTestData(testData);
+        String randomId = generateRandomID();
+        signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
 
         p = openPage(storefrontUrl + "/" + storefrontCategory, StorefrontPage.class);
         p.logIn(customerEmail, "78qa22!#");
