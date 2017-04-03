@@ -32,12 +32,11 @@ public class Inventory extends Helpers {
     /**
      * Given arg "String type" value should be capitalized, e.g. - "Sellable"
      */
-    @Step("[API] Increase amount of sellable unites of <{0}> by <{1}>")
+    @Step("[API] Increase amount of sellable units of <{0}> by <{1}>")
     public static void increaseOnHandQty(String skuCode, String type, Integer qty) throws IOException {
-        System.out.println("Increase amount of sellable items by <" + qty + "> for SKU <" + skuCode + ">, ID: <" + skuId_inventory + ">...");
-
         checkInventoryAvailability(skuCode);
         viewSKU_inventory(skuCode);
+        System.out.println("Increase amount of sellable items by <" + qty + "> for SKU <" + skuCode + ">, inventoryId: <" + skuId_inventory + ">...");
 
         JSONObject payload = parseObj("bin/payloads/inventory/increaseOnHandQty.json");
         payload.putOpt("qty", qty);

@@ -36,7 +36,7 @@ public class Helpers extends Variables {
         return new JSONArray(Objects.requireNonNull(jsonData));
     }
 
-    protected static boolean assertProductExists_es(String jsonAttrType, String attrName, String attrVal, String responseBody) {
+    protected static boolean assertProductAppearInEs(String jsonAttrType, String attrName, String attrVal, String responseBody) {
         JSONObject responseJSON = new JSONObject(responseBody);
         JSONArray productsArr = responseJSON.getJSONArray("result");
         jsonAttrType = jsonAttrType.toLowerCase();
@@ -197,9 +197,15 @@ public class Helpers extends Variables {
         }
     }
 
+    /**
+     * options for attrName:
+     *  (int) id
+     *  (string) title
+     *  (string) slug
+     */
     @Step("[API] Check if product<({0}) {1}: {2}> is present in category view on storefront")
-    protected static void checkProductPresenceInCategoryView(String attrType, String attrName, String attrVal) throws IOException {
-        System.out.println("Checking if product<("+attrType+") "+attrName+": "+attrVal+"> is present in category view on storefront...");
+    protected static void waitForProductAppearInEs(String attrType, String attrName, String attrVal) throws IOException {
+        System.out.println("Checking if product<"+attrName+": "+attrVal+"> is present in category view on storefront...");
 
         int responseCode = 0;
         String responseBody = "";
@@ -207,28 +213,29 @@ public class Helpers extends Variables {
         long time = System.currentTimeMillis();
         long end = time + 15000;
         int totalTries = 0;
-        boolean productInEs = false;
+        boolean productIsInEs = false;
 
         JSONObject jsonObj = parseObj("bin/payloads/helpers/esCatalogView.json");
         String payload = jsonObj.toString();
 
-        while((System.currentTimeMillis() < end) && (productInEs != true)) {
+        while((System.currentTimeMillis() < end) && (productIsInEs != true)) {
             Response response = request.post(apiUrl + "/search/public/products_catalog_view/_search?size=1000", payload.toString());
             responseBody = response.body().string();
             responseCode = response.code();
             responseMsg = response.message();
 
             totalTries ++;
-            productInEs = assertProductExists_es(attrType, attrName, attrVal, responseBody);
+            productIsInEs = assertProductAppearInEs(attrType, attrName, attrVal, responseBody);
         }
         System.out.println("total tries: <" + totalTries + ">");
         System.out.println("Time spent: <" + (System.currentTimeMillis() - time) + " MS>");
 
-        if (responseCode == 200) {
+        if (responseCode == 200 && productIsInEs) {
             System.out.println(responseCode + " " + responseMsg);
-            System.out.println("Orders in ES: <" + productInEs + ">");
+            System.out.println("Product is present in ES: <" + productIsInEs + ">");
             System.out.println("---- ---- ---- ----");
         } else {
+            System.out.println("Timed out on finding order in ES");
             failTest(responseBody, responseCode, responseMsg);
         }
     }

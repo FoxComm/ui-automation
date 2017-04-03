@@ -16,7 +16,7 @@ public class Customers extends Helpers {
         String randomID = generateRandomID();
 
         JSONObject payload = parseObj("bin/payloads/customers/createCustomer.json");
-        payload.putOpt("name", "Test Buddy-" + randomID);
+        payload.putOpt("name", "Customer " + randomID);
         payload.putOpt("email", "qatest2278+" + randomID + "@gmail.com");
 
         Response response = request.post(apiUrl + "/v1/customers", payload.toString());

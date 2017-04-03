@@ -21,21 +21,21 @@
       "t": "price",
       "v": {
         "currency": "USD",
-        "value": 1215
+        "value": 5000
       }
     },
     "salePrice": {
       "t": "price",
       "v": {
         "currency": "USD",
-        "value": 1215
+        "value": 5000
       }
     },
     "unitCost": {
       "t": "price",
       "v": {
         "currency": "USD",
-        "value": 1000
+        "value": 5000
       }
     },
     "activeFrom": {

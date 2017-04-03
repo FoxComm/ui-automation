@@ -36,7 +36,7 @@
     }
   },
   "skus": [{
-    "feCode": "FCA7PEP20CNLWDISH5MI",
+    "id": 1,
     "attributes": {
       "code": {
         "t": "string",

@@ -18,7 +18,7 @@ public class ContactInformationTest extends Preconditions {
     private CustomersPage p;
 
     private String randomId = generateRandomID();
-    private String newName = "Test Buddy-" + randomId;
+    private String newName = "Customer " + randomId;
     private String newEmail = "qatest2278+" + randomId + "@gmail.com";
 
     @BeforeClass(alwaysRun = true)

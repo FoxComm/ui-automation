@@ -50,14 +50,14 @@
         "t": "price",
         "v": {
           "currency": "USD",
-          "value": 2718
+          "value": 5000
         }
       },
       "salePrice": {
         "t": "price",
         "v": {
           "currency": "USD",
-          "value": 2718
+          "value": 5000
         }
       }
     }

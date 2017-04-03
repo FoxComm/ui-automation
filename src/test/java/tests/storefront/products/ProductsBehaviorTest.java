@@ -28,7 +28,7 @@ public class ProductsBehaviorTest extends Preconditions {
     @Description("Product should be displayed in the category view on storefront")
     public void productDisplayedInCategoryView(String testData) throws IOException {
         provideTestData(testData);
-        checkProductPresenceInCategoryView("int", "productId", productId);
+        waitForProductAppearInEs("int", "productId", productId);
 
         p = openPage(storefrontUrl + "/" + storefrontCategory, StorefrontPage.class);
 
@@ -93,7 +93,7 @@ public class ProductsBehaviorTest extends Preconditions {
     public void productCanPassCheckout(String testData) throws IOException {
         provideTestData(testData);
         String randomId = generateRandomID();
-        signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
+        signUpCustomer("Customer " + randomId, "qatest2278+" + randomId + "@gmail.com");
 
         p = openPage(storefrontUrl + "/" + storefrontCategory, StorefrontPage.class);
         p.logIn(customerEmail, "78qa22!#");
@@ -110,7 +110,7 @@ public class ProductsBehaviorTest extends Preconditions {
     public void productCannotPassCheckout(String testData) throws IOException {
         provideTestData(testData);
         String randomId = generateRandomID();
-        signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
+        signUpCustomer("Customer " + randomId, "qatest2278+" + randomId + "@gmail.com");
 
         p = openPage(storefrontUrl + "/" + storefrontCategory, StorefrontPage.class);
         p.logIn(customerEmail, "78qa22!#");

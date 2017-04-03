@@ -126,7 +126,7 @@ public class GuestCheckoutTest extends Preconditions {
         p.clickAddToCartBtn();
         p.clickCheckoutBtn_cart();
         p.clickSignUpLnk();
-        p.setName("Test Buddy " + randomId);
+        p.setName("Customer " + randomId);
         p.setEmail("qatest2278+" + randomId + "@gmail.com");
         p.clickSignUpBtn();
 
@@ -147,7 +147,7 @@ public class GuestCheckoutTest extends Preconditions {
         p.applyCoupon(singleCouponCode);
         p.clickCheckoutBtn_cart();
         p.clickSignUpLnk();
-        p.setName("Test Buddy " + randomId);
+        p.setName("Customer " + randomId);
         p.setEmail("qatest2278+" + randomId + "@gmail.com");
         p.clickSignUpBtn();
         p.fillOutAddressForm("John Doe", "7500 Roosevelt Way NE", "Suit 42", "98115", "9879879876");
@@ -177,7 +177,7 @@ public class GuestCheckoutTest extends Preconditions {
         p.closeCart();
         p.clickLogInLnk();
         p.clickSignUpLnk();
-        p.setName("Test Buddy " + randomId);
+        p.setName("Customer " + randomId);
         p.setEmail("qatest2278+" + randomId + "@gmail.com");
         p.clickSignUpBtn();
 
@@ -202,7 +202,7 @@ public class GuestCheckoutTest extends Preconditions {
         p.closeCart();
         p.clickLogInLnk();
         p.clickSignUpLnk();
-        p.setName("Test Buddy " + randomId);
+        p.setName("Customer " + randomId);
         p.setEmail("qatest2278+" + randomId + "@gmail.com");
         p.clickSignUpBtn();
 
@@ -234,7 +234,7 @@ public class GuestCheckoutTest extends Preconditions {
         p.clickLogo();
         p.clickLogInLnk();
         p.clickSignUpLnk();
-        p.fillOutSignUpForm("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com", "78qa22!#");
+        p.fillOutSignUpForm("Customer " + randomId, "qatest2278+" + randomId + "@gmail.com", "78qa22!#");
         p.clickSignUpBtn();
         p.openCart();
         p.clickCheckoutBtn_cart();
@@ -265,13 +265,13 @@ public class GuestCheckoutTest extends Preconditions {
         p.clickLogo();
         p.clickLogInLnk();
         p.clickSignUpLnk();
-        p.fillOutSignUpForm("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com", "78qa22!#");
+        p.fillOutSignUpForm("Customer " + randomId, "qatest2278+" + randomId + "@gmail.com", "78qa22!#");
         p.clickSignUpBtn();
         p.openCart();
         p.clickCheckoutBtn_cart();
 
         p.assertCheckoutStepActive("delivery");
-        p.appliedShipAddress_name().shouldHave(text("Test Buddy " + randomId));
+        p.appliedShipAddress_name().shouldHave(text("Customer " + randomId));
     }
 
     @Test(priority = 12)
@@ -293,7 +293,7 @@ public class GuestCheckoutTest extends Preconditions {
         p.clickContinueBtn();
         p.setShipMethod("1");
         p.clickContinueBtn();
-        p.fillOutCardForm("Test Buddy + " + randomId, "4242424242424242", "123", "10", "2020", false);
+        p.fillOutCardForm("Customer + " + randomId, "4242424242424242", "123", "10", "2020", false);
         p.clickPlaceOrderBtn();
         String orderNumber = p.confirmationOrderNumber().text();
 
@@ -320,7 +320,7 @@ public class GuestCheckoutTest extends Preconditions {
         p.clickContinueBtn();
         p.setShipMethod("1");
         p.clickContinueBtn();
-        p.fillOutCardForm("Test Buddy + " + randomId, "4242424242424242", "123", "10", "2020", false);
+        p.fillOutCardForm("Customer + " + randomId, "4242424242424242", "123", "10", "2020", false);
         p.clickPlaceOrderBtn();
         shouldBeVisible(p.confirmationOrderNumber(), "Failed to place order");
         p.clickLogo();

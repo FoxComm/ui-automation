@@ -18,7 +18,7 @@ public class Products extends Helpers {
         String randomId = generateRandomID();
 
         JSONObject payload = parseObj("bin/payloads/products/createProduct_newSKU_active.json");
-        payload = setProductTitle(payload, "Test Product " + randomId);
+        payload = setProductTitle(payload, "Product " + randomId);
         payload = setSkuCode_product(payload, "SKU-" + randomId);
         payload = setSkuTitle_product(payload, "SKU-" + randomId + " Title");
 
@@ -58,7 +58,7 @@ public class Products extends Helpers {
         String randomId = generateRandomID();
 
         JSONObject payload = parseObj("bin/payloads/products/createProduct_newSKU_active_hasTag.json");
-        payload = setProductTitle(payload, "Test Product " + randomId);
+        payload = setProductTitle(payload, "Product " + randomId);
         payload = setSkuCode_product(payload, "SKU-" + randomId);
         payload = setSkuTitle_product(payload, "SKU-" + randomId + " Title");
         payload = setTag_product(payload, tag);
@@ -99,7 +99,7 @@ public class Products extends Helpers {
         String randomId = generateRandomID();
 
         JSONObject payload = parseObj("bin/payloads/products/createProduct_inactive_newSKU_hasTag.json");
-        payload = setProductTitle(payload, "Test Product " + randomId);
+        payload = setProductTitle(payload, "Product " + randomId);
         payload = setSkuCode_product(payload, "SKU-" + randomId);
         payload = setSkuTitle_product(payload, "SKU-" + randomId + " Title");
         payload = setTag_product(payload, tag);
@@ -135,15 +135,16 @@ public class Products extends Helpers {
     }
 
     @Step("[API] Create product; SKU:<{0}>, Tag:<{1}>, State:<Active>")
-    public static void createProduct_active(String skuCode, String tag) throws IOException {
-        System.out.println("Creating a new product with SKU <" + skuCode + ">...");
+    public static void createProduct_active(int skuId, String skuCode, String tag) throws IOException {
+        System.out.println("Creating a new product with SKU <ID:" + skuId + ">, <code:" + skuCode + ">, tag:<" + tag + ">...");
         String randomId = generateRandomID();
         tag = tag.toUpperCase();
 
         JSONObject payload = parseObj("bin/payloads/products/createProduct_active.json");
-        payload = setProductTitle(payload, "Test Product " + randomId);
+        payload = setProductTitle(payload, "Product " + randomId);
         payload = setTag_product(payload, tag);
         payload = setSkuCode_product(payload, skuCode);
+        payload = setSkuId_product(payload, skuId);
 
         Response response = request.post(apiUrl + "/v1/products/default", payload.toString());
         String responseBody = response.body().string();
@@ -170,7 +171,7 @@ public class Products extends Helpers {
 
         JSONObject payload = parseObj("bin/payloads/products/tpgProduct_propsTest.json");
         payload.putOpt("slug", "test-product-" + randomId);
-        payload = setProductTitle(payload, "Test Product " + randomId);
+        payload = setProductTitle(payload, "Product " + randomId);
         payload = setSkuId_product(payload, skuId);
         payload = setSkuCode_product(payload, skuCode);
 
@@ -198,7 +199,7 @@ public class Products extends Helpers {
 
         JSONObject payload = parseObj("bin/payloads/products/createProduct_styledDescription.json");
         payload.putOpt("slug", "test-product-" + randomId);
-        payload = setProductTitle(payload, "Test Product " + randomId);
+        payload = setProductTitle(payload, "Product " + randomId);
         payload = setSkuId_product(payload, skuId);
         payload = setSkuCode_product(payload, skuCode);
 
@@ -238,7 +239,7 @@ public class Products extends Helpers {
         String randomId = generateRandomID();
 
         JSONObject payload = parseObj("bin/payloads/products/createProduct_active_noTag.json");
-        payload = setProductTitle(payload, "Test Product " + randomId);
+        payload = setProductTitle(payload, "Product " + randomId);
         payload = setSkuId_product(payload, skuId);
         payload = setSkuCode_product(payload, skuCode);
 
@@ -265,7 +266,7 @@ public class Products extends Helpers {
         String randomId = generateRandomID();
 
         JSONObject payload = parseObj("bin/payloads/products/createProduct_inactive.json");
-        payload = setProductTitle(payload, "Test Product " + randomId);
+        payload = setProductTitle(payload, "Product " + randomId);
         payload = setTag_product(payload, tag);
         payload = setSkuId_product(payload, skuId);
         payload = setSkuCode_product(payload, skuCode);
@@ -293,7 +294,7 @@ public class Products extends Helpers {
         String randomId = generateRandomID();
 
         JSONObject payload = parseObj("bin/payloads/products/createProduct_inactive_noTag.json");
-        payload = setProductTitle(payload, "Test Product " + randomId);
+        payload = setProductTitle(payload, "Product " + randomId);
         payload = setSkuId_product(payload, skuId);
         payload = setSkuCode_product(payload, skuCode);
 
@@ -412,7 +413,7 @@ public class Products extends Helpers {
             productSlug = jsonResponse.getString("slug");
             System.out.println("Slug: <" + productSlug + ">");
             System.out.println("---- ---- ---- ----");
-            checkProductPresenceInCategoryView("string", "slug", productSlug);
+            waitForProductAppearInEs("string", "slug", productSlug);
         } else {
             failTest(responseBody, response.code(), response.message());
         }

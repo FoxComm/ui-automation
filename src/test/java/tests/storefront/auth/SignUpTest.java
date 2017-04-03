@@ -30,7 +30,7 @@ public class SignUpTest extends Preconditions {
         p = openPage(storefrontUrl, StorefrontPage.class);
         p.clickLogInLnk();
         p.clickSignUpLnk();
-        p.setName("Test Buddy " + randomId);
+        p.setName("Customer " + randomId);
         p.setEmail("qatest2278+" + randomId + "@gmail.com");
         p.setPassword("78qa22!#");
         p.clickSignUpBtn();
@@ -62,7 +62,7 @@ public class SignUpTest extends Preconditions {
         p = openPage(storefrontUrl, StorefrontPage.class);
         p.clickLogInLnk();
         p.clickSignUpLnk();
-        p.setName("Test Buddy " + generateRandomID());
+        p.setName("Customer " + generateRandomID());
         p.setEmail(customerEmail);
         p.setPassword("78qa22!#");
         p.clickSignUpBtn();
@@ -78,7 +78,7 @@ public class SignUpTest extends Preconditions {
         p = openPage(storefrontUrl, StorefrontPage.class);
         p.clickLogInLnk();
         p.clickSignUpLnk();
-        p.setName("Test Buddy " + randomId);
+        p.setName("Customer " + randomId);
         p.setEmail("qatest2278+" + randomId + "@gmail.com");
         p.setPassword("78qa22!#");
         p.clickSignUpBtn();
@@ -100,7 +100,7 @@ public class SignUpTest extends Preconditions {
         p = openPage(storefrontUrl, StorefrontPage.class);
         p.clickLogInLnk();
         p.clickSignUpLnk();
-        p.setName("Test Buddy " + randomId);
+        p.setName("Customer " + randomId);
         p.setEmail("qatest2278+" + randomId + "@gmail.com");
         p.setPassword("78qa22!#");
         p.clickSignUpBtn();

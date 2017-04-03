@@ -45,15 +45,15 @@ public class Preconditions extends Helpers {
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(skuCode, "test");
+                createProduct_active(skuId, skuCode, "test");
                 createSKU_active();
-                createProduct_active(skuCode, "test");
+                createProduct_active(skuId, skuCode, "test");
                 skuCodes.add(skuCode);
                 createSKU_active();
-                createProduct_active(skuCode, "test");
+                createProduct_active(skuId, skuCode, "test");
                 skuCodes.add(skuCode);
                 createSKU_active();
-                createProduct_active(skuCode, "test");
+                createProduct_active(skuId, skuCode, "test");
                 skuCodes.add(skuCode);
                 break;
 
@@ -61,7 +61,7 @@ public class Preconditions extends Helpers {
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(skuCode, "test");
+                createProduct_active(skuId, skuCode, "test");
                 updLineItems(cartId, skuCode, 1);
                 break;
 
@@ -69,13 +69,13 @@ public class Preconditions extends Helpers {
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(skuCode, "test");
+                createProduct_active(skuId, skuCode, "test");
                 skuCodes.add(skuCode);
                 createSKU_active();
-                createProduct_active(skuCode, "test");
+                createProduct_active(skuId, skuCode, "test");
                 skuCodes.add(skuCode);
                 createSKU_active();
-                createProduct_active(skuCode, "test");
+                createProduct_active(skuId, skuCode, "test");
                 skuCodes.add(skuCode);
                 updLineItems_multiple(cartId, skuCodes.get(0), 4, skuCodes.get(1), 5, skuCodes.get(2), 3);
                 break;
@@ -84,7 +84,7 @@ public class Preconditions extends Helpers {
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(skuCode, "test");
+                createProduct_active(skuId, skuCode, "test");
                 updLineItems(cartId, skuCode, 3);
                 break;
 
@@ -105,7 +105,7 @@ public class Preconditions extends Helpers {
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(skuCode, "test");
+                createProduct_active(skuId, skuCode, "test");
                 updLineItems(cartId, skuCode, 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
                 break;
@@ -128,7 +128,7 @@ public class Preconditions extends Helpers {
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(skuCode, "test");
+                createProduct_active(skuId, skuCode, "test");
                 increaseOnHandQty(skuCode, "Sellable", 1);
                 updLineItems(cartId, skuCode, 1);
                 createAddress(customerId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
@@ -147,7 +147,7 @@ public class Preconditions extends Helpers {
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(skuCode, "test");
+                createProduct_active(skuId, skuCode, "test");
                 increaseOnHandQty(skuCode, "Sellable", 10);
                 updLineItems(cartId, skuCode, 3);
                 createAddress(customerId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
@@ -181,7 +181,7 @@ public class Preconditions extends Helpers {
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(skuCode, "test");
+                createProduct_active(skuId, skuCode, "test");
                 updLineItems(cartId, skuCode, 3);
                 createPromotion_coupon();
                 createCoupon(promotionId);
@@ -192,7 +192,7 @@ public class Preconditions extends Helpers {
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(skuCode, "test");
+                createProduct_active(skuId, skuCode, "test");
                 updLineItems(cartId, skuCode, 3);
                 createPromotion_coupon();
                 createCoupon(promotionId);
@@ -203,7 +203,7 @@ public class Preconditions extends Helpers {
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(skuCode, "test");
+                createProduct_active(skuId, skuCode, "test");
                 updLineItems(cartId, skuCode, 3);
                 createPromotion_coupon();
                 createCoupon(promotionId);
@@ -224,7 +224,7 @@ public class Preconditions extends Helpers {
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(skuCode, "test");
+                createProduct_active(skuId, skuCode, "test");
                 updLineItems(cartId, skuCode, 1);
                 increaseOnHandQty(skuCode, "Sellable", 1);
                 createAddress(customerId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
@@ -243,7 +243,7 @@ public class Preconditions extends Helpers {
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(skuCode, "test");
+                createProduct_active(skuId, skuCode, "test");
                 updLineItems(cartId, skuCode, 1);
                 createSharedSearch_singleProduct(productTitle);
                 createPromotion_coupon_itemsNoQual(searchId);
@@ -257,7 +257,7 @@ public class Preconditions extends Helpers {
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(skuCode, "test");
+                createProduct_active(skuId, skuCode, "test");
                 increaseOnHandQty(skuCode, "Sellable", 1);
                 updLineItems(cartId, skuCode, 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
@@ -267,7 +267,7 @@ public class Preconditions extends Helpers {
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(skuCode, "test");
+                createProduct_active(skuId, skuCode, "test");
                 increaseOnHandQty(skuCode, "Sellable", 1);
                 updLineItems(cartId, skuCode, 1);
                 createGiftCard(50000, 1);
@@ -277,7 +277,7 @@ public class Preconditions extends Helpers {
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(skuCode, "test");
+                createProduct_active(skuId, skuCode, "test");
                 updLineItems(cartId, skuCode, 1);
                 issueStoreCredit(customerId, 50000);
                 break;
@@ -286,7 +286,7 @@ public class Preconditions extends Helpers {
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(skuCode, "test");
+                createProduct_active(skuId, skuCode, "test");
                 increaseOnHandQty(skuCode, "Sellable", 1);
                 updLineItems(cartId, skuCode, 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
@@ -301,7 +301,7 @@ public class Preconditions extends Helpers {
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(skuCode, "test");
+                createProduct_active(skuId, skuCode, "test");
                 increaseOnHandQty(skuCode, "Sellable", 1);
                 updLineItems(cartId, skuCode, 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
@@ -314,7 +314,7 @@ public class Preconditions extends Helpers {
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(skuCode, "test");
+                createProduct_active(skuId, skuCode, "test");
                 increaseOnHandQty(skuCode, "Sellable", 1);
                 updLineItems(cartId, skuCode, 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
@@ -327,7 +327,7 @@ public class Preconditions extends Helpers {
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(skuCode, "test");
+                createProduct_active(skuId, skuCode, "test");
                 increaseOnHandQty(skuCode, "Sellable", 1);
                 updLineItems(cartId, skuCode, 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
@@ -343,7 +343,7 @@ public class Preconditions extends Helpers {
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(skuCode, "test");
+                createProduct_active(skuId, skuCode, "test");
                 increaseOnHandQty(skuCode, "Sellable", 1);
                 updLineItems(cartId, skuCode, 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
@@ -358,7 +358,7 @@ public class Preconditions extends Helpers {
             case "cart with 1 item, shipping method, issued SC and GC":
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(skuCode, "test");
+                createProduct_active(skuId, skuCode, "test");
                 increaseOnHandQty(skuCode, "Sellable", 1);
                 updLineItems(cartId, skuCode, 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
@@ -373,7 +373,7 @@ public class Preconditions extends Helpers {
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(skuCode, "test");
+                createProduct_active(skuId, skuCode, "test");
                 increaseOnHandQty(skuCode, "Sellable", 1);
                 updLineItems(cartId, skuCode, 1);
                 issueStoreCredit(customerId, 50000);
@@ -384,7 +384,7 @@ public class Preconditions extends Helpers {
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(skuCode, "test");
+                createProduct_active(skuId, skuCode, "test");
                 increaseOnHandQty(skuCode, "Sellable", 1);
                 updLineItems(cartId, skuCode, 1);
                 issueStoreCredit(customerId, 50000);
@@ -395,7 +395,7 @@ public class Preconditions extends Helpers {
 
             case "cart<filled out, payment method: SC>":
                 createSKU_active();
-                createProduct_active(skuCode, "sunglasses");
+                createProduct_active(skuId, skuCode, "sunglasses");
                 increaseOnHandQty(skuCode, "Sellable", 20);
                 createCustomer();
                 issueStoreCredit(customerId, 20000);
@@ -410,7 +410,7 @@ public class Preconditions extends Helpers {
 
             case "cart<filled out, payment method: GC>":
                 createSKU_active();
-                createProduct_active(skuCode, "sunglasses");
+                createProduct_active(skuId, skuCode, "sunglasses");
                 increaseOnHandQty(skuCode, "Sellable", 20);
                 createCustomer();
                 createGiftCard(20000, 1);
@@ -424,7 +424,7 @@ public class Preconditions extends Helpers {
 
             case "cart<filled out, payment method: CC>":
                 createSKU_active();
-                createProduct_active(skuCode, "sunglasses");
+                createProduct_active(skuId, skuCode, "sunglasses");
                 increaseOnHandQty(skuCode, "Sellable", 20);
                 createCustomer();
                 createCart(customerId);
@@ -439,7 +439,7 @@ public class Preconditions extends Helpers {
 
             case "filled out cart, product with variants, SC as a payment method":
                 createSKU_active();
-                createProduct_active(skuCode, "sunglasses");
+                createProduct_active(skuId, skuCode, "sunglasses");
                 increaseOnHandQty(skuCode, "Sellable", 20);
                 createCustomer();
                 createCart(customerId);
@@ -458,7 +458,7 @@ public class Preconditions extends Helpers {
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(skuCode, "test");
+                createProduct_active(skuId, skuCode, "test");
                 increaseOnHandQty(skuCode, "Sellable", 1);
                 updLineItems(cartId, skuCode, 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
@@ -474,7 +474,7 @@ public class Preconditions extends Helpers {
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(skuCode, "test");
+                createProduct_active(skuId, skuCode, "test");
                 increaseOnHandQty(skuCode, "Sellable", 1);
                 updLineItems(cartId, skuCode, 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
@@ -516,7 +516,7 @@ public class Preconditions extends Helpers {
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(skuCode, "test");
+                createProduct_active(skuId, skuCode, "test");
                 increaseOnHandQty(skuCode, "Sellable", 1);
                 skuCodes.add(skuCode);
                 updLineItems(cartId, skuCode, 1);
@@ -530,7 +530,7 @@ public class Preconditions extends Helpers {
 
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(skuCode, "test");
+                createProduct_active(skuId, skuCode, "test");
                 increaseOnHandQty(skuCode, "Sellable", 1);
                 skuCodes.add(skuCode);
                 updLineItems(cartId, skuCode, 1);
@@ -547,7 +547,7 @@ public class Preconditions extends Helpers {
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(skuCode, "test");
+                createProduct_active(skuId, skuCode, "test");
                 increaseOnHandQty(skuCode, "Sellable", 1);
                 updLineItems(cartId, skuCode, 1);
                 skuCodes.add(skuCode);
@@ -561,7 +561,7 @@ public class Preconditions extends Helpers {
 
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(skuCode, "test");
+                createProduct_active(skuId, skuCode, "test");
                 increaseOnHandQty(skuCode, "Sellable", 2);
                 updLineItems(cartId, skuCode, 2);
                 skuCodes.add(skuCode);
@@ -591,7 +591,7 @@ public class Preconditions extends Helpers {
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(skuCode, "test");
+                createProduct_active(skuId, skuCode, "test");
                 increaseOnHandQty(skuCode, "Sellable", 1);
                 updLineItems(cartId, skuCode, 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
@@ -608,7 +608,7 @@ public class Preconditions extends Helpers {
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(skuCode, "test");
+                createProduct_active(skuId, skuCode, "test");
                 increaseOnHandQty(skuCode, "Sellable", 1);
                 updLineItems(cartId, skuCode, 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
@@ -662,7 +662,7 @@ public class Preconditions extends Helpers {
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(skuCode, "test");
+                createProduct_active(skuId, skuCode, "test");
                 increaseOnHandQty(skuCode, "Sellable", 1);
                 updLineItems(cartId, skuCode, 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
@@ -679,7 +679,7 @@ public class Preconditions extends Helpers {
 
             case "product in active state":
                 createSKU_active();
-                createProduct_active(skuCode, "sunglasses");
+                createProduct_active(skuId, skuCode, "sunglasses");
                 break;
 
             case "product in inactive state":
@@ -709,13 +709,13 @@ public class Preconditions extends Helpers {
 
             case "product in active state, active SKU and tag":
                 createSKU_active();
-                createProduct_active(skuCode, "sunglasses");
+                createProduct_active(skuId, skuCode, "sunglasses");
                 break;
 
             //----------------
             case "active product, has tag, active SKU":
                 createSKU_active();
-                createProduct_active(skuCode, "sunglasses");
+                createProduct_active(skuId, skuCode, "sunglasses");
                 break;
 
             case "active product, no tag, active SKU":
@@ -735,7 +735,7 @@ public class Preconditions extends Helpers {
 
             case "active product, has tag, inactive SKU":
                 createSKU_inactive();
-                createProduct_active(skuCode, storefrontCategory);
+                createProduct_active(skuId, skuCode, storefrontCategory);
                 break;
 
             case "active product, no tag, inactive SKU":
@@ -755,7 +755,7 @@ public class Preconditions extends Helpers {
 
             case "active product, has tag, active SKU, has sellable stockitems":
                 createSKU_active();
-                createProduct_active(skuCode, storefrontCategory);
+                createProduct_active(skuId, skuCode, storefrontCategory);
                 increaseOnHandQty(skuCode, "Sellable", 1);
                 break;
 
@@ -787,14 +787,14 @@ public class Preconditions extends Helpers {
 
             case "active product, has tag, active SKU, has sellable stockitems > archive SKU":
                 createSKU_active();
-                createProduct_active(skuCode, storefrontCategory);
+                createProduct_active(skuId, skuCode, storefrontCategory);
                 increaseOnHandQty(skuCode, "Sellable", 1);
                 archiveSKU(skuCode);
                 break;
 
             case "active product, has tag, active SKU, has sellable stockitems > archive product":
                 createSKU_active();
-                createProduct_active(skuCode, storefrontCategory);
+                createProduct_active(skuId, skuCode, storefrontCategory);
                 increaseOnHandQty(skuCode, "Sellable", 1);
                 archiveProduct(productId);
                 break;
@@ -803,7 +803,7 @@ public class Preconditions extends Helpers {
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(skuCode, storefrontCategory);
+                createProduct_active(skuId, skuCode, storefrontCategory);
                 increaseOnHandQty(skuCode, "Sellable", 1);
                 updLineItems(cartId, skuCode, 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
@@ -821,7 +821,7 @@ public class Preconditions extends Helpers {
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(skuCode, storefrontCategory);
+                createProduct_active(skuId, skuCode, storefrontCategory);
                 increaseOnHandQty(skuCode, "Sellable", 1);
                 updLineItems(cartId, skuCode, 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
@@ -838,7 +838,7 @@ public class Preconditions extends Helpers {
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(skuCode, storefrontCategory);
+                createProduct_active(skuId, skuCode, storefrontCategory);
                 increaseOnHandQty(skuCode, "Sellable", 2);
                 updLineItems(cartId, skuCode, 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
@@ -855,7 +855,7 @@ public class Preconditions extends Helpers {
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(skuCode, storefrontCategory);
+                createProduct_active(skuId, skuCode, storefrontCategory);
                 increaseOnHandQty(skuCode, "Sellable", 2);
                 updLineItems(cartId, skuCode, 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
@@ -872,7 +872,7 @@ public class Preconditions extends Helpers {
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(skuCode, storefrontCategory);
+                createProduct_active(skuId, skuCode, storefrontCategory);
                 increaseOnHandQty(skuCode, "Sellable", 2);
                 updLineItems(cartId, skuCode, 1);
                 archiveSKU_expectFail(skuCode);
@@ -882,7 +882,7 @@ public class Preconditions extends Helpers {
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(skuCode, storefrontCategory);
+                createProduct_active(skuId, skuCode, storefrontCategory);
                 increaseOnHandQty(skuCode, "Sellable", 2);
                 updLineItems(cartId, skuCode, 1);
                 archiveProduct_expectFail(productId);
@@ -896,14 +896,14 @@ public class Preconditions extends Helpers {
 
             case "active product, has tag, active SKU, has sellable stockitems > product state goes inactive":
                 createSKU_active();
-                createProduct_active(skuCode, storefrontCategory);
+                createProduct_active(skuId, skuCode, storefrontCategory);
                 increaseOnHandQty(skuCode, "Sellable", 1);
                 setProductState(productId, "inactive");
                 break;
 
             case "active product, has tag, active SKU, has sellable stockitems > SKU state goes inactive":
                 createSKU_active();
-                createProduct_active(skuCode, storefrontCategory);
+                createProduct_active(skuId, skuCode, storefrontCategory);
                 increaseOnHandQty(skuCode, "Sellable", 1);
                 setSkuState(skuCode, "inactive");
                 break;
@@ -919,7 +919,7 @@ public class Preconditions extends Helpers {
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(skuCode, "sunglasses");
+                createProduct_active(skuId, skuCode, "sunglasses");
                 increaseOnHandQty(skuCode, "Backorder", 1);
                 updLineItems(cartId, skuCode, 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
@@ -934,7 +934,7 @@ public class Preconditions extends Helpers {
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(skuCode, "sunglasses");
+                createProduct_active(skuId, skuCode, "sunglasses");
                 increaseOnHandQty(skuCode, "Backorder", 1);
                 increaseOnHandQty(skuCode, "Sellable", 1);
                 updLineItems(cartId, skuCode, 2);
@@ -950,11 +950,11 @@ public class Preconditions extends Helpers {
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(skuCode, "sunglasses");
+                createProduct_active(skuId, skuCode, "sunglasses");
                 increaseOnHandQty(skuCode, "Backorder", 1);
                 updLineItems(cartId, skuCode, 1);
                 createSKU_active();
-                createProduct_active(skuCode, "sunglasses");
+                createProduct_active(skuId, skuCode, "sunglasses");
                 increaseOnHandQty(skuCode, "Sellable", 1);
                 updLineItems(cartId, skuCode, 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
@@ -976,7 +976,7 @@ public class Preconditions extends Helpers {
                 createCustomer();
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(skuCode, "test");
+                createProduct_active(skuId, skuCode, "test");
                 increaseOnHandQty(skuCode, "Sellable", 1);
                 updLineItems(cartId, skuCode, 1);
                 setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
@@ -1007,22 +1007,22 @@ public class Preconditions extends Helpers {
 
             case "a customer signed up on storefront":
                 randomId = generateRandomID();
-                signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
+                signUpCustomer("Customer " + randomId, "qatest2278+" + randomId + "@gmail.com");
                 break;
 
             case "two customers signed up on storefront":
                 randomId = generateRandomID();
-                signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
+                signUpCustomer("Customer " + randomId, "qatest2278+" + randomId + "@gmail.com");
                 takenEmail = customerEmail;
-                signUpCustomer("Test Buddy " + generateRandomID(), "qatest2278+" + generateRandomID() + "@gmail.com");
+                signUpCustomer("Customer " + generateRandomID(), "qatest2278+" + generateRandomID() + "@gmail.com");
                 break;
 
             case "a customer ready to checkout":
                 randomId = generateRandomID();
-                signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
+                signUpCustomer("Customer " + randomId, "qatest2278+" + randomId + "@gmail.com");
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(skuCode, storefrontCategory);
+                createProduct_active(skuId, skuCode, storefrontCategory);
                 increaseOnHandQty(skuCode, "Sellable", 1);
                 updLineItems(cartId, skuCode, 1);
                 setShipAddress(cartId,
@@ -1044,36 +1044,36 @@ public class Preconditions extends Helpers {
 
             case "registered customer, active product in cart":
                 randomId = generateRandomID();
-                signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
+                signUpCustomer("Customer " + randomId, "qatest2278+" + randomId + "@gmail.com");
                 createSKU_active();
-                createProduct_active(skuCode, storefrontCategory);
+                createProduct_active(skuId, skuCode, storefrontCategory);
                 createCart(customerId);
                 updLineItems(cartId, skuCode, 1);
                 break;
 
             case "registered customer, active product on storefront":
                 randomId = generateRandomID();
-                signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
+                signUpCustomer("Customer " + randomId, "qatest2278+" + randomId + "@gmail.com");
                 createSKU_active();
-                createProduct_active(skuCode, storefrontCategory);
+                createProduct_active(skuId, skuCode, storefrontCategory);
                 break;
 
             case "registered customer, 2 active products on storefront":
                 randomId = generateRandomID();
-                signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
+                signUpCustomer("Customer " + randomId, "qatest2278+" + randomId + "@gmail.com");
                 createSKU_active();
-                createProduct_active(skuCode, storefrontCategory);
+                createProduct_active(skuId, skuCode, storefrontCategory);
                 products.add(productTitle);
                 createSKU_active();
-                createProduct_active(skuCode, storefrontCategory);
+                createProduct_active(skuId, skuCode, storefrontCategory);
                 products.add(productTitle);
                 break;
 
             case "a customer signed up on storefront, product<active>, coupon<any, single code>":
                 randomId = generateRandomID();
-                signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
+                signUpCustomer("Customer " + randomId, "qatest2278+" + randomId + "@gmail.com");
                 createSKU_active();
-                createProduct_active(skuCode, storefrontCategory);
+                createProduct_active(skuId, skuCode, storefrontCategory);
                 createPromotion_coupon();
                 createCoupon(promotionId);
                 generateSingleCode(couponId);
@@ -1081,7 +1081,7 @@ public class Preconditions extends Helpers {
 
             case "product<active>, coupon<any, single code>":
                 createSKU_active();
-                createProduct_active(skuCode, storefrontCategory);
+                createProduct_active(skuId, skuCode, storefrontCategory);
                 createPromotion_coupon();
                 createCoupon(promotionId);
                 generateSingleCode(couponId);
@@ -1089,10 +1089,10 @@ public class Preconditions extends Helpers {
 
             case "a customer signed up on storefront with product and coupon<any, single code> in cart":
                 randomId = generateRandomID();
-                signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
+                signUpCustomer("Customer " + randomId, "qatest2278+" + randomId + "@gmail.com");
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(skuCode, storefrontCategory);
+                createProduct_active(skuId, skuCode, storefrontCategory);
                 updLineItems(cartId, skuCode, 1);
                 createPromotion_coupon();
                 createCoupon(promotionId);
@@ -1102,20 +1102,20 @@ public class Preconditions extends Helpers {
 
             case "an active product visible on storefront":
                 createSKU_active();
-                createProduct_active(skuCode, storefrontCategory);
-                checkProductPresenceInCategoryView("int", "productId", productId);
+                createProduct_active(skuId, skuCode, storefrontCategory);
+                waitForProductAppearInEs("int", "productId", productId);
                 increaseOnHandQty(skuCode, "Sellable", 1);
                 break;
 
             case "registered customer, 2 active products on storefront, 1 product in cart":
                 randomId = generateRandomID();
-                signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
+                signUpCustomer("Customer " + randomId, "qatest2278+" + randomId + "@gmail.com");
                 createSKU_active();
-                createProduct_active(skuCode, storefrontCategory);
+                createProduct_active(skuId, skuCode, storefrontCategory);
                 products.add(productTitle);
                 updLineItems(cartId, skuCode, 1);
                 createSKU_active();
-                createProduct_active(skuCode, storefrontCategory);
+                createProduct_active(skuId, skuCode, storefrontCategory);
                 products.add(productTitle);
                 break;
 
@@ -1123,7 +1123,7 @@ public class Preconditions extends Helpers {
 
             case "a storefront signed up customer with a shipping address":
                 randomId = generateRandomID();
-                signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
+                signUpCustomer("Customer " + randomId, "qatest2278+" + randomId + "@gmail.com");
                 createAddress(customerId,
                         "John Doe",
                         4177, 234,
@@ -1135,7 +1135,7 @@ public class Preconditions extends Helpers {
 
             case "a storefront signed up customer with 2 shipping addresses":
                 randomId = generateRandomID();
-                signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
+                signUpCustomer("Customer " + randomId, "qatest2278+" + randomId + "@gmail.com");
                 createAddress(customerId,
                         "John Doe",
                         4177, 234,
@@ -1154,19 +1154,19 @@ public class Preconditions extends Helpers {
 
             case "a storefront signed up customer with a product in cart":
                 randomId = generateRandomID();
-                signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
+                signUpCustomer("Customer " + randomId, "qatest2278+" + randomId + "@gmail.com");
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(skuCode, storefrontCategory);
+                createProduct_active(skuId, skuCode, storefrontCategory);
                 updLineItems(cartId, skuCode, 1);
                 break;
 
             case "a storefront signed up customer with a shipping address and a product in cart":
                 randomId = generateRandomID();
-                signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
+                signUpCustomer("Customer " + randomId, "qatest2278+" + randomId + "@gmail.com");
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(skuCode, storefrontCategory);
+                createProduct_active(skuId, skuCode, storefrontCategory);
                 updLineItems(cartId, skuCode, 1);
                 createAddress(customerId,
                         "John Doe",
@@ -1179,7 +1179,7 @@ public class Preconditions extends Helpers {
 
             case "a storefront signed up customer with 2 shipping addresses, has default address":
                 randomId = generateRandomID();
-                signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
+                signUpCustomer("Customer " + randomId, "qatest2278+" + randomId + "@gmail.com");
                 createAddress(customerId,
                         "John Doe",
                         4177, 234,
@@ -1200,7 +1200,7 @@ public class Preconditions extends Helpers {
 
             case "a storefront signed up customer, a cart with 1 product, 2 shipping addresses, has default address":
                 randomId = generateRandomID();
-                signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
+                signUpCustomer("Customer " + randomId, "qatest2278+" + randomId + "@gmail.com");
                 createAddress(customerId,
                         "John Doe",
                         4177, 234,
@@ -1217,13 +1217,13 @@ public class Preconditions extends Helpers {
                         "5551237575", true);
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(skuCode, storefrontCategory);
+                createProduct_active(skuId, skuCode, storefrontCategory);
                 updLineItems(cartId, skuCode, 1);
                 break;
 
             case "a storefront signed up customer, a cart with 1 product, 2 shipping addresses, NO default address":
                 randomId = generateRandomID();
-                signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
+                signUpCustomer("Customer " + randomId, "qatest2278+" + randomId + "@gmail.com");
                 createAddress(customerId,
                         "John Doe",
                         4177, 234,
@@ -1240,13 +1240,13 @@ public class Preconditions extends Helpers {
                         "5551237575", false);
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(skuCode, storefrontCategory);
+                createProduct_active(skuId, skuCode, storefrontCategory);
                 updLineItems(cartId, skuCode, 1);
                 break;
 
             case "a storefront signed up customer, a cart with 1 product, 2 shipping addresses, HAS default address":
                 randomId = generateRandomID();
-                signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
+                signUpCustomer("Customer " + randomId, "qatest2278+" + randomId + "@gmail.com");
                 createAddress(customerId,
                         "Default Address",
                         4177, 234,
@@ -1263,16 +1263,16 @@ public class Preconditions extends Helpers {
                         "5551237575", false);
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(skuCode, storefrontCategory);
+                createProduct_active(skuId, skuCode, storefrontCategory);
                 updLineItems(cartId, skuCode, 1);
                 break;
 
             case "a storefront signed up customer with active product in cart and applied shipping address":
                 randomId = generateRandomID();
-                signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
+                signUpCustomer("Customer " + randomId, "qatest2278+" + randomId + "@gmail.com");
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(skuCode, storefrontCategory);
+                createProduct_active(skuId, skuCode, storefrontCategory);
                 updLineItems(cartId, skuCode, 1);
                 setShipAddress(cartId,
                         "John Doe",
@@ -1285,10 +1285,10 @@ public class Preconditions extends Helpers {
 
             case "a customer ready to checkout, single code coupon code":
                 randomId = generateRandomID();
-                signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
+                signUpCustomer("Customer " + randomId, "qatest2278+" + randomId + "@gmail.com");
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(skuCode, storefrontCategory);
+                createProduct_active(skuId, skuCode, storefrontCategory);
                 increaseOnHandQty(skuCode, "Sellable", 1);
                 updLineItems(cartId, skuCode, 1);
                 setShipAddress(cartId,
@@ -1310,10 +1310,10 @@ public class Preconditions extends Helpers {
 
             case "a storefront customer ready for checkout, has 2 credit cards":
                 randomId = generateRandomID();
-                signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
+                signUpCustomer("Customer " + randomId, "qatest2278+" + randomId + "@gmail.com");
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(skuCode, storefrontCategory);
+                createProduct_active(skuId, skuCode, storefrontCategory);
                 increaseOnHandQty(skuCode, "Sellable", 1);
                 updLineItems(cartId, skuCode, 1);
                 setShipAddress(cartId,
@@ -1332,10 +1332,10 @@ public class Preconditions extends Helpers {
 
             case "a storefront signed up customer, with no qualifier coupon code applied":
                 randomId = generateRandomID();
-                signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
+                signUpCustomer("Customer " + randomId, "qatest2278+" + randomId + "@gmail.com");
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(skuCode, storefrontCategory);
+                createProduct_active(skuId, skuCode, storefrontCategory);
                 increaseOnHandQty(skuCode, "Sellable", 1);
                 updLineItems(cartId, skuCode, 1);
                 setShipAddress(cartId,
@@ -1358,10 +1358,10 @@ public class Preconditions extends Helpers {
 
             case "a storefront signed up customer ready for checkout, has 2 credit cards, has default card":
                 randomId = generateRandomID();
-                signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
+                signUpCustomer("Customer " + randomId, "qatest2278+" + randomId + "@gmail.com");
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(skuCode, storefrontCategory);
+                createProduct_active(skuId, skuCode, storefrontCategory);
                 increaseOnHandQty(skuCode, "Sellable", 1);
                 updLineItems(cartId, skuCode, 1);
                 setShipAddress(cartId,
@@ -1381,10 +1381,10 @@ public class Preconditions extends Helpers {
 
             case "a storefront signed up customer, has shipping address and product in cart":
                 randomId = generateRandomID();
-                signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
+                signUpCustomer("Customer " + randomId, "qatest2278+" + randomId + "@gmail.com");
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(skuCode, storefrontCategory);
+                createProduct_active(skuId, skuCode, storefrontCategory);
                 increaseOnHandQty(skuCode, "Sellable", 1);
                 updLineItems(cartId, skuCode, 1);
                 createAddress(customerId,
@@ -1398,10 +1398,10 @@ public class Preconditions extends Helpers {
 
             case "a storefront signed up customer, with shipping address submitted and product in cart":
                 randomId = generateRandomID();
-                signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
+                signUpCustomer("Customer " + randomId, "qatest2278+" + randomId + "@gmail.com");
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(skuCode, storefrontCategory);
+                createProduct_active(skuId, skuCode, storefrontCategory);
                 increaseOnHandQty(skuCode, "Sellable", 1);
                 updLineItems(cartId, skuCode, 1);
                 setShipAddress(cartId,
@@ -1415,19 +1415,19 @@ public class Preconditions extends Helpers {
 
             case "happy path":
                 randomId = generateRandomID();
-                signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
+                signUpCustomer("Customer " + randomId, "qatest2278+" + randomId + "@gmail.com");
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(skuCode, storefrontCategory);
+                createProduct_active(skuId, skuCode, storefrontCategory);
                 increaseOnHandQty(skuCode, "Sellable", 1);
                 break;
 
             case "a storefront signed up blacklisted customer ready for checkout":
                 randomId = generateRandomID();
-                signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
+                signUpCustomer("Customer " + randomId, "qatest2278+" + randomId + "@gmail.com");
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(skuCode, storefrontCategory);
+                createProduct_active(skuId, skuCode, storefrontCategory);
                 increaseOnHandQty(skuCode, "Sellable", 1);
                 updLineItems(cartId, skuCode, 1);
                 setShipAddress(cartId,
@@ -1447,10 +1447,10 @@ public class Preconditions extends Helpers {
 
             case "a customer ready for checkout, gift card is applied to cart as a payment method":
                 randomId = generateRandomID();
-                signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
+                signUpCustomer("Customer " + randomId, "qatest2278+" + randomId + "@gmail.com");
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(skuCode, storefrontCategory);
+                createProduct_active(skuId, skuCode, storefrontCategory);
                 increaseOnHandQty(skuCode, "Sellable", 1);
                 updLineItems(cartId, skuCode, 1);
                 setShipAddress(cartId,
@@ -1471,10 +1471,10 @@ public class Preconditions extends Helpers {
 
             case "a customer ready to checkout, a gift card issued":
                 randomId = generateRandomID();
-                signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
+                signUpCustomer("Customer " + randomId, "qatest2278+" + randomId + "@gmail.com");
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(skuCode, storefrontCategory);
+                createProduct_active(skuId, skuCode, storefrontCategory);
                 increaseOnHandQty(skuCode, "Sellable", 1);
                 updLineItems(cartId, skuCode, 1);
                 setShipAddress(cartId,
@@ -1494,16 +1494,16 @@ public class Preconditions extends Helpers {
 
             case "a customer ready to checkout, 2 active products, 1 in cart":
                 randomId = generateRandomID();
-                signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
+                signUpCustomer("Customer " + randomId, "qatest2278+" + randomId + "@gmail.com");
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(skuCode, storefrontCategory);
+                createProduct_active(skuId, skuCode, storefrontCategory);
                 skuCodes.add(skuCode);
                 products.add(productTitle);
                 increaseOnHandQty(skuCode, "Sellable", 1);
                 updLineItems(cartId, skuCode, 1);
                 createSKU_active();
-                createProduct_active(skuCode, storefrontCategory);
+                createProduct_active(skuId, skuCode, storefrontCategory);
                 skuCodes.add(skuCode);
                 products.add(productTitle);
                 setShipAddress(cartId,
@@ -1522,36 +1522,36 @@ public class Preconditions extends Helpers {
 
             case "a storefront registered customer, 2 active products, 1 in cart":
                 randomId = generateRandomID();
-                signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
+                signUpCustomer("Customer " + randomId, "qatest2278+" + randomId + "@gmail.com");
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(skuCode, storefrontCategory);
+                createProduct_active(skuId, skuCode, storefrontCategory);
                 skuCodes.add(skuCode);
                 products.add(productTitle);
                 updLineItems(cartId, skuCode, 1);
                 createSKU_active();
-                createProduct_active(skuCode, storefrontCategory);
+                createProduct_active(skuId, skuCode, storefrontCategory);
                 skuCodes.add(skuCode);
                 products.add(productTitle);
                 break;
 
             case "an active product, a gift card":
                 createSKU_active();
-                createProduct_active(skuCode, storefrontCategory);
+                createProduct_active(skuId, skuCode, storefrontCategory);
                 createGiftCard(1000, 1);
                 break;
 
             case "a storefront registered customer, 2 active products, 1 in cart, coupon<no qualifier, 10% off, single code>":
                 randomId = generateRandomID();
-                signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
+                signUpCustomer("Customer " + randomId, "qatest2278+" + randomId + "@gmail.com");
                 createCart(customerId);
                 createSKU_active();
-                createProduct_active(skuCode, storefrontCategory);
+                createProduct_active(skuId, skuCode, storefrontCategory);
                 skuCodes.add(skuCode);
                 products.add(productTitle);
                 updLineItems(cartId, skuCode, 1);
                 createSKU_active();
-                createProduct_active(skuCode, storefrontCategory);
+                createProduct_active(skuId, skuCode, storefrontCategory);
                 skuCodes.add(skuCode);
                 products.add(productTitle);
                 createPromotion_coupon();
@@ -1561,9 +1561,9 @@ public class Preconditions extends Helpers {
 
             case "a storefront registered customer, an active product":
                 randomId = generateRandomID();
-                signUpCustomer("Test Buddy " + randomId, "qatest2278+" + randomId + "@gmail.com");
+                signUpCustomer("Customer " + randomId, "qatest2278+" + randomId + "@gmail.com");
                 createSKU_active();
-                createProduct_active(skuCode, storefrontCategory);
+                createProduct_active(skuId, skuCode, storefrontCategory);
                 increaseOnHandQty(skuCode, "Sellable", 1);
                 break;
 
@@ -1571,159 +1571,172 @@ public class Preconditions extends Helpers {
 
             case "active product with tags <ENTRÉES> and <POULTRY>":
                 createSKU_active();
-                createProduct_active(skuCode, "ENTRÉES");
+                createProduct_active(skuId, skuCode, "ENTRÉES");
                 addTag_product(productId, "POULTRY");
-                checkProductPresenceInCategoryView("int", "productId", productId);
+                waitForProductAppearInEs("int", "productId", productId);
                 break;
 
             case "active product with tags <ENTRÉES> and <SEAFOOD>":
                 createSKU_active();
-                createProduct_active(skuCode, "ENTRÉES");
+                createProduct_active(skuId, skuCode, "ENTRÉES");
                 addTag_product(productId, "SEAFOOD");
-                checkProductPresenceInCategoryView("int", "productId", productId);
+                waitForProductAppearInEs("int", "productId", productId);
                 break;
 
             case "active product with tags <ENTRÉES> and <MEAT>":
                 createSKU_active();
-                createProduct_active(skuCode, "ENTRÉES");
+                createProduct_active(skuId, skuCode, "ENTRÉES");
                 addTag_product(productId, "MEAT");
-                checkProductPresenceInCategoryView("int", "productId", productId);
+                waitForProductAppearInEs("int", "productId", productId);
                 break;
 
             case "active product with tags <ENTRÉES> and <VEGETARIAN>":
                 createSKU_active();
-                createProduct_active(skuCode, "ENTRÉES");
+                createProduct_active(skuId, skuCode, "ENTRÉES");
                 addTag_product(productId, "VEGETARIAN");
-                checkProductPresenceInCategoryView("int", "productId", productId);
+                waitForProductAppearInEs("int", "productId", productId);
                 break;
 
             case "active product with tags <ENTRÉES> and <>":
                 createSKU_active();
-                createProduct_active(skuCode, "ENTRÉES");
-                checkProductPresenceInCategoryView("int", "productId", productId);
+                createProduct_active(skuId, skuCode, "ENTRÉES");
+                waitForProductAppearInEs("int", "productId", productId);
                 break;
 
             case "products with tags with entrees subcategories names":
                 createSKU_active();
-                createProduct_active(skuCode, "ENTRÉES");
+                createProduct_active(skuId, skuCode, "ENTRÉES");
                 addTag_product(productId, "POULTRY");
                 products.add(productTitle);
                 createSKU_active();
-                createProduct_active(skuCode, "ENTRÉES");
+                createProduct_active(skuId, skuCode, "ENTRÉES");
                 addTag_product(productId, "SEAFOOD");
                 products.add(productTitle);
                 createSKU_active();
-                createProduct_active(skuCode, "ENTRÉES");
+                createProduct_active(skuId, skuCode, "ENTRÉES");
                 addTag_product(productId, "MEAT");
                 products.add(productTitle);
                 createSKU_active();
-                createProduct_active(skuCode, "ENTRÉES");
+                createProduct_active(skuId, skuCode, "ENTRÉES");
                 addTag_product(productId, "VEGETARIAN");
                 products.add(productTitle);
                 createSKU_active();
-                createProduct_active(skuCode, "ENTRÉES");
+                createProduct_active(skuId, skuCode, "ENTRÉES");
                 products.add(productTitle);
                 createSKU_active();
-                checkProductPresenceInCategoryView("int", "productId", productId);
+                waitForProductAppearInEs("int", "productId", productId);
                 break;
 
             case "an active product with tpg-specific custom properties":
                 createSKU_active();
                 createProduct_tpgProps(skuId, skuCode, skuTitle);
-                checkProductPresenceInCategoryView("int", "productId", productId);
+                waitForProductAppearInEs("int", "productId", productId);
                 break;
 
             case "an active product with <p> in description":
                 randomId = generateRandomID();
                 createSKU_active();
                 createActiveProduct_styledDescription(skuId, skuCode, storefrontCategory, "p", "Paragraph");
-                checkProductPresenceInCategoryView("int", "productId", productId);
+                waitForProductAppearInEs("int", "productId", productId);
                 break;
 
             case "an active product with <h1> in description":
                 randomId = generateRandomID();
                 createSKU_active();
                 createActiveProduct_styledDescription(skuId, skuCode, storefrontCategory, "h1", "Heading One");
-                checkProductPresenceInCategoryView("int", "productId", productId);
+                waitForProductAppearInEs("int", "productId", productId);
                 break;
 
             case "an active product with <h2> in description":
                 randomId = generateRandomID();
                 createSKU_active();
                 createActiveProduct_styledDescription(skuId, skuCode, storefrontCategory, "h2", "Heading Two");
-                checkProductPresenceInCategoryView("int", "productId", productId);
+                waitForProductAppearInEs("int", "productId", productId);
                 break;
 
             case "an active product with <h3> in description":
                 randomId = generateRandomID();
                 createSKU_active();
                 createActiveProduct_styledDescription(skuId, skuCode, storefrontCategory, "h3", "Heading Three");
-                checkProductPresenceInCategoryView("int", "productId", productId);
+                waitForProductAppearInEs("int", "productId", productId);
                 break;
 
             case "an active product with <h4> in description":
                 randomId = generateRandomID();
                 createSKU_active();
                 createActiveProduct_styledDescription(skuId, skuCode, storefrontCategory, "h4", "Heading Four");
-                checkProductPresenceInCategoryView("int", "productId", productId);
+                waitForProductAppearInEs("int", "productId", productId);
                 break;
 
             case "an active product with <h5> in description":
                 randomId = generateRandomID();
                 createSKU_active();
                 createActiveProduct_styledDescription(skuId, skuCode, storefrontCategory, "h5", "Heading Five");
-                checkProductPresenceInCategoryView("int", "productId", productId);
+                waitForProductAppearInEs("int", "productId", productId);
                 break;
 
             case "an active product with <h6> in description":
                 randomId = generateRandomID();
                 createSKU_active();
                 createActiveProduct_styledDescription(skuId, skuCode, storefrontCategory, "h6", "Heading Six");
-                checkProductPresenceInCategoryView("int", "productId", productId);
+                waitForProductAppearInEs("int", "productId", productId);
                 break;
 
             case "an active product with <strong> in description":
                 randomId = generateRandomID();
                 createSKU_active();
                 createActiveProduct_styledDescription(skuId, skuCode, storefrontCategory, "strong", "Bold Text");
-                checkProductPresenceInCategoryView("int", "productId", productId);
+                waitForProductAppearInEs("int", "productId", productId);
                 break;
 
             case "an active product with <em> in description":
                 randomId = generateRandomID();
                 createSKU_active();
                 createActiveProduct_styledDescription(skuId, skuCode, storefrontCategory, "em", "Italic Text");
-                checkProductPresenceInCategoryView("int", "productId", productId);
+                waitForProductAppearInEs("int", "productId", productId);
                 break;
 
             case "an active product with <ins> in description":
                 randomId = generateRandomID();
                 createSKU_active();
                 createActiveProduct_styledDescription(skuId, skuCode, storefrontCategory, "ins", "Underlined Text");
-                checkProductPresenceInCategoryView("int", "productId", productId);
+                waitForProductAppearInEs("int", "productId", productId);
                 break;
 
             case "an active product with <ul> in description":
                 randomId = generateRandomID();
                 createSKU_active();
                 createActiveProduct_styledDescription(skuId, skuCode, storefrontCategory, "ul", "UL Bullet Point");
-                checkProductPresenceInCategoryView("int", "productId", productId);
+                waitForProductAppearInEs("int", "productId", productId);
                 break;
 
             case "an active product with <ol> in description":
                 randomId = generateRandomID();
                 createSKU_active();
                 createActiveProduct_styledDescription(skuId, skuCode, storefrontCategory, "ol", "OL Point");
-                checkProductPresenceInCategoryView("int", "productId", productId);
+                waitForProductAppearInEs("int", "productId", productId);
                 break;
         }
     }
 
     public static void main(String[] args) throws IOException {
-        storefrontCategory = "test";
+        storefrontCategory = "APPETIZERS";
         loginAsAdmin("admin@admin.com", "password", "tenant");
-        viewSKU("SKU-9402563");
-        setSkuState("SKU-9402563", "inactive");
+//        createCustomer();
+//        createCart(customerId);
+//        createSKU_active();
+//        createProduct_active(skuId, skuCode, storefrontCategory);
+//        waitForProductAppearInEs("int", "id", productId);
+//        increaseOnHandQty(skuCode, "Sellable", 2);
+//        updLineItems(cartId, skuCode, 1);
+//        archiveProduct_expectFail(productId);
+        createCustomer();
+        createCart(customerId);
+        createSKU_active();
+        createProduct_active(skuId, skuCode, storefrontCategory);
+        increaseOnHandQty(skuCode, "Sellable", 2);
+        updLineItems(cartId, skuCode, 1);
+        waitForProductAppearInEs("int", "id", productId);
     }
 
 }
