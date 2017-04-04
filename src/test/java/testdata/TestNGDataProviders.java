@@ -274,5 +274,16 @@ public class TestNGDataProviders extends BaseTest {
                 {"еactive product, has tag, active SKU, has sellable stockitems, not present in any carts, has purchases > archive product"}
         };
     }
+    /**
+     * btnTitle, btnRedirectSlug, expectedUrl
+     */
+    @DataProvider
+    public Object[][] homePageBtns() {
+        return new Object[][] {
+                {"Shop Now", "/NEW", storefrontUrl + "/NEW"},
+                {"Shop Now", "/SPRING", storefrontUrl + "/SPRING"},
+                {"Learn more", "/about", storefrontUrl + "/about"}
+        };
+    }
 
 }

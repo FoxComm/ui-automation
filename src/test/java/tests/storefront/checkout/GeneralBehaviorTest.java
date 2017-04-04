@@ -52,7 +52,7 @@ public class GeneralBehaviorTest extends Preconditions {
         p.clickCheckoutBtn_cart();
 
         p.selectShipMethodRbtn("1").shouldBe(selected);
-        p.assertCheckoutStepActive("Delivery");
+        p.activeCheckoutStep("Delivery").shouldBe(visible);
     }
 
     @Test(priority = 3)
@@ -117,7 +117,7 @@ public class GeneralBehaviorTest extends Preconditions {
         p.editStep("shipping");
         p.clickContinueBtn();
 
-        p.assertCheckoutStepActive("Delivery");
+        p.activeCheckoutStep("Delivery").shouldBe(visible);
     }
 
     @Test(priority = 6)

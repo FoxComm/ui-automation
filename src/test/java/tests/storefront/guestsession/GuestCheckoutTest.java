@@ -270,7 +270,7 @@ public class GuestCheckoutTest extends Preconditions {
         p.openCart();
         p.clickCheckoutBtn_cart();
 
-        p.assertCheckoutStepActive("delivery");
+        p.activeCheckoutStep("Delivery").shouldBe(visible);
         p.appliedShipAddress_name().shouldHave(text("Customer " + randomId));
     }
 

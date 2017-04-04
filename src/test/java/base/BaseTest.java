@@ -3,11 +3,14 @@ package base;
 import com.codeborne.selenide.Configuration;
 import org.testng.annotations.BeforeSuite;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
+
 import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 
 public class BaseTest extends ConciseAPI {
 
     public String getUrl() {
+        getWebDriver().manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
         return getWebDriver().getCurrentUrl();
     }
     protected static String apiUrl = System.getenv("API_URL__TESTS");

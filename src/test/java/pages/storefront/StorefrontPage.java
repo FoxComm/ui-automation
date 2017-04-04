@@ -5,6 +5,7 @@ import org.openqa.selenium.NoSuchElementException;
 import ru.yandex.qatools.allure.annotations.Step;
 
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 import static base.BaseTest.storefrontUrl;
 import static com.codeborne.selenide.Condition.visible;
@@ -62,9 +63,16 @@ public class StorefrontPage extends NavigationPage {
         click(logo());
     }
 
+    @Step("Proceed to checkout")
+    public void proceedToCheckout() {
+        openCart();
+        clickCheckoutBtn_cart();
+    }
+
     //============================================ HELPERS ===========================================
 
     public String getUrl() {
+        getWebDriver().manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
         return getWebDriver().getCurrentUrl();
     }
 

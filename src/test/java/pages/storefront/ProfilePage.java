@@ -86,7 +86,7 @@ public class ProfilePage extends AuthPage {
         return $(xpath("//input[@type='checkbox']"));
     }
 
-    private SelenideElement addAddressBtn() {
+    public SelenideElement addAddressBtn() {
         return $(xpath("//button[text()='Add Address']"));
     }
 

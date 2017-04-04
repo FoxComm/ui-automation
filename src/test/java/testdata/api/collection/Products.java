@@ -134,7 +134,7 @@ public class Products extends Helpers {
         }
     }
 
-    @Step("[API] Create product; SKU:<{0}>, Tag:<{1}>, State:<Active>")
+    @Step("[API] Create product; SKU:<{0}>, Tag:<{2}>, State:<Active>")
     public static void createProduct_active(int skuId, String skuCode, String tag) throws IOException {
         System.out.println("Creating a new product with SKU <ID:" + skuId + ">, <code:" + skuCode + ">, tag:<" + tag + ">...");
         String randomId = generateRandomID();

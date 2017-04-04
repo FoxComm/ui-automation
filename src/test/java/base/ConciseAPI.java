@@ -367,10 +367,11 @@ public class ConciseAPI implements IHookable {
      * Returns true if customer is signed in
      */
     protected Boolean checkCustomerAuth() {
+        getWebDriver().manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
         Boolean result = null;
         try {
             getWebDriver().manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
-            WebElement logInLnk = getWebDriver().findElement(By.xpath("//a[contains(@class, 'login-link')]"));
+            getWebDriver().findElement(By.xpath("//a[contains(@class, 'login-link')]"));
         } catch (NoSuchElementException ignored) {
             result = true;
         }
@@ -385,8 +386,9 @@ public class ConciseAPI implements IHookable {
      * and will fail the test
      */
     protected void elementIsPresent(String xpath) {
+        getWebDriver().manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
         getWebDriver().manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
-        WebElement element = getWebDriver().findElement(By.xpath(xpath));
+        getWebDriver().findElement(By.xpath(xpath));
     }
 
     //------------------------- HELPERS -------------------------//

@@ -1720,23 +1720,9 @@ public class Preconditions extends Helpers {
     }
 
     public static void main(String[] args) throws IOException {
+        System.getenv("API_URL__TESTS");
         storefrontCategory = "APPETIZERS";
         loginAsAdmin("admin@admin.com", "password", "tenant");
-//        createCustomer();
-//        createCart(customerId);
-//        createSKU_active();
-//        createProduct_active(skuId, skuCode, storefrontCategory);
-//        waitForProductAppearInEs("int", "id", productId);
-//        increaseOnHandQty(skuCode, "Sellable", 2);
-//        updLineItems(cartId, skuCode, 1);
-//        archiveProduct_expectFail(productId);
-        createCustomer();
-        createCart(customerId);
-        createSKU_active();
-        createProduct_active(skuId, skuCode, storefrontCategory);
-        increaseOnHandQty(skuCode, "Sellable", 2);
-        updLineItems(cartId, skuCode, 1);
-        waitForProductAppearInEs("int", "id", productId);
     }
 
 }

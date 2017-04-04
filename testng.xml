@@ -208,14 +208,20 @@
         </classes>
     </test>
 
-    <test name="products behavior test">
+    <test name="SF: Products Behavior">
         <classes>
             <class name="tests.storefront.products.ProductsBehaviorTest"/>
         </classes>
     </test>
-    <test name="products behavior test -- admin">
+    <test name="Admin: Products Behavior">
         <classes>
             <class name="tests.storeadmin.products.ProductsTest"/>
+        </classes>
+    </test>
+    
+    <test name="SF: Navigation Test">
+        <classes>
+            <class name="tests.storefront.navigation.NavigationTest" />
         </classes>
     </test>
 </suite>

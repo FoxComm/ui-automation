@@ -26,8 +26,12 @@ public class CheckoutPage extends CartPage {
         return $(xpath("//div[text()='LOG IN & CHECKOUT']/following-sibling::form//input[@type='email']"));
     }
 
-    public void assertCheckoutStepActive(String step) {
-        $(xpath("//ol/li[contains(@class, 'active')]//*[text()='Delivery']"));
+    public SelenideElement checkoutStep(String title) {
+        return $(xpath("//li[contains(@class, 'nav-item')]/a[text()='" + title + "']"));
+    }
+
+    public SelenideElement activeCheckoutStep(String step) {
+        return $(xpath("//ol/li[contains(@class, 'active')]//*[text()='" + step + "']"));
     }
 
     public SelenideElement orderSummary() {
@@ -62,7 +66,7 @@ public class CheckoutPage extends CartPage {
         return $(xpath("//button[contains(@class, 'checkout-submit') and text()='Continue']"));
     }
 
-    private SelenideElement placeOrderBtn_checkout() {
+    public SelenideElement placeOrderBtn() {
         return $(xpath("//button[contains(@class, 'checkout-submit') and text()='Place Order']"));
     }
 
@@ -350,7 +354,7 @@ public class CheckoutPage extends CartPage {
 
     @Step("Click \"PLACE ORDER\" btn")
     public void clickPlaceOrderBtn() {
-        click(placeOrderBtn_checkout());
+        click(placeOrderBtn());
     }
 
     @Step("Click \"Delete\" lnk next to <{0}th> card in customer's wallet")
@@ -401,6 +405,11 @@ public class CheckoutPage extends CartPage {
     @Step("Click \"REDEEM\" btn")
     private void clickRedeemBtn() {
         click(redeemBtn());
+    }
+
+    @Step("Switch to {0} step")
+    public void switchToStep(String title) {
+        click(checkoutStep(title));
     }
 
     @Step("Click \"EDIT\" at <{0}> step")

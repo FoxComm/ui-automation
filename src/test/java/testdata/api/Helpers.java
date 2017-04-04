@@ -193,7 +193,7 @@ public class Helpers extends Variables {
             System.out.println("Orders in ES: <" + ordersInEs + ">");
             System.out.println("---- ---- ---- ----");
         } else {
-            failTest(responseBody, responseCode, responseMsg);
+            failTest("", responseCode, responseMsg);
         }
     }
 
@@ -236,7 +236,7 @@ public class Helpers extends Variables {
             System.out.println("---- ---- ---- ----");
         } else {
             System.out.println("Timed out on finding order in ES");
-            failTest(responseBody, responseCode, responseMsg);
+            failTest("", responseCode, responseMsg);
         }
     }
 
