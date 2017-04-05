@@ -21,14 +21,14 @@ public class NavigationTest extends Preconditions {
         p.cleanUp_beforeMethod();
     }
 
-//    @Test(priority = 1, dataProvider = "homePageBtns")
-//    @Description("Buttons on home page redirects where they should")
-//    public void homePageBtnsRedirection(String btnTitle, String btnRedirectSlug, String expectedUrl) {
-//        p = openPage(storefrontUrl, StorefrontPage.class);
-//        p.clickBtnAtHome(btnTitle, btnRedirectSlug);
-//
-//        assertUrl(getUrl(), expectedUrl);
-//    }
+    @Test(priority = 1, dataProvider = "homePageBtns")
+    @Description("Buttons on home page redirects where they should")
+    public void homePageBtnsRedirection(String btnTitle, String btnRedirectSlug, String expectedUrl) {
+        p = openPage(storefrontUrl, StorefrontPage.class);
+        p.clickBtnAtHome(btnTitle, btnRedirectSlug);
+
+        assertUrl(getUrl(), expectedUrl);
+    }
 
     @Test(priority = 2)
     @Description("Can switch between checkout steps using pannel on top of the page")
