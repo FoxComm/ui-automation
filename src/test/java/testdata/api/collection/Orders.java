@@ -33,7 +33,7 @@ public class Orders extends Helpers {
             System.out.println(response.code() + " " + response.message());
             JSONObject responseJSON = new JSONObject(responseBody);
 
-            orderAppliedCoupon = responseJSON.getJSONObject()
+//            orderAppliedCoupon = responseJSON.getJSONObject();
             System.out.println("---- ---- ---- ----");
         } else {
             failTest(response.body().string(), response.code(), response.message());
