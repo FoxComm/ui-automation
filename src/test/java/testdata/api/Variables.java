@@ -40,6 +40,7 @@ public class Variables extends TestNGDataProviders {
     protected static String couponName;
     protected static String singleCouponCode;
     protected static List<String> bulkCodes = new ArrayList<>();
+    protected static String orderAppliedCoupon;
 
     protected static String skuCode;
     protected static int skuId;

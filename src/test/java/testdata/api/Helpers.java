@@ -10,6 +10,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Objects;
 
+import static testdata.api.collection.Orders.getAppliedCouponCode;
+
 public class Helpers extends Variables {
 
     //------------------------------------- JSON HELPERS -------------------------------------
@@ -36,7 +38,7 @@ public class Helpers extends Variables {
         return new JSONArray(Objects.requireNonNull(jsonData));
     }
 
-    protected static boolean assertProductAppearInEs(String jsonAttrType, String attrName, String attrVal, String responseBody) {
+    private static boolean assertProductAppearInEs(String jsonAttrType, String attrName, String attrVal, String responseBody) {
         JSONObject responseJSON = new JSONObject(responseBody);
         JSONArray productsArr = responseJSON.getJSONArray("result");
         jsonAttrType = jsonAttrType.toLowerCase();
@@ -174,7 +176,7 @@ public class Helpers extends Variables {
                 .getJSONObject("term")
                 .putOpt("customer.id", customerId);
 
-        while((System.currentTimeMillis() < end) && (ordersInEs != ordersExpectedAmount)) {
+        while ((System.currentTimeMillis() < end) && (ordersInEs != ordersExpectedAmount)) {
             Response response = request.post(apiUrl + "/search/admin/orders_search_view/_search?size=50", payload.toString());
             responseBody = response.body().string();
             responseCode = response.code();
@@ -183,8 +185,9 @@ public class Helpers extends Variables {
             JSONObject jsonResponse = new JSONObject(responseBody);
             try {
                 ordersInEs = jsonResponse.getJSONArray("result").length();
-            } catch(org.json.JSONException ignored) {}
-            totalTries ++;
+            } catch (org.json.JSONException ignored) {
+            }
+            totalTries++;
         }
         System.out.println("total tries: <" + totalTries + ">");
 
@@ -199,13 +202,13 @@ public class Helpers extends Variables {
 
     /**
      * options for attrName:
-     *  (int) id
-     *  (string) title
-     *  (string) slug
+     * (int) id
+     * (string) title
+     * (string) slug
      */
     @Step("[API] Check if product<({0}) {1}: {2}> is present in category view on storefront")
     protected static void waitForProductAppearInEs(String attrType, String attrName, String attrVal) throws IOException {
-        System.out.println("Checking if product<"+attrName+": "+attrVal+"> is present in category view on storefront...");
+        System.out.println("Checking if product<" + attrName + ": " + attrVal + "> is present in category view on storefront...");
 
         int responseCode = 0;
         String responseBody = "";
@@ -218,13 +221,13 @@ public class Helpers extends Variables {
         JSONObject jsonObj = parseObj("bin/payloads/helpers/esCatalogView.json");
         String payload = jsonObj.toString();
 
-        while((System.currentTimeMillis() < end) && (productIsInEs != true)) {
+        while ((System.currentTimeMillis() < end) && (productIsInEs != true)) {
             Response response = request.post(apiUrl + "/search/public/products_catalog_view/_search?size=1000", payload.toString());
             responseBody = response.body().string();
             responseCode = response.code();
             responseMsg = response.message();
 
-            totalTries ++;
+            totalTries++;
             productIsInEs = assertProductAppearInEs(attrType, attrName, attrVal, responseBody);
         }
         System.out.println("total tries: <" + totalTries + ">");
@@ -239,6 +242,72 @@ public class Helpers extends Variables {
             failTest("", responseCode, responseMsg);
         }
     }
+
+    //------------------------------------- PRINT TEST DATA -------------------------------------
+
+    @Step("Print test data details")
+    protected static void printTestData() throws IOException {
+        printOrderId(orderId);
+        printCouponCode(getAppliedCouponCode(orderId));
+        printCustomerDetails();
+        printCustomerName(customerName);
+        printCustomerEmail(customerEmail);
+        printCreditCardId(creditCardId);
+        printProductDetails();
+        printSkuId(skuId);
+        printSkuCode(skuCode);
+        printProductId(productId);
+        printProductTitle(productTitle);
+        printOrderTotals();
+        printGrandTotal(total);
+        printSubtotal(subTotal);
+        printAdjustmentsTotal(adjustments);
+        printCustomersExpenses(customersExpenses);
+        printTaxes(taxes);
+        printShippingTotal(shipping);
+    }
+
+    @Step("Order ID: <{0}>")
+    private static void printOrderId(String orderId) {}
+
+    @Step("Applied coupon code: <{0}>")
+    private static void printCouponCode(String couponCode) {}
+
+    @Step
+    private static void printCustomerDetails() {}
+        @Step("Customer name: <{0}>")
+        private static void printCustomerName(String customerName) {}
+        @Step("Customer email: <{0}>")
+        private static void printCustomerEmail(String customerEmail) {}
+        @Step("Credit Card ID: <{0}>")
+        private static void printCreditCardId(int creditCardId) {}
+
+    @Step
+    private static void printProductDetails() {}
+        @Step("SKU Code: <{0}>")
+        private static void printSkuCode(String skuCode) {}
+        @Step("SKU ID: <{0}>")
+        private static void printSkuId(int skuId) {}
+        @Step("Product ID: <{0}>")
+        private static void printProductId(String productId) {}
+        @Step("Product title: <{0}>")
+        private static void printProductTitle(String productTitle) {}
+
+    @Step
+    private static void printOrderTotals() {}
+        @Step("Grand total: <{0}>")
+        private static void printGrandTotal(int total) {}
+        @Step("Subtotal: <{0}>")
+        private static void printSubtotal(int subtotal) {}
+        @Step("Adjustments total: <{0}>")
+        private static void printAdjustmentsTotal(int adjustments) {}
+        @Step("Customer expenses: <{0}>")
+        private static void printCustomersExpenses(int customersExpenses) {}
+        @Step("Taxes <{0}>")
+        private static void printTaxes(int taxes) {}
+        @Step("Shipping cost: <{0}>")
+        private static void printShippingTotal(int shipping) {}
+
 
     protected static class request {
 
@@ -322,5 +391,4 @@ public class Helpers extends Variables {
         }
 
     }
-
 }
