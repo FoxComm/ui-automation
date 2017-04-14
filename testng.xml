@@ -63,11 +63,11 @@
             <class name="tests.storeadmin.customers.orders.OrdersListTest" />
         </classes>
     </test>
-    <!--<test name="Customers > Store Credits" >-->
-        <!--<classes>-->
-            <!--<class name="tests.storeadmin.customers.storecredits.StoreCreditsTest" />-->
-        <!--</classes>-->
-    <!--</test>-->
+    <test name="Customers > Store Credits" >
+        <classes>
+            <class name="tests.storeadmin.customers.storecredits.StoreCreditsTest" />
+        </classes>
+    </test>
 
     <test name="SKUs Tests">
         <classes>
@@ -92,17 +92,17 @@
         </classes>
     </test>
 
-    <!--<test name="Promotions">-->
-        <!--<classes>-->
-            <!--<class name="tests.storeadmin.promotions.PromotionsTest" />-->
-        <!--</classes>-->
-    <!--</test>-->
+    <test name="Promotions">
+        <classes>
+            <class name="tests.storeadmin.promotions.PromotionsTest" />
+        </classes>
+    </test>
 
-    <!--<test name="Coupons" >-->
-        <!--<classes>-->
-            <!--<class name="tests.storeadmin.coupons.CouponsTest" />-->
-        <!--</classes>-->
-    <!--</test>-->
+    <test name="Coupons" >
+        <classes>
+            <class name="tests.storeadmin.coupons.CouponsTest" />
+        </classes>
+    </test>
 
     <test name="Gift Cards">
         <classes>
@@ -159,27 +159,27 @@
         </classes>
     </test>
 
-    <!--<test name="SF: Checkout > Shipping Address">-->
-        <!--<classes>-->
-            <!--<class name="tests.storefront.checkout.ShippingAddressTest"/>-->
-        <!--</classes>-->
-    <!--</test>-->
-    <!--<test name="SF: Checkout > Shipping Method">-->
-        <!--<classes>-->
-            <!--<class name="tests.storefront.checkout.ShippingMethodTest"/>-->
-        <!--</classes>-->
-    <!--</test>-->
+    <test name="SF: Checkout > Shipping Address">
+        <classes>
+            <class name="tests.storefront.checkout.ShippingAddressTest"/>
+        </classes>
+    </test>
+    <test name="SF: Checkout > Shipping Method">
+        <classes>
+            <class name="tests.storefront.checkout.ShippingMethodTest"/>
+        </classes>
+    </test>
 
-    <!--<test name="SF: Checkout > Billing">-->
-        <!--<classes>-->
-            <!--<class name="tests.storefront.checkout.BillingTest"/>-->
-        <!--</classes>-->
-    <!--</test>-->
-    <!--<test name="SF: Checkout > General Behavior">-->
-        <!--<classes>-->
-            <!--<class name="tests.storefront.checkout.GeneralBehaviorTest"/>-->
-        <!--</classes>-->
-    <!--</test>-->
+    <test name="SF: Checkout > Billing">
+        <classes>
+            <class name="tests.storefront.checkout.BillingTest"/>
+        </classes>
+    </test>
+    <test name="SF: Checkout > General Behavior">
+        <classes>
+            <class name="tests.storefront.checkout.GeneralBehaviorTest"/>
+        </classes>
+    </test>
 
     <!--<test name="SF: Guest Session > Checkout">-->
         <!--<classes>-->
@@ -192,21 +192,21 @@
         </classes>
     </test>
 
-    <!--<test name="SF: Products > General PDP Test">-->
-        <!--<classes>-->
-            <!--<class name="tests.storefront.products.AbstractPdpTest"/>-->
-        <!--</classes>-->
-    <!--</test>-->
-    <!--<test name="SF: Products > Catalog Test">-->
-        <!--<classes>-->
-            <!--<class name="tests.storefront.products.CatalogTest"/>-->
-        <!--</classes>-->
-    <!--</test>-->
-    <!--<test name="SF: Products > TPG Product Attributes">-->
-        <!--<classes>-->
-            <!--<class name="tests.storefront.products.TpgProductAttrsTest"/>-->
-        <!--</classes>-->
-    <!--</test>-->
+    <test name="SF: Products > General PDP Test">
+        <classes>
+            <class name="tests.storefront.products.AbstractPdpTest"/>
+        </classes>
+    </test>
+    <test name="SF: Products > Catalog Test">
+        <classes>
+            <class name="tests.storefront.products.CatalogTest"/>
+        </classes>
+    </test>
+    <test name="SF: Products > TPG Product Attributes">
+        <classes>
+            <class name="tests.storefront.products.TpgProductAttrsTest"/>
+        </classes>
+    </test>
 
     <test name="SF: Products Behavior">
         <classes>
@@ -219,9 +219,9 @@
         </classes>
     </test>
 
-    <!--<test name="SF: Navigation Test">-->
-        <!--<classes>-->
-            <!--<class name="tests.storefront.navigation.NavigationTest" />-->
-        <!--</classes>-->
-    <!--</test>-->
+    <test name="SF: Navigation Test">
+        <classes>
+            <class name="tests.storefront.navigation.NavigationTest" />
+        </classes>
+    </test>
 </suite>
