@@ -1,10 +1,10 @@
-#FoxCommerce UI Automation
+# FoxCommerce UI Automation
 
 The FoxCommerce E2E UI automation test framework. Used for automating UI test scenarios across Store Admin and Storefront.
 
-##Installation
+## Installation
 
-####Ubuntu
+#### Ubuntu
 1. Install Java:
 
 	```
@@ -40,7 +40,7 @@ The FoxCommerce E2E UI automation test framework. Used for automating UI test sc
 	make configure-linux
 	```
 
-####MacOS
+#### MacOS
 1. Install Java:
 
 	```
@@ -74,9 +74,24 @@ The FoxCommerce E2E UI automation test framework. Used for automating UI test sc
 	```
 
 
-##Running Tests
+## Environtment Variables
 
-####Locally
+With values in this example tests will run in chrome, against FoxComm stage, with TPG storefront
+
+```
+export ENV=stage
+export API_URL__TESTS=https://stage.foxcommerce.com/api
+export ASHES_URL=https://stage.foxcommerce.com/admin
+export STOREFRONT_URL=https://stage.foxcommerce.com/perfect-gourmet
+export STOREFRONT=perfect-gourmet
+export SUITE=local
+export BROWSER=chrome
+export ALLURE_CONFIG=/home/userName/.../ui-automation/allure.properties
+```
+
+## Running Tests
+
+#### Locally
 
 1. Compile:
 
@@ -90,12 +105,12 @@ The FoxCommerce E2E UI automation test framework. Used for automating UI test sc
 	make test
 	```
 
-####Buildkite CI
+#### Buildkite CI
 * To configure the environment against which to run tests, change `$API_URL` value to what you need.
 * Builds are scheduled on 7 p.m. PST
 * Scheduled build is run against `stage`
 
-##Reporting
+## Reporting
 
 * [Allure framework](https://github.com/allure-framework/allure1/wiki)
     Report is generated using allure-cli tool either manually (if run locally) or automatically in Buildkite.
@@ -113,14 +128,14 @@ The FoxCommerce E2E UI automation test framework. Used for automating UI test sc
   * `@Attachment` -- marks `takeScreenShot()` and `errorText()`
   * Environment -- displays system information about enviorment against which test run has been run. Information is gathered automatically by a build script and then passed to report.
 
-##Stack
+## Stack
 
 * Language: Java
 * Framework: TestNG, Selenide, self-made wrappers
 * Build Tool: SBT
 * Reporting: Allure
 
-##Project Structure
+## Project Structure
 
 
 ```
