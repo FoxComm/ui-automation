@@ -109,12 +109,12 @@ public class ProductsPage extends BasePage {
      * Looks for a block with a given option value pair
      * Values should be given as they are displayed on the page in order left to right
      */
-    public SelenideElement skuWithVariant(String firstValue, String secondValue) {
+    public SelenideElement sku_byVariants(String firstValue, String secondValue) {
         return $(xpath("//td/div[text()='" + firstValue + "']/../following-sibling::*[1]/div[text()='" + secondValue + "']"));
     }
 
-    public SelenideElement sku_byOptVal(String optValueVal) {
-        return $(xpath("//tbody[@id='fct-sku-list']//div[text()='" + optValueVal + "']"));
+    public SelenideElement sku_byVariant(String variant) {
+        return $(xpath("//*[@id='fct-sku-list']//td[contains(@class, 'variant')]/*[text()='" + variant + "']"));
     }
 
     private SelenideElement removeSKUBtn(String optValueVal) {
@@ -124,6 +124,10 @@ public class ProductsPage extends BasePage {
     //TODO: once figured out where to add ids at SKUs box - add id to this
     private SelenideElement removeSKUBtn(String firstValue, String secondValue){
         return $(xpath("//tbody[@id='fct-sku-list']//div[text()='"+firstValue+"']/../following-sibling::*[1]/div[text()='"+secondValue+"']/../following-sibling::*//button[@class='fc-btn fc-btn-remove']"));
+    }
+
+    private SelenideElement removeSKUBtn_byIndex(String index) {
+        return $(xpath("//tbody[@id='fct-sku-list']/tr[" + index + "]//button[contains(@class, 'delete')]"));
     }
 
     private SelenideElement removalConfirmBtn() {
@@ -409,6 +413,12 @@ public class ProductsPage extends BasePage {
     @Step("Remove SKU with an option value combo <{0}> & <{1}>")
     public void removeSKU(String firstValue, String secondValue) {
         click(removeSKUBtn(firstValue, secondValue));
+        click(removalConfirmBtn());
+    }
+
+    @Step("Remove {0}th SKU on the list")
+    public void removeSKU(String index) {
+        click(removeSKUBtn_byIndex(index));
         click(removalConfirmBtn());
     }
 

@@ -96,7 +96,7 @@ public class NewProductFormTest extends Preconditions {
         p.addOptionValue("color", "blue");
         p.removeOptionValue("blue");
 
-        p.sku_byOptVal("blue").shouldNotBe(visible);
+        p.sku_byVariant("blue").shouldNotBe(visible);
     }
 
     @Test(priority = 7)
@@ -106,8 +106,8 @@ public class NewProductFormTest extends Preconditions {
         p.addOptionValue("color", "red");
         p.editValue("red", "green");
 
-        p.sku_byOptVal("red").shouldNot(exist);
-        p.sku_byOptVal("green").shouldBe(visible);
+        p.sku_byVariant("red").shouldNot(exist);
+        p.sku_byVariant("green").shouldBe(visible);
     }
 
     @Test(priority = 8)
@@ -134,9 +134,9 @@ public class NewProductFormTest extends Preconditions {
         p.addOptionValue("color", "blue");
         p.addOption("size");
         p.addOptionValue("size", "small");
-        p.removeSKU("red", "small");
+        p.removeSKU("1");
 
-        p.skuWithVariant("red", "small").shouldNotBe(visible);
+        p.sku_byVariant("red").shouldNotBe(visible);
     }
 
     @Test(priority = 10)
@@ -148,10 +148,10 @@ public class NewProductFormTest extends Preconditions {
         p.addOptionValue("color", "blue");
         p.addOption("size");
         p.addOptionValue("size", "small");
-        p.removeSKU("blue", "small");
+        p.removeSKU("2");
         p.reAddSKU("blue", "small");
 
-        p.skuWithVariant("blue", "small").shouldBe(visible);
+        p.sku_byVariants("blue", "small").shouldBe(visible);
     }
 
     @Test(priority = 11)
@@ -166,6 +166,7 @@ public class NewProductFormTest extends Preconditions {
         p.addOptionValue("color", "red");
         p.addExistingSKU(skuCode);
         p.clickSave_wait();
+        shouldNotHaveText(p.breadcrumb(), "new", "");
         refresh();
 
         p.option("color").shouldBe(visible);
@@ -184,10 +185,11 @@ public class NewProductFormTest extends Preconditions {
         p.addOptionValue("color", "red");
         p.addExistingSKU(skuCode);
         p.clickSave_wait();
+        shouldNotHaveText(p.breadcrumb(), "new", "");
         refresh();
 
         p.sku(skuCode).shouldBe(visible);
-        p.sku_byOptVal("red").shouldBe(visible);
+        p.sku_byVariant("red").shouldBe(visible);
     }
 
 }
