@@ -127,11 +127,13 @@ public class ProfilePage extends AuthPage {
 
     @Step("Set \"Name\" fld to <{0}>")
     public void setNameFld(String name) {
+        clearField(emailFld_edit());
         setFieldVal(nameFld_edit(), name);
     }
 
     @Step("Set \"Email\" fld to <{0}>")
     public void setEmailFld(String email) {
+        clearField(emailFld_edit());
         setFieldVal(emailFld_edit(), email);
     }
 
