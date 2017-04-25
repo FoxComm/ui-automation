@@ -15,7 +15,7 @@ public class SkusPage extends BasePage {
 
 
     public SelenideElement addNewSKUBtn() {
-        return $(xpath("//button[@class='fc-btn fc-btn-primary']"));
+        return $(xpath("//button//span[text()='SKU']"));
     }
 
     public SelenideElement skuFld() {
