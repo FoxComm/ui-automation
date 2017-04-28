@@ -17,6 +17,7 @@ public class Products extends Helpers {
         System.out.println("Creating a new product... No SKU code is provided, so a new one will be created.");
         String randomId = generateRandomID();
 
+        // replace removed payload -- active, new SKU, no tag
         JSONObject payload = parseObj("bin/payloads/products/createProduct_newSKU_active.json");
         payload = setProductTitle(payload, "Product " + randomId);
         payload = setSkuCode_product(payload, "SKU-" + randomId);
@@ -57,7 +58,7 @@ public class Products extends Helpers {
         System.out.println("Creating a new product with tag <" + tag + ">... Will create a new SKU since none is provided");
         String randomId = generateRandomID();
 
-        JSONObject payload = parseObj("bin/payloads/products/createProduct_newSKU_active_hasTag.json");
+        JSONObject payload = parseObj("bin/payloads/products/createProduct_active_newSKU_hasTag.json");
         payload = setProductTitle(payload, "Product " + randomId);
         payload = setSkuCode_product(payload, "SKU-" + randomId);
         payload = setSkuTitle_product(payload, "SKU-" + randomId + " Title");
@@ -174,6 +175,7 @@ public class Products extends Helpers {
         payload = setProductTitle(payload, "Product " + randomId);
         payload = setSkuId_product(payload, skuId);
         payload = setSkuCode_product(payload, skuCode);
+        payload = setSkuTitle_product(payload, skuTitle);
 
         Response response = request.post(apiUrl + "/v1/products/default", payload.toString());
         String responseBody = response.body().string();
@@ -265,7 +267,7 @@ public class Products extends Helpers {
         System.out.println("Creating a new product with SKU <" + skuCode + ">...");
         String randomId = generateRandomID();
 
-        JSONObject payload = parseObj("bin/payloads/products/createProduct_inactive.json");
+        JSONObject payload = parseObj("bin/payloads/products/createProduct_inactive_existSKU_hasTag.json");
         payload = setProductTitle(payload, "Product " + randomId);
         payload = setTag_product(payload, tag);
         payload = setSkuId_product(payload, skuId);
@@ -293,7 +295,7 @@ public class Products extends Helpers {
         System.out.println("Creating a new product with SKU <" + skuCode + ">...");
         String randomId = generateRandomID();
 
-        JSONObject payload = parseObj("bin/payloads/products/createProduct_inactive_noTag.json");
+        JSONObject payload = parseObj("bin/payloads/products/createProduct_inactive_existSKU_noTag.json");
         payload = setProductTitle(payload, "Product " + randomId);
         payload = setSkuId_product(payload, skuId);
         payload = setSkuCode_product(payload, skuCode);

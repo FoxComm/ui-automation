@@ -1,29 +1,16 @@
 {
-  "id": null,
   "productId": null,
   "attributes": {
-    "metaDescription": {
+    "title": {
       "t": "string",
-      "v": null
-    },
-    "metaTitle": {
-      "t": "string",
-      "v": null
-    },
-    "url": {
-      "t": "string",
-      "v": null
+      "v": "productName"
     },
     "description": {
       "t": "richText",
-      "v": "The best thing to buy in 2016!"
-    },
-    "title": {
-      "t": "string",
-      "v": "productName_local"
+      "v": "The best thing to buy in 2017!"
     },
     "activeFrom": {
-      "v": "2016-09-01T18:06:29.890Z",
+      "v": "2017-04-28T08:54:00.290Z",
       "t": "datetime"
     },
     "activeTo": {
@@ -36,35 +23,41 @@
     }
   },
   "skus": [{
-    "id": 1,
     "attributes": {
       "code": {
         "t": "string",
-        "v": "sku"
+        "v": "SKU-TST"
+      },
+      "title": {
+        "t": "string",
+        "v": "SKU Title"
       },
       "retailPrice": {
         "t": "price",
         "v": {
-          "currency": "USD",
-          "value": 5000
+          "value": 5000,
+          "currency": "USD"
         }
       },
       "salePrice": {
         "t": "price",
         "v": {
-          "currency": "USD",
-          "value": 5000
+          "value": 5000,
+          "currency": "USD"
         }
       },
-      "title": {
-        "v": "THATS A TITLE"
+      "activeTo": {
+        "v": null,
+        "t": "datetime"
       },
-      "context": {
-        "v": "default"
+      "activeFrom": {
+        "v": "2017-04-28T08:54:00.290Z",
+        "t": "datetime"
       }
     }
   }],
   "context": {
     "name": "default"
-  }
+  },
+  "variants": []
 }

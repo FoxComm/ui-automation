@@ -7,15 +7,7 @@
     },
     "description": {
       "t": "richText",
-      "v": "The best thing to buy in 2017!"
-    },
-    "activeFrom": {
-      "v": "2017-04-28T09:02:20.483Z",
-      "t": "datetime"
-    },
-    "activeTo": {
-      "v": null,
-      "t": "datetime"
+      "v": "The best thing to but in 2017!"
     }
   },
   "skus": [{
@@ -41,14 +33,6 @@
           "value": 5000,
           "currency": "USD"
         }
-      },
-      "activeTo": {
-        "v": null,
-        "t": "datetime"
-      },
-      "activeFrom": {
-        "v": "2017-04-28T09:02:20.483Z",
-        "t": "datetime"
       }
     }
   }],

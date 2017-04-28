@@ -1,12 +1,21 @@
 {
-  "slug": "",
-  "context": {
-    "name": "default",
-    "attributes": {
-      "lang": "en"
-    }
-  },
   "attributes": {
+    "title": {
+      "t": "string",
+      "v": "productName"
+    },
+    "description": {
+      "t": "richText",
+      "v": "The best thing to buy in 2017!"
+    },
+    "activeFrom": {
+      "t": "datetime",
+      "v": "2016-11-22T21:57:34.364Z"
+    },
+    "activeTo": {
+      "t": "datetime",
+      "v": null
+    },
     "tags": {
       "t": "tags",
       "v": ["ENTRÉES", "MEAT"]
@@ -23,10 +32,6 @@
       "t": "string",
       "v": "Steam Value"
     },
-    "title": {
-      "t": "string",
-      "v": ""
-    },
     "Defrost": {
       "t": "string",
       "v": "Defrost Value"
@@ -39,17 +44,9 @@
       "t": "string",
       "v": "Microwave Value"
     },
-    "activeFrom": {
-      "t": "datetime",
-      "v": "2016-11-22T21:57:34.364Z"
-    },
     "Ingredients": {
       "t": "string",
       "v": "Ingredients Value"
-    },
-    "description": {
-      "t": "richText",
-      "v": "Description Value"
     },
     "Serving Size": {
       "t": "string",
@@ -73,7 +70,6 @@
     }
   },
   "skus": [{
-    "id": 62,
     "attributes": {
       "code": {
         "t": "string",
@@ -94,6 +90,10 @@
         "t": "datetime",
         "v": "2016-11-22T21:57:34.364Z"
       },
+      "activeTo": {
+        "t": "datetime",
+        "v": null
+      },
       "retailPrice": {
         "t": "price",
         "v": {
@@ -101,7 +101,6 @@
           "currency": "USD"
         }
       }
-    },
-    "albums": []
+    }
   }]
 }

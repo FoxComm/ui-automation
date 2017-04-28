@@ -1,66 +1,47 @@
 {
-  "id":null,
-  "attributes":{
-    "metaDescription":{
-      "t":"string",
-      "v":null
+  "productId": null,
+  "attributes": {
+    "title": {
+      "t": "string",
+      "v": "productName"
     },
-    "metaTitle":{
-      "t":"string",
-      "v":null
+    "description": {
+      "t": "richText",
+      "v":"The best thing to buy in 2017!"
     },
-    "url":{
-      "t":"string",
-      "v":null
-    },
-    "description":{
-      "t":"richText",
-      "v":"The best thing to buy in 2016!"
-    },
-    "title":{
-      "t":"string",
-      "v":"productName_local"
-    },
-    "activeFrom":{
-      "t":"datetime",
-      "v":null
-    },
-    "activeTo":{
-      "t":"datetime",
-      "v":null
-    },
-    "tags":{
-      "t":"tags",
-      "v":[]
+    "tags": {
+      "t": "tags",
+      "v": []
     }
   },
-  "skus":[
-    {
-      "id":1,
-      "attributes":{
-        "code":{
-          "t":"string",
-          "v":"SKU-QWE123"
-        },
-        "title":{
-          "t":"string",
-          "v":"SKU-QWE123 T"
-        },
-        "retailPrice":{
-          "t":"price",
-          "v":{
-            "currency":"USD",
-            "value":5000
-          }
-        },
-        "salePrice":{
-          "t":"price",
-          "v":{
-            "currency":"USD",
-            "value":5000
-          }
+  "skus": [{
+    "attributes": {
+      "code": {
+        "t": "string",
+        "v": "SKU-TSTn"
+      },
+      "title": {
+        "t": "string",
+        "v": "SKU Title"
+      },
+      "retailPrice": {
+        "t": "price",
+        "v": {
+          "currency": "USD",
+          "value": 5000
+        }
+      },
+      "salePrice": {
+        "t": "price",
+        "v": {
+          "currency": "USD",
+          "value": 5000
         }
       }
     }
-  ]
+  }],
+  "context": {
+    "name": "default"
+  },
+  "variants": []
 }

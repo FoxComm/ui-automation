@@ -37,6 +37,14 @@ public class CartPage extends SearchPage {
         return $(xpath("//div[contains(@class, 'line-items')]/div[" + index + "]//span[contains(@class, 'fc-close')]"));
     }
 
+    private SelenideElement qtyBtn(String index) {
+        return $(xpath("//div[contains(@class, 'cart-box')]//div[contains(@class, 'line-items')]/div[" + index + "]//div[contains(@class, 'quantity')]//div[contains(@class, 'select-box')]"));
+    }
+
+    private SelenideElement qtyOption(String index, int value) {
+        return $(xpath("//div[contains(@class, 'cart-box')]//div[contains(@class, 'line-items')]/div[" + index + "]//div[contains(@class, 'quantity')]//option[@value='" + value + "']"));
+    }
+
     public SelenideElement checkoutBtn_cart() {
         return $(xpath("//button[contains(@class, 'checkout-button')]"));
     }

@@ -1,43 +1,36 @@
 {
-  "id": null,
+  "productId": null,
   "attributes": {
-    "metaDescription": {
+    "title": {
       "t": "string",
-      "v": null
-    },
-    "metaTitle": {
-      "t": "string",
-      "v": null
-    },
-    "url": {
-      "t": "string",
-      "v": null
+      "v": "productName"
     },
     "description": {
       "t": "richText",
-      "v": "The best thing to buy in 2016!"
+      "v": "The best thing to buy in 2017!"
     },
-    "title": {
-      "t": "string",
-      "v": "productName_local"
+    "activeFrom": {
+      "v": "2017-04-28T10:10:45.118Z",
+      "t": "datetime"
+    },
+    "activeTo": {
+      "v": null,
+      "t": "datetime"
     },
     "tags": {
       "t": "tags",
-      "v": [
-        "tag"
-      ]
+      "v": []
     }
   },
   "skus": [{
-    "id": 1,
     "attributes": {
       "code": {
         "t": "string",
-        "v": "sku"
+        "v": "SKU-TSTnew"
       },
       "title": {
         "t": "string",
-        "v": ""
+        "v": "SKU Title"
       },
       "retailPrice": {
         "t": "price",
@@ -52,7 +45,19 @@
           "currency": "USD",
           "value": 5000
         }
+      },
+      "activeTo": {
+        "v": null,
+        "t": "datetime"
+      },
+      "activeFrom": {
+        "v": "2017-04-28T10:10:45.118Z",
+        "t": "datetime"
       }
     }
-  }]
+  }],
+  "context": {
+    "name": "default"
+  },
+  "variants": []
 }
