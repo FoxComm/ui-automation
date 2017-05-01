@@ -728,7 +728,7 @@ public class CartPage extends BasePage {
     }
 
     private SelenideElement removePaymentMethodBtn(String index) {
-        return $(xpath("//*[@id='fct-cart-payment-method-block']//tr[" + index + "]//button[contains(@class, 'remove')]"));
+        return $(xpath("//*[@id='fct-cart-payment-method-block']//tr[" + index + "]//button[contains(@class, 'button__delete')]"));
     }
 
     // ----------- >> NEW CREDIT CARD FORM
