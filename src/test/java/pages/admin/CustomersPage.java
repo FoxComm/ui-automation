@@ -126,11 +126,11 @@ public class CustomersPage extends BasePage {
     }
 
     public SelenideElement editAddressBtn(String addressIndex) {
-        return $(By.xpath("//ul[@id='fct-customer-addresses-list']/li[" + addressIndex + "]//button[contains(@class, 'edit')]"));
+        return $(By.xpath("//ul[@id='fct-customer-addresses-list']/li[" + addressIndex + "]//i[@class='icon-edit']/.."));
     }
 
     public SelenideElement deleteAddressBtn(String addressIndex) {
-        return $(By.xpath("//ul[@id='fct-customer-addresses-list']/li[" + addressIndex + "]//button[contains(@class, 'trash')]"));
+        return $(By.xpath("//ul[@id='fct-customer-addresses-list']/li[" + addressIndex + "]//button[contains(@class, 'button__delete')]"));
     }
 
     private SelenideElement confirmDeletionBtn() {
@@ -225,7 +225,7 @@ public class CustomersPage extends BasePage {
 
     @Step("Click \"Edit\" next to <{0}th> address in the address book")
     public void clickEditAddressBtn(String index) {
-        click( editAddressBtn("1") );
+        click(editAddressBtn(index));
     }
 
     @Step("Add new address to customer's address book")
