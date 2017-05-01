@@ -83,7 +83,7 @@ public class ShippingAddressTest extends Preconditions {
         shouldNotBeVisible(p.nameFld(), "'New Address' form isn't closed after clicking 'Save'");
 
         p.customerName_chosenShipAddress().shouldHave(text("Edited Name")
-                .because("Chosen address has failed to get updated."));
+                .because("Failed to update chosen shipping address"));
         p.clickDoneBtn("Shipping Address");
         p.appliedShipAddress_name().shouldHave(text("Edited Name"));
     }

@@ -376,11 +376,11 @@ public class CartPage extends BasePage {
     }
 
     private SelenideElement deleteBtn_chosenAddress() {
-        return $(xpath("//*[contains(@class, 'is-active')]//button[contains(@class, 'icon-trash')]"));
+        return $(xpath("//*[contains(@class, 'is-active')]//button[contains(@class, 'button__delete')]"));
     }
 
     private SelenideElement editBtn_chosenAddress() {
-        return $(xpath("//*[contains(@class, 'is-active')]//button[contains(@class, 'icon-edit')]"));
+        return $(xpath("//*[contains(@class, 'is-active')]//i[contains(@class, 'icon-edit')]/.."));
     }
 
     private SelenideElement deleteBtn_inAddressBook(String addressIndex) {
