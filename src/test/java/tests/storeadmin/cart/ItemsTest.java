@@ -110,7 +110,7 @@ public class ItemsTest extends Preconditions {
         p.clickEditBtn("Line Items");
         p.setItemQty(skuCode, "3");
         p.clickDoneBtn("Line Items");
-        shouldHaveText(p.itemQty("1"), "1", "Failed to edit Qty");
+        shouldHaveText(p.itemQty("1"), "3", "Failed to edit Qty");
         open(adminUrl + "/customers/" + customerId + "/cart");
 
         p.lineItems().shouldHaveSize(1);

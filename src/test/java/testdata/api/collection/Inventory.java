@@ -9,6 +9,7 @@ import java.io.IOException;
 
 public class Inventory extends Helpers {
 
+    @Step("Get inventory id of <{0}>")
     private static void viewSKU_inventory(String skuCode) throws IOException {
         System.out.println("Viewing inventory summary of SKU <" + skuCode + ">...");
 

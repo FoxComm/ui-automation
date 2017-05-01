@@ -187,7 +187,7 @@ public class CartPage extends BasePage {
     }
 
     private SelenideElement deleteBtn_item(String itemIndex) {
-        return $(xpath("//tbody[@id='fct-cart-line-items']/tr[" + itemIndex + "]//button[contains(@class, 'remove')]"));
+        return $(xpath("//tbody[@id='fct-cart-line-items']/tr[" + itemIndex + "]//button[contains(@class, 'button__delete')]"));
     }
 
     private SelenideElement confirmDeletionBtn() {
@@ -195,7 +195,7 @@ public class CartPage extends BasePage {
     }
 
     private SelenideElement cancelDeletionBtn() {
-        return $(xpath("//a[@id='fct-modal-cancel-btn']"));
+        return $(xpath("//button[@id='fct-modal-cancel-btn']"));
     }
 
     public SelenideElement lineItem_byName(String itemName) {
@@ -222,7 +222,7 @@ public class CartPage extends BasePage {
     }
 
     public SelenideElement lineItemSearchView_byName(String itemName) {
-        return $(xpath("//ul[@class='fc-typeahead__items']//*[text()='" + itemName + "']"));
+        return $(xpath("//ul[contains(@class, 'typeahead')]//*[text()='" + itemName + "']"));
     }
 
 
@@ -258,7 +258,7 @@ public class CartPage extends BasePage {
 
     @Step("Click \"Delete\" btn at <{0}th> line item")
     public void clickDeleteBtn_item(String index) {
-        click(deleteBtn_item("1"));
+        click(deleteBtn_item(index));
     }
 
     @Step("Confirm item deletion")
