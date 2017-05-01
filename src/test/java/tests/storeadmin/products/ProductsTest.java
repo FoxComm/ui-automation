@@ -103,7 +103,7 @@ public class ProductsTest extends Preconditions {
         skusPage.search(skuCode);
         skusPage.openSKU(skuCode);
 
-        skusPage.breadcrumb().shouldHave(text(skuCode));
+        skusPage.breadcrumb(skuCode).shouldBe(visible);
     }
 
     @Test(priority = 6, dataProvider = "newSkuInheritsProductState")
@@ -125,7 +125,7 @@ public class ProductsTest extends Preconditions {
         skusPage.search(skuCode);
         skusPage.openSKU(skuCode);
 
-        skusPage.breadcrumb().shouldHave(text(skuCode));
+        skusPage.breadcrumb(skuCode).shouldBe(visible);
     }
 
     @Test(priority = 8, dataProvider = "archivedSkuRemovedFromGeneralCategoryView")
@@ -157,7 +157,7 @@ public class ProductsTest extends Preconditions {
         productsPage.search(productTitle);
         productsPage.openProduct(productTitle);
 
-        productsPage.breadcrumb().shouldHave(text(productId));
+        productsPage.breadcrumb(productId).shouldBe(visible);
     }
 
     @Test(priority = 10, dataProvider = "archivedProductRemovedFromGeneralCategoryView")

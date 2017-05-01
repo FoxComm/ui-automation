@@ -34,7 +34,6 @@ public class CreateProductsTest extends Preconditions {
 
     // TODO: Can create prod with $0.00 prices SKU
     // TODO: SKU created along with creating a product inherits product's state
-    // TODO: Add coverage for custom properties for TPG storefront
     // TODO: Add coverage for product slugs
 
     @Test(priority = 1)
@@ -288,6 +287,8 @@ public class CreateProductsTest extends Preconditions {
         p = openPage(adminUrl + "/products/default/new", ProductsPage.class);
         p.createProduct(productTitle, skuCode, "27.18", "27.18", "sunglasses", "Active");
         p.clickSave_wait();
+        shouldNotBeVisible(p.breadcrumb("new"),
+                "Failed to create a new product - rout is displayed as `/new`");
         p.navigateTo("Products");
         p.waitForDataToLoad();
         p.search(randomId);

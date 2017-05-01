@@ -72,10 +72,6 @@ public class ProductsPage extends BasePage {
         return $(xpath("//div[text()='No SKUs.']"));
     }
 
-    private SelenideElement productId() {
-        return $(xpath("//a[@id='fct-breadcrumbs-id']"));
-    }
-
     private SelenideElement addSKUBtn() {
         return $(xpath("//a[@id='fct-add-sku-btn__skus-block']"));
     }
@@ -323,9 +319,6 @@ public class ProductsPage extends BasePage {
         addNewSKU(SKU, retailPrice, salePrice);
         setState(state);
         addTag(tagVal);
-        clickSave();
-        shouldBeEnabled(saveBtn(), "\"Save\" btn isn't re-enabled after it was clicked to create a new product");
-        shouldNotHaveText(productId(), "new", "Failed to create a new product - rout is displayed as `/new`");
     }
 
         @Step("Set \"Title\" fld val to <{0}>")

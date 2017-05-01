@@ -53,8 +53,8 @@ public class BasePage extends ConciseAPI {
         return $(By.xpath("//span[contains(text(), 'Yes')]/.."));
     }
 
-    public SelenideElement breadcrumb() {
-        return $(xpath("//a[@id='fct-breadcrumbs-id']"));
+    public SelenideElement breadcrumb(String value) {
+        return $(xpath("//a[contains(@class, 'breadcrumb') and text()='" + value + "']"));
     }
 
     @Step("Click \"Yes\" btn")

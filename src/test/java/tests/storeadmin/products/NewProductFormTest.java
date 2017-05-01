@@ -166,7 +166,7 @@ public class NewProductFormTest extends Preconditions {
         p.addOptionValue("color", "red");
         p.addExistingSKU(skuCode);
         p.clickSave_wait();
-        shouldNotHaveText(p.breadcrumb(), "new", "");
+        shouldNotBeVisible(p.breadcrumb("new"), "");
         refresh();
 
         p.option("color").shouldBe(visible);
@@ -185,7 +185,7 @@ public class NewProductFormTest extends Preconditions {
         p.addOptionValue("color", "red");
         p.addExistingSKU(skuCode);
         p.clickSave_wait();
-        shouldNotHaveText(p.breadcrumb(), "new", "");
+        shouldNotBeVisible(p.breadcrumb("new"), "");
         refresh();
 
         p.sku(skuCode).shouldBe(visible);
