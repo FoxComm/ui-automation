@@ -705,10 +705,6 @@ public class CustomersPage extends BasePage {
     }
 
     public SelenideElement availableBalance() {
-         return $(By.xpath("//div[text()='Total Available Balance']/following-sibling::*/div/span"));
-    }
-
-    public SelenideElement totalAvailableBalance() {
         return $(By.xpath("//div[@class='fc-store-credits-summary-balance']/span"));
     }
 

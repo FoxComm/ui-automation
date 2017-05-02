@@ -37,7 +37,7 @@ public class StoreCreditsTest extends Preconditions {
         p.setValue("50");
         p.clickIssueSCButton();
 
-        p.totalAvailableBalance().shouldHave(text("$50.00"));
+        p.availableBalance().shouldHave(text("$50.00"));
     }
 
     @Test(priority = 2)

@@ -61,7 +61,7 @@ public class BaseTest extends ConciseAPI {
         String driverPath = Optional.ofNullable(System.getenv("WEBDRIVER_PATH")).orElse("bin/chromedriver");
         System.setProperty("webdriver.chrome.driver", driverPath);
         Configuration.browser = System.getenv("BROWSER");
-        Configuration.timeout = 6000;
+        Configuration.timeout = 10000;
         setAdminPassword();
         setStorefrontCategory();
         printEnvInfo();
