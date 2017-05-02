@@ -206,10 +206,10 @@ public class Helpers extends Variables {
     }
 
     /**
-     * options for attrName:
-     * (int) id
-     * (string) title
-     * (string) slug
+     * Options for attrType & attrName parameters pair:
+     * "int", "id"
+     * "string", "title"
+     * "string", "slug"
      */
     @Step("[API] Check if product<({0}) {1}: {2}> is present in category view on storefront")
     protected static void waitForProductAppearInEs(String attrType, String attrName, String attrVal) throws IOException {

@@ -58,7 +58,7 @@ public class ProductsBehaviorTest extends Preconditions {
 
     @Test(priority = 4, dataProvider = "productCannotBeSearched")
     @Description("Product cannot be found in search on storefront")
-    public void cannotBeSearched(String testData) throws IOException {
+    public void productCannotBeSearched(String testData) throws IOException {
         provideTestData(testData);
         sleep(3000);
 
@@ -97,7 +97,8 @@ public class ProductsBehaviorTest extends Preconditions {
 
         p = openPage(storefrontUrl + "/" + storefrontCategory, StorefrontPage.class);
         p.logIn(customerEmail, "78qa22!#");
-        p.openCart();
+        openPage(storefrontUrl + "/products/" + productSlug, StorefrontPage.class);
+        p.clickAddToCartBtn();
         p.clickCheckoutBtn_cart();
         p.clickContinueBtn();
         p.clickPlaceOrderBtn();
