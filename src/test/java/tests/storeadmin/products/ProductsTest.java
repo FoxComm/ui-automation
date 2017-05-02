@@ -43,8 +43,8 @@ public class ProductsTest extends Preconditions {
 
         cartPage = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
         cartPage.clickEditBtn("Line Items");
-        cartPage.searchForItem(productTitle);
-        cartPage.addFoundItem(productTitle);
+        cartPage.searchForItem(skuTitle);
+        cartPage.addFoundItem(skuTitle);
 
         cartPage.lineItem_editing(productTitle).shouldBe(visible);
     }
@@ -58,9 +58,9 @@ public class ProductsTest extends Preconditions {
 
         cartPage = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
         cartPage.clickEditBtn("Line Items");
-        cartPage.searchForItem(productTitle);
+        cartPage.searchForItem(skuTitle);
 
-        cartPage.lineItemSearchView_byName(productTitle).shouldNotBe(visible);
+        cartPage.lineItemSearchView_byName(skuTitle).shouldNotBe(visible);
     }
 
     @Test(priority = 3, dataProvider = "canAddSkuToCart_admin")
@@ -128,21 +128,23 @@ public class ProductsTest extends Preconditions {
         skusPage.breadcrumb(skuCode).shouldBe(visible);
     }
 
-    @Test(priority = 8, dataProvider = "archivedSkuRemovedFromGeneralCategoryView")
+    //TODO: delete commented out code if the current one works
+    @Test(priority = 8, dataProvider = "archivedSkuRemovedFromProductsSearchView")
     @Description("Archived SKU is not displayed on the category view in admin")
-    public void archivedSkuRemovedFromGeneralCategoryView(String testData) throws IOException {
+    public void archivedSkuRemovedFromProductsSearchView(String testData) throws IOException {
         provideTestData(testData);
 
         skusPage = openPage(adminUrl + "/skus", SkusPage.class);
         skusPage.search(skuCode);
         skusPage.noSearchResultsMsg().shouldBe(visible);
 
-        skusPage.switchToSearchTab("Archived");
-        click(skusPage.searchFld());
-        click(skusPage.counter());
+//        skusPage.switchToSearchTab("Archived");
+//        click(skusPage.searchFld());
+//        click(skusPage.counter());
+        skusPage.addFilter("SKU : Is Archived", "Yes");
 
         $(By.xpath("//*[text()='" + skuCode + "']")).shouldBe(visible);
-        assertTwice($(By.xpath("//*[text()='" + skuCode + "']")), "should be visible", "");
+//        assertTwice($(By.xpath("//*[text()='" + skuCode + "']")), "should be visible", "");
     }
 
 

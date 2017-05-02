@@ -391,6 +391,7 @@ public class BasePage extends ConciseAPI {
         searchFld().sendKeys(secondCriteria);
         hitEnter();
         waitForDataToLoad();
+        searchFld().click();
         $(xpath("//h1")).click();
     }
 
@@ -466,8 +467,8 @@ public class BasePage extends ConciseAPI {
         waitForDataToLoad();
         setFieldVal(searchFld(), searchQuery);
         hitEnter();
-        click(searchFld());
-        click($(xpath("//h1")));
+        searchFld().click();
+        $(xpath("//h1")).click();
     }
 
     @Step("Remove all search filters from search field")

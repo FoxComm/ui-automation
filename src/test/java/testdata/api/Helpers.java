@@ -165,6 +165,7 @@ public class Helpers extends Variables {
         long end = time + 15000;
         int ordersInEs = 0;
         int totalTries = 0;
+        long timeSpent = 0;
 
         JSONObject payload = parseObj("bin/payloads/helpers/esSearchCustomer.json");
         payload.getJSONObject("query")
@@ -185,18 +186,22 @@ public class Helpers extends Variables {
             JSONObject jsonResponse = new JSONObject(responseBody);
             try {
                 ordersInEs = jsonResponse.getJSONArray("result").length();
-            } catch (org.json.JSONException ignored) {
-            }
+            } catch (org.json.JSONException ignored) {}
             totalTries++;
         }
+        timeSpent = System.currentTimeMillis() - time;
         System.out.println("total tries: <" + totalTries + ">");
+        System.out.println("Time spent: <" + (timeSpent) + " MS>");
 
         if (responseCode == 200) {
             System.out.println(responseCode + " " + responseMsg);
             System.out.println("Orders in ES: <" + ordersInEs + ">");
             System.out.println("---- ---- ---- ----");
+        } else if (responseCode != 200) {
+            failTest(responseBody, responseCode, responseMsg);
         } else {
-            failTest("", responseCode, responseMsg);
+            failTest("Timed out on finding order in ES after <" + timeSpent + ">ms and <" + totalTries + "> tries",
+                    responseCode, responseMsg);
         }
     }
 
@@ -216,6 +221,7 @@ public class Helpers extends Variables {
         long time = System.currentTimeMillis();
         long end = time + 15000;
         int totalTries = 0;
+        long timeSpent = 0;
         boolean productIsInEs = false;
 
         JSONObject jsonObj = parseObj("bin/payloads/helpers/esCatalogView.json");
@@ -230,16 +236,20 @@ public class Helpers extends Variables {
             totalTries++;
             productIsInEs = assertProductAppearInEs(attrType, attrName, attrVal, responseBody);
         }
+        timeSpent = System.currentTimeMillis() - time;
         System.out.println("total tries: <" + totalTries + ">");
-        System.out.println("Time spent: <" + (System.currentTimeMillis() - time) + " MS>");
+        System.out.println("Time spent: <" + (timeSpent) + " MS>");
 
         if (responseCode == 200 && productIsInEs) {
             System.out.println(responseCode + " " + responseMsg);
             System.out.println("Product is present in ES: <" + productIsInEs + ">");
             System.out.println("---- ---- ---- ----");
+        } else if (responseCode != 200) {
+            failTest(responseBody, responseCode, responseMsg);
         } else {
-            System.out.println("Timed out on finding order in ES");
-            failTest("", responseCode, responseMsg);
+            System.out.println("Timed out on finding product in ES");
+            failTest("Timed out on finding product in ES after <" + timeSpent + ">ms and <" + totalTries + "> tries",
+                    responseCode, responseMsg);
         }
     }
 
