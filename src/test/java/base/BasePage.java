@@ -260,7 +260,7 @@ public class BasePage extends ConciseAPI {
 
     protected SelenideElement removeTagBtn(String tag) {
         tag = tag.replaceAll(" ", "-").toLowerCase();
-        return $(xpath("//div[@id='fct-tag__" + tag + "']//button[contains(@class, 'fct-pill-close-btn')]"));
+        return $(xpath("//div[@id='fct-tag__" + tag + "']/button"));
     }
 
     public SelenideElement tag(String tag) {

@@ -33,7 +33,7 @@ public class EditProductTest extends Preconditions {
     public void editTitle_admin_PDP() throws IOException {
         provideTestData("product in active state");
         checkInventoryAvailability(skuCode);
-        String uid = productTitle.substring(13, 20);
+        String uid = productTitle.substring(productTitle.indexOf(" ") + 1);
 
         p = openPage(adminUrl + "/products/default/" + productId, ProductsPage.class);
         clearField(p.titleFld());
@@ -48,7 +48,7 @@ public class EditProductTest extends Preconditions {
     public void editTitle_admin_list() throws IOException {
         provideTestData("product in active state");
         checkInventoryAvailability(skuCode);
-        String uid = productTitle.substring(13, 20);
+        String uid = productTitle.substring(productTitle.indexOf(" ") + 1);
 
         p = openPage(adminUrl + "/products/default/" + productId, ProductsPage.class);
         clearField(p.titleFld());
@@ -146,7 +146,7 @@ public class EditProductTest extends Preconditions {
     public void editState_admin_category() throws IOException {
         provideTestData("product in active state");
         checkInventoryAvailability(skuCode);
-        String uid = productTitle.substring(13, 20);
+        String uid = productTitle.substring(productTitle.indexOf(" ") + 1);
 
         p = openPage(adminUrl + "/products/default/" + productId, ProductsPage.class);
         p.setState("Inactive");
