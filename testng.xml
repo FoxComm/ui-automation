@@ -213,9 +213,9 @@
             <class name="tests.storefront.products.ProductsBehaviorTest"/>
         </classes>
     </test>
-    <test name="Admin: Products Behavior">
-        <classes>
-            <class name="tests.storeadmin.products.ProductsTest"/>
-        </classes>
-    </test>
+    <!--<test name="Admin: Products Behavior">-->
+        <!--<classes>-->
+            <!--<class name="tests.storeadmin.products.ProductsTest"/>-->
+        <!--</classes>-->
+    <!--</test>-->
 </suite>
