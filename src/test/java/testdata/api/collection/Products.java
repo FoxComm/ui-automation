@@ -42,6 +42,11 @@ public class Products extends Helpers {
                                     .getJSONObject("attributes")
                                     .getJSONObject("code")
                                     .getString("v");
+            skuTitle = responseJSON.getJSONArray("skus")
+                    .getJSONObject(0)
+                    .getJSONObject("attributes")
+                    .getJSONObject("title")
+                    .getString("v");
             System.out.println("Product ID: <" + productId + ">.");
             System.out.println("Product name: <" + productTitle + ">.");
             System.out.println("Slug: <" + productSlug + ">");
@@ -82,6 +87,11 @@ public class Products extends Helpers {
                     .getJSONObject(0)
                     .getJSONObject("attributes")
                     .getJSONObject("code")
+                    .getString("v");
+            skuTitle = responseJSON.getJSONArray("skus")
+                    .getJSONObject(0)
+                    .getJSONObject("attributes")
+                    .getJSONObject("title")
                     .getString("v");
             System.out.println("Product ID: <" + productId + ">");
             System.out.println("Product name: <" + productTitle + ">");
@@ -124,6 +134,11 @@ public class Products extends Helpers {
                     .getJSONObject("attributes")
                     .getJSONObject("code")
                     .getString("v");
+            skuTitle = responseJSON.getJSONArray("skus")
+                    .getJSONObject(0)
+                    .getJSONObject("attributes")
+                    .getJSONObject("title")
+                    .getString("v");
             System.out.println("Product ID: <" + productId + ">");
             System.out.println("Product name: <" + productTitle + ">");
             System.out.println("Slug: <" + productSlug + ">");
@@ -146,6 +161,7 @@ public class Products extends Helpers {
         payload = setTag_product(payload, tag);
         payload = setSkuCode_product(payload, skuCode);
         payload = setSkuId_product(payload, skuId);
+        payload = setSkuTitle_product(payload, skuCode + " Title");
 
         Response response = request.post(apiUrl + "/v1/products/default", payload.toString());
         String responseBody = response.body().string();
@@ -166,7 +182,7 @@ public class Products extends Helpers {
     }
 
     @Step("[API] Create product for TPG Storefront product props test at PDP")
-    public static void createProduct_tpgProps(int skuId, String skuCode, String skuTitle) throws IOException {
+    public static void createProduct_tpgProps(int skuId, String skuCode) throws IOException {
         System.out.println("Creating a new product with TPG specific props with SKU <" + skuCode + ">...");
         String randomId = generateRandomID();
 
@@ -175,7 +191,7 @@ public class Products extends Helpers {
         payload = setProductTitle(payload, "Product " + randomId);
         payload = setSkuId_product(payload, skuId);
         payload = setSkuCode_product(payload, skuCode);
-        payload = setSkuTitle_product(payload, skuTitle);
+        payload = setSkuTitle_product(payload, skuCode + " Title");
 
         Response response = request.post(apiUrl + "/v1/products/default", payload.toString());
         String responseBody = response.body().string();
@@ -204,6 +220,7 @@ public class Products extends Helpers {
         payload = setProductTitle(payload, "Product " + randomId);
         payload = setSkuId_product(payload, skuId);
         payload = setSkuCode_product(payload, skuCode);
+        payload = setSkuTitle_product(payload, skuCode + " Title");
 
         JSONArray tags = payload.getJSONObject("attributes").getJSONObject("tags").getJSONArray("v");
         tags.put(tags.length(), tag);
@@ -244,6 +261,7 @@ public class Products extends Helpers {
         payload = setProductTitle(payload, "Product " + randomId);
         payload = setSkuId_product(payload, skuId);
         payload = setSkuCode_product(payload, skuCode);
+        payload = setSkuTitle_product(payload, skuCode + " Title");
 
         Response response = request.post(apiUrl + "/v1/products/default", payload.toString());
         String responseBody = response.body().string();
@@ -272,6 +290,7 @@ public class Products extends Helpers {
         payload = setTag_product(payload, tag);
         payload = setSkuId_product(payload, skuId);
         payload = setSkuCode_product(payload, skuCode);
+        payload = setSkuTitle_product(payload, skuCode + " Title");
 
         Response response = request.post(apiUrl + "/v1/products/default", payload.toString());
         String responseBody = response.body().string();
@@ -299,6 +318,7 @@ public class Products extends Helpers {
         payload = setProductTitle(payload, "Product " + randomId);
         payload = setSkuId_product(payload, skuId);
         payload = setSkuCode_product(payload, skuCode);
+        payload = setSkuTitle_product(payload, skuCode + " Title");
 
         Response response = request.post(apiUrl + "/v1/products/default", payload.toString());
         String responseBody = response.body().string();

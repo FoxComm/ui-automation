@@ -760,14 +760,13 @@ public class Preconditions extends Helpers {
                 break;
 
             case "active product, has tag, new SKU, has sellable stockitems":
-                createSKU_active();
                 createProduct_newSKU_active_hasTag(storefrontCategory);
                 increaseOnHandQty(skuCode, "Sellable", 1);
                 break;
 
             case "active product, has tag, active SKU, no sellable stockitems":
                 createSKU_active();
-                createProduct_newSKU_active_hasTag(storefrontCategory);
+                createProduct_active(skuId, skuCode, storefrontCategory);
                 break;
 
             case "active product, no tag, active SKU, has sellable stockitems":
@@ -1629,7 +1628,7 @@ public class Preconditions extends Helpers {
 
             case "an active product with tpg-specific custom properties":
                 createSKU_active();
-                createProduct_tpgProps(skuId, skuCode, skuTitle);
+                createProduct_tpgProps(skuId, skuCode);
                 waitForProductAppearInEs("int", "productId", productId);
                 break;
 

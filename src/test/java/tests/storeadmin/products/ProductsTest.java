@@ -1,4 +1,5 @@
 package tests.storeadmin.products;
+
 import org.openqa.selenium.By;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -40,6 +41,8 @@ public class ProductsTest extends Preconditions {
     @Description("Product is displayed in line items search view in admin and can be added to cart")
     public void canAddProductToCart_admin(String testData) throws IOException {
         provideTestData(testData);
+        createCustomer();
+        createCart(customerId);
 
         cartPage = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
         cartPage.clickEditBtn("Line Items");
@@ -128,7 +131,6 @@ public class ProductsTest extends Preconditions {
         skusPage.breadcrumb(skuCode).shouldBe(visible);
     }
 
-    //TODO: delete commented out code if the current one works
     @Test(priority = 8, dataProvider = "archivedSkuRemovedFromProductsSearchView")
     @Description("Archived SKU is not displayed on the category view in admin")
     public void archivedSkuRemovedFromProductsSearchView(String testData) throws IOException {
@@ -138,13 +140,8 @@ public class ProductsTest extends Preconditions {
         skusPage.search(skuCode);
         skusPage.noSearchResultsMsg().shouldBe(visible);
 
-//        skusPage.switchToSearchTab("Archived");
-//        click(skusPage.searchFld());
-//        click(skusPage.counter());
         skusPage.addFilter("SKU : Is Archived", "Yes");
-
         $(By.xpath("//*[text()='" + skuCode + "']")).shouldBe(visible);
-//        assertTwice($(By.xpath("//*[text()='" + skuCode + "']")), "should be visible", "");
     }
 
 
