@@ -53,6 +53,7 @@ public class ProductsBehaviorTest extends Preconditions {
         p = openPage(storefrontUrl, StorefrontPage.class);
         p.clickSearchIcon();
         p.submitSearchQuery(productTitle);
+
         p.productTitle_catalog(productTitle).shouldBe(visible);
     }
 
@@ -65,6 +66,7 @@ public class ProductsBehaviorTest extends Preconditions {
         p = openPage(storefrontUrl, StorefrontPage.class);
         p.clickSearchIcon();
         p.submitSearchQuery(productTitle);
+
         p.productTitle_catalog(productTitle).shouldNotBe(visible);
     }
 
@@ -75,6 +77,7 @@ public class ProductsBehaviorTest extends Preconditions {
 
         p = openPage(storefrontUrl + "/products/" + productSlug, StorefrontPage.class);
         p.productTitle_pdp().shouldHave(text(productTitle));
+
         p.salePrice().shouldHave(text("$50.00"));
     }
 
@@ -115,7 +118,7 @@ public class ProductsBehaviorTest extends Preconditions {
 
         p = openPage(storefrontUrl + "/" + storefrontCategory, StorefrontPage.class);
         p.logIn(customerEmail, "78qa22!#");
-        p.openCart();
+        p.clickAddToCartBtn();
         p.clickCheckoutBtn_cart();
         p.clickContinueBtn();
         p.clickPlaceOrderBtn();
