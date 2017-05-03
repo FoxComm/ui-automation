@@ -109,23 +109,23 @@ public class ProductsBehaviorTest extends Preconditions {
         p.confirmationOrderNumber().shouldBe(visible);
     }
 
-    @Test(priority = 8, dataProvider = "productCannotPassCheckout")
-    @Description("Cart with this product can't pass checkout")
-    public void productCannotPassCheckout(String testData) throws IOException {
-        provideTestData(testData);
-        String randomId = generateRandomID();
-        signUpCustomer("Customer " + randomId, "qatest2278+" + randomId + "@gmail.com");
-
-        p = openPage(storefrontUrl + "/" + storefrontCategory, StorefrontPage.class);
-        p.logIn(customerEmail, "78qa22!#");
-        p.clickAddToCartBtn();
-        p.clickCheckoutBtn_cart();
-        p.clickContinueBtn();
-        p.clickPlaceOrderBtn();
-
-        p.errorMsg("Oops!").shouldBe(visible);
-    }
-
+//    @Test(priority = 8, dataProvider = "productCannotPassCheckout")
+//    @Description("Cart with this product can't pass checkout")
+//    public void productCannotPassCheckout(String testData) throws IOException {
+//        provideTestData(testData);
+//        String randomId = generateRandomID();
+//        signUpCustomer("Customer " + randomId, "qatest2278+" + randomId + "@gmail.com");
+//
+//        p = openPage(storefrontUrl + "/" + storefrontCategory, StorefrontPage.class);
+//        p.logIn(customerEmail, "78qa22!#");
+//        p.clickAddToCartBtn();
+//        p.clickCheckoutBtn_cart();
+//        p.clickContinueBtn();
+//        p.clickPlaceOrderBtn();
+//
+//        p.errorMsg("Oops!").shouldBe(visible);
+//    }
+//
     // Commented out because it was causing Xvfb hang in BK
 //    @Test(priority = 9, dataProvider = "canAddProductToCart_storefront")
 //    @Description("Can add product to cart on storefront")
