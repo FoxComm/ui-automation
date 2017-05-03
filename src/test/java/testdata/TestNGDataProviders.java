@@ -267,7 +267,7 @@ public class TestNGDataProviders extends BaseTest {
     }
 
     @DataProvider
-    public Object[][] archivedProductRemovedFromGeneralCategoryView() {
+    public Object[][] archivedProductRemovedFromProductsSearchView() {
         return new Object[][] {
                 {"active product, has tag, active SKU, has sellable stockitems > archive product"},
                 {"еactive product, has tag, active SKU, no sellable stockitems, not present in any carts, has purchases > archive product"},
