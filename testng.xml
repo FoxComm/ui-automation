@@ -1,218 +1,218 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="e2e" verbose="1">
-    <!--<test name="Authentication">-->
-        <!--<classes>-->
-            <!--<class name="tests.storeadmin.generalcontrols.auth.AuthTest" />-->
-        <!--</classes>-->
-    <!--</test>-->
+    <test name="Authentication">
+        <classes>
+            <class name="tests.storeadmin.generalcontrols.auth.AuthTest" />
+        </classes>
+    </test>
 
-    <!--<test name="Cart > Items">-->
-        <!--<classes>-->
-            <!--<class name="tests.storeadmin.cart.ItemsTest" />-->
-        <!--</classes>-->
-    <!--</test>-->
-    <!--<test name="Cart > Shipping Address">-->
-        <!--<classes>-->
-            <!--<class name="tests.storeadmin.cart.ShippingAddressTest" />-->
-        <!--</classes>-->
-    <!--</test>-->
-    <!--<test name="Cart > Shipping Method">-->
-        <!--<classes>-->
-            <!--<class name="tests.storeadmin.cart.ShippingMethodTest" />-->
-        <!--</classes>-->
-    <!--</test>-->
-    <!--<test name="Cart > Payment Method">-->
-        <!--<classes>-->
-            <!--<class name="tests.storeadmin.cart.PaymentMethodTest" />-->
-        <!--</classes>-->
-    <!--</test>-->
-    <!--<test name="Cart > Coupons">-->
-        <!--<classes>-->
-            <!--<class name="tests.storeadmin.cart.CartCouponsTest" />-->
-        <!--</classes>-->
-    <!--</test>-->
-    <!--<test name="Cart > Validation">-->
-        <!--<classes>-->
-            <!--<class name="tests.storeadmin.cart.CartValidationTest" />-->
-        <!--</classes>-->
-    <!--</test>-->
+    <test name="Cart > Items">
+        <classes>
+            <class name="tests.storeadmin.cart.ItemsTest" />
+        </classes>
+    </test>
+    <test name="Cart > Shipping Address">
+        <classes>
+            <class name="tests.storeadmin.cart.ShippingAddressTest" />
+        </classes>
+    </test>
+    <test name="Cart > Shipping Method">
+        <classes>
+            <class name="tests.storeadmin.cart.ShippingMethodTest" />
+        </classes>
+    </test>
+    <test name="Cart > Payment Method">
+        <classes>
+            <class name="tests.storeadmin.cart.PaymentMethodTest" />
+        </classes>
+    </test>
+    <test name="Cart > Coupons">
+        <classes>
+            <class name="tests.storeadmin.cart.CartCouponsTest" />
+        </classes>
+    </test>
+    <test name="Cart > Validation">
+        <classes>
+            <class name="tests.storeadmin.cart.CartValidationTest" />
+        </classes>
+    </test>
 
-    <!--<test name="Orders">-->
-        <!--<classes>-->
-            <!--<class name="tests.storeadmin.orders.OrderStateTest" />-->
-        <!--</classes>-->
-    <!--</test>-->
+    <test name="Orders">
+        <classes>
+            <class name="tests.storeadmin.orders.OrderStateTest" />
+        </classes>
+    </test>
 
-    <!--<test name="Customers > Address Book">-->
-        <!--<classes>-->
-            <!--<class name="tests.storeadmin.customers.details.AddressBookTest" />-->
-        <!--</classes>-->
-    <!--</test>-->
-    <!--<test name="Customers > Credit Cards">-->
-        <!--<classes>-->
-            <!--<class name="tests.storeadmin.customers.details.CreditCardsTest" />-->
-        <!--</classes>-->
-    <!--</test>-->
-    <!--<test name="Customers > Contact Information" >-->
-        <!--<classes>-->
-            <!--<class name="tests.storeadmin.customers.details.ContactInformationTest" />-->
-        <!--</classes>-->
-    <!--</test>-->
-    <!--<test name="Customers > Orders List" >-->
-        <!--<classes>-->
-            <!--<class name="tests.storeadmin.customers.orders.OrdersListTest" />-->
-        <!--</classes>-->
-    <!--</test>-->
-    <!--<test name="Customers > Store Credits" >-->
-        <!--<classes>-->
-            <!--<class name="tests.storeadmin.customers.storecredits.StoreCreditsTest" />-->
-        <!--</classes>-->
-    <!--</test>-->
+    <test name="Customers > Address Book">
+        <classes>
+            <class name="tests.storeadmin.customers.details.AddressBookTest" />
+        </classes>
+    </test>
+    <test name="Customers > Credit Cards">
+        <classes>
+            <class name="tests.storeadmin.customers.details.CreditCardsTest" />
+        </classes>
+    </test>
+    <test name="Customers > Contact Information" >
+        <classes>
+            <class name="tests.storeadmin.customers.details.ContactInformationTest" />
+        </classes>
+    </test>
+    <test name="Customers > Orders List" >
+        <classes>
+            <class name="tests.storeadmin.customers.orders.OrdersListTest" />
+        </classes>
+    </test>
+    <test name="Customers > Store Credits" >
+        <classes>
+            <class name="tests.storeadmin.customers.storecredits.StoreCreditsTest" />
+        </classes>
+    </test>
 
-    <!--<test name="SKUs Tests">-->
-        <!--<classes>-->
-            <!--<class name="tests.storeadmin.skus.SkusTests" />-->
-        <!--</classes>-->
-    <!--</test>-->
+    <test name="SKUs Tests">
+        <classes>
+            <class name="tests.storeadmin.skus.SkusTests" />
+        </classes>
+    </test>
 
-    <!--<test name="Create Product">-->
-        <!--<classes>-->
-            <!--<class name="tests.storeadmin.products.CreateProductsTest" />-->
-        <!--</classes>-->
-    <!--</test>-->
+    <test name="Create Product">
+        <classes>
+            <class name="tests.storeadmin.products.CreateProductsTest" />
+        </classes>
+    </test>
 
-    <!--<test name="Edit Product">-->
-        <!--<classes>-->
-            <!--<class name="tests.storeadmin.products.EditProductTest" />-->
-        <!--</classes>-->
-    <!--</test>-->
-    <!--<test name="New Product Form">-->
-        <!--<classes>-->
-            <!--<class name="tests.storeadmin.products.NewProductFormTest" />-->
-        <!--</classes>-->
-    <!--</test>-->
+    <test name="Edit Product">
+        <classes>
+            <class name="tests.storeadmin.products.EditProductTest" />
+        </classes>
+    </test>
+    <test name="New Product Form">
+        <classes>
+            <class name="tests.storeadmin.products.NewProductFormTest" />
+        </classes>
+    </test>
 
-    <!--<test name="Promotions">-->
-        <!--<classes>-->
-            <!--<class name="tests.storeadmin.promotions.PromotionsTest" />-->
-        <!--</classes>-->
-    <!--</test>-->
+    <test name="Promotions">
+        <classes>
+            <class name="tests.storeadmin.promotions.PromotionsTest" />
+        </classes>
+    </test>
 
-    <!--<test name="Coupons" >-->
-        <!--<classes>-->
-            <!--<class name="tests.storeadmin.coupons.CouponsTest" />-->
-        <!--</classes>-->
-    <!--</test>-->
+    <test name="Coupons" >
+        <classes>
+            <class name="tests.storeadmin.coupons.CouponsTest" />
+        </classes>
+    </test>
 
-    <!--<test name="Gift Cards">-->
-        <!--<classes>-->
-            <!--<class name="tests.storeadmin.giftcards.GiftCardsTest" />-->
-        <!--</classes>-->
-    <!--</test>-->
+    <test name="Gift Cards">
+        <classes>
+            <class name="tests.storeadmin.giftcards.GiftCardsTest" />
+        </classes>
+    </test>
 
-    <!--<test name="Inventory">-->
-        <!--<classes>-->
-            <!--<class name="tests.storeadmin.inventory.InventoryTest" />-->
-        <!--</classes>-->
-    <!--</test>-->
+    <test name="Inventory">
+        <classes>
+            <class name="tests.storeadmin.inventory.InventoryTest" />
+        </classes>
+    </test>
 
-    <!--<test name="SF: Auth > Sign Up">-->
-        <!--<classes>-->
-            <!--<class name="tests.storefront.auth.SignUpTest"/>-->
-        <!--</classes>-->
-    <!--</test>-->
-    <!--<test name="SF: Auth > Sign In">-->
-        <!--<classes>-->
-            <!--<class name="tests.storefront.auth.SignInTest"/>-->
-        <!--</classes>-->
-    <!--</test>-->
-    <!--<test name="SF: Auth > Log Out">-->
-        <!--<classes>-->
-            <!--<class name="tests.storefront.auth.LogOutTest"/>-->
-        <!--</classes>-->
-    <!--</test>-->
-    <!--<test name="SF: Auth > Password Reset">-->
-        <!--<classes>-->
-            <!--<class name="tests.storefront.auth.PasswordResetTest"/>-->
-        <!--</classes>-->
-    <!--</test>-->
+    <test name="SF: Auth > Sign Up">
+        <classes>
+            <class name="tests.storefront.auth.SignUpTest"/>
+        </classes>
+    </test>
+    <test name="SF: Auth > Sign In">
+        <classes>
+            <class name="tests.storefront.auth.SignInTest"/>
+        </classes>
+    </test>
+    <test name="SF: Auth > Log Out">
+        <classes>
+            <class name="tests.storefront.auth.LogOutTest"/>
+        </classes>
+    </test>
+    <test name="SF: Auth > Password Reset">
+        <classes>
+            <class name="tests.storefront.auth.PasswordResetTest"/>
+        </classes>
+    </test>
 
-    <!--<test name="SF: Cart > Line Items">-->
-        <!--<classes>-->
-            <!--<class name="tests.storefront.cart.LineItemsTest"/>-->
-        <!--</classes>-->
-    <!--</test>-->
-    <!--<test name="SF: Cart > Coupons and Promos">-->
-        <!--<classes>-->
-            <!--<class name="tests.storefront.cart.CouponsAndPromosTest"/>-->
-        <!--</classes>-->
-    <!--</test>-->
+    <test name="SF: Cart > Line Items">
+        <classes>
+            <class name="tests.storefront.cart.LineItemsTest"/>
+        </classes>
+    </test>
+    <test name="SF: Cart > Coupons and Promos">
+        <classes>
+            <class name="tests.storefront.cart.CouponsAndPromosTest"/>
+        </classes>
+    </test>
 
-    <!--<test name="SF: Profile > My Details">-->
-        <!--<classes>-->
-            <!--<class name="tests.storefront.profile.MyDetailsTest"/>-->
-        <!--</classes>-->
-    <!--</test>-->
-    <!--<test name="SF: Profile > My Addresses">-->
-        <!--<classes>-->
-            <!--<class name="tests.storefront.profile.MyShippingAddressesTest"/>-->
-        <!--</classes>-->
-    <!--</test>-->
+    <test name="SF: Profile > My Details">
+        <classes>
+            <class name="tests.storefront.profile.MyDetailsTest"/>
+        </classes>
+    </test>
+    <test name="SF: Profile > My Addresses">
+        <classes>
+            <class name="tests.storefront.profile.MyShippingAddressesTest"/>
+        </classes>
+    </test>
 
-    <!--<test name="SF: Checkout > Shipping Address">-->
-        <!--<classes>-->
-            <!--<class name="tests.storefront.checkout.ShippingAddressTest"/>-->
-        <!--</classes>-->
-    <!--</test>-->
-    <!--<test name="SF: Checkout > Shipping Method">-->
-        <!--<classes>-->
-            <!--<class name="tests.storefront.checkout.ShippingMethodTest"/>-->
-        <!--</classes>-->
-    <!--</test>-->
+    <test name="SF: Checkout > Shipping Address">
+        <classes>
+            <class name="tests.storefront.checkout.ShippingAddressTest"/>
+        </classes>
+    </test>
+    <test name="SF: Checkout > Shipping Method">
+        <classes>
+            <class name="tests.storefront.checkout.ShippingMethodTest"/>
+        </classes>
+    </test>
 
-    <!--<test name="SF: Checkout > Billing">-->
-        <!--<classes>-->
-            <!--<class name="tests.storefront.checkout.BillingTest"/>-->
-        <!--</classes>-->
-    <!--</test>-->
-    <!--<test name="SF: Checkout > General Behavior">-->
-        <!--<classes>-->
-            <!--<class name="tests.storefront.checkout.GeneralBehaviorTest"/>-->
-        <!--</classes>-->
-    <!--</test>-->
+    <test name="SF: Checkout > Billing">
+        <classes>
+            <class name="tests.storefront.checkout.BillingTest"/>
+        </classes>
+    </test>
+    <test name="SF: Checkout > General Behavior">
+        <classes>
+            <class name="tests.storefront.checkout.GeneralBehaviorTest"/>
+        </classes>
+    </test>
 
-    <!--&lt;!&ndash;<test name="SF: Guest Session > Checkout">&ndash;&gt;-->
-        <!--&lt;!&ndash;<classes>&ndash;&gt;-->
-            <!--&lt;!&ndash;<class name="tests.storefront.guestsession.GuestCheckoutTest"/>&ndash;&gt;-->
-        <!--&lt;!&ndash;</classes>&ndash;&gt;-->
-    <!--&lt;!&ndash;</test>&ndash;&gt;-->
-    <!--<test name="SF: Guest Session > Cart Sync">-->
+    <!--<test name="SF: Guest Session > Checkout">-->
         <!--<classes>-->
-            <!--<class name="tests.storefront.guestsession.CartTest"/>-->
+            <!--<class name="tests.storefront.guestsession.GuestCheckoutTest"/>-->
         <!--</classes>-->
     <!--</test>-->
+    <test name="SF: Guest Session > Cart Sync">
+        <classes>
+            <class name="tests.storefront.guestsession.CartTest"/>
+        </classes>
+    </test>
 
-    <!--<test name="SF: Products > General PDP Test">-->
-        <!--<classes>-->
-            <!--<class name="tests.storefront.products.AbstractPdpTest"/>-->
-        <!--</classes>-->
-    <!--</test>-->
-    <!--<test name="SF: Products > Catalog Test">-->
-        <!--<classes>-->
-            <!--<class name="tests.storefront.products.CatalogTest"/>-->
-        <!--</classes>-->
-    <!--</test>-->
-    <!--<test name="SF: Products > TPG Product Attributes">-->
-        <!--<classes>-->
-            <!--<class name="tests.storefront.products.TpgProductAttrsTest"/>-->
-        <!--</classes>-->
-    <!--</test>-->
+    <test name="SF: Products > General PDP Test">
+        <classes>
+            <class name="tests.storefront.products.AbstractPdpTest"/>
+        </classes>
+    </test>
+    <test name="SF: Products > Catalog Test">
+        <classes>
+            <class name="tests.storefront.products.CatalogTest"/>
+        </classes>
+    </test>
+    <test name="SF: Products > TPG Product Attributes">
+        <classes>
+            <class name="tests.storefront.products.TpgProductAttrsTest"/>
+        </classes>
+    </test>
 
-    <!--<test name="SF: Products Behavior">-->
-        <!--<classes>-->
-            <!--<class name="tests.storefront.products.ProductsBehaviorTest"/>-->
-        <!--</classes>-->
-    <!--</test>-->
+    <test name="SF: Products Behavior">
+        <classes>
+            <class name="tests.storefront.products.ProductsBehaviorTest"/>
+        </classes>
+    </test>
     <test name="Admin: Products Behavior">
         <classes>
             <class name="tests.storeadmin.products.ProductsTest"/>
