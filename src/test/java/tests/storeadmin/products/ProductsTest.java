@@ -37,34 +37,38 @@ public class ProductsTest extends Preconditions {
     }
 
     //--------------------- CART
-    @Test(priority = 1, dataProvider = "canAddProductToCart_admin")
-    @Description("Product is displayed in line_items_search_view and can be added to cart")
-    public void canAddProductToCart_admin(String testData) throws IOException {
-        provideTestData(testData);
-        createCustomer();
-        createCart(customerId);
 
-        cartPage = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
-        cartPage.clickEditBtn("Line Items");
-        cartPage.searchForItem(skuTitle);
-        cartPage.addFoundItem(skuTitle);
+    // Disabled, because it duplicates similar SKU specific tests
+    // (because line_item_search_view right now take only skuTitle and skuCode as a search argument)
 
-        cartPage.lineItem_editing(productTitle).shouldBe(visible);
-    }
-
-    @Test(priority = 2, dataProvider = "productNotDisplayedLineItemsSearchView")
-    @Description("Product isn't displayed in line_items_search_view")
-    public void productNotDisplayedLineItemsSearchView(String testData) throws IOException {
-        provideTestData(testData);
-        createCustomer();
-        createCart(customerId);
-
-        cartPage = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
-        cartPage.clickEditBtn("Line Items");
-        cartPage.searchForItem(skuTitle);
-
-        cartPage.lineItemSearchView_byName(skuTitle).shouldNotBe(visible);
-    }
+//    @Test(priority = 1, dataProvider = "canAddProductToCart_admin")
+//    @Description("Product is displayed in line_items_search_view and can be added to cart")
+//    public void canAddProductToCart_admin(String testData) throws IOException {
+//        provideTestData(testData);
+//        createCustomer();
+//        createCart(customerId);
+//
+//        cartPage = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
+//        cartPage.clickEditBtn("Line Items");
+//        cartPage.searchForItem(skuTitle);
+//        cartPage.addFoundItem(skuTitle);
+//
+//        cartPage.lineItem_editing(productTitle).shouldBe(visible);
+//    }
+//
+//    @Test(priority = 2, dataProvider = "productNotDisplayedLineItemsSearchView")
+//    @Description("Product isn't displayed in line_items_search_view")
+//    public void productNotDisplayedLineItemsSearchView(String testData) throws IOException {
+//        provideTestData(testData);
+//        createCustomer();
+//        createCart(customerId);
+//
+//        cartPage = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
+//        cartPage.clickEditBtn("Line Items");
+//        cartPage.searchForItem(skuTitle);
+//
+//        cartPage.lineItemSearchView_byName(skuTitle).shouldNotBe(visible);
+//    }
 
     @Test(priority = 3, dataProvider = "canAddSkuToCart_admin")
     @Description("SKU is found in line_items_search_view and can be added to cart")
@@ -120,8 +124,8 @@ public class ProductsTest extends Preconditions {
     }
 
     @Test(priority = 7, dataProvider = "skuIsNotArchived")
-    @Description("SKU is not archived")
-    public void skuIsNotArchived(String testData) throws IOException {
+    @Description("SKU is not removed from skus_search_view")
+    public void skuArchiving_skuIsNotRemovedFromSearchView(String testData) throws IOException {
         provideTestData(testData);
 
         skusPage = openPage(adminUrl + "/skus", SkusPage.class);
@@ -131,8 +135,8 @@ public class ProductsTest extends Preconditions {
         skusPage.breadcrumb(skuCode).shouldBe(visible);
     }
 
-    @Test(priority = 8, dataProvider = "archivedSkuRemovedFromProductsSearchView")
-    @Description("Archived SKU is not displayed on the products_search_view")
+    @Test(priority = 8, dataProvider = "archivedSkuRemovedFromSkusSearchView")
+    @Description("Archived SKU is not displayed in skus_search_view")
     public void archivedSkuRemovedFromProductsSearchView(String testData) throws IOException {
         provideTestData(testData);
 
@@ -147,8 +151,8 @@ public class ProductsTest extends Preconditions {
 
     //--------------------- PRODUCTS
     @Test(priority = 9, dataProvider = "productIsNotArchived")
-    @Description("Product is not archived")
-    public void productIsNotArchived(String testData) throws IOException {
+    @Description("Product is not removed from products_search_view")
+    public void productArchiving_productIsDisplayedInSearchView(String testData) throws IOException {
         provideTestData(testData);
 
         productsPage = openPage(adminUrl + "/products", ProductsPage.class);
@@ -160,7 +164,7 @@ public class ProductsTest extends Preconditions {
     }
 
     @Test(priority = 10, dataProvider = "archivedProductRemovedFromProductsSearchView")
-    @Description("Archived product is not displayed in the products_search_view")
+    @Description("Archived product is not displayed in products_search_view")
     public void archivedProductRemovedFromProductsSearchView(String testData) throws IOException {
         provideTestData(testData);
 
@@ -171,7 +175,5 @@ public class ProductsTest extends Preconditions {
         productsPage.addFilter("Product : Is Archived", "Yes");
         $(By.xpath("//*[text()='" + productTitle + "']")).shouldBe(visible);
     }
-
-
 
 }

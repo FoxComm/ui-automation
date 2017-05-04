@@ -30,22 +30,22 @@ public class TestNGDataProviders extends BaseTest {
     }
 
     @DataProvider
-    public Object[][] productCategoryViewDisplayed() {
+    public Object[][] productCatalogViewDisplayed() {
         return new Object[][] {
                 {"active product, has tag, active SKU, has sellable stockitems"},
                 {"active product, has tag, active SKU, no sellable stockitems"},
                 {"active product, has tag, new SKU, has sellable stockitems"},
                 {"active product, has tag, active SKU, has sellable stockitems, is present in at least 1 cart > archive SKU"},
-                {"active product, has tag, active SKU, has sellable stockitems, is present in at least 1 cart > archive product"}
+                {"active product, has tag, active SKU, has sellable stockitems, is present in at least 1 cart > archive product"},
+                {"active product, has tag, inactive SKU"}
         };
     }
 
     @DataProvider
-    public Object[][] productCategoryViewNotDisplayed() {
+    public Object[][] productCatalogViewNotDisplayed() {
         return new Object[][] {
                 {"active product, no tag, active SKU, has sellable stockitems"},
                 {"active product, no tag, active SKU, no sellable stockitems"},
-                {"active product, has tag, inactive SKU"},
                 {"inactive product, has tag, active SKU"},
                 {"inactive product, has tag, inactive SKU"},
                 {"inactive product, has tag, new SKU"},
@@ -64,6 +64,7 @@ public class TestNGDataProviders extends BaseTest {
     @DataProvider
     public Object[][] productCanBeSearched() {
         return new Object[][] {
+                {"active product, has tag, inactive SKU"},
                 {"active product, has tag, active SKU, has sellable stockitems"},
                 {"active product, has tag, active SKU, no sellable stockitems"},
                 {"active product, no tag, active SKU, has sellable stockitems"},
@@ -77,7 +78,6 @@ public class TestNGDataProviders extends BaseTest {
     @DataProvider
     public Object[][] productCannotBeSearched() {
         return new Object[][] {
-                {"active product, has tag, inactive SKU"},
                 {"inactive product, has tag, active SKU"},
                 {"inactive product, has tag, inactive SKU"},
                 {"inactive product, has tag, new SKU"},
@@ -96,6 +96,7 @@ public class TestNGDataProviders extends BaseTest {
     @DataProvider
     public Object[][] canAccessPDP() {
         return new Object[][] {
+                {"active product, has tag, inactive SKU"},
                 {"active product, has tag, active SKU, has sellable stockitems"},
                 {"active product, has tag, active SKU, no sellable stockitems"},
                 {"active product, no tag, active SKU, has sellable stockitems"},
@@ -110,7 +111,6 @@ public class TestNGDataProviders extends BaseTest {
     @DataProvider
     public Object[][] cannotAccessPDP() {
         return new Object[][] {
-                {"active product, has tag, inactive SKU"},
                 {"inactive product, has tag, active SKU"},
                 {"inactive product, has tag, inactive SKU"},
                 {"inactive product, has tag, new SKU"},
@@ -257,7 +257,7 @@ public class TestNGDataProviders extends BaseTest {
     }
 
     @DataProvider
-    public Object[][] archivedSkuRemovedFromProductsSearchView() {
+    public Object[][] archivedSkuRemovedFromSkusSearchView() {
         return new Object[][] {
                 {"active product, has tag, active SKU, has sellable stockitems > archive SKU"},
                 {"active product, has tag, active SKU, no sellable stockitems, not present in any carts, has purchases > archive SKU"},

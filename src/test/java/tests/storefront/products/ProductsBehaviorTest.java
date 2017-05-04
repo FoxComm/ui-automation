@@ -23,8 +23,8 @@ public class ProductsBehaviorTest extends Preconditions {
         p.cleanUp_beforeMethod();
     }
 
-    @Test(priority = 1, dataProvider = "productCategoryViewDisplayed")
-    @Description("Product should be displayed in the category view on storefront")
+    @Test(priority = 1, dataProvider = "productCatalogViewDisplayed")
+    @Description("Product should be displayed in the catalog view on storefront")
     public void productDisplayedInCategoryView(String testData) throws IOException {
         provideTestData(testData);
         waitForProductAppearInEs("int", "productId", productId);
@@ -34,8 +34,8 @@ public class ProductsBehaviorTest extends Preconditions {
         p.productTitle_catalog(productTitle).shouldBe(visible);
     }
 
-    @Test(priority = 2, dataProvider = "productCategoryViewNotDisplayed")
-    @Description("Product should not be displayed in the category view on storefront")
+    @Test(priority = 2, dataProvider = "productCatalogViewNotDisplayed")
+    @Description("Product should not be displayed in the catalog view on storefront")
     public void productNotDisplayedInCategoryView(String testData) throws IOException {
         provideTestData(testData);
         sleep(3000);
@@ -90,6 +90,8 @@ public class ProductsBehaviorTest extends Preconditions {
         p.notFoundMsg("Product not found").shouldBe(visible);
     }
 
+    //    TODO: hangs Xvfb in BK
+
 //    @Test(priority = 7, dataProvider = "productCanPassCheckout")
 //    @Description("Cart with this product can pass checkout")
 //    public void productCanPassCheckout(String testData) throws IOException {
@@ -107,7 +109,9 @@ public class ProductsBehaviorTest extends Preconditions {
 //
 //        p.confirmationOrderNumber().shouldBe(visible);
 //    }
-//
+
+    //    TODO: hangs Xvfb in BK
+
 //    @Test(priority = 8, dataProvider = "productCannotPassCheckout")
 //    @Description("Cart with this product can't pass checkout")
 //    public void productCannotPassCheckout(String testData) throws IOException {
@@ -124,8 +128,9 @@ public class ProductsBehaviorTest extends Preconditions {
 //
 //        p.errorMsg("Oops!").shouldBe(visible);
 //    }
-//
-    // Commented out because it was causing Xvfb hang in BK
+
+    //    TODO: hangs Xvfb in BK
+
 //    @Test(priority = 9, dataProvider = "canAddProductToCart_storefront")
 //    @Description("Can add product to cart on storefront")
 //    public void canAddProductToCart_storefront(String testData) throws IOException {
