@@ -12,7 +12,6 @@ import java.io.IOException;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.sleep;
-import static testdata.api.collection.Customers.signUpCustomer;
 
 public class ProductsBehaviorTest extends Preconditions {
 
@@ -91,24 +90,24 @@ public class ProductsBehaviorTest extends Preconditions {
         p.notFoundMsg("Product not found").shouldBe(visible);
     }
 
-    @Test(priority = 7, dataProvider = "productCanPassCheckout")
-    @Description("Cart with this product can pass checkout")
-    public void productCanPassCheckout(String testData) throws IOException {
-        provideTestData(testData);
-        String randomId = generateRandomID();
-        signUpCustomer("Customer " + randomId, "qatest2278+" + randomId + "@gmail.com");
-
-        p = openPage(storefrontUrl + "/" + storefrontCategory, StorefrontPage.class);
-        p.logIn(customerEmail, "78qa22!#");
-        openPage(storefrontUrl + "/products/" + productSlug, StorefrontPage.class);
-        p.clickAddToCartBtn();
-        p.clickCheckoutBtn_cart();
-        p.clickContinueBtn();
-        p.clickPlaceOrderBtn();
-
-        p.confirmationOrderNumber().shouldBe(visible);
-    }
-
+//    @Test(priority = 7, dataProvider = "productCanPassCheckout")
+//    @Description("Cart with this product can pass checkout")
+//    public void productCanPassCheckout(String testData) throws IOException {
+//        provideTestData(testData);
+//        String randomId = generateRandomID();
+//        signUpCustomer("Customer " + randomId, "qatest2278+" + randomId + "@gmail.com");
+//
+//        p = openPage(storefrontUrl + "/" + storefrontCategory, StorefrontPage.class);
+//        p.logIn(customerEmail, "78qa22!#");
+//        openPage(storefrontUrl + "/products/" + productSlug, StorefrontPage.class);
+//        p.clickAddToCartBtn();
+//        p.clickCheckoutBtn_cart();
+//        p.clickContinueBtn();
+//        p.clickPlaceOrderBtn();
+//
+//        p.confirmationOrderNumber().shouldBe(visible);
+//    }
+//
 //    @Test(priority = 8, dataProvider = "productCannotPassCheckout")
 //    @Description("Cart with this product can't pass checkout")
 //    public void productCannotPassCheckout(String testData) throws IOException {
