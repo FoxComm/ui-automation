@@ -189,7 +189,7 @@ public class Cart extends Helpers{
         }
     }
 
-    @Step("[API] Set shipping method <{1}> for cart <{1}>")
+    @Step("[API] Set shipping method <{1}> for cart <{0}>")
     public static void setShipMethod(String cartId, int shipMethodId) throws IOException {
         System.out.println("Setting shipping method for order <" + cartId + ">...");
 

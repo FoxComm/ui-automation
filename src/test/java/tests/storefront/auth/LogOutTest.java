@@ -1,5 +1,6 @@
 package tests.storefront.auth;
 
+import org.openqa.selenium.By;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -11,6 +12,7 @@ import java.io.IOException;
 
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Selenide.$;
 import static org.testng.Assert.assertEquals;
 
 public class LogOutTest extends Preconditions {
@@ -78,6 +80,8 @@ public class LogOutTest extends Preconditions {
         p.logIn(customerEmail, "78qa22!#");
         p.openCart();
         p.clickCheckoutBtn_cart();
+        p.clickContinueBtn();
+        shouldBeVisible($(By.xpath("//*[text()='DELIVERY METHOD *']")), "");
         p.clickContinueBtn();
         p.clickPlaceOrderBtn();
         shouldBeVisible(p.confirmationOrderNumber(), "Probably order isn't placed");
