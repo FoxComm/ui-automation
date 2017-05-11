@@ -280,7 +280,7 @@ public class Products extends Helpers {
         }
     }
 
-    @Step("[API] Create product; <SKU:{0}>, <Tag:{1}>, <State:Inactive>")
+    @Step("[API] Create product; <SKU:{1}>, <Tag:{2}>, <State:Inactive>")
     public static void createProduct_inactive(int skuId, String skuCode, String tag) throws IOException {
         System.out.println("Creating a new product with SKU <" + skuCode + ">...");
         String randomId = generateRandomID();
