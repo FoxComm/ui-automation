@@ -45,6 +45,4 @@ public class BuildTest extends Preconditions {
         $(By.xpath("//input[@type='password']")).shouldBe(visible);
     }
 
-
-
 }
