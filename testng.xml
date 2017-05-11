@@ -220,7 +220,7 @@
     <!--</test>-->
     <test name="Severity Test">
         <classes>
-            <class name="tests.UrlsTest"/>
+            <class name="tests.BuildTest"/>
         </classes>
     </test>
 </suite>
