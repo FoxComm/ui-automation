@@ -24,7 +24,7 @@ public class BuildTest extends Preconditions {
         p = openPage(adminUrl + "/login", LoginPage.class);
         p.login(adminOrg, adminEmail, adminPassword);
 
-        p.userMenuBtn().shouldBe(visible);
+        p.userMenuBtn().shouldNotBe(visible);
     }
 
     @Test(priority = 2)
