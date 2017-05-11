@@ -8,6 +8,6 @@ BLOCKERS=0
 
 if [ "$MINORS" >= 10 ] || [ "$NORMALS" > 0 ] || [ "$CRITICALS" > 0 ] || [ "$BLOCKERS" > 0 ]; then
 	export EXIT_CODE=1
-elif [ "$MINORS" < 10 ] || [ "$NORMALS" == 0 ] && [ "$CRITICALS" == 0 ] && [ "$BLOCKERS" == 0 ]; then
+elif [ "$MINORS" < 10 ] && [ "$NORMALS" == 0 ] && [ "$CRITICALS" == 0 ] && [ "$BLOCKERS" == 0 ]; then
 	export EXIT_CODE=0
 fi
