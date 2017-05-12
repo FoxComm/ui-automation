@@ -33,13 +33,25 @@ count_failures() {
     done
 }
 
-determine_exit_code() {
+determine_build_result() {
     if [[ "$MINORS" > 9 || "$NORMALS" > 0 || "$CRITICALS" > 0 || "$BLOCKERS" > 0 ]]; then
-    	export EXIT_CODE=1
+    	send_slack_notification 1
+    	exit 1
     elif [[ "$MINORS" < 10 && "$NORMALS" = 0 && "$CRITICALS" = 0 && "$BLOCKERS" = 0 ]]; then
-    	export EXIT_CODE=0
+        send_slack_notification 0
+    	exit 0
     fi
 }
 
+send_slack_notification() {
+    if [ "$1" = 0 ]; then
+        PAYLOAD='payload={ "attachments": [{"pretext": "Tests Passed", "color": "good", "text": "<http://10.240.0.32:8080/#/|View Report>"}] }'
+    elif [ "$1" = 1 ]; then
+        PAYLOAD='payload={ "attachments": [{"pretext": "Tests Failed", "color": "#B94A48", "text": "<http://10.240.0.32:8080/#/|View Report>"}] }'
+    fi
+
+    curl -X POST --data-urlencode "$PAYLOAD" $HOOK
+}
+
 count_failures
-determine_exit_code
+determine_build_result
