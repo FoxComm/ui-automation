@@ -49,13 +49,13 @@ determine_build_result() {
 send_slack_notification() {
 RESULTS="
 Total Tests: $TOTAL_TESTS
-Brokens: $BROKEN"
+Broken: $BROKENS"
 
 FAILURES="
-Minors: $MINOR
-Normals: $NORMAL
-Criticals: $CRITICAL
-Blockers: $BLOCKER"
+Minor: $MINORS
+Normal: $NORMALS
+Critical: $CRITICALS
+Blocker: $BLOCKERS"
 
 TEXT="<http://10.240.0.32:8080/#/|View Report>"
 
@@ -71,7 +71,7 @@ PAYLOAD="$(jq -n --arg a "$PRETEXT" \
      --arg b "$COLOR" \
      --arg c "$TEXT" \
      --arg d "$RESULTS"	\
-     --arg e "FAILURES"	\
+     --arg e "$FAILURES"	\
      '{ "attachments": [{ "pretext": $a, "color": $b, "text": $c, "fields": [{"title": "Results:", "value": $d}, {"title": "Failures:", "value": $e}], "mrkdwn_in": ["text", "pretext", "fields"] }], "mrkdwn": true }'
 )"
 
