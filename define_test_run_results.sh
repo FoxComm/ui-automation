@@ -47,10 +47,12 @@ determine_build_result() {
 }
 
 send_slack_notification() {
-    INFO="Total Tests: $TOTAL_TESTS
+    INFO="
+    Total Tests: $TOTAL_TESTS
     Brokens: $BROKENS"
 
-    RESULTS="Minors: $MINORS
+    RESULTS="
+    Minors: $MINORS
     Normals: $NORMALS
     Criticals: $CRITICALS
     Blockers: $BLOCKERS"
