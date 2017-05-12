@@ -50,17 +50,17 @@ send_slack_notification() {
     Criticals: $CRITICALS
     Blockers: $BLOCKERS"
 
+    TEXT="<http://10.240.0.32:8080/#/|View Report>
+    $RESULTS"
+
     if [ "$1" = 0 ]; then
         COLOR="good"
-        PRETEXT=":thumbsup: Tests Passed!
-        $RESULTS"
+        PRETEXT=":thumbsup: Tests Passed!"
     elif [ "$1" = 1 ]; then
         COLOR="#B94A48"
-        PRETEXT=":thumbsdown: Tests Failed!
-        $RESULTS"
+        PRETEXT=":thumbsdown: Tests Failed!"
     fi
 
-    TEXT="<http://10.240.0.32:8080/#/|View Report>"
     PAYLOAD="$(jq -n --arg a "$PRETEXT" \
                      --arg b "$COLOR" \
                      --arg c "$TEXT" \
