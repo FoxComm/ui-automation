@@ -47,17 +47,17 @@ determine_build_result() {
 }
 
 send_slack_notification() {
-    INFO="
-    Total Tests: $TOTAL_TESTS
-    Brokens: $BROKENS"
+RESULTS="
+Total Tests: $TOTAL_TESTS
+Brokens: $BROKEN"
 
-    RESULTS="
-    Minors: $MINORS
-    Normals: $NORMALS
-    Criticals: $CRITICALS
-    Blockers: $BLOCKERS"
+FAILURES="
+Minors: $MINOR
+Normals: $NORMAL
+Criticals: $CRITICAL
+Blockers: $BLOCKER"
 
-    TEXT="<http://10.240.0.32:8080/#/|View Report>"
+TEXT="<http://10.240.0.32:8080/#/|View Report>"
 
     if [ "$1" = 0 ]; then
         COLOR="good"
@@ -67,13 +67,13 @@ send_slack_notification() {
         PRETEXT=":thumbsdown: Tests Failed!"
     fi
 
-    PAYLOAD="$(jq -n --arg a "$PRETEXT" \
-         --arg b "$COLOR" \
-         --arg c "$TEXT" \
-         --arg d "$INFO"	\
-         --arg e "$RESULTS"	\
-         '{ "attachments": [{ "pretext": $a, "color": $b, "text": $c, "fields": [{"title": "Info:", "value": $d}, {"title": "Results:", "value": $e}], "mrkdwn_in": ["text", "pretext", "fields"] }], "mrkdwn": true }'
-    )"
+PAYLOAD="$(jq -n --arg a "$PRETEXT" \
+     --arg b "$COLOR" \
+     --arg c "$TEXT" \
+     --arg d "$RESULTS"	\
+     --arg e "FAILURES"	\
+     '{ "attachments": [{ "pretext": $a, "color": $b, "text": $c, "fields": [{"title": "Results:", "value": $d}, {"title": "Failures:", "value": $e}], "mrkdwn_in": ["text", "pretext", "fields"] }], "mrkdwn": true }'
+)"
 
     curl -X POST --data-urlencode "payload=$PAYLOAD" $HOOK
 }
