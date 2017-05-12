@@ -73,7 +73,6 @@ send_slack_notification() {
          '{ "attachments": [{ "pretext": $a, "color": $b, "text": $c, "fields": [{"title": "Info:", "value": $d}, {"title": "Results:", "value": $e}], "mrkdwn_in": ["text", "pretext", "fields"] }], "mrkdwn": true }'
     )"
 
-    echo $PAYLOAD
     curl -X POST --data-urlencode "payload=$PAYLOAD" $HOOK
 }
 
