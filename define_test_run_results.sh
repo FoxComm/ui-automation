@@ -47,16 +47,15 @@ determine_build_result() {
 }
 
 send_slack_notification() {
-    RESULTS="Results:
-    Total Tests: $TOTAL_TESTS
-    Minors: $MINORS
-    Normals: $NORMALS
-    Criticals: $CRITICALS
-    Blockers: $BLOCKERS
+    INFO="Total Tests: $TOTAL_TESTS
     Brokens: $BROKENS"
 
-    TEXT="<http://10.240.0.32:8080/#/|View Report>
-    $RESULTS"
+    RESULTS="Minors: $MINORS
+    Normals: $NORMALS
+    Criticals: $CRITICALS
+    Blockers: $BLOCKERS"
+
+    TEXT="<http://10.240.0.32:8080/#/|View Report>"
 
     if [ "$1" = 0 ]; then
         COLOR="good"
@@ -67,11 +66,14 @@ send_slack_notification() {
     fi
 
     PAYLOAD="$(jq -n --arg a "$PRETEXT" \
-                     --arg b "$COLOR" \
-                     --arg c "$TEXT" \
-		             '{ "attachments": [{ "pretext": $a, "color": $b, "text": $c }] }'
+         --arg b "$COLOR" \
+         --arg c "$TEXT" \
+         --arg d "$INFO"	\
+         --arg e "$RESULTS"	\
+         '{ "attachments": [{ "pretext": $a, "color": $b, "text": $c, "fields": [{"title": "Info:", "value": $d}, {"title": "Results:", "value": $e}], "mrkdwn_in": ["text", "pretext", "fields"] }], "mrkdwn": true }'
     )"
 
+    echo $PAYLOAD
     curl -X POST --data-urlencode "payload=$PAYLOAD" $HOOK
 }
 
