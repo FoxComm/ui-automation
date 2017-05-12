@@ -35,11 +35,9 @@ count_failures() {
 
 determine_exit_code() {
     if [[ "$MINORS" > 9 || "$NORMALS" > 0 || "$CRITICALS" > 0 || "$BLOCKERS" > 0 ]]; then
-#    	export EXIT_CODE=1
-        exit 1
+    	export EXIT_CODE=1
     elif [[ "$MINORS" < 10 && "$NORMALS" = 0 && "$CRITICALS" = 0 && "$BLOCKERS" = 0 ]]; then
-#    	export EXIT_CODE=0
-        exit 0
+    	export EXIT_CODE=0
     fi
 }
 
