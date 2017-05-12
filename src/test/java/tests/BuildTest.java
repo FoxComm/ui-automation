@@ -45,4 +45,15 @@ public class BuildTest extends Preconditions {
         $(By.xpath("//input[@type='password']")).shouldBe(visible);
     }
 
+    @Test(priority = 4)
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Broken test")
+    public void criticalTest_broken() {
+        p = openPage(adminUrl + "/login", LoginPage.class);
+        p.login(adminOrg, adminEmail, adminPassword);
+
+        shouldBeVisible(p.loginErrorMsg(), "");
+        p.loginErrorMsg().shouldBe(visible);
+    }
+
 }

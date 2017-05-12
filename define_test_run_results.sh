@@ -1,21 +1,20 @@
 #!/bin/bash
-# Determines if test run was successful or not based on results of tests with severity.
+# Determines if test run was successful or not based on tests result and their severity.
 
+BROKENS=0
 MINORS=0
 NORMALS=0
 CRITICALS=0
 BLOCKERS=0
 
+# get "testCases" json array from graph.json, then get its length
+TOTAL_TESTS=$(cat allure-report/data/graph.json | jq '.testCases' | jq '. | length')
+
+# iterate through testCases json array
+# get $severity and $status for each test
+# if status equals "FAILED" then increase amount of failed tests with certain $severity
 count_failures() {
-    # get "testCases" json array from graph.json, then get its length
-
-    tests_amount=$(cat allure-report/data/graph.json | jq '.testCases' | jq '. | length')
-
-    # iterate through testCases json array
-    # get $severity and $status for each test
-    # if status equals "FAILED" then increase amount of failed tests with certain $severity
-
-    for (( i=0; i<$tests_amount; i++ )); do
+    for (( i=0; i<$TOTAL_TESTS; i++ )); do
 
         severity=($(cat allure-report/data/graph.json | jq ".testCases[$i].severity"))
         status=($(cat allure-report/data/graph.json | jq ".testCases[$i].status"))
@@ -28,11 +27,15 @@ count_failures() {
                 "\"CRITICAL\"") CRITICALS=$((CRITICALS+1)) ;;
                 "\"BLOCKER\"") BLOCKERS=$((BLOCKERS+1)) ;;
             esac
+        elif [[ "$status" == "\"BROKEN\"" ]]; then
+                BROKENS=$((BROKENS+1))
         fi
 
     done
 }
 
+# determine BK build result based on amount of failed tests and their severity
+# send notification to slack, then `exit` the build
 determine_build_result() {
     if [[ "$MINORS" > 9 || "$NORMALS" > 0 || "$CRITICALS" > 0 || "$BLOCKERS" > 0 ]]; then
     	send_slack_notification 1
@@ -45,10 +48,12 @@ determine_build_result() {
 
 send_slack_notification() {
     RESULTS="Results:
+    Total Tests: $TOTAL_TESTS
     Minors: $MINORS
     Normals: $NORMALS
     Criticals: $CRITICALS
-    Blockers: $BLOCKERS"
+    Blockers: $BLOCKERS
+    Brokens: $BROKENS"
 
     TEXT="<http://10.240.0.32:8080/#/|View Report>
     $RESULTS"
