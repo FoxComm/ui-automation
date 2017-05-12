@@ -44,13 +44,30 @@ determine_build_result() {
 }
 
 send_slack_notification() {
+    RESULTS="Results:
+    Minors: $MINORS
+    Normals: $NORMALS
+    Criticals: $CRITICALS
+    Blockers: $BLOCKERS"
+
     if [ "$1" = 0 ]; then
-        PAYLOAD='payload={ "attachments": [{"pretext": "Tests Passed", "color": "good", "text": "<http://10.240.0.32:8080/#/|View Report>"}] }'
+        COLOR="good"
+        PRETEXT=":thumbsup: Tests Passed!
+        $RESULTS"
     elif [ "$1" = 1 ]; then
-        PAYLOAD='payload={ "attachments": [{"pretext": "Tests Failed", "color": "#B94A48", "text": "<http://10.240.0.32:8080/#/|View Report>"}] }'
+        COLOR="#B94A48"
+        PRETEXT=":thumbsdown: Tests Failed!
+        $RESULTS"
     fi
 
-    curl -X POST --data-urlencode "$PAYLOAD" $HOOK
+    TEXT="<http://10.240.0.32:8080/#/|View Report>"
+    PAYLOAD="$(jq -n --arg a "$PRETEXT" \
+                     --arg b "$COLOR" \
+                     --arg c "$TEXT" \
+		             '{ "attachments": [{ "pretext": $a, "color": $b, "text": $c }] }'
+    )"
+
+    curl -X POST --data-urlencode "payload=$PAYLOAD" $HOOK
 }
 
 count_failures
