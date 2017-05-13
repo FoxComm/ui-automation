@@ -86,11 +86,11 @@
             <!--<class name="tests.storeadmin.products.EditProductTest" />-->
         <!--</classes>-->
     <!--</test>-->
-    <test name="New Product Form">
-        <classes>
-            <class name="tests.storeadmin.products.NewProductFormTest" />
-        </classes>
-    </test>
+    <!--<test name="New Product Form">-->
+        <!--<classes>-->
+            <!--<class name="tests.storeadmin.products.NewProductFormTest" />-->
+        <!--</classes>-->
+    <!--</test>-->
 
     <!--<test name="Promotions">-->
         <!--<classes>-->
@@ -126,11 +126,11 @@
             <!--<class name="tests.storefront.auth.SignInTest"/>-->
         <!--</classes>-->
     <!--</test>-->
-    <!--<test name="SF: Auth > Log Out">-->
-        <!--<classes>-->
-            <!--<class name="tests.storefront.auth.LogOutTest"/>-->
-        <!--</classes>-->
-    <!--</test>-->
+    <test name="SF: Auth > Log Out">
+        <classes>
+            <class name="tests.storefront.auth.LogOutTest"/>
+        </classes>
+    </test>
     <!--<test name="SF: Auth > Password Reset">-->
         <!--<classes>-->
             <!--<class name="tests.storefront.auth.PasswordResetTest"/>-->
