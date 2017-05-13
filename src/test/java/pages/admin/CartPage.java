@@ -668,7 +668,7 @@ public class CartPage extends BasePage {
     }
 
     public SelenideElement removeCouponBtn() {
-        return $(xpath("//*[@id='fct-cart-coupons-block']//button[contains(@class, 'remove')]"));
+        return $(xpath("//*[@id='fct-cart-coupons-block']//button[contains(@class, 'delete')]"));
     }
 
     public SelenideElement appliedCoupon(String couponCode) {

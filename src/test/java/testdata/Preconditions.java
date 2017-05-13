@@ -196,7 +196,7 @@ public class Preconditions extends Helpers {
                 updLineItems(cartId, skuCode, 3);
                 createPromotion_coupon();
                 createCoupon(promotionId);
-                bulkGenerateCodes(couponId, "BULK CPNS ", 5, 3);
+                bulkGenerateCodes(couponId, "BULK CPNS ", 11, 3);
                 break;
 
             case "cart<1 SKU, coupon applied>; coupon<any, single code>":

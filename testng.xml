@@ -26,11 +26,11 @@
             <!--<class name="tests.storeadmin.cart.PaymentMethodTest" />-->
         <!--</classes>-->
     <!--</test>-->
-    <!--<test name="Cart > Coupons">-->
-        <!--<classes>-->
-            <!--<class name="tests.storeadmin.cart.CartCouponsTest" />-->
-        <!--</classes>-->
-    <!--</test>-->
+    <test name="Cart > Coupons">
+        <classes>
+            <class name="tests.storeadmin.cart.CartCouponsTest" />
+        </classes>
+    </test>
     <!--<test name="Cart > Validation">-->
         <!--<classes>-->
             <!--<class name="tests.storeadmin.cart.CartValidationTest" />-->
@@ -218,9 +218,9 @@
             <!--<class name="tests.storeadmin.products.ProductsTest"/>-->
         <!--</classes>-->
     <!--</test>-->
-    <test name="Severity Test">
-        <classes>
-            <class name="tests.BuildTest"/>
-        </classes>
-    </test>
+    <!--<test name="Severity Test">-->
+        <!--<classes>-->
+            <!--<class name="tests.BuildTest"/>-->
+        <!--</classes>-->
+    <!--</test>-->
 </suite>

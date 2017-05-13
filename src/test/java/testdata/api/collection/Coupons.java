@@ -54,7 +54,7 @@ public class Coupons extends Helpers {
         }
     }
 
-    @Step("[API] Bulk generate codes for coupon <ID:{0}>; [prefix:{1}, codeLength:{2}, QTY:{3}]")
+    @Step("[API] Bulk generate codes for coupon <ID:{0}>; [prefix:{1}, length:{2}, QTY:{3}]")
     public static void bulkGenerateCodes(String couponId, String prefix, int length, int quantity) throws IOException {
         System.out.println("Bulk generating coupon codes for coupon <" + couponId + ">...");
 
