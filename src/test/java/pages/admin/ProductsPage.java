@@ -313,7 +313,7 @@ public class ProductsPage extends BasePage {
     }
 
     @Step("Fill out the 'New Product' form - Title: <{0}>, SKU: <{1}>, Retail Price: <{2}>, Sale Price: <{3}>, State: <{4}>")
-    public void createProduct(String title, String SKU, String retailPrice, String salePrice, String tagVal, String state) {
+    public void fillOutProductForm(String title, String SKU, String retailPrice, String salePrice, String tagVal, String state) {
         setTitle(title);
         setFieldVal( descriptionFld(), "The best thing to buy in 2016!" );
         addNewSKU(SKU, retailPrice, salePrice);

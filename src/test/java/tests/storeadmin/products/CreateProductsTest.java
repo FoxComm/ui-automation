@@ -45,7 +45,8 @@ public class CreateProductsTest extends Preconditions {
 
         p = openPage(adminUrl + "/products", ProductsPage.class);
         p.clickAddNewProduct();
-        p.createProduct(productTitle, skuCode, "27.18", "27.18", "sunglasses", "Active");
+        p.fillOutProductForm(productTitle, skuCode, "27.18", "27.18", "sunglasses", "Active");
+        p.clickSave_wait();
         p.navigateTo("Products");
         p.waitForDataToLoad();
         p.search(randomId);
@@ -265,7 +266,7 @@ public class CreateProductsTest extends Preconditions {
         String productTitle = "Test Product " + randomId;
 
         p = open(adminUrl+ "/products/default/new", ProductsPage.class);
-        p.createProduct(productTitle, skuCode, "27.18", "27.18", "sunglasses", "Active");
+        p.fillOutProductForm(productTitle, skuCode, "27.18", "27.18", "sunglasses", "Active");
         p.clickSave_wait();
         p.navigateTo("Products");
         p.waitForDataToLoad();
@@ -285,7 +286,7 @@ public class CreateProductsTest extends Preconditions {
         String productTitle = "Test Product " + randomId;
 
         p = openPage(adminUrl + "/products/default/new", ProductsPage.class);
-        p.createProduct(productTitle, skuCode, "27.18", "27.18", "sunglasses", "Active");
+        p.fillOutProductForm(productTitle, skuCode, "27.18", "27.18", "sunglasses", "Active");
         p.clickSave_wait();
         shouldNotBeVisible(p.breadcrumb("new"),
                 "Failed to create a new product - rout is displayed as `/new`");
@@ -305,7 +306,7 @@ public class CreateProductsTest extends Preconditions {
         String productTitle = "Test Product " + randomId;
 
         p = openPage(adminUrl + "/products/default/new", ProductsPage.class);
-        p.createProduct(productTitle, skuCode, "27.18", "27.18", "sunglasses", "Active");
+        p.fillOutProductForm(productTitle, skuCode, "27.18", "27.18", "sunglasses", "Active");
         p.clickSave_wait();
         p.navigateTo("Products");
         p.waitForDataToLoad();
@@ -324,7 +325,7 @@ public class CreateProductsTest extends Preconditions {
 //        String productTitle = "Test Product " + randomId;
 //
 //        p = openPage(adminUrl + "/products/default/new", ProductsPage.class);
-//        p.createProduct(productTitle, skuCode, "27.18", "27.18", "sunglasses", "Active");
+//        p.fillOutProductForm(productTitle, skuCode, "27.18", "27.18", "sunglasses", "Active");
 //        p.clickSave_wait();
 //        p.navigateTo("Products");
 //        p.waitForDataToLoad();
