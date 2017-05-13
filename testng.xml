@@ -75,22 +75,22 @@
         <!--</classes>-->
     <!--</test>-->
 
-    <test name="Create Product">
-        <classes>
-            <class name="tests.storeadmin.products.CreateProductsTest" />
-        </classes>
-    </test>
+    <!--<test name="Create Product">-->
+        <!--<classes>-->
+            <!--<class name="tests.storeadmin.products.CreateProductsTest" />-->
+        <!--</classes>-->
+    <!--</test>-->
 
     <!--<test name="Edit Product">-->
         <!--<classes>-->
             <!--<class name="tests.storeadmin.products.EditProductTest" />-->
         <!--</classes>-->
     <!--</test>-->
-    <!--<test name="New Product Form">-->
-        <!--<classes>-->
-            <!--<class name="tests.storeadmin.products.NewProductFormTest" />-->
-        <!--</classes>-->
-    <!--</test>-->
+    <test name="New Product Form">
+        <classes>
+            <class name="tests.storeadmin.products.NewProductFormTest" />
+        </classes>
+    </test>
 
     <!--<test name="Promotions">-->
         <!--<classes>-->

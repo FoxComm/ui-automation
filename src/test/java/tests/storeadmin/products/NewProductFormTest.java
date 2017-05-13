@@ -37,7 +37,7 @@ public class NewProductFormTest extends Preconditions {
         p.setTitle("SKU-TST");
         p.clickSave();
 
-        p.errorMsg("SKU Code").shouldBe(visible);
+        p.errorMsg("SKU code").shouldBe(visible);
     }
 
     // TODO: change error message after it'll be changed with something more user friendly
