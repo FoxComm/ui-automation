@@ -149,7 +149,7 @@ export ALLURE_CONFIG=/home/userName/.../ui-automation/allure.properties
         ┌────────────┐    │         └─────────────┘                                      ¦
         │ testng.xml │◄───┤                   ▲                                          ¦
         └────────────┘    │           extends │      ┌─────────────┐                     ¦
-         [test suits]     │                   │      │  TestClass  │                     ¦
+        [test suites]     │                   │      │  TestClass  │                     ¦
                           │                   │      └─────────────┘                     ¦
                           └                   │         ▲       ▲                        ¦
                                               │ extends │       ¦                        ¦

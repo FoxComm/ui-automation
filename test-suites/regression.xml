@@ -1,5 +1,5 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="e2e" verbose="1">
+<suite name="R" verbose="1">
     <test name="Authentication">
         <classes>
             <class name="tests.storeadmin.generalcontrols.auth.AuthTest" />
@@ -115,11 +115,107 @@
             <class name="tests.storeadmin.inventory.InventoryTest" />
         </classes>
     </test>
-    <test name="Products">
+
+    <test name="SF: Auth > Sign Up">
         <classes>
-            <class name="tests.storeadmin.products.ProductsTest" />
+            <class name="tests.storefront.auth.SignUpTest"/>
+        </classes>
+    </test>
+    <test name="SF: Auth > Sign In">
+        <classes>
+            <class name="tests.storefront.auth.SignInTest"/>
+        </classes>
+    </test>
+    <test name="SF: Auth > Log Out">
+        <classes>
+            <class name="tests.storefront.auth.LogOutTest"/>
+        </classes>
+    </test>
+    <test name="SF: Auth > Password Reset">
+        <classes>
+            <class name="tests.storefront.auth.PasswordResetTest"/>
         </classes>
     </test>
 
+    <test name="SF: Cart > Line Items">
+        <classes>
+            <class name="tests.storefront.cart.LineItemsTest"/>
+        </classes>
+    </test>
+    <test name="SF: Cart > Coupons and Promos">
+        <classes>
+            <class name="tests.storefront.cart.CouponsAndPromosTest"/>
+        </classes>
+    </test>
 
+    <test name="SF: Profile > My Details">
+        <classes>
+            <class name="tests.storefront.profile.MyDetailsTest"/>
+        </classes>
+    </test>
+    <test name="SF: Profile > My Addresses">
+        <classes>
+            <class name="tests.storefront.profile.MyShippingAddressesTest"/>
+        </classes>
+    </test>
+
+    <test name="SF: Checkout > Shipping Address">
+        <classes>
+            <class name="tests.storefront.checkout.ShippingAddressTest"/>
+        </classes>
+    </test>
+    <test name="SF: Checkout > Shipping Method">
+        <classes>
+            <class name="tests.storefront.checkout.ShippingMethodTest"/>
+        </classes>
+    </test>
+
+    <test name="SF: Checkout > Billing">
+        <classes>
+            <class name="tests.storefront.checkout.BillingTest"/>
+        </classes>
+    </test>
+    <test name="SF: Checkout > General Behavior">
+        <classes>
+            <class name="tests.storefront.checkout.GeneralBehaviorTest"/>
+        </classes>
+    </test>
+
+    <!--<test name="SF: Guest Session > Checkout">-->
+        <!--<classes>-->
+            <!--<class name="tests.storefront.guestsession.GuestCheckoutTest"/>-->
+        <!--</classes>-->
+    <!--</test>-->
+    <test name="SF: Guest Session > Cart Sync">
+        <classes>
+            <class name="tests.storefront.guestsession.CartTest"/>
+        </classes>
+    </test>
+
+    <test name="SF: Products > General PDP Test">
+        <classes>
+            <class name="tests.storefront.products.AbstractPdpTest"/>
+        </classes>
+    </test>
+    <test name="SF: Products > Catalog Test">
+        <classes>
+            <class name="tests.storefront.products.CatalogTest"/>
+        </classes>
+    </test>
+    <test name="SF: Products > TPG Product Attributes">
+        <classes>
+            <class name="tests.storefront.products.TpgProductAttrsTest"/>
+        </classes>
+    </test>
+
+    <test name="SF: Products Behavior">
+        <classes>
+            <class name="tests.storefront.products.ProductsBehaviorTest"/>
+        </classes>
+    </test>
+    <test name="Admin: Products Behavior">
+        <classes>
+            <class name="tests.storeadmin.products.ProductsTest"/>
+        </classes>
+    </test>
 </suite>

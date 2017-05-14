@@ -1,5 +1,5 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="Ashes" verbose="1">
+<suite name="A" verbose="1">
     <test name="Authentication">
         <classes>
             <class name="tests.storeadmin.generalcontrols.auth.AuthTest" />

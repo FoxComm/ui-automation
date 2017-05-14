@@ -1,5 +1,5 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="e2e" verbose="1">
+<suite name="L" verbose="1">
     <test name="Authentication">
         <classes>
             <class name="tests.storeadmin.generalcontrols.auth.AuthTest" />
@@ -218,6 +218,7 @@
             <class name="tests.storeadmin.products.ProductsTest"/>
         </classes>
     </test>
+
     <test name="Severity Test">
         <classes>
             <class name="tests.BuildTest"/>
