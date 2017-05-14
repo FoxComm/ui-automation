@@ -47,16 +47,17 @@ determine_build_result() {
 }
 
 send_slack_notification() {
-    RESULTS="Results:
-    Total Tests: $TOTAL_TESTS
-    Minors: $MINORS
-    Normals: $NORMALS
-    Criticals: $CRITICALS
-    Blockers: $BLOCKERS
-    Brokens: $BROKENS"
+RESULTS="
+Total Tests: $TOTAL_TESTS
+Broken: $BROKENS"
 
-    TEXT="<http://10.240.0.32:8080/#/|View Report>
-    $RESULTS"
+FAILURES="
+Blocker: $BLOCKERS
+Critical: $CRITICALS
+Normal: $NORMALS
+Minor: $MINORS"
+
+TEXT="<http://10.240.0.32:8080/#/|View Report>"
 
     if [ "$1" = 0 ]; then
         COLOR="good"
@@ -66,11 +67,13 @@ send_slack_notification() {
         PRETEXT=":thumbsdown: Tests Failed!"
     fi
 
-    PAYLOAD="$(jq -n --arg a "$PRETEXT" \
-                     --arg b "$COLOR" \
-                     --arg c "$TEXT" \
-		             '{ "attachments": [{ "pretext": $a, "color": $b, "text": $c }] }'
-    )"
+PAYLOAD="$(jq -n --arg a "$PRETEXT" \
+     --arg b "$COLOR" \
+     --arg c "$TEXT" \
+     --arg d "$RESULTS"	\
+     --arg e "$FAILURES"	\
+     '{ "attachments": [{ "pretext": $a, "color": $b, "text": $c, "fields": [{"title": "Results:", "value": $d}, {"title": "Failures:", "value": $e}], "mrkdwn_in": ["text", "pretext", "fields"] }], "mrkdwn": true }'
+)"
 
     curl -X POST --data-urlencode "payload=$PAYLOAD" $HOOK
 }
