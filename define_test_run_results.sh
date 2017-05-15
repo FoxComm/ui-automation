@@ -57,7 +57,9 @@ Critical: $CRITICALS
 Normal: $NORMALS
 Minor: $MINORS"
 
-TEXT="<http://10.240.0.32:8080/$(cat allure-report/time.txt)/#/|View Report>"
+DATE="$(cat allure-report/time.txt)"
+
+TEXT="<http://10.240.0.32:8080/$DATE/#/|View Report>"
 
     if [ "$1" = 0 ]; then
         COLOR="good"
