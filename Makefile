@@ -9,8 +9,8 @@ configure-linux:
 	cd ./bin && unzip chromedriver_linux64.zip
 
 build:
-	sbt compile test:compile
 	source define_test_run.sh
+	sbt compile test:compile
 
 test:
 	sbt "test-only TestRunner"
