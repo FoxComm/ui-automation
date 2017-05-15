@@ -10,6 +10,7 @@ configure-linux:
 
 build:
 	sbt compile test:compile
+	source define_test_run.sh
 
 test:
 	sbt "test-only TestRunner"

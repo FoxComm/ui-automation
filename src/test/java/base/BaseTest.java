@@ -25,6 +25,7 @@ public class BaseTest extends ConciseAPI {
     private void printEnvInfo() {
         String f = "%-25s %s\n";
         System.out.printf(f, "timeout, ms:", "<" + Configuration.timeout + ">");
+        System.out.printf(f, "Test Suite:", "<" + System.getenv("SUITE") + ">");
         System.out.printf(f, "apiUrl:", "<" + apiUrl + ">");
         System.out.printf(f, "adminUrl:", "<" + adminUrl + ">");
         System.out.printf(f, "storefront:", "<" + storefront + ">");
