@@ -8,8 +8,11 @@ configure-linux:
 	cd ./bin && wget http://chromedriver.storage.googleapis.com/2.27/chromedriver_linux64.zip
 	cd ./bin && unzip chromedriver_linux64.zip
 
+suite:
+	bash define_test_suite.sh
+
 build:
-	./define_test_suite.sh && sbt compile test:compile
+	sbt compile test:compile
 
 test:
 	sbt "test-only TestRunner"
