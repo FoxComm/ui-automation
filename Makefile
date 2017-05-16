@@ -18,6 +18,3 @@ test:
 report:
 	bash allure__fill_env_info.sh
 	allure generate target/allure-results
-
-result:
-    source define_test_run_results.sh
