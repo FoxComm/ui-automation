@@ -18,3 +18,10 @@ test:
 report:
 	bash allure__fill_env_info.sh
 	allure generate target/allure-results
+	touch allure-report/time.txt
+	DATE=`date +%Y-%m-%d_%H:%M:%S`
+	echo $DATE >> allure-report/time.txt
+
+notification:
+	DATE="$(cat allure-report/time.txt)"
+    source define_test_run_results.sh
