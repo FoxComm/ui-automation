@@ -9,7 +9,7 @@ configure-linux:
 	cd ./bin && unzip chromedriver_linux64.zip
 
 build:
-	bash define_test_suite.sh
+	source define_test_suite.sh
     sbt compile test:compile
 
 test:
