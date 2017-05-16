@@ -14,3 +14,7 @@ build:
 test:
 	bash define_test_suite.sh
 	sbt "test-only TestRunner"
+
+report:
+	bash allure__fill_env_info.sh
+	allure generate target/allure-results
