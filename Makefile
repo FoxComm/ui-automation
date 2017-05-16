@@ -24,4 +24,4 @@ report:
 
 notification:
 	DATE="$(cat allure-report/time.txt)"
-    source define_test_run_results.sh
+	source define_test_run_results.sh
