@@ -47,17 +47,17 @@ determine_build_result() {
 }
 
 send_slack_notification() {
-    RESULTS="
-    Total Tests: $TOTAL_TESTS
-    Broken: $BROKENS"
+RESULTS="
+Total Tests: $TOTAL_TESTS
+Broken: $BROKENS"
 
-    FAILURES="
-    Blocker: $BLOCKERS
-    Critical: $CRITICALS
-    Normal: $NORMALS
-    Minor: $MINORS"
+FAILURES="
+Blocker: $BLOCKERS
+Critical: $CRITICALS
+Normal: $NORMALS
+Minor: $MINORS"
 
-    TEXT="<http://10.240.0.32:8080/${SLUG}/#/|View Report>"
+    TEXT="<http://10.240.0.32:8080/$REPORT_SLUG/#/|View Report>"
 
         if [ "$1" = 0 ]; then
             COLOR="good"
