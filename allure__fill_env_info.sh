@@ -1,5 +1,12 @@
 #!/bin/bash
 
+if [ ! -d "target" ]; then
+    mkdir target
+    mkdir target/allure-results
+elif [ ! -d "target/allure-results" ]; then
+    mkdir target/allure-results
+fi
+
 if [ "$BROWSER" == "chrome" ]; then
 	echo BROWSER=`google-chrome -version` >> target/allure-results/environment.properties
 elif [ "$BROWSER" == "firefox" ]; then
