@@ -57,7 +57,7 @@ Critical: $CRITICALS
 Normal: $NORMALS
 Minor: $MINORS"
 
-    TEXT="<http://automation.foxcommerce.com/$REPORT_SLUG/#/|View Report>"
+    TEXT="<http://automation.foxcommerce.com/$ENV/$REPORT_SLUG/#/|View Report>"
 
         if [ "$1" = 0 ]; then
             COLOR="good"
