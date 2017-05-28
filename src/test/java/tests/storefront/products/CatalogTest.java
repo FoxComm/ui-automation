@@ -3,6 +3,10 @@ package tests.storefront.products;
 import org.testng.annotations.*;
 import pages.storefront.StorefrontPage;
 import ru.yandex.qatools.allure.annotations.Description;
+import ru.yandex.qatools.allure.annotations.Features;
+import ru.yandex.qatools.allure.annotations.Severity;
+import ru.yandex.qatools.allure.annotations.Stories;
+import ru.yandex.qatools.allure.model.SeverityLevel;
 import testdata.Preconditions;
 
 import java.io.IOException;
@@ -22,6 +26,9 @@ public class CatalogTest extends Preconditions {
     }
 
     @Test(priority = 1)
+    @Severity(SeverityLevel.BLOCKER)
+    @Features("Storefront-TPG")
+    @Stories("Product Catalog")
     @Description("A just created active product with at least 1 active SKU can be found in respective category (defined as a tag)")
     public void productDisplayedInCatalogView() throws IOException {
         provideTestData("an active product visible on storefront");
@@ -33,6 +40,9 @@ public class CatalogTest extends Preconditions {
     }
 
     @Test(priority = 2)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Storefront-TPG")
+    @Stories("Product Catalog")
     @Description("Can add product to cart from catalog without opening PDP")
     public void addProductFromCatalogViewPage() throws IOException {
         provideTestData("an active product visible on storefront");
@@ -49,6 +59,9 @@ public class CatalogTest extends Preconditions {
     }
 
     @Test(priority = 3, enabled = false)
+    @Severity(SeverityLevel.NORMAL)
+    @Features("Storefront-TPG")
+    @Stories("Product Catalog")
     @Description("Product description appears on the product image on hover")
     public void hoverProductImageInCatalog_hasImage() throws IOException {
         provideTestData("an active product visible on storefront");
@@ -62,6 +75,9 @@ public class CatalogTest extends Preconditions {
     }
 
     @Test(priority = 4, enabled = false)
+    @Severity(SeverityLevel.NORMAL)
+    @Features("Storefront-TPG")
+    @Stories("Product Catalog")
     @Description("Product description appears on the product image on hover")
     public void hoverProductImageInCatalog_noImage() throws IOException {
         provideTestData("an active product visible on storefront");
@@ -75,6 +91,9 @@ public class CatalogTest extends Preconditions {
     }
 
     @Test(priority = 5)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Storefront-TPG")
+    @Stories("Product Catalog")
     @Description("Products with \"ENTRÉES\" category sub-category names tags are displayed in corresponding sub-categories")
     public void entreesSubCategories() throws IOException {
         provideTestData("products with tags with entrees subcategories names");
@@ -92,6 +111,9 @@ public class CatalogTest extends Preconditions {
     }
 
     @Test(priority = 6, dataProvider = "entreesSubcategories")
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Storefront-TPG")
+    @Stories("Product Catalog")
     @Description("Products with \"ENTRÉES\" category sub-category names tags are displayed in corresponding sub-categories")
     public void entreesSubCategories(String subCategory) throws IOException {
         provideTestData("active product with tags <ENTRÉES> and <" + subCategory + ">");
@@ -100,6 +122,9 @@ public class CatalogTest extends Preconditions {
     }
 
     @Test(priority = 7)
+    @Severity(SeverityLevel.BLOCKER)
+    @Features("Storefront-TPG")
+    @Stories("Product Catalog")
     @Description("Can access PDP")
     public void canAccessPdp() throws IOException {
         provideTestData("an active product visible on storefront");
@@ -111,6 +136,9 @@ public class CatalogTest extends Preconditions {
     }
 
     @Test(priority = 8)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Storefront-TPG")
+    @Stories("Product Catalog")
     @Description("Can access PDP via new product slug")
     public void canAccessPdpViaNewSlug() throws IOException {
         randomId = generateRandomID();
@@ -123,6 +151,9 @@ public class CatalogTest extends Preconditions {
     }
 
     @Test(priority = 9)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Storefront-TPG")
+    @Stories("Product Catalog")
     @Description("Can't access PDP via old product slug")
     public void cantAccessPdpViaOldSlug() throws IOException {
         randomId = generateRandomID();

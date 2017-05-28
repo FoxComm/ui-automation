@@ -5,6 +5,10 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import pages.storefront.StorefrontPage;
 import ru.yandex.qatools.allure.annotations.Description;
+import ru.yandex.qatools.allure.annotations.Features;
+import ru.yandex.qatools.allure.annotations.Severity;
+import ru.yandex.qatools.allure.annotations.Stories;
+import ru.yandex.qatools.allure.model.SeverityLevel;
 import testdata.Preconditions;
 
 import java.io.IOException;
@@ -23,6 +27,9 @@ public class SignInTest extends Preconditions {
     }
 
     @Test(priority = 1)
+    @Severity(SeverityLevel.BLOCKER)
+    @Features("Storefront-TPG")
+    @Stories("Auth : Sign In")
     @Description("Can sign in credentials of a registered customer")
     public void signIn_correctCreds() throws IOException {
         provideTestData("a customer signed up on storefront");
@@ -37,6 +44,9 @@ public class SignInTest extends Preconditions {
     }
 
     @Test(priority = 2)
+    @Severity(SeverityLevel.BLOCKER)
+    @Features("Storefront-TPG")
+    @Stories("Auth : Sign In")
     @Description("Can't sign in using incorrect credentials")
     public void signIn_incorrectCreds() throws IOException {
         p = openPage(storefrontUrl, StorefrontPage.class);
@@ -49,6 +59,9 @@ public class SignInTest extends Preconditions {
     }
 
     @Test(priority = 3)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Storefront-TPG")
+    @Stories("Auth : Sign In")
     @Description("Auth form is closed after user has successfully signed in")
     public void authFormClosed_signInSuccess() throws IOException {
         provideTestData("a customer signed up on storefront");
@@ -60,6 +73,9 @@ public class SignInTest extends Preconditions {
     }
 
     @Test(priority = 4)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Storefront-TPG")
+    @Stories("Auth : Sign In")
     @Description("Sign In form can be closed without signing in")
     public void closeAuthForm_abortSignIn() {
         p = openPage(storefrontUrl, StorefrontPage.class);

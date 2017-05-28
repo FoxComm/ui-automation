@@ -5,6 +5,10 @@ import org.testng.annotations.Test;
 import pages.admin.CartPage;
 import pages.admin.LoginPage;
 import ru.yandex.qatools.allure.annotations.Description;
+import ru.yandex.qatools.allure.annotations.Features;
+import ru.yandex.qatools.allure.annotations.Severity;
+import ru.yandex.qatools.allure.annotations.Stories;
+import ru.yandex.qatools.allure.model.SeverityLevel;
 import testdata.Preconditions;
 
 import java.io.IOException;
@@ -30,6 +34,10 @@ public class ItemsTest extends Preconditions {
     }
 
     @Test (priority = 1)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Ashes")
+    @Stories("Cart Line Items")
+    @Description("Seach for item and add it to cart")
     public void addItemToCart() throws IOException {
         provideTestData("empty cart and 3 active products");
 
@@ -42,6 +50,10 @@ public class ItemsTest extends Preconditions {
     }
 
     @Test (priority = 2)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Ashes")
+    @Stories("Cart Line Items")
+    @Description("Edit item qty using arrow btns")
     public void editItemQuantity_arrowBtn() throws IOException {
         provideTestData("cart<1 SKU[active, qty: 1]>");
 
@@ -61,6 +73,10 @@ public class ItemsTest extends Preconditions {
     }
 
     @Test (priority = 3)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Ashes")
+    @Stories("Cart Line Items")
+    @Description("Edit item qty using input fld")
     public void editItemQuantity_directInput() throws IOException {
         provideTestData("cart<1 SKU[active, qty: 1]>");
 
@@ -75,6 +91,10 @@ public class ItemsTest extends Preconditions {
     }
 
     @Test (priority = 4)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Ashes")
+    @Stories("Cart Line Items")
+    @Description("Cancel item deletion")
     public void deleteItem_cancel() throws IOException {
         provideTestData("cart with 1 item, qty: 3");
 
@@ -88,6 +108,10 @@ public class ItemsTest extends Preconditions {
     }
 
     @Test (priority = 5)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Ashes")
+    @Stories("Cart Line Items")
+    @Description("Confirm item deletion")
     public void deleteItem_confirm() throws IOException {
         provideTestData("cart with 3 items");
 
@@ -101,6 +125,9 @@ public class ItemsTest extends Preconditions {
     }
 
     @Test(priority = 6)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Ashes")
+    @Stories("Cart Line Items")
     @Description("Regression test: 1 line item with 'qty > 1' should be displayed as a single line item")
     public void oneItemIsntPropagated() throws IOException {
         provideTestData("cart<1 SKU[active, qty: 1]>");
@@ -117,6 +144,9 @@ public class ItemsTest extends Preconditions {
     }
 
     @Test(priority = 7)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Ashes")
+    @Stories("Cart Line Items")
     @Description("Regression test: 1 line item with 'qty > 1' should be displayed as a single line item after cart checkout")
     public void oneItemIsntPropagatedAfterCheckout() throws IOException {
         provideTestData("filled out cart");

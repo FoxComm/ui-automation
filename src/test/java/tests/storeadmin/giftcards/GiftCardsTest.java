@@ -6,6 +6,10 @@ import org.testng.annotations.Test;
 import pages.admin.GiftCardsPage;
 import pages.admin.LoginPage;
 import ru.yandex.qatools.allure.annotations.Description;
+import ru.yandex.qatools.allure.annotations.Features;
+import ru.yandex.qatools.allure.annotations.Severity;
+import ru.yandex.qatools.allure.annotations.Stories;
+import ru.yandex.qatools.allure.model.SeverityLevel;
 import testdata.Preconditions;
 
 import java.io.IOException;
@@ -30,6 +34,10 @@ public class GiftCardsTest extends Preconditions {
     }
 
     @Test(priority = 1)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Ashes")
+    @Stories("Gift Cards")
+    @Description("Can issue gift card")
     public void issueGiftCard() {
         p = openPage(adminUrl + "/gift-cards", GiftCardsPage.class);
 
@@ -42,6 +50,10 @@ public class GiftCardsTest extends Preconditions {
     }
 
     @Test(priority = 2)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Ashes")
+    @Stories("Gift Cards")
+    @Description("Can issue GC with preset values")
     public void issueGiftCard_presetValues() {
         p = openPage(adminUrl + "/gift-cards", GiftCardsPage.class);
 
@@ -54,8 +66,11 @@ public class GiftCardsTest extends Preconditions {
     }
 
     @Test(priority = 3)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Ashes")
+    @Stories("Gift Cards")
+    @Description("Issued gift card appears on the list")
     public void newGCVisibleOnList() {
-
         p = openPage(adminUrl + "/gift-cards", GiftCardsPage.class);
 
         p.clickAddMewGCBtn();
@@ -69,10 +84,13 @@ public class GiftCardsTest extends Preconditions {
         shouldBeVisible(contentOnList(), "Search request returned no results.");
 
         p.getGCParamVal("1", "Gift Card Number").shouldHave(text(gcNumber));
-
     }
 
     @Test(priority = 4)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Ashes")
+    @Stories("Gift Cards")
+    @Description("A just issued GC is in Active state")
     public void newGCIsActive() {
         p = openPage(adminUrl + "/gift-cards", GiftCardsPage.class);
 
@@ -80,7 +98,7 @@ public class GiftCardsTest extends Preconditions {
         p.setType("Appeasement");
         p.setValue("123.78");
         p.clickIssueGCBtn();
-        shouldHaveText(p.stateVal(), "Active", "Incorrect 'State' value is displayed on GC details page");
+        shouldHaveText(p.stateVal(), "Active", "Incorrect 'State' val is displayed on GC details page");
         String gcNumber = p.getGCNumber(getUrl(), adminUrl);
         p.navigateTo("Gift Cards");
         p.search(gcNumber);
@@ -90,6 +108,10 @@ public class GiftCardsTest extends Preconditions {
     }
 
     @Test(priority = 5)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Ashes")
+    @Stories("Gift Cards")
+    @Description("Can hold active GC")
     public void holdGC() throws IOException {
         provideTestData("gift card");
 
@@ -105,6 +127,10 @@ public class GiftCardsTest extends Preconditions {
     }
 
     @Test(priority = 6)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Ashes")
+    @Stories("Gift Cards")
+    @Description("Can cancel a just issued GC")
     public void cancelNewGC() throws IOException {
         provideTestData("gift card");
 
@@ -121,8 +147,11 @@ public class GiftCardsTest extends Preconditions {
         p.stateDd().shouldNot(exist);
     }
 
-    @Description("Can't cancel used GC -- \"Cancel Gift Card\" option shouldn't be displayed in \"State\" dd")
     @Test(priority = 7)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Ashes")
+    @Stories("Gift Cards")
+    @Description("Can't cancel used GC -- \"Cancel Gift Card\" option shouldn't be displayed in \"State\" dd")
     public void cantCancelUsedGC() throws IOException {
         provideTestData("used gift card");
 
@@ -134,6 +163,10 @@ public class GiftCardsTest extends Preconditions {
     }
 
     @Test(priority = 8)
+    @Severity(SeverityLevel.NORMAL)
+    @Features("Ashes")
+    @Stories("Gift Cards")
+    @Description("\"State\" val is updated in search_view once edited")
     public void editState_visibleOnList() throws IOException {
         provideTestData("gift card");
 
@@ -150,6 +183,10 @@ public class GiftCardsTest extends Preconditions {
     }
 
     @Test(priority = 9)
+    @Severity(SeverityLevel.NORMAL)
+    @Features("Ashes")
+    @Stories("Gift Cards")
+    @Description("Can make on hold GC active back")
     public void setStateToActive() throws IOException {
         provideTestData("gift card on hold");
 
@@ -169,6 +206,10 @@ public class GiftCardsTest extends Preconditions {
     }
 
     @Test(priority = 10)
+    @Severity(SeverityLevel.MINOR)
+    @Features("Ashes")
+    @Stories("Gift Cards")
+    @Description("Can cancel state change")
     public void cancelStateChange() throws IOException {
         provideTestData("gift card");
 
@@ -181,8 +222,11 @@ public class GiftCardsTest extends Preconditions {
         p.stateVal().shouldHave(text("Active"));
     }
 
-    @Description("\"Amount to use\" should be cut down to order's grand total when applying GC as the only payment method with amount to use that exceeds order's GT")
     @Test(priority = 11)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Ashes")
+    @Stories("Gift Cards")
+    @Description("\"Amount to use\" should be cut down to order's grand total when applying GC as the only payment method with amount to use that exceeds order's GT")
     public void gcAsPaymentMethod_availableBalance() throws IOException {
         provideTestData("used gift card");
         String expectedBalance = totalToString(20000 - total);
@@ -209,6 +253,10 @@ public class GiftCardsTest extends Preconditions {
 //    }
 
     @Test(priority = 13)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Ashes")
+    @Stories("Gift Cards")
+    @Description("Can issue miltiple gift cards at once")
     public void issueMultipleGCs() {
         String balance = generateRandomBalanceVal();
 

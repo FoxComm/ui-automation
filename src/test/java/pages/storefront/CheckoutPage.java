@@ -75,37 +75,37 @@ public class CheckoutPage extends CartPage {
     }
 
     //TODO: class
-    public SelenideElement appliedShipAddress_name() {
+    public SelenideElement name_appliedShipAddress() {
         return $(xpath("//ul[contains(@class, 'savedAddress')]/li[1]"));
     }
 
     //TODO: class
-    public SelenideElement appliedShipAddress_address1() {
+    public SelenideElement address1_appliedShipAddress() {
         return $(xpath("//ul[contains(@class, 'savedAddress')]/li[2]"));
     }
 
     //TODO: class
-    public SelenideElement appliedShipAddress_address2() {
+    public SelenideElement address2_appliedShipAddress() {
         return $(xpath("//ul[contains(@class, 'savedAddress')]/li[3]"));
     }
 
     //TODO: class
-    public SelenideElement appliedShipAddress_zip() {
+    public SelenideElement zip_appliedShipAddress() {
         return $(xpath("//ul[contains(@class, 'savedAddress')]/li[4]/span[2]"));
     }
 
     //TODO: class
-    public SelenideElement appliedShipAddress_city() {
+    public SelenideElement city_appliedShipAddress() {
         return $(xpath("//ul[contains(@class, 'savedAddress')]/li[4]"));
     }
 
     //TODO: class
-    public SelenideElement appliedShipAddress_state() {
+    public SelenideElement state_appliedShipAddress() {
         return $(xpath("//ul[contains(@class, 'savedAddress')]/li[4]/span[1]"));
     }
 
     //TODO: class
-    public SelenideElement appliedShipAddress_phoneNumber() {
+    public SelenideElement phoneNumber_appliedShipAddress() {
         return $(xpath("//ul[contains(@class, 'savedAddress')]/li[5]/span"));
     }
 
@@ -126,11 +126,11 @@ public class CheckoutPage extends CartPage {
         return $(xpath("//div[contains(@class, 'form-header')]/following-sibling::div[" + index + "]//input[@name='delivery']"));
     }
 
-    public SelenideElement appliedShipMethod_name() {
+    public SelenideElement name_appliedShipMethod() {
         return $(xpath("//article[contains(@class, 'delivery')]/div/div[contains(@class, 'name')]"));
     }
 
-    public SelenideElement appliedShipMethod_price() {
+    public SelenideElement price_appliedShipMethod() {
         return $(xpath("//article[contains(@class, 'delivery')]//span"));
     }
 
@@ -251,7 +251,7 @@ public class CheckoutPage extends CartPage {
     }
 
     @Step("Set guest's \"Email\" fld to <{0}>")
-    public void setGuestEmail_auth(String email) {
+    public void setGuestEmail_guestAuth(String email) {
         setFieldVal(guestEmailFld_auth(), email);
     }
 

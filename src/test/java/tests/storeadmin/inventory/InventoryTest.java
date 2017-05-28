@@ -6,6 +6,10 @@ import pages.admin.CartPage;
 import pages.admin.InventoryPage;
 import pages.admin.LoginPage;
 import ru.yandex.qatools.allure.annotations.Description;
+import ru.yandex.qatools.allure.annotations.Features;
+import ru.yandex.qatools.allure.annotations.Severity;
+import ru.yandex.qatools.allure.annotations.Stories;
+import ru.yandex.qatools.allure.model.SeverityLevel;
 import testdata.Preconditions;
 
 import java.io.IOException;
@@ -33,6 +37,10 @@ public class InventoryTest extends Preconditions {
     }
 
     @Test(priority = 1)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Ashes")
+    @Stories("Inventory")
+    @Description("Can edit amount of sellable items on-hand")
     public void editOnHand_sellable() throws IOException {
         provideTestData("active SKU for inventory");
 
@@ -46,6 +54,10 @@ public class InventoryTest extends Preconditions {
     }
 
     @Test(priority = 2)
+    @Severity(SeverityLevel.NORMAL)
+    @Features("Ashes")
+    @Stories("Inventory")
+    @Description("Can edit amount of non-sellable items on-hand")
     public void editOnHand_nonsellable() throws IOException {
         provideTestData("active SKU for inventory");
 
@@ -59,6 +71,10 @@ public class InventoryTest extends Preconditions {
     }
 
     @Test(priority = 3)
+    @Severity(SeverityLevel.NORMAL)
+    @Features("Ashes")
+    @Stories("Inventory")
+    @Description("Can edit amount of backorder items on-hand")
     public void editOnHand_backorder() throws IOException {
         provideTestData("active SKU for inventory");
 
@@ -72,6 +88,10 @@ public class InventoryTest extends Preconditions {
     }
 
     @Test(priority = 4)
+    @Severity(SeverityLevel.NORMAL)
+    @Features("Ashes")
+    @Stories("Inventory")
+    @Description("Can edit amount of pre-order items on-hand")
     public void editOnHand_preorder() throws IOException {
         provideTestData("active SKU for inventory");
 
@@ -86,6 +106,10 @@ public class InventoryTest extends Preconditions {
 
     // TODO: [Fix] Investigate why not all 4 types are edited
     @Test(priority = 5)
+    @Severity(SeverityLevel.NORMAL)
+    @Features("Ashes")
+    @Stories("Inventory")
+    @Description("Can edit amount of multiple different item types at once and submit changes successfully")
     public void editOnHand_multipleTypes() throws IOException {
         provideTestData("active SKU for inventory");
 
@@ -102,6 +126,10 @@ public class InventoryTest extends Preconditions {
     }
 
     @Test(priority = 6)
+    @Severity(SeverityLevel.NORMAL)
+    @Features("Ashes")
+    @Stories("Inventory")
+    @Description("Can edit amount of on-hand sellable items using arrow btn")
     public void editOnHand_arrowBtns() throws IOException {
         provideTestData("active SKU for inventory");
 
@@ -118,6 +146,9 @@ public class InventoryTest extends Preconditions {
     }
 
     @Test(priority = 7)
+    @Severity(SeverityLevel.NORMAL)
+    @Features("Ashes")
+    @Stories("Inventory")
     @Description("Check visibility of \"Adjust Quantity\" block for the last row on table")
     public void visibilityOfAdjustQty() throws IOException {
         provideTestData("active SKU for inventory");
@@ -131,6 +162,10 @@ public class InventoryTest extends Preconditions {
     }
 
     @Test(priority = 8)
+    @Severity(SeverityLevel.NORMAL)
+    @Features("Ashes")
+    @Stories("Inventory")
+    @Description("Transactions are listed in transations tab")
     public void transactionsLog() throws IOException {
         provideTestData("active SKU for inventory");
 

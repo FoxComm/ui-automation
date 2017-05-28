@@ -5,6 +5,10 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import pages.storefront.StorefrontPage;
 import ru.yandex.qatools.allure.annotations.Description;
+import ru.yandex.qatools.allure.annotations.Features;
+import ru.yandex.qatools.allure.annotations.Severity;
+import ru.yandex.qatools.allure.annotations.Stories;
+import ru.yandex.qatools.allure.model.SeverityLevel;
 import testdata.Preconditions;
 
 import java.io.IOException;
@@ -26,7 +30,10 @@ public class GuestCheckoutTest extends Preconditions {
     }
 
     @Test(priority = 1)
-    @Description("Before checkout guest customer can either checkout with guest email or sign in as a registered customer")
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Storefront-TPG")
+    @Stories("Guest Checkout")
+    @Description("Before checkout guest customer can either checkout with guest email or sign in & checkout")
     public void guestCheckoutAuth() throws IOException {
         provideTestData("an active product visible on storefront");
 
@@ -43,6 +50,9 @@ public class GuestCheckoutTest extends Preconditions {
     }
 
     @Test(priority = 2)
+    @Severity(SeverityLevel.BLOCKER)
+    @Features("Storefront-TPG")
+    @Stories("Guest Checkout")
     @Description("Can proceed to checkout with a non-taken email")
     public void proceedToCheckout_nonTakenEmail() throws IOException {
         provideTestData("an active product visible on storefront");
@@ -52,7 +62,7 @@ public class GuestCheckoutTest extends Preconditions {
         p.openPDP(productTitle);
         p.clickAddToCartBtn();
         p.clickCheckoutBtn_cart();
-        p.setGuestEmail_auth("qatest2278+" + generateRandomID() + "@gmail.com");
+        p.setGuestEmail_guestAuth("qatest2278+" + generateRandomID() + "@gmail.com");
         p.clickCheckoutBtn_guestAuth();
 
         p.grandTotal().shouldBe(visible);
@@ -60,6 +70,9 @@ public class GuestCheckoutTest extends Preconditions {
     }
 
     @Test(priority = 3)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Storefront-TPG")
+    @Stories("Guest Checkout")
     @Description("Can proceed to checkout with an email taken by a registered customer")
     public void proceedToCheckout_takenEmail() throws IOException {
         provideTestData("registered customer, active product on storefront");
@@ -69,7 +82,7 @@ public class GuestCheckoutTest extends Preconditions {
         p.openPDP(productTitle);
         p.clickAddToCartBtn();
         p.clickCheckoutBtn_cart();
-        p.setGuestEmail_auth(customerEmail);
+        p.setGuestEmail_guestAuth(customerEmail);
         p.clickCheckoutBtn_guestAuth();
 
         p.grandTotal().shouldBe(visible);
@@ -78,6 +91,9 @@ public class GuestCheckoutTest extends Preconditions {
     }
 
     @Test(priority = 4)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Storefront-TPG")
+    @Stories("Guest Checkout")
     @Description("If customer signs in at pre-checkout page, guest cart line items are merged into registered customer cart")
     public void guestCartMergedIntoRegisteredOnCheckout_lineItems() throws IOException {
         provideTestData("a customer ready to checkout, 2 active products, 1 in cart");
@@ -95,6 +111,9 @@ public class GuestCheckoutTest extends Preconditions {
     }
 
     @Test(priority = 5)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Storefront-TPG")
+    @Stories("Guest Checkout")
     @Description("Coupon from guest cart is merged into registered customer cart on checkout sign in")
     public void guestCartMergedIntoRegisteredOnCheckout_coupon() throws IOException {
         provideTestData("a customer ready to checkout, single code coupon code");
@@ -115,6 +134,9 @@ public class GuestCheckoutTest extends Preconditions {
     }
 
     @Test(priority = 6)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Storefront-TPG")
+    @Stories("Guest Checkout")
     @Description("Line items in guest cart are saved if customer signs up right before proceeding to checkout")
     public void checkoutSignUp_guestCartSaved_lineItems() throws IOException {
         provideTestData("an active product visible on storefront");
@@ -135,6 +157,9 @@ public class GuestCheckoutTest extends Preconditions {
     }
 
     @Test(priority = 7)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Storefront-TPG")
+    @Stories("Guest Checkout")
     @Description("Coupon in guest cart is saved if customer signs up right before proceeding to checkout")
     public void checkoutSignUp_guestCartSaved_coupon() throws IOException {
         provideTestData("product<active>, coupon<any, single code>");
@@ -165,6 +190,9 @@ public class GuestCheckoutTest extends Preconditions {
     }
 
     @Test(priority = 8)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Storefront-TPG")
+    @Stories("Guest Checkout")
     @Description("Line items in guest cart are saved if customer signs up while browsing the store")
     public void guestCartIsSavedOnSignUp_storeBrowsing_lineItems() throws IOException {
         provideTestData("an active product visible on storefront");
@@ -188,6 +216,9 @@ public class GuestCheckoutTest extends Preconditions {
     }
 
     @Test(priority = 9)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Storefront-TPG")
+    @Stories("Guest Checkout")
     @Description("Coupon in guest cart is saved if customer signs up while browsing the store")
     public void guestCartIsSavedOnSignUp_storeBrowsing_coupon() throws IOException {
         provideTestData("product<active>, coupon<any, single code>");
@@ -212,6 +243,9 @@ public class GuestCheckoutTest extends Preconditions {
 
     // broken due to bug with guest & registered cart sync
     @Test(priority = 10)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Storefront-TPG")
+    @Stories("Guest Checkout")
     @Description("Gift card applied to cart as a payment during guest checkout should remain in the cart if guest signs up with the same email")
     public void guestCartIsSavedOnSignUp_paymentGiftCard() throws IOException {
         provideTestData("an active product, a gift card");
@@ -222,7 +256,7 @@ public class GuestCheckoutTest extends Preconditions {
         p.openPDP(productTitle);
         p.clickAddToCartBtn();
         p.clickCheckoutBtn_cart();
-        p.setGuestEmail_auth("qatest2278+" + randomId + "@gmail.com");
+        p.setGuestEmail_guestAuth("qatest2278+" + randomId + "@gmail.com");
         p.clickCheckoutBtn_guestAuth();
         p.fillOutAddressForm("John Doe", "7500 Roosevelt Way NE", "Suit 42", "98115", "9879879876");
         p.clickSaveAddressBtn();
@@ -246,6 +280,9 @@ public class GuestCheckoutTest extends Preconditions {
 
     // broken due to bug with guest & registered cart sync
     @Test(priority = 11)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Storefront-TPG")
+    @Stories("Guest Checkout")
     @Description("If customer has added a shipping address at checkout, then left checkout and signed up -- shipping address should be saved")
     public void guestAddressIsSavedAfterSignUp() throws IOException {
         provideTestData("an active product visible on storefront");
@@ -256,7 +293,7 @@ public class GuestCheckoutTest extends Preconditions {
         p.openPDP(productTitle);
         p.clickAddToCartBtn();
         p.clickCheckoutBtn_cart();
-        p.setGuestEmail_auth("qatest2278+" + randomId + "@gmail.com");
+        p.setGuestEmail_guestAuth("qatest2278+" + randomId + "@gmail.com");
         p.clickCheckoutBtn_guestAuth();
         p.fillOutAddressForm("John Doe", "7500 Roosevelt Way NE", "Suit 42", "98115", "9879879876");
         p.clickSaveAddressBtn();
@@ -271,10 +308,13 @@ public class GuestCheckoutTest extends Preconditions {
         p.clickCheckoutBtn_cart();
 
         p.activeCheckoutStep("Delivery").shouldBe(visible);
-        p.appliedShipAddress_name().shouldHave(text("Customer " + randomId));
+        p.name_appliedShipAddress().shouldHave(text("Customer " + randomId));
     }
 
     @Test(priority = 12)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Storefront-TPG")
+    @Stories("Guest Checkout")
     @Description("A guest customer's email can be changed before placing the order")
     public void canEditGuestEmailBeforePlacingOrder() throws IOException {
         provideTestData("an active product visible on storefront");
@@ -285,7 +325,7 @@ public class GuestCheckoutTest extends Preconditions {
         p.openPDP(productTitle);
         p.clickAddToCartBtn();
         p.clickCheckoutBtn_cart();
-        p.setGuestEmail_auth("qatest2278@gmail.com");
+        p.setGuestEmail_guestAuth("qatest2278@gmail.com");
         p.clickCheckoutBtn_guestAuth();
         p.fillOutAddressForm("John Doe", "7500 Roosevelt Way NE", "Suit 42", "98115", "9879879876");
         p.setGuestEmail_checkout("qatest2278+" + randomId + "@gmail.com");
@@ -304,6 +344,9 @@ public class GuestCheckoutTest extends Preconditions {
     }
 
     @Test(priority = 13)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Storefront-TPG")
+    @Stories("Guest Checkout")
     @Description("Can sign in using with a registered customer email used for guest checkout")
     public void canSignIn_guestCheckoutWithTakenEmail() throws IOException {
         provideTestData("a storefront registered customer, an active product");
@@ -313,7 +356,7 @@ public class GuestCheckoutTest extends Preconditions {
         p.openPDP(productTitle);
         p.clickAddToCartBtn();
         p.clickCheckoutBtn_cart();
-        p.setGuestEmail_auth(customerEmail);
+        p.setGuestEmail_guestAuth(customerEmail);
         p.clickCheckoutBtn_guestAuth();
         p.fillOutAddressForm("John Doe", "7500 Roosevelt Way NE", "Suit 42", "98115", "9879879876");
         p.clickSaveAddressBtn();

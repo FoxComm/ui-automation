@@ -5,6 +5,10 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import pages.storefront.StorefrontPage;
 import ru.yandex.qatools.allure.annotations.Description;
+import ru.yandex.qatools.allure.annotations.Features;
+import ru.yandex.qatools.allure.annotations.Severity;
+import ru.yandex.qatools.allure.annotations.Stories;
+import ru.yandex.qatools.allure.model.SeverityLevel;
 import testdata.Preconditions;
 
 import java.io.IOException;
@@ -12,7 +16,7 @@ import java.io.IOException;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 
-public class AbstractPdpTest extends Preconditions {
+public class PdpTest extends Preconditions {
 
     private StorefrontPage p;
 
@@ -23,6 +27,9 @@ public class AbstractPdpTest extends Preconditions {
     }
 
     @Test(priority = 1)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Storefront-TPG")
+    @Stories("PDP")
     @Description("Product title is displayed")
     public void productTitleDisplayed() throws IOException {
         provideTestData("an active product visible on storefront");
@@ -34,6 +41,9 @@ public class AbstractPdpTest extends Preconditions {
     }
 
     @Test(priority = 2)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Storefront-TPG")
+    @Stories("PDP")
     @Description("Product sale price is displayed correctly")
     public void productPriceDisplayed() throws IOException {
         provideTestData("an active product visible on storefront");
@@ -45,6 +55,9 @@ public class AbstractPdpTest extends Preconditions {
     }
 
     @Test(priority = 3, dataProvider = "styledText")
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Storefront-TPG")
+    @Stories("PDP")
     @Description("Description at PDP: Check if styled text is displayed correctly")
     public void styledDescription(String element, String content) throws IOException {
         provideTestData("an active product with <" + element + "> in description");
@@ -55,6 +68,9 @@ public class AbstractPdpTest extends Preconditions {
     }
 
     @Test(priority = 4)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Storefront-TPG")
+    @Stories("PDP")
     @Description("Can change product qty on PDP")
     public void changeProductQty() throws IOException {
         provideTestData("an active product visible on storefront");

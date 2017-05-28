@@ -5,11 +5,14 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import pages.storefront.StorefrontPage;
 import ru.yandex.qatools.allure.annotations.Description;
+import ru.yandex.qatools.allure.annotations.Features;
+import ru.yandex.qatools.allure.annotations.Severity;
+import ru.yandex.qatools.allure.annotations.Stories;
+import ru.yandex.qatools.allure.model.SeverityLevel;
 import testdata.Preconditions;
 
 import java.io.IOException;
 
-import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 
 public class LogOutTest extends Preconditions {
@@ -23,6 +26,9 @@ public class LogOutTest extends Preconditions {
     }
 
     @Test(priority = 1)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Storefront-TPG")
+    @Stories("Auth : Log Out")
     @Description("Can log out")
     public void logOut() throws IOException {
         provideTestData("a customer signed up on storefront");
@@ -39,6 +45,9 @@ public class LogOutTest extends Preconditions {
     }
 
     @Test(priority = 2)
+    @Severity(SeverityLevel.NORMAL)
+    @Features("Storefront-TPG")
+    @Stories("Auth : Log Out")
     @Description("User is redirected to the home page upon logging out under /profile")
     public void logOutUnderProfile() throws IOException {
         provideTestData("a customer signed up on storefront");
@@ -53,22 +62,9 @@ public class LogOutTest extends Preconditions {
     }
 
     @Test(priority = 3)
-    @Description("Cart is blanked after log out")
-    public void cartBlankedOnLogOut() throws IOException {
-        provideTestData("a customer signed up on storefront");
-
-        p = openPage(storefrontUrl, StorefrontPage.class);
-        p.logIn(customerEmail, "78qa22!#");
-        p.selectInUserMenu("PROFILE");
-        p.selectInUserMenu("LOG OUT");
-
-        p.logInLnk().shouldBe(visible);
-        p.cartQty().shouldHave(text("0"));
-        p.openCart();
-        p.lineItemsAmount().shouldHaveSize(0);
-    }
-
-    @Test(priority = 4)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Storefront-TPG")
+    @Stories("Auth : Log Out")
     @Description("User is redirected to home page if logging out at order confirmation page")
     public void logOutAtOrderConfirmation() throws IOException {
         provideTestData("a customer ready to checkout");

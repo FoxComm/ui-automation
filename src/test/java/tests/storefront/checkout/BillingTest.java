@@ -5,6 +5,10 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import pages.storefront.StorefrontPage;
 import ru.yandex.qatools.allure.annotations.Description;
+import ru.yandex.qatools.allure.annotations.Features;
+import ru.yandex.qatools.allure.annotations.Severity;
+import ru.yandex.qatools.allure.annotations.Stories;
+import ru.yandex.qatools.allure.model.SeverityLevel;
 import testdata.Preconditions;
 
 import java.io.IOException;
@@ -22,6 +26,9 @@ public class BillingTest extends Preconditions {
     }
 
     @Test(priority = 1)
+    @Severity(SeverityLevel.BLOCKER)
+    @Features("Storefront-TPG")
+    @Stories("Checkout : Billing")
     @Description("Can create a credit card")
     public void createCreditCard_checkout() throws IOException {
         provideTestData("a storefront signed up customer with active product in cart and applied shipping address");
@@ -41,6 +48,9 @@ public class BillingTest extends Preconditions {
     }
 
     @Test(priority = 2)
+    @Severity(SeverityLevel.BLOCKER)
+    @Features("Storefront-TPG")
+    @Stories("Checkout : Billing")
     @Description("Can pick an existing credit card")
     public void pickExistingCreditCard() throws IOException {
         provideTestData("a storefront customer ready for checkout, has 2 credit cards");
@@ -56,6 +66,9 @@ public class BillingTest extends Preconditions {
     }
 
     @Test(priority = 3)
+    @Severity(SeverityLevel.NORMAL)
+    @Features("Storefront-TPG")
+    @Stories("Checkout : Billing")
     @Description("A default credit card is marked as \"Default Card\"")
     public void defaultCardMarked() throws IOException {
         provideTestData("a storefront signed up customer with active product in cart and applied shipping address");
@@ -75,6 +88,9 @@ public class BillingTest extends Preconditions {
     }
 
     @Test(priority = 4)
+    @Severity(SeverityLevel.NORMAL)
+    @Features("Storefront-TPG")
+    @Stories("Checkout : Billing")
     @Description("A default credit card is pre-selected with radiobutton")
     public void defaultCardIsPreselected() throws IOException {
         provideTestData("a storefront signed up customer ready for checkout, has 2 credit cards, has default card");
@@ -90,6 +106,9 @@ public class BillingTest extends Preconditions {
     }
 
     @Test(priority = 5)
+    @Severity(SeverityLevel.BLOCKER)
+    @Features("Storefront-TPG")
+    @Stories("Checkout : Billing")
     @Description("Can delete an existing credit card")
     public void deleteCreditCard() throws IOException {
         provideTestData("a customer ready to checkout");
@@ -106,6 +125,9 @@ public class BillingTest extends Preconditions {
     }
 
     @Test(priority = 6)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Storefront-TPG")
+    @Stories("Checkout : Billing")
     @Description("Can apply a coupon code on checkout page")
     public void canApplyCoupon_checkout() throws IOException {
         provideTestData("a customer ready to checkout, single code coupon code");
@@ -122,6 +144,9 @@ public class BillingTest extends Preconditions {
     }
 
     @Test(priority = 7)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Storefront-TPG")
+    @Stories("Checkout : Billing")
     @Description("Can remove coupon on checkout page")
     public void removeCoupon() throws IOException {
         provideTestData("a storefront signed up customer, with no qualifier coupon code applied");
@@ -139,6 +164,9 @@ public class BillingTest extends Preconditions {
     }
 
     @Test(priority = 8)
+    @Severity(SeverityLevel.BLOCKER)
+    @Features("Storefront-TPG")
+    @Stories("Checkout : Billing")
     @Description("Can apply a gift card at checkout page")
     public void canRedeemGiftCard() throws IOException {
         provideTestData("a customer ready to checkout, a gift card issued");
@@ -155,6 +183,9 @@ public class BillingTest extends Preconditions {
     }
 
     @Test(priority = 9)
+    @Severity(SeverityLevel.BLOCKER)
+    @Features("Storefront-TPG")
+    @Stories("Checkout : Billing")
     @Description("Can remove a gift card at checkout page")
     public void canRemoveGiftCard() throws IOException {
         provideTestData("a customer ready for checkout, gift card is applied to cart as a payment method");

@@ -4,6 +4,11 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import pages.admin.CustomersPage;
 import pages.admin.LoginPage;
+import ru.yandex.qatools.allure.annotations.Description;
+import ru.yandex.qatools.allure.annotations.Features;
+import ru.yandex.qatools.allure.annotations.Severity;
+import ru.yandex.qatools.allure.annotations.Stories;
+import ru.yandex.qatools.allure.model.SeverityLevel;
 import testdata.Preconditions;
 
 import java.io.IOException;
@@ -29,6 +34,10 @@ public class AddressBookTest extends Preconditions {
     }
 
     @Test(priority = 1)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Ashes")
+    @Stories("Customer address book")
+    @Description("Can create a new address")
     public void addNewAddress() throws IOException {
         provideTestData("a customer");
 
@@ -41,6 +50,10 @@ public class AddressBookTest extends Preconditions {
     }
 
     @Test(priority = 2)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Ashes")
+    @Stories("Customer address book")
+    @Description("Can edit name on existing address")
     public void editNameFld() throws IOException {
         provideTestData("customer with a shipping address");
 
@@ -55,6 +68,10 @@ public class AddressBookTest extends Preconditions {
     }
 
     @Test(priority = 3)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Ashes")
+    @Stories("Customer address book")
+    @Description("Can edit 'Address 1' field in existing customer shipping address")
     public void editAddress1Fld() throws IOException {
         provideTestData("customer with a shipping address");
 
@@ -69,6 +86,10 @@ public class AddressBookTest extends Preconditions {
     }
 
     @Test(priority = 4)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Ashes")
+    @Stories("Customer address book")
+    @Description("Can edit 'Address 2' in existing customer shipping address")
     public void editAddress2Fld() throws IOException {
         provideTestData("customer with a shipping address");
 
@@ -83,6 +104,10 @@ public class AddressBookTest extends Preconditions {
     }
 
     @Test(priority = 5)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Ashes")
+    @Stories("Customer address book")
+    @Description("Can edit address 'City'")
     public void editCityFld() throws IOException {
         provideTestData("customer with a shipping address");
 
@@ -97,6 +122,10 @@ public class AddressBookTest extends Preconditions {
     }
 
     @Test(priority = 6)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Ashes")
+    @Stories("Customer address book")
+    @Description("Can edit address 'State'")
     public void editStateDd() throws IOException {
         provideTestData("customer with a shipping address");
 
@@ -111,6 +140,10 @@ public class AddressBookTest extends Preconditions {
     }
 
     @Test(priority = 7)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Ashes")
+    @Stories("Customer address book")
+    @Description("Can edit address 'ZIP'")
     public void editZipFld() throws IOException {
         provideTestData("customer with a shipping address");
 
@@ -125,6 +158,10 @@ public class AddressBookTest extends Preconditions {
     }
 
     @Test(priority = 8)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Ashes")
+    @Stories("Customer address book")
+    @Description("Can edit address 'Phone Number'")
     public void editPhoneNumberFld() throws IOException {
         provideTestData("customer with a shipping address");
 
@@ -140,6 +177,10 @@ public class AddressBookTest extends Preconditions {
     }
 
     @Test(priority = 9)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Ashes")
+    @Stories("Customer address book")
+    @Description("Can delete address")
     public void deleteAddress() throws IOException {
         provideTestData("customer with a shipping address");
 

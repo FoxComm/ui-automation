@@ -5,6 +5,10 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import pages.storefront.StorefrontPage;
 import ru.yandex.qatools.allure.annotations.Description;
+import ru.yandex.qatools.allure.annotations.Features;
+import ru.yandex.qatools.allure.annotations.Severity;
+import ru.yandex.qatools.allure.annotations.Stories;
+import ru.yandex.qatools.allure.model.SeverityLevel;
 import testdata.Preconditions;
 
 import java.io.IOException;
@@ -23,6 +27,9 @@ public class CartTest extends Preconditions {
     }
 
     @Test(priority = 1)
+    @Severity(SeverityLevel.BLOCKER)
+    @Features("Storefront-TPG")
+    @Stories("Guest Cart")
     @Description("Can add products to cart")
     public void addProductToCart() throws IOException {
         provideTestData("an active product visible on storefront");
@@ -36,6 +43,9 @@ public class CartTest extends Preconditions {
     }
 
     @Test(priority = 2)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Storefront-TPG")
+    @Stories("Guest Cart")
     @Description("Guest cart doesn't override registered customer cart")
     public void emptyGuestCartDoesntOverrideRegisteredCart() throws IOException {
         provideTestData("registered customer, 2 active products on storefront, 1 product in cart");
@@ -55,6 +65,9 @@ public class CartTest extends Preconditions {
     }
 
     @Test(priority = 3)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Storefront-TPG")
+    @Stories("Guest Cart")
     @Description("Guest cart is merged into registered customer cart")
     public void guestCartMergedIntoRegistered() throws IOException {
         provideTestData("a storefront registered customer, 2 active products, 1 in cart");
@@ -74,6 +87,9 @@ public class CartTest extends Preconditions {
     }
 
     @Test(priority = 4)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Storefront-TPG")
+    @Stories("Guest Cart")
     @Description("Guest customer is terminated after signing in and then out as a registered customer with non-empty cart")
     public void guestCartTerminatedOnSignInThenOut() throws IOException {
         provideTestData("a storefront registered customer, 2 active products, 1 in cart, coupon<no qualifier, 10% off, single code>");

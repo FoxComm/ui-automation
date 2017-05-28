@@ -4,6 +4,11 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import pages.admin.CartPage;
 import pages.admin.LoginPage;
+import ru.yandex.qatools.allure.annotations.Description;
+import ru.yandex.qatools.allure.annotations.Features;
+import ru.yandex.qatools.allure.annotations.Severity;
+import ru.yandex.qatools.allure.annotations.Stories;
+import ru.yandex.qatools.allure.model.SeverityLevel;
 import testdata.Preconditions;
 
 import java.io.IOException;
@@ -31,6 +36,10 @@ public class PaymentMethodTest extends Preconditions {
     }
 
     @Test(priority = 1)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Ashes")
+    @Stories("Cart Payment Methods")
+    @Description("Can add a credit card to cart")
     public void addPaymentMethod_creditCard() throws IOException {
         provideTestData("cart with 1 item and chosen shipping address");
         p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
@@ -47,6 +56,10 @@ public class PaymentMethodTest extends Preconditions {
     }
 
     @Test(priority = 2)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Ashes")
+    @Stories("Cart Payment Methods")
+    @Description("Can add a gift card as a payment method to cart")
     public void addPaymentMethod_giftCard() throws IOException {
         provideTestData("cart with 1 item && customer with GC");
         p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
@@ -65,6 +78,10 @@ public class PaymentMethodTest extends Preconditions {
     }
 
     @Test(priority = 3)
+    @Severity(SeverityLevel.NORMAL)
+    @Features("Ashes")
+    @Stories("Cart Payment Methods")
+    @Description("Can add store credits as a payment method to cart")
     public void addPaymentMethod_storeCredit() throws IOException {
         provideTestData("cart with 1 item && customer with SC");
         p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
@@ -82,7 +99,12 @@ public class PaymentMethodTest extends Preconditions {
         p.appliedSC().shouldBe(visible);
     }
 
-    @Test(priority = 4)
+    //TODO: re-work this test so it'll check if correct amount of funds has been used for paying the order
+    @Test(priority = 4, enabled = false)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Ashes")
+    @Stories("Cart Payment Methods")
+    @Description("")
     public void addStoreCredit_exceedsTotal() throws IOException {
         provideTestData("cart with 1 item && customer with SC");
         p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
@@ -97,6 +119,10 @@ public class PaymentMethodTest extends Preconditions {
     }
 
     @Test(priority = 5)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Ashes")
+    @Stories("Cart Payment Methods")
+    @Description("")
     public void addGiftCard_exceedsTotal() throws IOException {
         provideTestData("cart with 1 item && customer with GC");
         p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);

@@ -3,6 +3,10 @@ package tests.storefront.products;
 import org.testng.annotations.*;
 import pages.storefront.StorefrontPage;
 import ru.yandex.qatools.allure.annotations.Description;
+import ru.yandex.qatools.allure.annotations.Features;
+import ru.yandex.qatools.allure.annotations.Severity;
+import ru.yandex.qatools.allure.annotations.Stories;
+import ru.yandex.qatools.allure.model.SeverityLevel;
 import testdata.Preconditions;
 
 import java.io.IOException;
@@ -18,6 +22,9 @@ public class TpgProductAttrsTest extends Preconditions {
     }
 
     @Test(priority = 1)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Storefront-TPG")
+    @Stories("TPG-specific Product Attributes")
     @Description("All attributes are displayed correctly (product name, sale price, description)")
     public void productAttributesDisplayedCorrectly() throws IOException {
         provideTestData("an active product with tpg-specific custom properties");

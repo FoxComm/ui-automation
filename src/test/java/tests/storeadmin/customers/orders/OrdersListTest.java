@@ -4,6 +4,11 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import pages.admin.CustomersPage;
 import pages.admin.LoginPage;
+import ru.yandex.qatools.allure.annotations.Description;
+import ru.yandex.qatools.allure.annotations.Features;
+import ru.yandex.qatools.allure.annotations.Severity;
+import ru.yandex.qatools.allure.annotations.Stories;
+import ru.yandex.qatools.allure.model.SeverityLevel;
 import testdata.Preconditions;
 
 import java.io.IOException;
@@ -12,7 +17,6 @@ import java.util.Objects;
 import static com.codeborne.selenide.CollectionCondition.size;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.open;
-import static org.testng.Assert.assertEquals;
 
 public class OrdersListTest extends Preconditions {
 
@@ -29,6 +33,10 @@ public class OrdersListTest extends Preconditions {
     }
 
     @Test(priority = 1)
+    @Severity(SeverityLevel.NORMAL)
+    @Features("Ashes")
+    @Stories("Customer orders list")
+    @Description("Placed order appers on the customer's orders list")
     public void checkOrderOnList() throws IOException {
         provideTestData("customer with 2 orders in remorse hold");
         waitForOrdersToAppearInES(customerId, 2);
@@ -56,6 +64,10 @@ public class OrdersListTest extends Preconditions {
 //    }
 
     @Test(priority = 3)
+    @Severity(SeverityLevel.NORMAL)
+    @Features("Ashes")
+    @Stories("Customer orders list")
+    @Description("Order can be search by its refNum")
     public void searchFld_orderRefNum() throws IOException {
         provideTestData("customer with 2 orders in remorse hold and fulfillment started");
 
@@ -68,8 +80,11 @@ public class OrdersListTest extends Preconditions {
         p.ordersOnList().shouldHaveSize(1);
     }
 
-    //TODO: Product name should consist of 2 words, e.g. "Product 123" (currently it consists of 3 words)
     @Test(priority = 4)
+    @Severity(SeverityLevel.NORMAL)
+    @Features("Ashes")
+    @Stories("Customer orders list")
+    @Description("Order can be searched by line item's product title")
     public void searchFld_productName() throws IOException {
         provideTestData("customer with 2 orders in remorse hold and fulfillment started");
 
@@ -81,6 +96,10 @@ public class OrdersListTest extends Preconditions {
     }
 
     @Test(priority = 5)
+    @Severity(SeverityLevel.NORMAL)
+    @Features("Ashes")
+    @Stories("Customer orders list")
+    @Description("Order can be searched by line item's SKU code")
     public void searchFld_productSKU() throws IOException {
         provideTestData("customer with 2 orders in remorse hold and fulfillment started");
 

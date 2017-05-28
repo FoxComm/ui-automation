@@ -5,6 +5,10 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import pages.storefront.StorefrontPage;
 import ru.yandex.qatools.allure.annotations.Description;
+import ru.yandex.qatools.allure.annotations.Features;
+import ru.yandex.qatools.allure.annotations.Severity;
+import ru.yandex.qatools.allure.annotations.Stories;
+import ru.yandex.qatools.allure.model.SeverityLevel;
 import testdata.Preconditions;
 
 import java.io.IOException;
@@ -22,6 +26,9 @@ public class PasswordResetTest extends Preconditions {
     }
 
     @Test(priority = 1)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Storefront-TPG")
+    @Stories("Auth : Password Reset")
     @Description("Customer can sign in with the old password if he/she decided to do not reset the password after recovery email has been sent")
     public void signIn_rememberOldPassword() throws IOException {
         provideTestData("a customer signed up on storefront");
@@ -40,8 +47,11 @@ public class PasswordResetTest extends Preconditions {
     }
 
     @Test(priority = 2)
+    @Severity(SeverityLevel.NORMAL)
+    @Features("Storefront-TPG")
+    @Stories("Auth : Password Reset")
     @Description("Can't submit for password recovery an email that doesn't exist in the system")
-    public void cantRecoveryUnregisteredAccount() {
+    public void cantRecoverUnregisteredAccount() {
         p = openPage(storefrontUrl, StorefrontPage.class);
         p.clickLogInLnk();
         p.clickForgotLnk();

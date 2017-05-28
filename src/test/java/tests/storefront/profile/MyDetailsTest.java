@@ -5,6 +5,10 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import pages.storefront.StorefrontPage;
 import ru.yandex.qatools.allure.annotations.Description;
+import ru.yandex.qatools.allure.annotations.Features;
+import ru.yandex.qatools.allure.annotations.Severity;
+import ru.yandex.qatools.allure.annotations.Stories;
+import ru.yandex.qatools.allure.model.SeverityLevel;
 import testdata.Preconditions;
 
 import java.io.IOException;
@@ -23,7 +27,10 @@ public class MyDetailsTest extends Preconditions {
     }
 
     @Test(priority = 1)
-    @Description("Can access profile from user menu")
+    @Severity(SeverityLevel.BLOCKER)
+    @Features("Storefront-TPG")
+    @Stories("Profile Page")
+    @Description("Can access profile page from user menu")
     public void profileIsAccessible() throws IOException {
         provideTestData("a customer signed up on storefront");
 
@@ -39,6 +46,9 @@ public class MyDetailsTest extends Preconditions {
     }
 
     @Test(priority = 2)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Storefront-TPG")
+    @Stories("Profile Page")
     @Description("Can edit first & last name")
     public void editCustomerName() throws IOException {
         provideTestData("a customer signed up on storefront");
@@ -54,6 +64,9 @@ public class MyDetailsTest extends Preconditions {
     }
 
     @Test(priority = 3)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Storefront-TPG")
+    @Stories("Profile Page")
     @Description("Can change email to another one that is unique to the system")
     public void editCustomerEmail_unique() throws IOException {
         String newEmail = "qatest2278+" + generateRandomID() + "@gmail.com";
@@ -73,6 +86,9 @@ public class MyDetailsTest extends Preconditions {
     }
 
     @Test(priority = 4)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Storefront-TPG")
+    @Stories("Profile Page")
     @Description("Can't set email to an already taken one")
     public void editCustomerEmail_taken() throws IOException {
         provideTestData("two customers signed up on storefront");

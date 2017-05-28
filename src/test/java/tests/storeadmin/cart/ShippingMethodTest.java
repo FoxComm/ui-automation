@@ -4,6 +4,11 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import pages.admin.CartPage;
 import pages.admin.LoginPage;
+import ru.yandex.qatools.allure.annotations.Description;
+import ru.yandex.qatools.allure.annotations.Features;
+import ru.yandex.qatools.allure.annotations.Severity;
+import ru.yandex.qatools.allure.annotations.Stories;
+import ru.yandex.qatools.allure.model.SeverityLevel;
 import testdata.Preconditions;
 
 import java.io.IOException;
@@ -26,6 +31,10 @@ public class ShippingMethodTest extends Preconditions {
     }
 
     @Test(priority = 1)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Ashes")
+    @Stories("Cart shipping method")
+    @Description("Can apply a shipping method to cart")
     public void setShippingMethod() throws IOException {
         provideTestData("cart with chosen shipping address");
         p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);

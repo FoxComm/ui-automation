@@ -3,6 +3,10 @@ package tests.storeadmin.orders;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import ru.yandex.qatools.allure.annotations.Description;
+import ru.yandex.qatools.allure.annotations.Features;
+import ru.yandex.qatools.allure.annotations.Severity;
+import ru.yandex.qatools.allure.annotations.Stories;
+import ru.yandex.qatools.allure.model.SeverityLevel;
 import pages.admin.LoginPage;
 import pages.admin.OrderDetailsPage;
 import testdata.Preconditions;
@@ -28,6 +32,10 @@ public class OrderStateTest extends Preconditions {
     }
 
     @Test(priority = 1)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Ashes")
+    @Stories("Orders")
+    @Description("Can cancel order if it's on \"Remorse Hold\"")
     public void changeOrderState_Cancel() throws IOException {
         provideTestData("order in remorse hold payed with SC");
 
@@ -38,6 +46,10 @@ public class OrderStateTest extends Preconditions {
     }
 
     @Test(priority = 2)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Ashes")
+    @Stories("Orders")
+    @Description("Can put order on \"Manual Hold\"")
     public void changeOrderState_ManualHold() throws IOException {
         provideTestData("order in remorse hold payed with SC");
 
@@ -48,6 +60,10 @@ public class OrderStateTest extends Preconditions {
     }
 
     @Test(priority = 3)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Ashes")
+    @Stories("Orders")
+    @Description("Can put order on \"Fraud Hold\"")
     public void changeOrderState_FraudHold() throws IOException {
         provideTestData("order in remorse hold payed with SC");
 
@@ -58,6 +74,10 @@ public class OrderStateTest extends Preconditions {
     }
 
     @Test(priority = 4)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Ashes")
+    @Stories("Orders")
+    @Description("Can put order in \"Fulfillment Started\" state")
     public void changeOrderState_FulfillmentStarted() throws IOException {
         provideTestData("order in remorse hold payed with SC");
 
@@ -68,6 +88,10 @@ public class OrderStateTest extends Preconditions {
     }
 
     @Test(priority = 5)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Ashes")
+    @Stories("Orders")
+    @Description("Can increase remorse hold timer")
     public void addRemorseHoldTime() throws IOException {
         provideTestData("order in remorse hold payed with SC");
 
@@ -78,6 +102,9 @@ public class OrderStateTest extends Preconditions {
     }
 
     @Test(priority = 6)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Ashes")
+    @Stories("Orders")
     @Description("Put order on \"Manual Hold\" than move it to \"Fulfillment Started\"")
     public void changeOrderState_manualHoldToFulfilment() throws IOException {
         provideTestData("order in remorse hold payed with SC");
@@ -90,6 +117,9 @@ public class OrderStateTest extends Preconditions {
     }
 
     @Test(priority = 7)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Ashes")
+    @Stories("Orders")
     @Description("Put order on \"Manual Hold\" than move it to \"Canceled\"")
     public void changeOrderState_manualHoldToCanceled() throws IOException {
         provideTestData("order in remorse hold payed with SC");
@@ -102,6 +132,9 @@ public class OrderStateTest extends Preconditions {
     }
 
     @Test(priority = 8)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Ashes")
+    @Stories("Orders")
     @Description("Put order on \"Manual Hold\" than move it to \"Fraud Hold\"")
     public void changeOrderState_manualHoldToFraud() throws IOException {
         provideTestData("order in remorse hold payed with SC");
@@ -114,6 +147,9 @@ public class OrderStateTest extends Preconditions {
     }
 
     @Test(priority = 9)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Ashes")
+    @Stories("Orders")
     @Description("Put order on \"Fraud Hold\" than move it to \"Fulfillment Started\"")
     public void changeOrderState_fraudHoldToFulfillment() throws IOException {
         provideTestData("order in remorse hold payed with SC");

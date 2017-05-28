@@ -5,6 +5,10 @@ import org.testng.annotations.Test;
 import pages.admin.LoginPage;
 import pages.admin.ProductsPage;
 import ru.yandex.qatools.allure.annotations.Description;
+import ru.yandex.qatools.allure.annotations.Features;
+import ru.yandex.qatools.allure.annotations.Severity;
+import ru.yandex.qatools.allure.annotations.Stories;
+import ru.yandex.qatools.allure.model.SeverityLevel;
 import testdata.Preconditions;
 
 import java.io.IOException;
@@ -32,6 +36,10 @@ public class NewProductFormTest extends Preconditions {
     }
 
     @Test(priority = 1)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Ashes")
+    @Stories("Product Form")
+    @Description("SKU is requied")
     public void skuIsRequired() {
         p = openPage(adminUrl + "/products/default/new", ProductsPage.class);
         p.setTitle("SKU-TST");
@@ -42,6 +50,10 @@ public class NewProductFormTest extends Preconditions {
 
     // TODO: change error message after it'll be changed with something more user friendly
     @Test(priority = 2)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Ashes")
+    @Stories("Product Form")
+    @Description("Title is requied")
     public void titleIsRequired() throws IOException {
         provideTestData("active SKU");
         checkInventoryAvailability(skuCode);
@@ -54,7 +66,11 @@ public class NewProductFormTest extends Preconditions {
     }
 
     @Test(priority = 3)
-    public void addOption() {
+    @Severity(SeverityLevel.NORMAL)
+    @Features("Ashes")
+    @Stories("Product Form")
+    @Description("Can add option")
+    public void canAddOption() {
         p = openPage(adminUrl + "/products/default/new", ProductsPage.class);
         p.clickAddBtn_option();
         p.setOptionName("color");
@@ -64,7 +80,11 @@ public class NewProductFormTest extends Preconditions {
     }
 
     @Test(priority = 4)
-    public void addOptionValue() {
+    @Severity(SeverityLevel.NORMAL)
+    @Features("Ashes")
+    @Stories("Product Form")
+    @Description("Can add variant")
+    public void canAddVarian() {
         p = openPage(adminUrl + "/products/default/new", ProductsPage.class);
         p.clickAddBtn_option();
         p.setOptionName("color");
@@ -75,7 +95,10 @@ public class NewProductFormTest extends Preconditions {
     }
 
     @Test(priority = 5)
-    @Description("An empty SKU record is created for each added option value after after the second one")
+    @Severity(SeverityLevel.NORMAL)
+    @Features("Ashes")
+    @Stories("Product Form")
+    @Description("An empty SKU record is created for each added option value after the second one")
     public void skuIsAddedWithOptionValue() {
         p = openPage(adminUrl + "/products/default/new", ProductsPage.class);
         p.addOption("color");
@@ -88,6 +111,9 @@ public class NewProductFormTest extends Preconditions {
     }
 
     @Test(priority = 6)
+    @Severity(SeverityLevel.MINOR)
+    @Features("Ashes")
+    @Stories("Product Form")
     @Description("Removing option value also removes SKU related to that variant")
     public void delOptionValue_skuIsAutoremoved() {
         p = openPage(adminUrl + "/products/default/new", ProductsPage.class);
@@ -100,7 +126,11 @@ public class NewProductFormTest extends Preconditions {
     }
 
     @Test(priority = 7)
-    public void editValueTest() {
+    @Severity(SeverityLevel.NORMAL)
+    @Features("Ashes")
+    @Stories("Product Form")
+    @Description("Can edit option variant")
+    public void canEditVariant() {
         p = openPage(adminUrl + "/products/default/new", ProductsPage.class);
         p.addOption("color");
         p.addOptionValue("color", "red");
@@ -111,6 +141,9 @@ public class NewProductFormTest extends Preconditions {
     }
 
     @Test(priority = 8)
+    @Severity(SeverityLevel.MINOR)
+    @Features("Ashes")
+    @Stories("Product Form")
     @Description("Assert that new SKU line is added for each possible option value")
     public void possibleValuesCoverageWithSKUs() {
         p = openPage(adminUrl + "/products/default/new", ProductsPage.class);
@@ -127,6 +160,10 @@ public class NewProductFormTest extends Preconditions {
     }
 
     @Test(priority = 9)
+    @Severity(SeverityLevel.NORMAL)
+    @Features("Ashes")
+    @Stories("Product Form")
+    @Description("Can remove SKU from form")
     public void removeSKU() {
         p = openPage(adminUrl + "/products/default/new", ProductsPage.class);
         p.addOption("color");
@@ -140,6 +177,9 @@ public class NewProductFormTest extends Preconditions {
     }
 
     @Test(priority = 10)
+    @Severity(SeverityLevel.NORMAL)
+    @Features("Ashes")
+    @Stories("Product Form")
     @Description("Removed SKU related to a specific option values combination can be re-added")
     public void reAddVariantSpecificSKU() throws IOException {
         p = openPage(adminUrl + "/products/default/new", ProductsPage.class);
@@ -155,6 +195,9 @@ public class NewProductFormTest extends Preconditions {
     }
 
     @Test(priority = 11)
+    @Severity(SeverityLevel.NORMAL)
+    @Features("Ashes")
+    @Stories("Product Form")
     @Description("Options are saved correctly")
     public void optionsAreSaved() throws IOException {
         provideTestData("active SKU");
@@ -174,7 +217,10 @@ public class NewProductFormTest extends Preconditions {
     }
 
     @Test(priority = 12)
-    @Description("Options are saved correctly")
+    @Severity(SeverityLevel.NORMAL)
+    @Features("Ashes")
+    @Stories("Product Form")
+    @Description("Variant specific SKU is saved correctly")
     public void variantSpecificSkuIsSaved() throws IOException {
         provideTestData("active SKU");
         checkInventoryAvailability(skuCode);

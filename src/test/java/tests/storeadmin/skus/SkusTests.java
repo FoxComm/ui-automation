@@ -5,6 +5,10 @@ import org.testng.annotations.Test;
 import pages.admin.LoginPage;
 import pages.admin.SkusPage;
 import ru.yandex.qatools.allure.annotations.Description;
+import ru.yandex.qatools.allure.annotations.Features;
+import ru.yandex.qatools.allure.annotations.Severity;
+import ru.yandex.qatools.allure.annotations.Stories;
+import ru.yandex.qatools.allure.model.SeverityLevel;
 import testdata.Preconditions;
 
 import java.io.IOException;
@@ -31,6 +35,10 @@ public class SkusTests extends Preconditions {
     }
 
     @Test(priority = 1)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Ashes")
+    @Stories("SKUs")
+    @Description("Can create SKU")
     public void createSKU() {
         p = openPage(adminUrl + "/skus", SkusPage.class);
         String randomId = generateRandomID();
@@ -46,6 +54,10 @@ public class SkusTests extends Preconditions {
     }
 
     @Test(priority = 2)
+    @Severity(SeverityLevel.MINOR)
+    @Features("Ashes")
+    @Stories("SKUs")
+    @Description("Can add customer property fld")
     public void addCustomProp_text() throws IOException {
         provideTestData("active SKU");
 
@@ -60,6 +72,10 @@ public class SkusTests extends Preconditions {
 
     // NOT FIXED
     @Test(priority = 3)
+    @Severity(SeverityLevel.MINOR)
+    @Features("Ashes")
+    @Stories("SKUs")
+    @Description("Can add customer rich text")
     public void addCustomProp_richText() throws IOException {
         provideTestData("active SKU");
 
@@ -73,7 +89,11 @@ public class SkusTests extends Preconditions {
     }
 
     @Test(priority = 4)
-    public void editTitle_categoryView() throws IOException {
+    @Severity(SeverityLevel.MINOR)
+    @Features("Ashes")
+    @Stories("SKUs")
+    @Description("Can edit SKU's \"Title\" -- changes are visible on the list in skus_search_view")
+    public void editTitle_searchView() throws IOException {
         provideTestData("active SKU");
 
         p = openPage(adminUrl + "/skus/" + skuCode, SkusPage.class);
@@ -87,6 +107,10 @@ public class SkusTests extends Preconditions {
     }
 
     @Test(priority = 5)
+    @Severity(SeverityLevel.NORMAL)
+    @Features("Ashes")
+    @Stories("SKUs")
+    @Description("Can edit SKU's \"Title\" -- changes are visible on SKU details page")
     public void editTitle_PDP() throws IOException {
         provideTestData("active SKU");
 
@@ -103,6 +127,10 @@ public class SkusTests extends Preconditions {
     }
 
     @Test(priority = 6)
+    @Severity(SeverityLevel.MINOR)
+    @Features("Ashes")
+    @Stories("SKUs")
+    @Description("Can \"UPC\"")
     public void editUPC() throws IOException {
         provideTestData("active SKU");
 
@@ -118,6 +146,10 @@ public class SkusTests extends Preconditions {
     }
 
     @Test(priority = 7)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Ashes")
+    @Stories("SKUs")
+    @Description("Can edit \"Description\"")
     public void editDescription() throws IOException {
         provideTestData("active SKU");
 
@@ -134,7 +166,11 @@ public class SkusTests extends Preconditions {
     }
 
     @Test(priority = 8)
-    public void editRetailPrice_categoryView() throws IOException {
+    @Severity(SeverityLevel.NORMAL)
+    @Features("Ashes")
+    @Stories("SKUs")
+    @Description("Can edit \"Retail Price\" -- changes are visible in skus_search_view")
+    public void editRetailPrice_searchView() throws IOException {
         provideTestData("active SKU");
 
         p = openPage(adminUrl + "/skus/" + skuCode, SkusPage.class);
@@ -148,6 +184,10 @@ public class SkusTests extends Preconditions {
     }
 
     @Test(priority = 9)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Ashes")
+    @Stories("SKUs")
+    @Description("Can edit \"Retail Price\" -- changes are visible on SKU details page")
     public void editRetailPrice_PDP() throws IOException {
         provideTestData("active SKU");
 
@@ -164,7 +204,11 @@ public class SkusTests extends Preconditions {
     }
 
     @Test(priority = 10)
-    public void editSalePrice_categoryView() throws IOException {
+    @Severity(SeverityLevel.NORMAL)
+    @Features("Ashes")
+    @Stories("SKUs")
+    @Description("Can edit \"Retail Price\" changes are visible in skus_search_view")
+    public void editSalePrice_searchView() throws IOException {
         provideTestData("active SKU");
 
         p = openPage(adminUrl + "/skus/" + skuCode, SkusPage.class);
@@ -178,6 +222,10 @@ public class SkusTests extends Preconditions {
     }
 
     @Test(priority = 11)
+    @Severity(SeverityLevel.NORMAL)
+    @Features("Ashes")
+    @Stories("SKUs")
+    @Description("Can edit \"Sale Price\" -- changes are visible on SKU details page")
     public void editSalePrice_PDP() throws IOException {
         provideTestData("active SKU");
 
@@ -194,6 +242,10 @@ public class SkusTests extends Preconditions {
     }
 
     @Test(priority = 12)
+    @Severity(SeverityLevel.NORMAL)
+    @Features("Ashes")
+    @Stories("SKUs")
+    @Description("Can edit \"State\" -- changes are visible on SKU details page")
     public void editState_PDP() throws IOException {
         provideTestData("active SKU");
 
@@ -211,6 +263,9 @@ public class SkusTests extends Preconditions {
     //--------------------------------- REGRESSION TESTS ---------------------------------//
 
     @Test(priority = 13)
+    @Severity(SeverityLevel.NORMAL)
+    @Features("Ashes")
+    @Stories("SKUs")
     @Description("Title isn't blanked after creating a product with a pre-created SKU")
     public void titleReset() throws IOException {
         provideTestData("active SKU");
@@ -219,6 +274,9 @@ public class SkusTests extends Preconditions {
     }
 
     @Test(priority = 14)
+    @Severity(SeverityLevel.NORMAL)
+    @Features("Ashes")
+    @Stories("SKUs")
     @Description("Can't use skuCode of an existing SKU to create a new one")
     public void useExistingSKUCode_newSKU() throws IOException {
         provideTestData("active SKU");
@@ -232,6 +290,9 @@ public class SkusTests extends Preconditions {
     }
 
     @Test(priority = 15)
+    @Severity(SeverityLevel.NORMAL)
+    @Features("Ashes")
+    @Stories("SKUs")
     @Description("Can't use skuCode of an existing SKU as a new skuCode for another SKU")
     public void useExistingSKUCode_editSKU() throws IOException {
         provideTestData("active SKU");

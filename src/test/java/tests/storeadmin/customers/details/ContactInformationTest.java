@@ -5,6 +5,10 @@ import org.testng.annotations.Test;
 import pages.admin.CustomersPage;
 import pages.admin.LoginPage;
 import ru.yandex.qatools.allure.annotations.Description;
+import ru.yandex.qatools.allure.annotations.Features;
+import ru.yandex.qatools.allure.annotations.Severity;
+import ru.yandex.qatools.allure.annotations.Stories;
+import ru.yandex.qatools.allure.model.SeverityLevel;
 import testdata.Preconditions;
 
 import java.io.IOException;
@@ -32,18 +36,28 @@ public class ContactInformationTest extends Preconditions {
     }
 
     @Test(priority = 1)
-    @Description("User is redirected to customer details page after customer creation")
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Ashes")
+    @Stories({"Customers general behavior", "Customer Contact Information"})
+    @Description("Can create new custoemr; User is redirected to customer details page after customer creation")
     public void createCustomer() {
+        String email = "qatest2278+" + generateRandomID() + "@gmail.com";
+
         p = openPage(adminUrl + "/customers/", CustomersPage.class);
         p.clickAddCustomerBtn();
         p.setNewCustomerName("John Doe");
-        p.setNewCustomerEmail("qatest2278+" + generateRandomID() + "@gmail.com");
+        p.setNewCustomerEmail("qatest2278+" + randomId + "@gmail.com");
         p.clickSaveBtn_modal();
 
         p.customerName().shouldHave(text("John Doe"));
+        p.newCustomerEmail().shouldHave(text(email));
     }
 
     @Test(priority = 2)
+    @Severity(SeverityLevel.NORMAL)
+    @Features("Ashes")
+    @Stories("Customer contact information")
+    @Description("'Name' and 'Email' are populated with what've been specified during customer creation")
     public void assertDefaultValues() throws IOException {
         provideTestData("a customer");
 
@@ -53,6 +67,10 @@ public class ContactInformationTest extends Preconditions {
     }
 
     @Test(priority = 3)
+    @Severity(SeverityLevel.NORMAL)
+    @Features("Ashes")
+    @Stories("Customer contact information")
+    @Description("Can add phone number to contact information")
     public void addPhoneNumber() throws IOException {
         provideTestData("a customer");
 
@@ -65,6 +83,10 @@ public class ContactInformationTest extends Preconditions {
     }
 
     @Test(priority = 4)
+    @Severity(SeverityLevel.NORMAL)
+    @Features("Ashes")
+    @Stories("Customer contact information")
+    @Description("Can edit customer name")
     public void editName() throws IOException {
         provideTestData("a customer");
 
@@ -79,6 +101,10 @@ public class ContactInformationTest extends Preconditions {
     }
 
     @Test(priority = 5)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Ashes")
+    @Stories("Customer contact information")
+    @Description("Can edit customer email")
     public void editEmail() throws IOException {
         provideTestData("a customer");
 
@@ -93,8 +119,11 @@ public class ContactInformationTest extends Preconditions {
 
     }
 
-    @Description("Phone number from billing address should be transmitted to \"Contact Info\"")
     @Test(priority = 6)
+    @Severity(SeverityLevel.NORMAL)
+    @Features("Ashes")
+    @Stories("Customer contact information")
+    @Description("Phone number from billing address should be transmitted to \"Contact Info\"")
     public void phoneNumbFromBillAddress() throws IOException {
         provideTestData("customer with a credit card");
         p = openPage(adminUrl + "/customers/" + customerId, CustomersPage.class);

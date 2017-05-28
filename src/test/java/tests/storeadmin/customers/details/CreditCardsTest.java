@@ -4,6 +4,11 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import pages.admin.CustomersPage;
 import pages.admin.LoginPage;
+import ru.yandex.qatools.allure.annotations.Description;
+import ru.yandex.qatools.allure.annotations.Features;
+import ru.yandex.qatools.allure.annotations.Severity;
+import ru.yandex.qatools.allure.annotations.Stories;
+import ru.yandex.qatools.allure.model.SeverityLevel;
 import testdata.Preconditions;
 
 import java.io.IOException;
@@ -30,6 +35,10 @@ public class CreditCardsTest extends Preconditions {
     }
 
     @Test(priority = 1)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Ashes")
+    @Stories("Customer credit cards")
+    @Description("Can add new credit card with new billing address")
     public void addNewCC_newBillAddress() throws IOException {
 
         provideTestData("a customer");
@@ -44,6 +53,10 @@ public class CreditCardsTest extends Preconditions {
     }
 
     @Test(priority = 2)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Ashes")
+    @Stories("Customer credit cards")
+    @Description("Can add new credit card with existing billing address")
     public void addNewCC_existingBillAddress() throws IOException {
 
         provideTestData("customer with a shipping address");
@@ -58,6 +71,10 @@ public class CreditCardsTest extends Preconditions {
     }
 
     @Test(priority = 3)
+    @Severity(SeverityLevel.NORMAL)
+    @Features("Ashes")
+    @Stories("Customer credit cards")
+    @Description("Can edit credit card holder name")
     public void editCC_holderName() throws IOException {
 
         provideTestData("customer with a credit card");
@@ -73,6 +90,10 @@ public class CreditCardsTest extends Preconditions {
     }
 
     @Test(priority = 4)
+    @Severity(SeverityLevel.NORMAL)
+    @Features("Ashes")
+    @Stories("Customer credit cards")
+    @Description("Can edit credit card expiration date")
     public void editCC_expirationDate() throws IOException {
 
         provideTestData("customer with a credit card");
@@ -87,6 +108,10 @@ public class CreditCardsTest extends Preconditions {
     }
 
     @Test(priority = 5)
+    @Severity(SeverityLevel.NORMAL)
+    @Features("Ashes")
+    @Stories("Customer credit cards")
+    @Description("Can set CC billing address to a different one")
     public void editCC_billAddress() throws IOException {
 
         provideTestData("customer with a credit card and 2 addresses");
@@ -102,6 +127,10 @@ public class CreditCardsTest extends Preconditions {
     }
 
     @Test(priority = 6)
+    @Severity(SeverityLevel.NORMAL)
+    @Features("Ashes")
+    @Stories("Customer credit cards")
+    @Description("Editing address applied to card as a billing address doesn't affect it on card (it stays unchanged)")
     public void editBillAddressInAddressBook() throws IOException {
 
         provideTestData("customer with a credit card");

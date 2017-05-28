@@ -5,6 +5,10 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import pages.storefront.StorefrontPage;
 import ru.yandex.qatools.allure.annotations.Description;
+import ru.yandex.qatools.allure.annotations.Features;
+import ru.yandex.qatools.allure.annotations.Severity;
+import ru.yandex.qatools.allure.annotations.Stories;
+import ru.yandex.qatools.allure.model.SeverityLevel;
 import testdata.Preconditions;
 
 import java.io.IOException;
@@ -22,6 +26,9 @@ public class LineItemsTest extends Preconditions {
     }
 
     @Test(priority = 1)
+    @Severity(SeverityLevel.BLOCKER)
+    @Features("Storefront-TPG")
+    @Stories("Cart : Line Items")
     @Description("Added product appears in cart")
     public void addProductToCart_lineItemIsVisible() throws IOException {
         provideTestData("registered customer, active product on storefront");
@@ -39,6 +46,9 @@ public class LineItemsTest extends Preconditions {
     }
 
     @Test(priority = 2)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Storefront-TPG")
+    @Stories("Cart : Line Items")
     @Description("Line items units indicator shows correct amount of total line items units in cart")
     public void addProductToCart_indicatorUpdated() throws IOException {
         provideTestData("registered customer, 2 active products on storefront");
@@ -63,6 +73,9 @@ public class LineItemsTest extends Preconditions {
     }
 
     @Test(priority = 3)
+    @Severity(SeverityLevel.BLOCKER)
+    @Features("Storefront-TPG")
+    @Stories("Cart : Line Items")
     @Description("Can remove line item from cart")
     public void removeProductFromCart() throws IOException {
         provideTestData("registered customer, active product in cart");
@@ -77,6 +90,9 @@ public class LineItemsTest extends Preconditions {
     }
 
     @Test(priority = 4)
+    @Severity(SeverityLevel.BLOCKER)
+    @Features("Storefront-TPG")
+    @Stories("Cart : Line Items")
     @Description("Gift card appears in cart as a line item")
     public void addGiftCardToCart() throws IOException {
         provideTestData("a customer signed up on storefront");
@@ -95,6 +111,9 @@ public class LineItemsTest extends Preconditions {
 
     //TODO: provideTestData() isn't finished for this test -- blocked by issue https://trello.com/c/J4TI8Dtx
     @Test(priority = 5, enabled = false)
+    @Severity(SeverityLevel.BLOCKER)
+    @Features("Storefront-TPG")
+    @Stories("Cart : Line Items")
     @Description("Gift card can be removed from cart as a regular line item")
     public void removeGCLineItemFromCart() throws IOException {
         provideTestData("a customer with GC in cart as a line item");
@@ -108,6 +127,9 @@ public class LineItemsTest extends Preconditions {
     }
 
     @Test(priority = 6)
+    @Severity(SeverityLevel.NORMAL)
+    @Features("Storefront-TPG")
+    @Stories("Cart : Line Items")
     @Description("\"Checkout\" btn is locked if there are no line items in cart and it gets unlocked if there's at least 1 line item")
     public void checkoutBtnBehavior_registeredCustomer() throws IOException {
         provideTestData("registered customer, active product on storefront");
@@ -128,6 +150,9 @@ public class LineItemsTest extends Preconditions {
     }
 
     @Test(priority = 7)
+    @Severity(SeverityLevel.BLOCKER)
+    @Features("Storefront-TPG")
+    @Stories("Cart : Line Items")
     @Description("Cart is synchronized on logIn and logOut")
     public void cartIsSynchronized() throws IOException {
         provideTestData("a customer signed up on storefront with product and coupon<any, single code> in cart");
@@ -149,6 +174,9 @@ public class LineItemsTest extends Preconditions {
     }
 
     @Test(priority = 8)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Storefront-TPG")
+    @Stories("Cart : Line Items")
     @Description("Cart is cleaned after checkout")
     public void noLineItemsAfterCheckout() throws IOException {
         provideTestData("a customer ready to checkout");

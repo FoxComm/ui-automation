@@ -5,6 +5,11 @@ import org.testng.annotations.Test;
 import pages.admin.LoginPage;
 import pages.admin.ProductsPage;
 import pages.admin.StorefrontCategoryPage;
+import ru.yandex.qatools.allure.annotations.Description;
+import ru.yandex.qatools.allure.annotations.Features;
+import ru.yandex.qatools.allure.annotations.Severity;
+import ru.yandex.qatools.allure.annotations.Stories;
+import ru.yandex.qatools.allure.model.SeverityLevel;
 import testdata.Preconditions;
 
 import java.io.IOException;
@@ -30,6 +35,10 @@ public class EditProductTest extends Preconditions {
     }
 
     @Test(priority = 1)
+    @Severity(SeverityLevel.NORMAL)
+    @Features("Ashes")
+    @Stories("Edit Products")
+    @Description("Can edit product's \"Title\" -- changes are visible on PDP in Ashes")
     public void editTitle_admin_PDP() throws IOException {
         provideTestData("product in active state");
         checkInventoryAvailability(skuCode);
@@ -45,6 +54,10 @@ public class EditProductTest extends Preconditions {
     }
 
     @Test(priority = 2)
+    @Severity(SeverityLevel.NORMAL)
+    @Features("Ashes")
+    @Stories("Edit Products")
+    @Description("Can edit product's \"Title\" -- changes are visible in search_view")
     public void editTitle_admin_list() throws IOException {
         provideTestData("product in active state");
         checkInventoryAvailability(skuCode);
@@ -98,6 +111,10 @@ public class EditProductTest extends Preconditions {
 //    }
 
     @Test(priority = 5)
+    @Severity(SeverityLevel.NORMAL)
+    @Features("Ashes")
+    @Stories("Edit Products")
+    @Description("Can edit \"Description\" -- changes are visible on PDP")
     public void editDescription_admin_PDP() throws IOException {
         provideTestData("product in active state");
         checkInventoryAvailability(skuCode);
@@ -128,6 +145,10 @@ public class EditProductTest extends Preconditions {
 //    }
 
     @Test(priority = 7)
+    @Severity(SeverityLevel.NORMAL)
+    @Features("Ashes")
+    @Stories("Edit Products")
+    @Description("Can edit \"State\" -- changes are visible on PDP")
     public void editState_admin_PDP() throws IOException {
         provideTestData("product in active state");
         checkInventoryAvailability(skuCode);
@@ -143,6 +164,10 @@ public class EditProductTest extends Preconditions {
     }
 
     @Test(priority = 8)
+    @Severity(SeverityLevel.NORMAL)
+    @Features("Ashes")
+    @Stories("Edit Products")
+    @Description("Can edit \"State\" -- changes are visible in search_view")
     public void editState_admin_category() throws IOException {
         provideTestData("product in active state");
         checkInventoryAvailability(skuCode);
@@ -176,6 +201,10 @@ public class EditProductTest extends Preconditions {
 //    }
 
     @Test(priority = 10)
+    @Severity(SeverityLevel.NORMAL)
+    @Features("Ashes")
+    @Stories("Edit Products")
+    @Description("Can edit \"Retail Price\" -- changes are visible on PDP")
     public void editRetailPrice_admin_PDP() throws IOException {
         provideTestData("product in active state");
         checkInventoryAvailability(skuCode);
@@ -189,6 +218,10 @@ public class EditProductTest extends Preconditions {
     }
 
     @Test(priority = 11)
+    @Severity(SeverityLevel.NORMAL)
+    @Features("Ashes")
+    @Stories("Edit Products")
+    @Description("Can edit \"Sale Price\" -- changes are visible on PDP")
     public void editSalePrice_admin_PDP() throws IOException {
         provideTestData("product in active state");
         checkInventoryAvailability(skuCode);
@@ -217,7 +250,11 @@ public class EditProductTest extends Preconditions {
 //    }
 
     @Test(priority = 13)
-    public void editTag_admin() throws IOException {
+    @Severity(SeverityLevel.NORMAL)
+    @Features("Ashes")
+    @Stories("Edit Products")
+    @Description("Can edit tag -- changes are visible on PDP")
+    public void editTag_admin_PDP() throws IOException {
         provideTestData("product in active state");
         checkInventoryAvailability(skuCode);
 
@@ -252,6 +289,10 @@ public class EditProductTest extends Preconditions {
 //    }
 
     @Test(priority = 15)
+    @Severity(SeverityLevel.NORMAL)
+    @Features("Ashes")
+    @Stories("Edit Products")
+    @Description("Can remove tag -- changes are visible in admin")
     public void removeTag_admin() throws IOException {
         provideTestData("product in active state");
         checkInventoryAvailability(skuCode);
