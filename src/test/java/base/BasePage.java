@@ -294,6 +294,10 @@ public class BasePage extends ConciseAPI {
         return $(xpath("//input[@placeholder='filter or keyword search']"));
     }
 
+    public SelenideElement searchPill(String title) {
+        return $(xpath("//div[@title='" + title + "']"));
+    }
+
     private SelenideElement removeFilterBtn(String filterTitle) {
         return $(xpath("//div[@title='" + filterTitle + "']/a"));
     }

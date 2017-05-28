@@ -46,7 +46,7 @@ public class SearchTest extends Preconditions {
         p.addFilter("Order", "Total", ">", "1");
         p.removeSearchFilter("Order : Total : > : $1");
 
-        p.searchFilter("Order : Total : > : $1").shouldNotBe(visible);
+        p.searchPill("Order : Total : > : $1").shouldNotBe(visible);
     }
 
     @Test (priority = 2)
