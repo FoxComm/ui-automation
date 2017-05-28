@@ -1,6 +1,5 @@
 package tests.storeadmin.products;
 
-import org.openqa.selenium.By;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import pages.admin.CartPage;
@@ -15,7 +14,6 @@ import java.util.Objects;
 
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 import static testdata.api.collection.Cart.createCart;
 import static testdata.api.collection.Customers.createCustomer;
@@ -38,7 +36,8 @@ public class ProductsTest extends Preconditions {
 
     //--------------------- CART
 
-    // Disabled, because it duplicates similar SKU specific tests
+    // Temporarily disabled, because it duplicates similar SKU specific tests
+    // search for line item by productTitle should be added in the nearest future
     // (because line_item_search_view right now take only skuTitle and skuCode as a search argument)
 
 //    @Test(priority = 1, dataProvider = "canAddProductToCart_admin")
@@ -124,14 +123,16 @@ public class ProductsTest extends Preconditions {
     }
 
     @Test(priority = 7, dataProvider = "skuIsNotArchived")
-    @Description("SKU is not removed from skus_search_view")
+    @Description("SKU is not removed from skus_search_view -- it's displayed on the table, details page can be accessed")
     public void skuArchiving_skuIsNotRemovedFromSearchView(String testData) throws IOException {
         provideTestData(testData);
 
         skusPage = openPage(adminUrl + "/skus", SkusPage.class);
         skusPage.search(skuCode);
-        skusPage.openSKU(skuCode);
+        waitForDataToLoad();
 
+        skusPage.objOnCategoryTable(skuCode).shouldBe(visible);
+        skusPage.openSKU(skuCode);
         skusPage.breadcrumb(skuCode).shouldBe(visible);
     }
 
@@ -145,7 +146,7 @@ public class ProductsTest extends Preconditions {
         skusPage.noSearchResultsMsg().shouldBe(visible);
 
         skusPage.addFilter("SKU : Is Archived", "Yes");
-        $(By.xpath("//*[text()='" + skuCode + "']")).shouldBe(visible);
+        skusPage.objOnCategoryTable(skuCode).shouldBe(visible);
     }
 
 
@@ -173,7 +174,7 @@ public class ProductsTest extends Preconditions {
         productsPage.noSearchResultsMsg().shouldBe(visible);
 
         productsPage.addFilter("Product : Is Archived", "Yes");
-        $(By.xpath("//*[text()='" + productTitle + "']")).shouldBe(visible);
+        productsPage.objOnCategoryTable(productTitle).shouldBe(visible);
     }
 
 }

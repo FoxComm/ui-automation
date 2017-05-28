@@ -222,7 +222,7 @@ public class CartPage extends BasePage {
     }
 
     public SelenideElement lineItemSearchView_byName(String itemName) {
-        return $(xpath("//ul[contains(@class, 'typeahead')]//*[text()='" + itemName + "']"));
+        return $(xpath("//li[contains(@class, 'item')]//*[text()='" + itemName + "']"));
     }
 
 
@@ -376,7 +376,7 @@ public class CartPage extends BasePage {
     }
 
     private SelenideElement deleteBtn_chosenAddress() {
-        return $(xpath("//*[contains(@class, 'is-active')]//button[contains(@class, 'button__delete')]"));
+        return $(xpath("//*[contains(@class, 'is-active')]//i[contains(@class, 'icon-trash')]/.."));
     }
 
     private SelenideElement editBtn_chosenAddress() {

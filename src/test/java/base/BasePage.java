@@ -54,7 +54,7 @@ public class BasePage extends ConciseAPI {
     }
 
     public SelenideElement breadcrumb(String value) {
-        return $(xpath("//a[contains(@class, 'breadcrumb') and text()='" + value + "']"));
+        return $(xpath("//div[contains(@class, 'top-nav-menu')]//a[contains(@class, 'item') and text()='" + value + "']"));
     }
 
     @Step("Click \"Yes\" btn")
@@ -314,7 +314,7 @@ public class BasePage extends ConciseAPI {
         return $(xpath("//ul[@class='fc-menu-items']"));
     }
 
-    public SelenideElement itemOnList(String itemParam) {
+    public SelenideElement objOnCategoryTable(String itemParam) {
         return $(xpath("//tbody//*[text()='" + itemParam + "']"));
     }
 

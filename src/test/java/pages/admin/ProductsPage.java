@@ -226,7 +226,7 @@ public class ProductsPage extends BasePage {
         }
     }
 
-    @Step("Get '{1}' parameter value of {0}th product on the list")
+    @Step("Get <{1}> parameter val of <{0}>th product on the list")
     public SelenideElement getProductParamVal(String productIndex, String paramName) {
         SelenideElement paramVal = null;
         waitForDataToLoad();

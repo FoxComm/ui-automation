@@ -75,8 +75,7 @@ public class OrdersListTest extends Preconditions {
         waitForDataToLoad();
         p.addFilter("Order", "Reference Number", orderId);
 
-        p.getOrderParamVal(1, "Order State").shouldBe(visible
-                .because("Found order <" + orderId + "> is not in 'Fulfillment Started' state."));
+        p.getOrderParamVal(1, "Order State").shouldBe(visible);
         p.ordersOnList().shouldHaveSize(1);
     }
 
