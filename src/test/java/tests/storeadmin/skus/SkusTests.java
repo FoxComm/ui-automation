@@ -63,11 +63,11 @@ public class SkusTests extends Preconditions {
 
         p = openPage(adminUrl + "/skus/" + skuCode, SkusPage.class);
         p.addCustomProp("Text", "text fld");
-        p.setCustomProp_text("text fld", "test val");
+        p.setCustomTextVal("text fld", "test val");
         p.clickSave_wait();
         refresh();
 
-        p.customTextFld("text fld").shouldHave(value("test val"));
+        p.customText("text fld").shouldHave(value("test val"));
     }
 
     // NOT FIXED
@@ -81,11 +81,11 @@ public class SkusTests extends Preconditions {
 
         p = openPage(adminUrl + "/skus/" + skuCode, SkusPage.class);
         p.addCustomProp("Rich Text", "richtextfld");
-        p.setCustomProp_richText("richtextfld", "test val");
+        p.setCustomRichTextVal("richtextfld", "test val");
         p.clickSave_wait();
         refresh();
 
-        p.customRichTextFldVal("richtextfld").shouldHave(text("test val"));
+        p.customRichTextVal("richtextfld").shouldHave(text("test val"));
     }
 
     @Test(priority = 4)

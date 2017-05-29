@@ -248,6 +248,61 @@ public class BasePage extends ConciseAPI {
                 "addTextToDraftJs(arguments[0], arguments[1]);", className, text);
     }
 
+    //---------------------------------- CUSTOM PROPERTIES -----------------------------------//
+
+    private SelenideElement addCustomPropBtn() {
+        return $(xpath("//a[@id='fct-add-btn__custom-property']"));
+    }
+
+    public SelenideElement customText(String title) {
+        return $(xpath("//input[@name='" + title.toLowerCase() + "']"));
+    }
+
+    public SelenideElement customPrice(String title) {
+        return $(xpath("//input[@name='" + title.toLowerCase() + "']"));
+    }
+
+    public SelenideElement customDate(String title) {
+        return $(xpath("//label[text()='" + title + "']/following-sibling::*//input[@name='someDatePretty']"));
+    }
+
+    private SelenideElement customRichText(String title) {
+        return $(xpath("//div[text()='" + title + "']/following-sibling::*[2]//div[@class='public-DraftEditor-content']"));
+    }
+
+    public SelenideElement customRichTextVal(String title) {
+        return $(xpath("//div[text()='" + title.toLowerCase() + "']/following-sibling::*[2]//span/span"));
+    }
+
+    public String getRichTextVal(String label) {
+        SelenideElement richText = $(xpath("//div[text()='" + label.toLowerCase() + "']/following-sibling::*[2]/div/div/div/div/div/div/span/span"));
+        return richText.text();
+    }
+
+    private SelenideElement fieldLabelFld() {
+        return $(xpath("//*[@id='fct-field-label-fld']"));
+    }
+
+    private SelenideElement fieldTypeDd() {
+        return $(xpath("//*[@id='fct-field-type-dd']"));
+    }
+
+    @Step("Add custom <{0}> with title <{1}>")
+    public void addCustomProp(String type, String title) {
+        click(addCustomPropBtn());
+        setFieldVal(fieldLabelFld(), title);
+        setDdVal(fieldTypeDd(), type);
+    }
+
+    @Step("Set value of <{0}> custom text fld to <{1}>")
+    public void setCustomTextVal(String title, String value) {
+        setFieldVal(customText(title), value);
+    }
+
+    @Step("Set value of <{0}> custom rich text to <{1}>")
+    public void setCustomRichTextVal(String title, String value) {
+        setFieldVal(customRichText(title), value);
+    }
 
 //----
     public SelenideElement addTagBtn() {

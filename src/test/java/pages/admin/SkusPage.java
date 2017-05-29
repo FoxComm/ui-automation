@@ -64,10 +64,6 @@ public class SkusPage extends BasePage {
         return $(xpath("//h1"));
     }
 
-    private SelenideElement addCustomPropBtn() {
-        return $(xpath("//a[@id='fct-add-btn__custom-property']"));
-    }
-
     private SelenideElement labelFld() {
         return $(xpath("//input[@id='fct-field-label-fld']"));
     }
@@ -79,29 +75,6 @@ public class SkusPage extends BasePage {
     private SelenideElement saveAndApplyBtn() {
         return $(xpath("//button[@id='fct-modal-confirm-btn']"));
     }
-
-    public SelenideElement customTextFld(String label) {
-        return $(xpath("//input[@name='" + label.toLowerCase() + "']"));
-    }
-
-    //TODO: rich text (custom richtext at sku details page)
-    public SelenideElement customRichTextFld(String title) {
-        return $(xpath("//div[text()='" + title + "']/following-sibling::*[2]//div[@class='public-DraftEditor-content']"));
-    }
-
-    public SelenideElement customRichTextFldVal(String title) {
-        return $(xpath("//div[text()='" + title + "']/following-sibling::*[2]//span/span"));
-    }
-
-    public String getRichTextVal(String label) {
-        SelenideElement richText = $(xpath("//div[text()='" + label.toLowerCase() + "']/following-sibling::*[2]/div/div/div/div/div/div/span/span"));
-        return richText.text();
-    }
-
-    public SelenideElement customPriceFld(String label) {
-        return $(xpath("//input[@name='" + label.toLowerCase() + "']"));
-    }
-
 
 
     //------------------------------------------------------------------------//
@@ -174,24 +147,7 @@ public class SkusPage extends BasePage {
             setFieldVal(unitCostFld(), price);
         }
 
-    @Step("Add custom property of <{0}> type with <{1}> label")
-    public void addCustomProp(String type, String label) {
-        click(addCustomPropBtn());
-        setDdVal(typeDd(), type);
-        setFieldVal(labelFld(), label);
-        click(saveAndApplyBtn());
-        shouldNotExist(saveAndApplyBtn(), "\"Save And Apply\" btn exists (it shouldn't)");
-    }
 
-        @Step("Set val of custom text fld <{0}> to <{1}>")
-        public void setCustomProp_text(String fldTitle, String value) {
-            setFieldVal(customTextFld(fldTitle), value);
-        }
-
-        @Step("Set val of custom rich text fld <{0}> to <{1}>")
-        public void setCustomProp_richText(String title, String value) {
-            setFieldVal(customRichTextFld(title), value);
-        }
 
     @Step("Get <{1}> parameter value of <{0}th> SKU on the list")
     public SelenideElement getSKUParamVal(String skuIndex, String paramName) {

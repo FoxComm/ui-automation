@@ -16,30 +16,8 @@ public class PromotionsPage extends BasePage {
         return $(xpath("//span[text()='Promotion']/.."));
     }
 
-    private SelenideElement applyTypeDd() {
-        return $(xpath("//div[@id='fct-apply-type-dd']"));
-    }
-
-    public SelenideElement applyTypeVal() {
-        return $(xpath("//div[@id='fct-apply-type-dd']//div[@class='fc-dropdown__value']"));
-    }
-
-    public SelenideElement nameFld() {
-        return $(xpath("//input[@name='name']"));
-    }
-
-    //TODO: Add id in Ashes (Storefront Name, richText)
-    public SelenideElement storefrontNameFld() {
-        return $(xpath("//*[@id='foxcom']/div/div[1]/main/div/div[3]/form/div[1]/div[1]/div/div[2]/div[2]/div/div[3]/div/div/div"));
-    }
-
-    public SelenideElement descriptionFld() {
-        return $(xpath("//textarea[@name='description']"));
-    }
-
-    //TODO: Add id in Ashes (Details, richtext)
-    public SelenideElement detailsFld() {
-        return $(xpath(".//*[@id='foxcom']/div/div[1]/main/div/div[3]/form/div[1]/div[1]/div/div[2]/div[4]/div/div[3]/div/div/div"));
+    public SelenideElement applyTypeRbtn(String type) {
+        return $(xpath("//input[@name='" + type + "']"));
     }
 
     private SelenideElement qualifierTypeDd() {
@@ -55,7 +33,7 @@ public class PromotionsPage extends BasePage {
     }
 
     private SelenideElement modifierDd_qualifier() {
-        return $(xpath("//*[@id='fct-promo-qualifier-block']//div[contains(@class, 'modifier-dd')]"));
+        return $(xpath("//*[@id='fct-promo-qualifier-block-0']//div[contains(@class, 'modifier-dd')]"));
     }
 
     private SelenideElement productSearchDd_qualifier() {
@@ -102,7 +80,7 @@ public class PromotionsPage extends BasePage {
         return $(xpath("//a[@id='fct-remove-start-date-btn']"));
     }
 
-    public SelenideElement promotion(String idOrName) {
+    private SelenideElement promotion(String idOrName) {
         return $(xpath("//tbody/a//td[text()='" + idOrName + "']"));
     }
 
@@ -121,10 +99,6 @@ public class PromotionsPage extends BasePage {
     @Step("Create a new promotion with <{0}> apply type")
     public void fillOutNewPromoForm(String applyType, String id) {
         setApplyType(applyType);
-        setPromoName("Test Promo " + id);
-        setStorefrontName("sf name");
-        setDescription("test promo");
-        setDetails("promo details");
         setQualifierType("Order - No qualifier");
         setOffer("Percent off order", "10");
     }
@@ -136,27 +110,7 @@ public class PromotionsPage extends BasePage {
 
         @Step("Set \"Apply Type\" dd val to <{0}>")
         public void setApplyType(String type) {
-            setDdVal(applyTypeDd(), type);
-        }
-
-        @Step("Set \"Name\" fld val to <{0}>")
-        public void setPromoName(String name) {
-            setFieldVal(nameFld(), name);
-        }
-
-        @Step("Set \"Storefront Name\" fld val to <{0}>")
-        public void setStorefrontName(String name) {
-            setFieldVal(storefrontNameFld(), name);
-        }
-
-        @Step("Set \"Description\" rich text fld val to <{0}>")
-        public void setDescription(String description) {
-            setFieldVal(descriptionFld(), description);
-        }
-
-        @Step("Set \"Details\" rich text fld val to <{0}>")
-        public void setDetails(String details) {
-            setFieldVal(detailsFld(), details);
+            jsClick(applyTypeRbtn(type.toLowerCase()));
         }
 
         @Step("Set \"Qualifyer Type\" dd val to <{0}>")
@@ -201,10 +155,6 @@ public class PromotionsPage extends BasePage {
     public void createNewPromo_autoApply_active(String applyType, String id) {
         clickAddNewPromoBtn();
         setApplyType(applyType);
-        setPromoName("Test Promo " + id);
-        setStorefrontName("sf name");
-        setDescription("test promo");
-        setDetails("promo details");
         setQualifierType("Order - No qualifier");
         setOffer("Percent off order", "10");
         setDdVal( stateDd(), "Active" );

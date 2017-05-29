@@ -5,14 +5,16 @@ import org.testng.annotations.Test;
 import pages.admin.LoginPage;
 import pages.admin.PromotionsPage;
 import ru.yandex.qatools.allure.annotations.Description;
+import ru.yandex.qatools.allure.annotations.Features;
+import ru.yandex.qatools.allure.annotations.Severity;
+import ru.yandex.qatools.allure.annotations.Stories;
+import ru.yandex.qatools.allure.model.SeverityLevel;
 import testdata.Preconditions;
 
 import java.io.IOException;
 import java.util.Objects;
 
-import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Condition.value;
-import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.Selenide.refresh;
 
@@ -31,11 +33,15 @@ public class PromotionsTest extends Preconditions {
     }
 
     @Test(priority = 1)
-    public void addNewPromo() {
+    @Severity(SeverityLevel.BLOCKER)
+    @Features("Ashes")
+    @Stories("Promotions & Coupons")
+    @Description("Create new promotion")
+    public void createNewPromo() {
         String randomId = generateRandomID();
 
         p = openPage(adminUrl + "/promotions/new", PromotionsPage.class);
-        p.fillOutNewPromoForm("Coupon", randomId);
+        p.fillOutNewPromoForm("coupon", randomId);
         p.clickSave_wait();
         shouldNotHaveText(p.promoIdBreadcrumb(), "new", "\"new\" isn't changed to promoId value of a just created promo");
         String promoId = p.promoIdBreadcrumb().text();
@@ -47,7 +53,11 @@ public class PromotionsTest extends Preconditions {
     }
 
     @Test(priority = 2)
-    public void addNewPromo_appearsOnList() throws IOException {
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Ashes")
+    @Stories("Promotions & Coupons")
+    @Description("A just created promotion appears on the list in category")
+    public void createNewPromo_appearsOnList() throws IOException {
         provideTestData("a promotion");
 
         p = openPage(adminUrl + "/promotions", PromotionsPage.class);
@@ -58,6 +68,10 @@ public class PromotionsTest extends Preconditions {
     }
 
     @Test(priority = 3)
+    @Severity(SeverityLevel.BLOCKER)
+    @Features("Ashes")
+    @Stories("Promotions & Coupons")
+    @Description("Can create a new promo of a coupon type in active state")
     public void couponApplyType_stateActive() {
         String randomId = generateRandomID();
 
@@ -72,79 +86,36 @@ public class PromotionsTest extends Preconditions {
         p.getPromoParamVal("1", "State").shouldHave(text("Active"));
     }
 
-    @Test(priority = 4)
-    public void editName() throws IOException {
-        provideTestData("a promotion");
-
-        p = openPage(adminUrl + "/promotions/" + promotionId, PromotionsPage.class);
-        p.setPromoName("Edited Promo Name");
-        p.clickSave_wait();
-        p.navigateTo("Promotions");
-        p.search(promotionId);
-        shouldBeVisible(contentOnList(), "Search request returned no results.");
-        p.getPromoParamVal("1", "Name").shouldHave(text("Edited Promo Name")
-                .because("An old promo name is displayed on the list."));
-        p.openPromo(promotionId);
-
-        p.nameFld().shouldHave(value("Edited Promo Name"));
-    }
-
     @Test(priority = 5)
-    public void editStorefrontName() throws IOException {
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Ashes")
+    @Stories("Promotions & Coupons")
+    @Description("Can add a text custom property")
+    public void addCustomPropTextFld() throws IOException {
         provideTestData("a promotion");
 
         p = openPage(adminUrl + "/promotions/" + promotionId, PromotionsPage.class);
-        clearField(p.storefrontNameFld());
-        p.setStorefrontName("Edited Promo Storefront Name");
-        p.clickSave_wait();
-        p.navigateTo("Promotions");
-        p.search(promotionId);
-        shouldBeVisible(contentOnList(), "Search request returned no results.");
-        p.getPromoParamVal("1", "Storefront Name").shouldHave(text("Edited Promo Storefront Name")
-                .because("An old promo storefront name is displayed on the list."));
-        p.openPromo(promotionId);
-
-        p.storefrontNameFld().shouldHave(text("Edited Promo Storefront Name"));
-    }
-
-    @Test(priority = 6)
-    public void editDescription() throws IOException {
-        provideTestData("a promotion");
-
-        p = openPage(adminUrl + "/promotions/" + promotionId, PromotionsPage.class);
-        p.clearField( p.descriptionFld() );
-        p.setDescription("Edited Promo Description");
+        p.addCustomProp("text", "Custom Field");
+        setFieldVal(p.customText("Custom Field"), "Custom Text");
         p.clickSave_wait();
         p.navigateTo("Promotions");
         p.search(promotionId);
         shouldBeVisible(contentOnList(), "Search request returned no results.");
         p.openPromo(promotionId);
 
-        p.descriptionFld().shouldHave(text("Edited Promo Description"));
-    }
-
-    @Test(priority = 7)
-    public void editDetails() throws IOException {
-        provideTestData("a promotion");
-
-        p = openPage(adminUrl + "/promotions/" + promotionId, PromotionsPage.class);
-        p.clearField( p.detailsFld() );
-        p.setDetails("Edited Promo Details");
-        p.clickSave_wait();
-        p.navigateTo("Promotions");
-        p.search(promotionId);
-        shouldBeVisible(contentOnList(), "Search request returned no results.");
-        p.openPromo(promotionId);
-
-        p.detailsFld().shouldHave(text("Edited Promo Details"));
+        p.customText("Custom Field").shouldHave(value("Custom Text"));
     }
 
     @Test(priority = 8)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Ashes")
+    @Stories("Promotions & Coupons")
+    @Description("Can edit apply type")
     public void editApplyType() throws IOException {
         provideTestData("a promotion");
 
         p = openPage(adminUrl + "/promotions/" + promotionId, PromotionsPage.class);
-        p.setApplyType("Auto");
+        p.setApplyType("auto");
         shouldBeVisible(p.stateDd(), "Failed to want until \"State\" dd will become visible");
         p.clickSave_wait();
         p.navigateTo("Promotions");
@@ -153,10 +124,14 @@ public class PromotionsTest extends Preconditions {
         p.getPromoParamVal("1", "Apply Type").shouldHave(text("auto"));
         p.openPromo(promotionId);
 
-        p.applyTypeVal().shouldHave(text("Auto"));
+        p.applyTypeRbtn("auto").shouldBe(selected);
     }
 
     @Test(priority = 9)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Ashes")
+    @Stories("Promotions & Coupons")
+    @Description("Can change promo state to inactive")
     public void setStateToInactive() throws IOException {
         provideTestData("active promotion with auto apply type");
 
@@ -174,6 +149,10 @@ public class PromotionsTest extends Preconditions {
     }
 
     @Test(priority = 10)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Ashes")
+    @Stories("Promotions & Coupons")
+    @Description("Can change promo state to active")
     public void setStateToActive() throws IOException {
         provideTestData("inactive promotion with auto apply type");
 
@@ -190,7 +169,10 @@ public class PromotionsTest extends Preconditions {
         p.stateVal().shouldHave(text("Active"));
     }
 
-    @Description("Fails due confirmation box bug")
+    @Severity(SeverityLevel.NORMAL)
+    @Features("Ashes")
+    @Stories("Promotions & Coupons")
+    @Description("Can add tag")
     @Test(priority = 11)
     public void addTag() throws IOException {
         provideTestData("a promotion");
@@ -204,6 +186,10 @@ public class PromotionsTest extends Preconditions {
     }
 
     @Test(priority = 12)
+    @Severity(SeverityLevel.NORMAL)
+    @Features("Ashes")
+    @Stories("Promotions & Coupons")
+    @Description("Can't add the same tag twice")
     public void cantDuplicateTag() throws IOException {
         p = openPage(adminUrl + "/promotions/new", PromotionsPage.class);
         p.addTag("test promo");
