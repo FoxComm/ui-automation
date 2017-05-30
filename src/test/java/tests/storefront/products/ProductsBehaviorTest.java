@@ -32,7 +32,7 @@ public class ProductsBehaviorTest extends Preconditions {
     @Features("Storefront-TPG")
     @Stories("Products Behavior on Storefront")
     @Description("Product should be displayed in the catalog view on storefront")
-    public void productDisplayedInCategoryView(String testData) throws IOException {
+    public void productDisplayedInCatalogView(String testData) throws IOException {
         provideTestData(testData);
         waitForProductAppearInEs("int", "productId", productId);
 
@@ -46,7 +46,7 @@ public class ProductsBehaviorTest extends Preconditions {
     @Features("Storefront-TPG")
     @Stories("Products Behavior on Storefront")
     @Description("Product should not be displayed in the catalog view on storefront")
-    public void productNotDisplayedInCategoryView(String testData) throws IOException {
+    public void productNotDisplayedInCatalogView(String testData) throws IOException {
         provideTestData(testData);
         sleep(3000);
         p = openPage(storefrontUrl + "/" + storefrontCategory, StorefrontPage.class);
@@ -157,21 +157,19 @@ public class ProductsBehaviorTest extends Preconditions {
 //        p.errorMsg("Oops!").shouldBe(visible);
 //    }
 
-    //    TODO: hangs Xvfb in BK
+    @Test(priority = 9, dataProvider = "canAddProductToCart_storefront")
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Storefront-TPG")
+    @Stories("Products Behavior on Storefront")
+    @Description("Can add product to cart on storefront")
+    public void canAddProductToCart_storefront(String testData) throws IOException {
+        provideTestData(testData);
 
-//    @Test(priority = 9, dataProvider = "canAddProductToCart_storefront")
-//    @Severity(SeverityLevel.CRITICAL)
-//    @Features("Storefront-TPG")
-//    @Stories("Products Behavior on Storefront")
-//    @Description("Can add product to cart on storefront")
-//    public void canAddProductToCart_storefront(String testData) throws IOException {
-//        provideTestData(testData);
-//
-//        p = openPage(storefrontUrl + "/products/" + productSlug, StorefrontPage.class);
-//        p.clickAddToCartBtn();
-//
-//        p.lineItemByName_cart(productTitle).shouldBe(visible);
-//    }
+        p = openPage(storefrontUrl + "/products/" + productSlug, StorefrontPage.class);
+        p.clickAddToCartBtn();
+
+        p.lineItemByName_cart(productTitle).shouldBe(visible);
+    }
 
     @AfterMethod(alwaysRun = true)
     public void cleanUp_after() {

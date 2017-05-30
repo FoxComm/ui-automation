@@ -75,8 +75,7 @@ public class PdpTest extends Preconditions {
     public void changeProductQty() throws IOException {
         provideTestData("an active product visible on storefront");
 
-        p = openPage(storefrontUrl + "/" + storefrontCategory, StorefrontPage.class);
-        p.openPDP(productTitle);
+        p = openPage(storefrontUrl + "/products/" + productSlug, StorefrontPage.class);
         p.setQty_pdp("3");
         p.clickAddToCartBtn();
         p.closeCart();

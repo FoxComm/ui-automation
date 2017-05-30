@@ -22,7 +22,7 @@ public class CartTest extends Preconditions {
 
     @BeforeMethod(alwaysRun = true)
     public void cleanUp_before() {
-        p = openPage(storefrontUrl + "/" + storefrontCategory, StorefrontPage.class);
+        p = openPage(storefrontUrl, StorefrontPage.class);
         p.cleanUp_beforeMethod();
     }
 

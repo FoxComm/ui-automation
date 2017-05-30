@@ -165,9 +165,8 @@ public class GeneralBehaviorTest extends Preconditions {
     public void happyPath() throws IOException {
         provideTestData("happy path");
 
-        p = openPage(storefrontUrl + "/" + storefrontCategory, StorefrontPage.class);
+        p = openPage(storefrontUrl + "/products/" + productSlug, StorefrontPage.class);
         p.logIn(customerEmail, "78qa22!#");
-        p.openPDP(productTitle);
         p.clickAddToCartBtn();
         p.clickCheckoutBtn_cart();
         p.fillOutAddressForm("John Doe", "7500 Roosevelt Way NE", "Block 42", "98115", "9879879876");
