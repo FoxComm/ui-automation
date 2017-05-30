@@ -27,9 +27,8 @@ public class LineItemsTest extends Preconditions {
     public void addProductToCart_lineItemIsVisible() throws IOException {
         provideTestData("registered customer, active product on storefront");
 
-        p = openPage(storefrontUrl + "/" + storefrontCategory, StorefrontPage.class);
+        p = openPage(storefrontUrl + "/products" + productSlug, StorefrontPage.class);
         p.logIn(customerEmail, "78qa22!#");
-        p.openPDP(productTitle);
         p.clickAddToCartBtn();
 
         p.lineItemByName_cart(productTitle).shouldBe(visible);
@@ -47,14 +46,12 @@ public class LineItemsTest extends Preconditions {
     public void addProductToCart_indicatorUpdated() throws IOException {
         provideTestData("registered customer, 2 active products on storefront");
 
-        p = openPage(storefrontUrl + "/" + storefrontCategory, StorefrontPage.class);
+        p = openPage(storefrontUrl + "/products" + productSlugs.get(0), StorefrontPage.class);
         p.logIn(customerEmail, "78qa22!#");
-        p.openPDP(products.get(0));
         p.setQty_pdp("2");
         p.clickAddToCartBtn();
         p.closeCart();
-        p.navigateToCategory(storefrontCategory);
-        p.openPDP(products.get(1));
+        p = openPage(storefrontUrl + "/products" + productSlugs.get(1), StorefrontPage.class);
         p.setQty_pdp("3");
         p.clickAddToCartBtn();
         p.closeCart();

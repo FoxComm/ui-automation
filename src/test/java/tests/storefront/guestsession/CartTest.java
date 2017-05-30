@@ -27,9 +27,10 @@ public class CartTest extends Preconditions {
     public void addProductToCart() throws IOException {
         provideTestData("an active product visible on storefront");
 
-        p = openPage(storefrontUrl, StorefrontPage.class);
-        p.navigateToCategory(storefrontCategory);
-        p.openPDP(productTitle);
+        p = openPage(storefrontUrl + "/products" + productSlug, StorefrontPage.class);
+        //PDP accessed directly until DB is cleaned
+//        p.navigateToCategory(storefrontCategory);
+//        p.openPDP(productTitle);
         p.clickAddToCartBtn();
 
         p.lineItemByName_cart(productTitle).shouldBe(visible);
@@ -43,9 +44,7 @@ public class CartTest extends Preconditions {
     public void emptyGuestCartDoesntOverrideRegisteredCart() throws IOException {
         provideTestData("registered customer, 2 active products on storefront, 1 product in cart");
 
-        p = openPage(storefrontUrl, StorefrontPage.class);
-        p.navigateToCategory(storefrontCategory);
-        p.openPDP(products.get(1));
+        p = openPage(storefrontUrl + "/products/" + productSlugs.get(1), StorefrontPage.class);
         p.clickAddToCartBtn();
         p.removeLineItem("1");
         p.closeCart();
@@ -65,9 +64,7 @@ public class CartTest extends Preconditions {
     public void guestCartMergedIntoRegistered() throws IOException {
         provideTestData("a storefront registered customer, 2 active products, 1 in cart");
 
-        p = openPage(storefrontUrl, StorefrontPage.class);
-        p.navigateToCategory(storefrontCategory);
-        p.openPDP(products.get(1));
+        p = openPage(storefrontUrl + "/products/" + productSlugs.get(1), StorefrontPage.class);
         p.clickAddToCartBtn();
         p.closeCart();
         p.logIn(customerEmail, "78qa22!#");
@@ -87,9 +84,7 @@ public class CartTest extends Preconditions {
     public void guestCartTerminatedOnSignInThenOut() throws IOException {
         provideTestData("a storefront registered customer, 2 active products, 1 in cart, coupon<no qualifier, 10% off, single code>");
 
-        p = openPage(storefrontUrl, StorefrontPage.class);
-        p.navigateToCategory(storefrontCategory);
-        p.openPDP(products.get(1));
+        p = openPage(storefrontUrl + "/products" + productSlugs.get(1), StorefrontPage.class);
         p.clickAddToCartBtn();
         p.applyCoupon(singleCouponCode);
         p.closeCart();
