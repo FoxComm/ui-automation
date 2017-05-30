@@ -9,6 +9,10 @@ case "$SUITE" in
 	echo "Executing Ashes Test Suite"
 	cp test-suites/ashes.xml ashes.xml && rm testng.xml && mv ashes.xml testng.xml ;;
 
+	"products")
+	echo "Executing Products Test Suite"
+	cp test-suites/products.xml products.xml && rm testng.xml && mv products.xml testng.xml ;;
+
 	"storefront-tpg")
 	echo "Executing TPG Storefront Test Suite"
 	cp test-suites/storefront-tpg.xml storefront-tpg.xml && rm testng.xml && mv storefront-tpg.xml testng.xml ;;

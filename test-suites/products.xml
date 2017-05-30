@@ -1,0 +1,55 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="R" verbose="1">
+
+    <test name="Cart > Items">
+        <classes>
+            <class name="tests.storeadmin.cart.ItemsTest" />
+        </classes>
+    </test>
+
+    <test name="SKUs Tests">
+        <classes>
+            <class name="tests.storeadmin.skus.SkusTests" />
+        </classes>
+    </test>
+
+    <test name="Inventory">
+        <classes>
+            <class name="tests.storeadmin.inventory.InventoryTest" />
+        </classes>
+    </test>
+
+    <test name="Create Product">
+        <classes>
+            <class name="tests.storeadmin.products.CreateProductsTest" />
+        </classes>
+    </test>
+
+    <test name="Edit Product">
+        <classes>
+            <class name="tests.storeadmin.products.EditProductTest" />
+        </classes>
+    </test>
+    <test name="New Product Form">
+        <classes>
+            <class name="tests.storeadmin.products.NewProductFormTest" />
+        </classes>
+    </test>
+
+   <test name="SF: Products > General PDP Test">
+        <classes>
+            <class name="tests.storefront.products.PdpTest"/>
+        </classes>
+    </test>
+
+    <test name="SF: Products Behavior">
+        <classes>
+            <class name="tests.storefront.products.ProductsBehaviorTest"/>
+        </classes>
+    </test>
+    <test name="Admin: Products Behavior">
+        <classes>
+            <class name="tests.storeadmin.products.ProductsTest"/>
+        </classes>
+    </test>
+</suite>

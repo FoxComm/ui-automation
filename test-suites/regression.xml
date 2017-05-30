@@ -144,7 +144,7 @@
     </test>
     <test name="SF: Cart > Coupons and Promos">
         <classes>
-            <class name="tests.storefront.cart.CouponsAndPromosTest"/>
+            <class name="tests.storefront.cart.PromosTest"/>
         </classes>
     </test>
 
@@ -194,7 +194,7 @@
 
     <test name="SF: Products > General PDP Test">
         <classes>
-            <class name="tests.storefront.products.AbstractPdpTest"/>
+            <class name="tests.storefront.products.PdpTest"/>
         </classes>
     </test>
     <test name="SF: Products > Catalog Test">
