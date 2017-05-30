@@ -20,11 +20,11 @@ public class ProductsBehaviorTest extends Preconditions {
 
     private StorefrontPage p;
 
-    @Test(priority = 1, dataProvider = "productCatalogViewDisplayed")
+    @Test(priority = 1, dataProvider = "productCatalogViewDisplayed", enabled = false)
     @Severity(SeverityLevel.CRITICAL)
     @Features("Storefront-TPG")
     @Stories("Products Behavior on Storefront")
-    @Description("Product should be displayed in the catalog view on storefront")
+    @Description("Product should be displayed in the catalog view on storefront [Disabled until DB clean]")
     public void productDisplayedInCatalogView(String testData) throws IOException {
         provideTestData(testData);
         waitForProductAppearInEs("int", "productId", productId);
@@ -34,11 +34,11 @@ public class ProductsBehaviorTest extends Preconditions {
         p.productTitle_catalog(productTitle).shouldBe(visible);
     }
 
-    @Test(priority = 2, dataProvider = "productCatalogViewNotDisplayed")
+    @Test(priority = 2, dataProvider = "productCatalogViewNotDisplayed", enabled = false)
     @Severity(SeverityLevel.CRITICAL)
     @Features("Storefront-TPG")
     @Stories("Products Behavior on Storefront")
-    @Description("Product should not be displayed in the catalog view on storefront")
+    @Description("Product should not be displayed in the catalog view on storefront [Disabled until DB clean]")
     public void productNotDisplayedInCatalogView(String testData) throws IOException {
         provideTestData(testData);
         sleep(3000);

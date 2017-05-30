@@ -52,7 +52,7 @@ public class CatalogTest extends Preconditions {
         p.cartQty().shouldHave(text("1"));
     }
 
-    @Test(priority = 3, enabled = false)
+    @Test(priority = 3)
     @Severity(SeverityLevel.NORMAL)
     @Features("Storefront-TPG")
     @Stories("Product Catalog")
@@ -68,11 +68,11 @@ public class CatalogTest extends Preconditions {
         p.additionalDescription(productTitle).shouldHave(text("The best thing to buy in 2016!"));
     }
 
-    @Test(priority = 4, enabled = false)
+    @Test(priority = 4)
     @Severity(SeverityLevel.NORMAL)
     @Features("Storefront-TPG")
     @Stories("Product Catalog")
-    @Description("Product description appears on the product image on hover")
+    @Description("Product description appears on the product image on hover [Disabled until DB clean]")
     public void hoverProductImageInCatalog_noImage() throws IOException {
         provideTestData("an active product visible on storefront");
 

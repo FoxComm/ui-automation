@@ -181,11 +181,11 @@
         </classes>
     </test>
 
-    <!--<test name="SF: Guest Session > Checkout">-->
-        <!--<classes>-->
-            <!--<class name="tests.storefront.guestsession.GuestCheckoutTest"/>-->
-        <!--</classes>-->
-    <!--</test>-->
+    <test name="SF: Guest Session > Checkout">
+        <classes>
+            <class name="tests.storefront.guestsession.GuestCheckoutTest"/>
+        </classes>
+    </test>
     <test name="SF: Guest Session > Cart Sync">
         <classes>
             <class name="tests.storefront.guestsession.CartTest"/>
@@ -197,11 +197,11 @@
             <class name="tests.storefront.products.PdpTest"/>
         </classes>
     </test>
-    <test name="SF: Products > Catalog Test">
-        <classes>
-            <class name="tests.storefront.products.CatalogTest"/>
-        </classes>
-    </test>
+    <!--<test name="SF: Products > Catalog Test">-->
+        <!--<classes>-->
+            <!--<class name="tests.storefront.products.CatalogTest"/>-->
+        <!--</classes>-->
+    <!--</test>-->
     <test name="SF: Products > TPG Product Attributes">
         <classes>
             <class name="tests.storefront.products.TpgProductAttrsTest"/>
