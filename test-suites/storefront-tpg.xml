@@ -26,11 +26,11 @@
             <class name="tests.storefront.cart.LineItemsTest"/>
         </classes>
     </test>
-    <test name="Cart > Coupons and Promos">
-        <classes>
-            <class name="tests.storefront.cart.CouponsAndPromosTest"/>
-        </classes>
-    </test>
+    <!--<test name="Cart > Coupons and Promos">-->
+        <!--<classes>-->
+            <!--<class name="tests.storefront.cart.PromosTest"/>-->
+        <!--</classes>-->
+    <!--</test>-->
 
     <test name="Profile > My Details">
         <classes>
