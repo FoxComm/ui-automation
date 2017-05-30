@@ -1,7 +1,6 @@
 package tests.storefront.auth;
 
 import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import pages.storefront.StorefrontPage;
 import ru.yandex.qatools.allure.annotations.Description;
@@ -19,12 +18,6 @@ import static com.codeborne.selenide.Condition.visible;
 public class SignUpTest extends Preconditions {
 
     private StorefrontPage p;
-
-    @BeforeMethod(alwaysRun = true)
-    public void cleanUp_before() {
-        p = openPage(storefrontUrl, StorefrontPage.class);
-        p.cleanUp_beforeMethod();
-    }
 
     @Test(priority = 1)
     @Severity(SeverityLevel.BLOCKER)
@@ -131,7 +124,7 @@ public class SignUpTest extends Preconditions {
 
     @AfterMethod(alwaysRun = true)
     public void cleanUp_after() {
-        p.cleanUp_afterMethod();
+        p.cleanUp();
     }
 
 }

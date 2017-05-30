@@ -1,7 +1,6 @@
 package tests.storefront.checkout;
 
 import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import pages.storefront.StorefrontPage;
 import ru.yandex.qatools.allure.annotations.Description;
@@ -13,17 +12,12 @@ import testdata.Preconditions;
 
 import java.io.IOException;
 
-import static com.codeborne.selenide.Condition.*;
+import static com.codeborne.selenide.Condition.selected;
+import static com.codeborne.selenide.Condition.visible;
 
 public class BillingTest extends Preconditions {
 
     private StorefrontPage p;
-
-    @BeforeMethod(alwaysRun = true)
-    public void cleanUp_before() {
-        p = openPage(storefrontUrl, StorefrontPage.class);
-        p.cleanUp_beforeMethod();
-    }
 
     @Test(priority = 1)
     @Severity(SeverityLevel.BLOCKER)
@@ -203,7 +197,7 @@ public class BillingTest extends Preconditions {
 
     @AfterMethod(alwaysRun = true)
     public void cleanUp_after() {
-        p.cleanUp_afterMethod();
+        p.cleanUp();
     }
 
 }

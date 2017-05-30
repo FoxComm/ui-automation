@@ -15,12 +15,6 @@ public class TpgProductAttrsTest extends Preconditions {
 
     private StorefrontPage p;
 
-    @BeforeMethod(alwaysRun = true)
-    public void cleanUp_before() {
-        p = openPage(storefrontUrl, StorefrontPage.class);
-        p.cleanUp_beforeMethod();
-    }
-
     @Test(priority = 1)
     @Severity(SeverityLevel.CRITICAL)
     @Features("Storefront-TPG")
@@ -52,7 +46,7 @@ public class TpgProductAttrsTest extends Preconditions {
 
     @AfterMethod(alwaysRun = true)
     public void cleanUp_after() {
-        p.cleanUp_afterMethod();
+        p.cleanUp();
     }
 
 }

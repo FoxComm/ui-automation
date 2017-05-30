@@ -1,7 +1,6 @@
 package tests.storefront.cart;
 
 import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import pages.storefront.StorefrontPage;
 import ru.yandex.qatools.allure.annotations.Description;
@@ -13,7 +12,8 @@ import testdata.Preconditions;
 
 import java.io.IOException;
 
-import static com.codeborne.selenide.Condition.*;
+import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.refresh;
 import static testdata.api.collection.Coupons.archiveCoupon;
 import static testdata.api.collection.Coupons.setCouponState;
@@ -23,12 +23,6 @@ import static testdata.api.collection.Promotions.setPromoState;
 public class PromosTest extends Preconditions {
 
     private StorefrontPage p;
-
-    @BeforeMethod(alwaysRun = true)
-    public void cleanUp_before() {
-        p = openPage(storefrontUrl, StorefrontPage.class);
-        p.cleanUp_beforeMethod();
-    }
 
     @Test(priority = 1)
     @Severity(SeverityLevel.CRITICAL)
@@ -184,7 +178,7 @@ public class PromosTest extends Preconditions {
 
     @AfterMethod(alwaysRun = true)
     public void cleanUp_after() {
-        p.cleanUp_afterMethod();
+        p.cleanUp();
     }
 
 }

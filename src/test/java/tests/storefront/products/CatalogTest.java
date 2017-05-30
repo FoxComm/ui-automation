@@ -19,12 +19,6 @@ public class CatalogTest extends Preconditions {
 
     private StorefrontPage p;
 
-    @BeforeMethod(alwaysRun = true)
-    public void cleanUp_before() {
-        p = openPage(storefrontUrl, StorefrontPage.class);
-        p.cleanUp_beforeMethod();
-    }
-
     @Test(priority = 1)
     @Severity(SeverityLevel.BLOCKER)
     @Features("Storefront-TPG")
@@ -168,7 +162,7 @@ public class CatalogTest extends Preconditions {
 
     @AfterMethod(alwaysRun = true)
     public void cleanUp_after() {
-        p.cleanUp_afterMethod();
+        p.cleanUp();
     }
 
 }

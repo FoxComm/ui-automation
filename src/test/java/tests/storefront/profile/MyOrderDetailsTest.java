@@ -1,7 +1,6 @@
 package tests.storefront.profile;
 
 import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import pages.storefront.StorefrontPage;
 import ru.yandex.qatools.allure.annotations.Description;
@@ -13,12 +12,6 @@ public class MyOrderDetailsTest extends Preconditions {
 
     private StorefrontPage p;
 
-    @BeforeMethod(alwaysRun = true)
-    public void cleanUp_before() {
-        p = openPage(storefrontUrl, StorefrontPage.class);
-        p.cleanUp_beforeMethod();
-    }
-
     @Test(priority = 1)
     @Description("Messing around")
     public void testTest() throws IOException {
@@ -27,7 +20,7 @@ public class MyOrderDetailsTest extends Preconditions {
 
     @AfterMethod(alwaysRun = true)
     public void cleanUp_after() {
-        p.cleanUp_afterMethod();
+        p.cleanUp();
     }
 
 }

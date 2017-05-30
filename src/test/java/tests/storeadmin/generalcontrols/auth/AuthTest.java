@@ -86,7 +86,7 @@ public class AuthTest extends Preconditions {
 
     @AfterClass(alwaysRun = true)
     public void backToAshes() {
-        sfp.cleanUp_afterMethod();
+        sfp.cleanUp();
         lp = openPage(adminUrl + "/login", LoginPage.class);
     }
 

@@ -12,12 +12,6 @@
         </classes>
     </test>
 
-    <test name="SF Before/After Test">
-        <classes>
-            <class name="tests.SfBeforeAfterStepsTest"/>
-        </classes>
-    </test>
-
     <test name="SF: Guest Session > Checkout">
         <classes>
             <class name="tests.storefront.guestsession.GuestCheckoutTest"/>
