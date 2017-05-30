@@ -198,4 +198,9 @@ public class PromotionsTest extends Preconditions {
         p.allTags().shouldHaveSize(1);
     }
 
+//    createCoupon_singleCode_active
+
+//    createCoupon_bulkCodes_active
+
+
 }
