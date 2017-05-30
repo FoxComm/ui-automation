@@ -14,6 +14,7 @@ import testdata.Preconditions;
 import java.io.IOException;
 
 import static com.codeborne.selenide.Condition.*;
+import static com.codeborne.selenide.Configuration.timeout;
 
 public class LineItemsTest extends Preconditions {
 
@@ -146,7 +147,7 @@ public class LineItemsTest extends Preconditions {
         p.clickCheckoutBtn_cart();
 
         p.grandTotal().shouldBe(visible);
-        assertUrl(getUrl(), storefrontUrl + "checkout");
+        assertUrl(getUrl(), storefrontUrl + "checkout", timeout);
     }
 
     @Test(priority = 7)

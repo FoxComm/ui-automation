@@ -1,6 +1,7 @@
 package pages.storefront;
 
 import com.codeborne.selenide.SelenideElement;
+import com.codeborne.selenide.ex.ElementNotFound;
 import org.openqa.selenium.NoSuchElementException;
 import ru.yandex.qatools.allure.annotations.Step;
 
@@ -77,14 +78,16 @@ public class StorefrontPage extends NavigationPage {
     }
 
     public void cleanUp_beforeMethod() {
+        //if cart is not empty -> remove all line items
         if (!Objects.equals(cartQty().text(), "0")) {
             openCart();
             cleanCart();
             closeCart();
         } else {
+            //if signed in -> log out
             try {
-                elementIsPresent("//a[contains(@class, 'login-link')]");
-            } catch (NoSuchElementException ignored) {
+                $(xpath("//a[contains(@class, 'login-link')]")).waitUntil(visible, 2000);
+            } catch (NoSuchElementException | ElementNotFound ignored) {
                 userMenuBtn_sf().click();
                 userMenuLink("LOG OUT").click();
                 logInLnk().shouldBe(visible);
@@ -93,35 +96,30 @@ public class StorefrontPage extends NavigationPage {
     }
 
     public void cleanUp_afterMethod() {
-        // if on storeadmin -- go back to storefront
+        //if on storeadmin -> go back to storefront
         if (findInText(getUrl(), "/admin")) {
             open(storefrontUrl);
         } else {
-            refresh();
-            try {
-                elementIsPresent("//a[contains(@class, 'login-link')]");
-                jsClick(logo());
-            } catch (NoSuchElementException ignored) {
-                open(storefrontUrl);
-            }
+            jsClick(logo());
+            assertUrl(getUrl(), storefrontUrl, 3000);
         }
 
-        // if it's a guest session and cart is not empty -- remove all line items
+        //if signed in -> log out
+        try {
+            $(xpath("//a[contains(@class, 'login-link')]")).waitUntil(visible, 2000);
+        } catch (NoSuchElementException | ElementNotFound ignored) {
+            userMenuBtn_sf().click();
+            userMenuLink("LOG OUT").click();
+            logInLnk().shouldBe(visible);
+        }
+
+        //if it's a guest session && cart is not empty -> remove all line items
         if (!checkCustomerAuth()) {
             if (!Objects.equals(cartQty().text(), "0")) {
                 openCart();
                 cleanCart();
                 closeCart();
             }
-        }
-
-        // if signed in -- log out
-        try {
-            elementIsPresent("//a[contains(@class, 'login-link')]");
-        } catch (NoSuchElementException ignored) {
-            userMenuBtn_sf().click();
-            userMenuLink("LOG OUT").click();
-            logInLnk().shouldBe(visible);
         }
     }
 

@@ -1,6 +1,5 @@
 package base;
 
-import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.Screenshots;
 import com.codeborne.selenide.SelenideElement;
@@ -9,7 +8,10 @@ import com.codeborne.selenide.ex.ElementShould;
 import com.codeborne.selenide.ex.ElementShouldNot;
 import com.codeborne.selenide.ex.ListSizeMismatch;
 import com.google.common.io.Files;
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoSuchElementException;
 import org.testng.IHookCallBack;
 import org.testng.IHookable;
 import org.testng.ITestResult;
@@ -348,27 +350,23 @@ public class ConciseAPI implements IHookable {
     }
 
     /**
-     * Pre-format given URLs and then compare them during given timeout
+     * Pre-format given URLs and then compare them during given timeout[ms]
      */
     @Step("Assert that current URL is <{1}>")
-    protected void assertUrl(String actualUrl, String expectedUrl) {
+    protected void assertUrl(String actualUrl, String expectedUrl, long timeout) {
         String lastChar_actual = actualUrl.substring(actualUrl.length() - 1);
-        System.out.println("lastChar_actual: <" + lastChar_actual + ">");
 
         if(lastChar_actual.equals("/")) {
             actualUrl = actualUrl.substring(0, actualUrl.length() - 1);
         }
         String lastChar_expected = expectedUrl.substring(expectedUrl.length() - 1);
-        System.out.println("lastChar_expected: <" + lastChar_expected + ">");
 
         if(lastChar_expected .equals("/")) {
             expectedUrl = expectedUrl.substring(0, expectedUrl.length() - 1);
         }
-        System.out.println("actualUrl: <" + actualUrl + ">");
-        System.out.println("expectedUrl: <" + expectedUrl + ">");
 
         long time = System.currentTimeMillis();
-        long end = time + Configuration.timeout;
+        long end = time + timeout;
 
         while (System.currentTimeMillis() < end) {
             assertEquals(actualUrl, expectedUrl);
@@ -388,19 +386,6 @@ public class ConciseAPI implements IHookable {
             result = true;
         }
         return result != null;
-    }
-
-    /**
-     * Webdriver based explicit wait.
-     * Checks if element with given xpath is present, timeout = 1 second
-     * Use it if you need to check the presence of the element as a condition
-     * ONLY to be used inside of try-catch blocks as it will throw NoSuchElementException in case of failure
-     * and will fail the test
-     */
-    protected void elementIsPresent(String xpath) {
-        getWebDriver().manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
-        getWebDriver().manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
-        getWebDriver().findElement(By.xpath(xpath));
     }
 
     //------------------------- HELPERS -------------------------//

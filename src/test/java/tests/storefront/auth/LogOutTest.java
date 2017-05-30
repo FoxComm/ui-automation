@@ -58,7 +58,7 @@ public class LogOutTest extends Preconditions {
         p.selectInUserMenu("LOG OUT");
 
         p.logInLnk().shouldBe(visible);
-        assertUrl(getUrl(), storefrontUrl);
+        assertUrl(getUrl(), storefrontUrl, 3000);
     }
 
     @Test(priority = 3)
@@ -78,7 +78,7 @@ public class LogOutTest extends Preconditions {
         shouldBeVisible(p.confirmationOrderNumber(), "Probably order isn't placed");
 
         p.selectInUserMenu("LOG OUT");
-        assertUrl(getUrl(), storefrontUrl);
+        assertUrl(getUrl(), storefrontUrl, 3000);
     }
 
     @AfterMethod(alwaysRun = true)

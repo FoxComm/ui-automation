@@ -50,6 +50,7 @@ public class Variables extends TestNGDataProviders {
     protected static String productTitle;
     protected static String productSlug;
     protected static List<String> products = new ArrayList<>();
+    protected static List<String> productSlugs = new ArrayList<>();
     protected static String productId;
     protected static String variantSKU_1;
     protected static String variantSKU_2;

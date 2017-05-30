@@ -14,6 +14,7 @@ import testdata.Preconditions;
 import java.io.IOException;
 
 import static com.codeborne.selenide.Condition.*;
+import static com.codeborne.selenide.Configuration.timeout;
 import static com.codeborne.selenide.Selenide.refresh;
 import static org.testng.Assert.assertEquals;
 import static testdata.api.collection.Auth.loginAsAdmin;
@@ -37,16 +38,14 @@ public class GuestCheckoutTest extends Preconditions {
     public void guestCheckoutAuth() throws IOException {
         provideTestData("an active product visible on storefront");
 
-        p = openPage(storefrontUrl, StorefrontPage.class);
-        p.navigateToCategory(storefrontCategory);
-        p.openPDP(productTitle);
+        p = openPage(storefrontUrl+"/products/"+productSlug, StorefrontPage.class);
         p.clickAddToCartBtn();
         p.clickCheckoutBtn_cart();
 
         p.logInBtn().shouldBe(visible);
         p.signUpLnk().shouldBe(visible);
         p.checkoutBtn_guestAuth().shouldBe(visible);
-        assertUrl(getUrl(), storefrontUrl + "/checkout");
+        assertUrl(getUrl(), storefrontUrl + "/checkout", timeout);
     }
 
     @Test(priority = 2)
@@ -57,16 +56,14 @@ public class GuestCheckoutTest extends Preconditions {
     public void proceedToCheckout_nonTakenEmail() throws IOException {
         provideTestData("an active product visible on storefront");
 
-        p = openPage(storefrontUrl, StorefrontPage.class);
-        p.navigateToCategory(storefrontCategory);
-        p.openPDP(productTitle);
+        p = openPage(storefrontUrl+"/products/"+productSlug, StorefrontPage.class);
         p.clickAddToCartBtn();
         p.clickCheckoutBtn_cart();
         p.setGuestEmail_guestAuth("qatest2278+" + generateRandomID() + "@gmail.com");
         p.clickCheckoutBtn_guestAuth();
 
         p.grandTotal().shouldBe(visible);
-        assertUrl(getUrl(), storefrontUrl + "/checkout");
+        assertUrl(getUrl(), storefrontUrl + "/checkout", timeout);
     }
 
     @Test(priority = 3)
@@ -77,9 +74,7 @@ public class GuestCheckoutTest extends Preconditions {
     public void proceedToCheckout_takenEmail() throws IOException {
         provideTestData("registered customer, active product on storefront");
 
-        p = openPage(storefrontUrl, StorefrontPage.class);
-        p.navigateToCategory(storefrontCategory);
-        p.openPDP(productTitle);
+        p = openPage(storefrontUrl+"/products/"+productSlug, StorefrontPage.class);
         p.clickAddToCartBtn();
         p.clickCheckoutBtn_cart();
         p.setGuestEmail_guestAuth(customerEmail);
@@ -87,7 +82,7 @@ public class GuestCheckoutTest extends Preconditions {
 
         p.grandTotal().shouldBe(visible);
         p.lineItem_checkout(productTitle).shouldBe(visible);
-        assertUrl(getUrl(), storefrontUrl + "/checkout");
+        assertUrl(getUrl(), storefrontUrl + "/checkout", timeout);
     }
 
     @Test(priority = 4)
@@ -98,9 +93,7 @@ public class GuestCheckoutTest extends Preconditions {
     public void guestCartMergedIntoRegisteredOnCheckout_lineItems() throws IOException {
         provideTestData("a customer ready to checkout, 2 active products, 1 in cart");
 
-        p = openPage(storefrontUrl, StorefrontPage.class);
-        p.navigateToCategory(storefrontCategory);
-        p.openPDP(products.get(1));
+        p = openPage(storefrontUrl+"/products/"+productSlugs.get(1), StorefrontPage.class);
         p.clickAddToCartBtn();
         p.clickCheckoutBtn_cart();
         p.logIn_guestAuth(customerEmail, "78qa22!#");
@@ -118,9 +111,7 @@ public class GuestCheckoutTest extends Preconditions {
     public void guestCartMergedIntoRegisteredOnCheckout_coupon() throws IOException {
         provideTestData("a customer ready to checkout, single code coupon code");
 
-        p = openPage(storefrontUrl, StorefrontPage.class);
-        p.navigateToCategory(storefrontCategory);
-        p.openPDP(productTitle);
+        p = openPage(storefrontUrl+"/products/"+productSlug, StorefrontPage.class);
         p.clickAddToCartBtn();
         p.applyCoupon(singleCouponCode);
         p.clickCheckoutBtn_cart();
@@ -142,9 +133,7 @@ public class GuestCheckoutTest extends Preconditions {
         provideTestData("an active product visible on storefront");
         String randomId = generateRandomID();
 
-        p = openPage(storefrontUrl, StorefrontPage.class);
-        p.navigateToCategory(storefrontCategory);
-        p.openPDP(productTitle);
+        p = openPage(storefrontUrl+"/products/"+productSlug, StorefrontPage.class);
         p.clickAddToCartBtn();
         p.clickCheckoutBtn_cart();
         p.clickSignUpLnk();
@@ -165,9 +154,7 @@ public class GuestCheckoutTest extends Preconditions {
         provideTestData("product<active>, coupon<any, single code>");
         String randomId = generateRandomID();
 
-        p = openPage(storefrontUrl, StorefrontPage.class);
-        p.navigateToCategory(storefrontCategory);
-        p.openPDP(productTitle);
+        p = openPage(storefrontUrl+"/products/"+productSlug, StorefrontPage.class);
         p.clickAddToCartBtn();
         p.applyCoupon(singleCouponCode);
         p.clickCheckoutBtn_cart();
@@ -198,9 +185,7 @@ public class GuestCheckoutTest extends Preconditions {
         provideTestData("an active product visible on storefront");
         String randomId = generateRandomID();
 
-        p = openPage(storefrontUrl, StorefrontPage.class);
-        p.navigateToCategory(storefrontCategory);
-        p.openPDP(productTitle);
+        p = openPage(storefrontUrl+"/products/"+productSlug, StorefrontPage.class);
         p.clickAddToCartBtn();
         p.closeCart();
         p.clickLogInLnk();
@@ -224,9 +209,7 @@ public class GuestCheckoutTest extends Preconditions {
         provideTestData("product<active>, coupon<any, single code>");
         String randomId = generateRandomID();
 
-        p = openPage(storefrontUrl, StorefrontPage.class);
-        p.navigateToCategory(storefrontCategory);
-        p.openPDP(productTitle);
+        p = openPage(storefrontUrl+"/products/"+productSlug, StorefrontPage.class);
         p.clickAddToCartBtn();
         p.applyCoupon(singleCouponCode);
         shouldBeVisible(p.appliedCoupon(), "");
@@ -251,9 +234,7 @@ public class GuestCheckoutTest extends Preconditions {
         provideTestData("an active product, a gift card");
         String randomId = generateRandomID();
 
-        p = openPage(storefrontUrl, StorefrontPage.class);
-        p.navigateToCategory(storefrontCategory);
-        p.openPDP(productTitle);
+        p = openPage(storefrontUrl+"/products/"+productSlug, StorefrontPage.class);
         p.clickAddToCartBtn();
         p.clickCheckoutBtn_cart();
         p.setGuestEmail_guestAuth("qatest2278+" + randomId + "@gmail.com");
@@ -288,9 +269,7 @@ public class GuestCheckoutTest extends Preconditions {
         provideTestData("an active product visible on storefront");
         String randomId = generateRandomID();
 
-        p = openPage(storefrontUrl, StorefrontPage.class);
-        p.navigateToCategory(storefrontCategory);
-        p.openPDP(productTitle);
+        p = openPage(storefrontUrl+"/products/"+productSlug, StorefrontPage.class);
         p.clickAddToCartBtn();
         p.clickCheckoutBtn_cart();
         p.setGuestEmail_guestAuth("qatest2278+" + randomId + "@gmail.com");
@@ -320,9 +299,7 @@ public class GuestCheckoutTest extends Preconditions {
         provideTestData("an active product visible on storefront");
         String randomId = generateRandomID();
 
-        p = openPage(storefrontUrl, StorefrontPage.class);
-        p.navigateToCategory(storefrontCategory);
-        p.openPDP(productTitle);
+        p = openPage(storefrontUrl+"/products/"+productSlug, StorefrontPage.class);
         p.clickAddToCartBtn();
         p.clickCheckoutBtn_cart();
         p.setGuestEmail_guestAuth("qatest2278@gmail.com");
@@ -351,9 +328,7 @@ public class GuestCheckoutTest extends Preconditions {
     public void canSignIn_guestCheckoutWithTakenEmail() throws IOException {
         provideTestData("a storefront registered customer, an active product");
 
-        p = openPage(storefrontUrl, StorefrontPage.class);
-        p.navigateToCategory(storefrontCategory);
-        p.openPDP(productTitle);
+        p = openPage(storefrontUrl+"/products/"+productSlug, StorefrontPage.class);
         p.clickAddToCartBtn();
         p.clickCheckoutBtn_cart();
         p.setGuestEmail_guestAuth(customerEmail);

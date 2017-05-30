@@ -27,6 +27,7 @@ public class Preconditions extends Helpers {
 
         skuCodes.clear();
         products.clear();
+        productSlugs.clear();
         bulkCodes.clear();
         System.out.println("==== ==== ==== ====");
         loginAsAdmin(adminEmail, adminPassword, adminOrg);
@@ -1063,9 +1064,11 @@ public class Preconditions extends Helpers {
                 createSKU_active();
                 createProduct_active(skuId, skuCode, storefrontCategory);
                 products.add(productTitle);
+                productSlugs.add(productSlug);
                 createSKU_active();
                 createProduct_active(skuId, skuCode, storefrontCategory);
                 products.add(productTitle);
+                productSlugs.add(productSlug);
                 break;
 
             case "a customer signed up on storefront, product<active>, coupon<any, single code>":
@@ -1112,10 +1115,12 @@ public class Preconditions extends Helpers {
                 createSKU_active();
                 createProduct_active(skuId, skuCode, storefrontCategory);
                 products.add(productTitle);
+                productSlugs.add(productSlug);
                 updLineItems(cartId, skuCode, 1);
                 createSKU_active();
                 createProduct_active(skuId, skuCode, storefrontCategory);
                 products.add(productTitle);
+                productSlugs.add(productSlug);
                 break;
 
             //---------------------------------- SF: SHIPPING ADDRESS --------------------------------//
@@ -1499,12 +1504,14 @@ public class Preconditions extends Helpers {
                 createProduct_active(skuId, skuCode, storefrontCategory);
                 skuCodes.add(skuCode);
                 products.add(productTitle);
+                productSlugs.add(productSlug);
                 increaseOnHandQty(skuCode, "Sellable", 1);
                 updLineItems(cartId, skuCode, 1);
                 createSKU_active();
                 createProduct_active(skuId, skuCode, storefrontCategory);
                 skuCodes.add(skuCode);
                 products.add(productTitle);
+                productSlugs.add(productSlug);
                 setShipAddress(cartId,
                         "John Doe",
                         4177, 234,
@@ -1527,11 +1534,13 @@ public class Preconditions extends Helpers {
                 createProduct_active(skuId, skuCode, storefrontCategory);
                 skuCodes.add(skuCode);
                 products.add(productTitle);
+                productSlugs.add(productSlug);
                 updLineItems(cartId, skuCode, 1);
                 createSKU_active();
                 createProduct_active(skuId, skuCode, storefrontCategory);
                 skuCodes.add(skuCode);
                 products.add(productTitle);
+                productSlugs.add(productSlug);
                 break;
 
             case "an active product, a gift card":
@@ -1548,11 +1557,13 @@ public class Preconditions extends Helpers {
                 createProduct_active(skuId, skuCode, storefrontCategory);
                 skuCodes.add(skuCode);
                 products.add(productTitle);
+                productSlugs.add(productSlug);
                 updLineItems(cartId, skuCode, 1);
                 createSKU_active();
                 createProduct_active(skuId, skuCode, storefrontCategory);
                 skuCodes.add(skuCode);
                 products.add(productTitle);
+                productSlugs.add(productSlug);
                 createPromotion_coupon();
                 createCoupon(promotionId);
                 generateSingleCode(couponId);
@@ -1607,21 +1618,26 @@ public class Preconditions extends Helpers {
                 createProduct_active(skuId, skuCode, "ENTRÉES");
                 addTag_product(productId, "POULTRY");
                 products.add(productTitle);
+                productSlugs.add(productSlug);
                 createSKU_active();
                 createProduct_active(skuId, skuCode, "ENTRÉES");
                 addTag_product(productId, "SEAFOOD");
                 products.add(productTitle);
+                productSlugs.add(productSlug);
                 createSKU_active();
                 createProduct_active(skuId, skuCode, "ENTRÉES");
                 addTag_product(productId, "MEAT");
                 products.add(productTitle);
+                productSlugs.add(productSlug);
                 createSKU_active();
                 createProduct_active(skuId, skuCode, "ENTRÉES");
                 addTag_product(productId, "VEGETARIAN");
                 products.add(productTitle);
+                productSlugs.add(productSlug);
                 createSKU_active();
                 createProduct_active(skuId, skuCode, "ENTRÉES");
                 products.add(productTitle);
+                productSlugs.add(productSlug);
                 createSKU_active();
                 waitForProductAppearInEs("int", "productId", productId);
                 break;

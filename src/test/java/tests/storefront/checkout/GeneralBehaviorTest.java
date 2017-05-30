@@ -14,6 +14,7 @@ import testdata.Preconditions;
 import java.io.IOException;
 
 import static com.codeborne.selenide.Condition.*;
+import static com.codeborne.selenide.Configuration.timeout;
 import static testdata.api.collection.Cart.getCartTotals;
 
 public class GeneralBehaviorTest extends Preconditions {
@@ -181,7 +182,7 @@ public class GeneralBehaviorTest extends Preconditions {
 
         p.confirmationOrderNumber().shouldBe(visible);
         p.takeMeHomeBtn().shouldBe(visible);
-        assertUrl(getUrl(), storefrontUrl + "checkout/done");
+        assertUrl(getUrl(), storefrontUrl + "checkout/done", timeout);
     }
 
     @Test(priority = 8)
