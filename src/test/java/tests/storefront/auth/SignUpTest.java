@@ -29,94 +29,106 @@ public class SignUpTest extends Preconditions {
 
         p = openPage(storefrontUrl, StorefrontPage.class);
         p.clickLogInLnk();
-        p.clickSignUpLnk();
         p.setName("Customer " + randomId);
-        p.setEmail("qatest2278+" + randomId + "@gmail.com");
-        p.setPassword("78qa22!#");
+        p.setEmail_signUp("qatest2278+" + randomId + "@gmail.com");
+        p.setPassword_signUp("78qa22!#");
         p.clickSignUpBtn();
 
         p.userMenuBtn_sf().should(matchText(randomId.toUpperCase()));
     }
 
     @Test(priority = 2)
+    @Severity(SeverityLevel.NORMAL)
+    @Features("Storefront-TPG")
+    @Stories("Auth : Sign Up")
     @Description("Name doesn't need to be unique on sign up")
     public void signUp_nameIsNotUnique() throws IOException {
         provideTestData("a customer signed up on storefront");
 
         p = openPage(storefrontUrl, StorefrontPage.class);
         p.clickLogInLnk();
-        p.clickSignUpLnk();
         p.setName(customerName);
-        p.setEmail("qatest2278+" + generateRandomID() + "@gmail.com");
-        p.setPassword("78qa22!#");
+        p.setEmail_signUp("qatest2278+" + generateRandomID() + "@gmail.com");
+        p.setPassword_signUp("78qa22!#");
         p.clickSignUpBtn();
 
         p.userMenuBtn_sf().should(matchText(customerName.toUpperCase()));
     }
 
     @Test(priority = 3)
+    @Severity(SeverityLevel.BLOCKER)
+    @Features("Storefront-TPG")
+    @Stories("Auth : Sign Up")
     @Description("Can't sign up using taken email")
     public void signUp_incorrectCredentials_email() throws IOException {
         provideTestData("a customer signed up on storefront");
 
         p = openPage(storefrontUrl, StorefrontPage.class);
         p.clickLogInLnk();
-        p.clickSignUpLnk();
         p.setName("Customer " + generateRandomID());
-        p.setEmail(customerEmail);
-        p.setPassword("78qa22!#");
+        p.setEmail_signUp(customerEmail);
+        p.setPassword_signUp("78qa22!#");
         p.clickSignUpBtn();
 
         p.errorMessage("The email address you entered is already in use").shouldBe(visible);
     }
 
     @Test(priority = 4)
+    @Severity(SeverityLevel.NORMAL)
+    @Features("Storefront-TPG")
+    @Stories("Auth : Sign Up")
     @Description("Auth form is closed after user has successfully signed in")
     public void authFormIsClosed_SignUp() {
         String randomId = generateRandomID();
 
         p = openPage(storefrontUrl, StorefrontPage.class);
         p.clickLogInLnk();
-        p.clickSignUpLnk();
         p.setName("Customer " + randomId);
-        p.setEmail("qatest2278+" + randomId + "@gmail.com");
-        p.setPassword("78qa22!#");
+        p.setEmail_signUp("qatest2278+" + randomId + "@gmail.com");
+        p.setPassword_signUp("78qa22!#");
         p.clickSignUpBtn();
 
         p.userMenuBtn_sf().should(matchText(randomId.toUpperCase()));
     }
 
-    @Test(priority = 5)
+    @Test(priority = 5, enabled = false)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Storefront-TPG")
+    @Stories("Auth : Sign Up")
     @Description("Can sign up with an email used for guest checkout earlier")
     public void canSignUp_guestCheckoutEmail() {
         //TODO: add method to Preconditions that does guest checkout
     }
 
     @Test(priority = 6)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Storefront-TPG")
+    @Stories("Auth : Sign Up")
     @Description("Customer is signed in after successful sign up")
     public void authFormClosed_signUpSuccess() {
         String randomId = generateRandomID();
 
         p = openPage(storefrontUrl, StorefrontPage.class);
         p.clickLogInLnk();
-        p.clickSignUpLnk();
         p.setName("Customer " + randomId);
-        p.setEmail("qatest2278+" + randomId + "@gmail.com");
-        p.setPassword("78qa22!#");
+        p.setEmail_signUp("qatest2278+" + randomId + "@gmail.com");
+        p.setPassword_signUp("78qa22!#");
         p.clickSignUpBtn();
 
         p.closeAuthFormBtn().shouldNotBe(visible);
     }
 
-    @Test(priority = 7)
+    @Test(priority = 7, enabled = false)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Storefront-TPG")
+    @Stories("Auth : Sign Up")
     @Description("Customer is signed in after successful sign up")
     public void closeAuthForm_abortSignUp() {
         p = openPage(storefrontUrl, StorefrontPage.class);
         p.clickLogInLnk();
-        p.clickSignUpLnk();
         p.setName("Abort Registration");
-        p.setEmail("wont@register.com");
-        p.setPassword("78qa22!#");
+        p.setEmail_signUp("wont@register.com");
+        p.setPassword_signUp("78qa22!#");
         p.closeAuthForm();
 
         p.closeAuthFormBtn().shouldNotBe(visible);

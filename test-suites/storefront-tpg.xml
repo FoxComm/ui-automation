@@ -65,11 +65,11 @@
         </classes>
     </test>
 
-    <!--<test name="Guest Session > Checkout">-->
-        <!--<classes>-->
-            <!--<class name="tests.storefront.guestsession.GuestCheckoutTest"/>-->
-        <!--</classes>-->
-    <!--</test>-->
+    <test name="Guest Session > Checkout">
+        <classes>
+            <class name="tests.storefront.guestsession.GuestCheckoutTest"/>
+        </classes>
+    </test>
     <test name="Guest Session > Cart Sync">
         <classes>
             <class name="tests.storefront.guestsession.CartTest"/>

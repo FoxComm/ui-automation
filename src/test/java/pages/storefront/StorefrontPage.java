@@ -48,11 +48,16 @@ public class StorefrontPage extends NavigationPage {
         click(userMenuLink(linkText));
     }
 
-    @Step("Open \"User Menu\" and click <{0}>")
-    public void selectInUserMenu(String menuLink) {
-        menuLink = menuLink.toUpperCase();
+    @Step("Log out")
+    public void logOut() {
         openUserMenu();
-        selectMenuLink(menuLink);
+        selectMenuLink("LOG OUT");
+    }
+
+    @Step("Navigate to \"Profile\" page")
+    public void openProfile() {
+        openUserMenu();
+        selectMenuLink("PROFILE");
     }
 
     @Step("Click logo")
@@ -74,7 +79,11 @@ public class StorefrontPage extends NavigationPage {
     }
 
     public void cleanUp() {
-        close();
+        try {
+            close();
+        } catch (NullPointerException ignored) {
+
+        }
     }
 
 }

@@ -48,7 +48,7 @@ public class CartTest extends Preconditions {
         p.clickAddToCartBtn();
         p.removeLineItem("1");
         p.closeCart();
-        p.selectInUserMenu("LOG OUT");
+        p.logOut();
         p.logIn(customerEmail, "78qa22!#");
 
         p.cartQty().shouldHave(text("1"));
@@ -90,7 +90,7 @@ public class CartTest extends Preconditions {
         p.closeCart();
         p.logIn(customerEmail, "78qa22!#");
         shouldNotHaveText(p.cartQty(), "0", "");
-        p.selectInUserMenu("LOG OUT");
+        p.openProfile();
 
         p.cartQty().shouldHave(text("0"));
         p.openCart();

@@ -29,30 +29,45 @@ public class PasswordResetTest extends Preconditions {
         p = openPage(storefrontUrl, StorefrontPage.class);
         p.clickLogInLnk();
         p.clickForgotLnk();
-        p.setEmail(customerEmail);
+        p.setEmail_passReset(customerEmail);
         p.clickSubmitBtn();
-        p.clickBackToSignInBtn();
-        p.setEmail(customerEmail);
-        p.setPassword("78qa22!#");
+        p.clickBackToLogInBtn();
+        p.setEmail_passReset(customerEmail);
+        p.setPassword_logIn("78qa22!#");
         p.clickLogInBtn();
 
         p.userMenuBtn_sf().shouldBe(visible);
     }
 
     @Test(priority = 2)
-    @Severity(SeverityLevel.NORMAL)
+    @Severity(SeverityLevel.MINOR)
     @Features("Storefront-TPG")
     @Stories("Auth : Password Reset")
-    @Description("Can't submit for password recovery an email that doesn't exist in the system")
-    public void cantRecoverUnregisteredAccount() {
+    @Description("Abort password reset")
+    public void abortPasswordReset() {
         p = openPage(storefrontUrl, StorefrontPage.class);
         p.clickLogInLnk();
         p.clickForgotLnk();
-        p.setEmail("this.mail@doesnt.exist");
-        p.clickSubmitBtn();
+        p.clickBackToLogInLnk();
 
-        p.message_passRecovery("Oops! We don’t have a user with that email.").shouldBe(visible);
+        p.logInBtn().shouldBe(visible);
+        p.signUpBtn().shouldBe(visible);
     }
+
+//    @Test(priority = 3)
+//    @Severity(SeverityLevel.NORMAL)
+//    @Features("Storefront-TPG")
+//    @Stories("Auth : Password Reset")
+//    @Description("Can't submit for password recovery an email that doesn't exist in the system")
+//    public void cantRecoverUnregisteredAccount() {
+//        p = openPage(storefrontUrl, StorefrontPage.class);
+//        p.clickLogInLnk();
+//        p.clickForgotLnk();
+//        p.setEmail_passReset("this.mail@doesnt.exist");
+//        p.clickSubmitBtn();
+//
+//        p.message_passRecovery("Oops! We don’t have a user with that email.").shouldBe(visible);
+//    }
 
     @AfterMethod(alwaysRun = true)
     public void cleanUp_after() {

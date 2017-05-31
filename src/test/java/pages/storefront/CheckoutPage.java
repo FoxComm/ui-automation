@@ -17,6 +17,10 @@ public class CheckoutPage extends CartPage {
         return $(xpath("//ol[contains(@class, 'nav-list')]/li[" + index + "]"));
     }
 
+    public SelenideElement signUpLnk() {
+        return $(xpath("//a[text()='Sign Up']"));
+    }
+
     /**
      * email field at "LOG IN & CHECKOUT" form
      * (which is used for sign in & checkout as a registered customer instead of doing guest checkout)
@@ -238,19 +242,24 @@ public class CheckoutPage extends CartPage {
 
     //---------------------------------------------- STEPS --------------------------------------------
 
+    @Step("Click \"Sign Up\" link")
+    public void clickSignUpLnk() {
+        click(signUpLnk());
+    }
+
     @Step("Log in as <{0}> / <{1}> at guest checkout auth")
     public void logIn_guestAuth(String email, String password) {
         setEmail_guestAuth(email);
-        setPassword(password);
+        setPassword_logIn(password);
         clickLogInBtn();
     }
 
-    @Step("Set \"EMAIL\" fld val to <{0}>")
+    @Step("Set \"EMAIL\" fld to <{0}>")
     private void setEmail_guestAuth(String email) {
         setFieldVal(emailFld_guestAuth(), email);
     }
 
-    @Step("Set guest's \"Email\" fld to <{0}>")
+    @Step("Set guest \"Email\" fld to <{0}>")
     public void setGuestEmail_guestAuth(String email) {
         setFieldVal(guestEmailFld_auth(), email);
     }

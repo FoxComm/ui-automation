@@ -29,8 +29,8 @@ public class SignInTest extends Preconditions {
 
         p = openPage(storefrontUrl, StorefrontPage.class);
         p.clickLogInLnk();
-        p.setEmail(customerEmail);
-        p.setPassword("78qa22!#");
+        p.setEmail_logIn(customerEmail);
+        p.setPassword_logIn("78qa22!#");
         p.clickLogInBtn();
 
         p.userMenuBtn_sf().should(matchText(customerName.toUpperCase()));
@@ -44,8 +44,8 @@ public class SignInTest extends Preconditions {
     public void signIn_incorrectCreds() throws IOException {
         p = openPage(storefrontUrl, StorefrontPage.class);
         p.clickLogInLnk();
-        p.setEmail("incorrect@email.com");
-        p.setPassword("incorrectPassword");
+        p.setEmail_logIn("incorrect@email.com");
+        p.setPassword_logIn("incorrectPassword");
         p.clickLogInBtn();
 
         p.errorMsg_authForm("Email or password is invalid").shouldBe(visible);
@@ -65,7 +65,7 @@ public class SignInTest extends Preconditions {
         p.closeAuthFormBtn().shouldNotBe(visible);
     }
 
-    @Test(priority = 4)
+    @Test(priority = 4, enabled = false)
     @Severity(SeverityLevel.CRITICAL)
     @Features("Storefront-TPG")
     @Stories("Auth : Sign In")
@@ -73,8 +73,8 @@ public class SignInTest extends Preconditions {
     public void closeAuthForm_abortSignIn() {
         p = openPage(storefrontUrl, StorefrontPage.class);
         p.clickLogInLnk();
-        p.setEmail("dummy@mail.com");
-        p.setPassword("dummyPassword");
+        p.setEmail_logIn("dummy@mail.com");
+        p.setPassword_logIn("dummyPassword");
         p.closeAuthForm();
 
         p.closeAuthFormBtn().shouldNotBe(visible);

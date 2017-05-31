@@ -19,23 +19,31 @@ public class AuthPage extends BasePage {
         return $(xpath("//input[@name='username']"));
     }
 
-    public SelenideElement emailFld() {
+    private SelenideElement emailFld_passReset() {
         return $(xpath("//input[@type='email']"));
+    }
+
+    private SelenideElement emailFld_logIn() {
+        return $(xpath("//div[text()='LOG IN']/following-sibling::*//input[@type='email']"));
+    }
+
+    private SelenideElement emailFld_signUp() {
+        return $(xpath("//div[contains(text(), 'SIGN UP')]/following-sibling::*//input[@type='email']"));
     }
 
     public SelenideElement passwordFld() {
         return $(xpath("//input[@type='password']"));
     }
 
+    public SelenideElement passwordFld_signUp() {
+        return $(xpath("//div[contains(text(), 'SIGN UP')]/following-sibling::*//input[@type='password']"));
+    }
+
     public SelenideElement logInBtn() {
         return $(xpath("//button[@type='submit' and text()='LOG IN']"));
     }
 
-    public SelenideElement signUpLnk() {
-        return $(xpath("//a[text()='Sign Up']"));
-    }
-
-    private SelenideElement signUpBtn() {
+    public SelenideElement signUpBtn() {
         return $(xpath("//button[@type='submit' and text()='SIGN UP']"));
     }
 
@@ -47,8 +55,12 @@ public class AuthPage extends BasePage {
         return $(xpath("//button[@type='submit' and text()='SUBMIT']"));
     }
 
-    private SelenideElement backToSignInBtn() {
-        return $(xpath("//button[text()='BACK TO SIGN IN']"));
+    private SelenideElement backToLogInBtn() {
+        return $(xpath("//button[text()='BACK TO LOG IN']"));
+    }
+
+    private SelenideElement backToLogInLnk() {
+        return $(xpath("//a[text()='BACK TO LOG IN']"));
     }
 
     //TODO: id
@@ -71,15 +83,29 @@ public class AuthPage extends BasePage {
         click(logInLnk());
     }
 
+    @Step("Set log in \"Email\" fld to <{0}>")
+    public void setEmail_logIn(String email) {
+        setFieldVal(emailFld_logIn(), email);
+    }
+
+    @Step("Set sign up \"Email\" fld to <{0}>")
+    public void setEmail_signUp(String email) {
+        setFieldVal(emailFld_signUp(), email);
+    }
+
     @Step("Set \"Email\" fld to <{0}>")
-    public void setEmail(String email) {
-        setFieldVal(emailFld(), email);
+    public void setEmail_passReset(String email) {
+        setFieldVal(emailFld_passReset(), email);
     }
 
     @Step("Set \"Password\" fld to <{0}>")
-    public void setPassword(String password) {
+    public void setPassword_logIn(String password) {
         setFieldVal(passwordFld(), password);
+    }
 
+    @Step("Set sign up \"Password\" fld to <{0}>")
+    public void setPassword_signUp(String password) {
+        setFieldVal(passwordFld_signUp(), password);
     }
 
     @Step("Click \"Log In\" btn")
@@ -90,21 +116,16 @@ public class AuthPage extends BasePage {
     @Step("Sign in with credentials email:<{0}> / password:<{1}>")
     public void logIn(String email, String password) {
         clickLogInLnk();
-        setEmail(email);
-        setPassword(password);
+        setEmail_logIn(email);
+        setPassword_logIn(password);
         clickLogInBtn();
     }
 
     @Step("Fill out sign up form; name:<{0}>, email:<{1}>, password:<{2}>")
-    public void fillOutSignUpForm(String name, String email, String pass) {
+    public void fillOutSignUpForm(String name, String email, String password) {
         setName(name);
-        setEmail(email);
-        setPassword(pass);
-    }
-
-    @Step("Click \"Sign Up\" lnk")
-    public void clickSignUpLnk() {
-        click(signUpLnk());
+        setEmail_signUp(email);
+        setPassword_signUp(password);
     }
 
     @Step("Set \"First & Last Name\" fld to <{0}>")
@@ -128,8 +149,13 @@ public class AuthPage extends BasePage {
     }
 
     @Step("Click \"BACK TO SIGN IN\" btn")
-    public void clickBackToSignInBtn() {
-        click(backToSignInBtn());
+    public void clickBackToLogInBtn() {
+        click(backToLogInBtn());
+    }
+
+    @Step("Click \"BACK TO SIGN IN\" link")
+    public void clickBackToLogInLnk() {
+        click(backToLogInLnk());
     }
 
     @Step("Click \"X\" btn to close auth form")

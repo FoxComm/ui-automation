@@ -35,7 +35,7 @@ public class ShippingAddressTest extends Preconditions {
         p.shipAddress_checkout().shouldBe(visible);
         scrollPageUp();
         p.clickLogo();
-        p.selectInUserMenu("PROFILE");
+        p.openProfile();
 
         p.myAddresses().shouldHaveSize(1);
     }
@@ -63,7 +63,7 @@ public class ShippingAddressTest extends Preconditions {
         p.shipAddress_state("1").shouldHave(text("California"));
         scrollPageUp();
         p.clickLogo();
-        p.selectInUserMenu("PROFILE");
+        p.openProfile();
         p.shipAddress_name("1").shouldHave(text("Edited Name"));
         p.shipAddress_zip("1").shouldHave(text("90210"));
         p.shipAddress_state("1").shouldHave(text("California"));

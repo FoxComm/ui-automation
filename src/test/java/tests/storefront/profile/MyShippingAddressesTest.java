@@ -29,7 +29,7 @@ public class MyShippingAddressesTest extends Preconditions {
 
         p = openPage(storefrontUrl, StorefrontPage.class);
         p.logIn(customerEmail, "78qa22!#");
-        p.selectInUserMenu("PROFILE");
+        p.openProfile();
         p.clickAddAddressBtn();
         p.fillOutAddressForm("John Doe", "7500 Roosevelt Way NE", "Block 42", "98115", "9879879766");
         p.cityFld().shouldHave(value("Seattle"));
@@ -48,7 +48,7 @@ public class MyShippingAddressesTest extends Preconditions {
 
         p = openPage(storefrontUrl, StorefrontPage.class);
         p.logIn(customerEmail, "78qa22!#");
-        p.selectInUserMenu("PROFILE");
+        p.openProfile();
         p.clickEditBtn_address("1");
         p.setName_shipAddress("Edited Name");
         p.setZIP("90210");
@@ -70,7 +70,7 @@ public class MyShippingAddressesTest extends Preconditions {
 
         p = openPage(storefrontUrl, StorefrontPage.class);
         p.logIn(customerEmail, "78qa22!#");
-        p.selectInUserMenu("PROFILE");
+        p.openProfile();
         p.clickRemoveBtn_address("1");
         refresh();
 
@@ -87,7 +87,7 @@ public class MyShippingAddressesTest extends Preconditions {
 
         p = openPage(storefrontUrl, StorefrontPage.class);
         p.logIn(customerEmail, "78qa22!#");
-        p.selectInUserMenu("PROFILE");
+        p.openProfile();
         p.clickRemoveBtn_address("1");
         p.clickRestoreBtn_address("1");
 
@@ -105,7 +105,7 @@ public class MyShippingAddressesTest extends Preconditions {
 
         p = openPage(storefrontUrl, StorefrontPage.class);
         p.logIn(customerEmail, "78qa22!#");
-        p.selectInUserMenu("PROFILE");
+        p.openProfile();
         p.clickEditBtn_address("2");
         p.clickDefaultChbx();
         p.clickSaveBtn();
@@ -123,7 +123,7 @@ public class MyShippingAddressesTest extends Preconditions {
 
         p = openPage(storefrontUrl, StorefrontPage.class);
         p.logIn(customerEmail, "78qa22!#");
-        p.selectInUserMenu("PROFILE");
+        p.openProfile();
         p.clickAddAddressBtn();
         p.fillOutAddressForm("John Doe", "7500 Roosevelt Way NE", "Block 42", "98115", "9879879766");
         p.clickDefaultChbx();
@@ -142,7 +142,7 @@ public class MyShippingAddressesTest extends Preconditions {
 
         p = openPage(storefrontUrl, StorefrontPage.class);
         p.logIn(customerEmail, "78qa22!#");
-        p.selectInUserMenu("PROFILE");
+        p.openProfile();
         p.clickAddAddressBtn();
         p.fillOutAddressForm("John Doe", "7500 Roosevelt Way NE", "Block 42", "98115", "9879879766");
         p.clickDefaultChbx();

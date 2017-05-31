@@ -36,7 +36,6 @@ public class GuestCheckoutTest extends Preconditions {
         p.clickCheckoutBtn_cart();
 
         p.logInBtn().shouldBe(visible);
-        p.signUpLnk().shouldBe(visible);
         p.checkoutBtn_guestAuth().shouldBe(visible);
         assertUrl(getUrl(), storefrontUrl + "/checkout", timeout);
     }
@@ -131,7 +130,7 @@ public class GuestCheckoutTest extends Preconditions {
         p.clickCheckoutBtn_cart();
         p.clickSignUpLnk();
         p.setName("Customer " + randomId);
-        p.setEmail("qatest2278+" + randomId + "@gmail.com");
+        p.setEmail_signUp("qatest2278+" + randomId + "@gmail.com");
         p.clickSignUpBtn();
 
         p.lineItem_checkout(productTitle).shouldBe(visible);
@@ -153,7 +152,8 @@ public class GuestCheckoutTest extends Preconditions {
         p.clickCheckoutBtn_cart();
         p.clickSignUpLnk();
         p.setName("Customer " + randomId);
-        p.setEmail("qatest2278+" + randomId + "@gmail.com");
+        p.setEmail_signUp("qatest2278+" + randomId + "@gmail.com");
+        p.setPassword_signUp("78qa22!#");
         p.clickSignUpBtn();
         p.fillOutAddressForm("John Doe", "7500 Roosevelt Way NE", "Suit 42", "98115", "9879879876");
         p.clickSaveAddressBtn();
@@ -174,7 +174,7 @@ public class GuestCheckoutTest extends Preconditions {
     @Features("Storefront-TPG")
     @Stories("Guest Checkout")
     @Description("Line items in guest cart are saved if customer signs up while browsing the store")
-    public void guestCartIsSavedOnSignUp_storeBrowsing_lineItems() throws IOException {
+    public void guestCartSavedOnSignUp_storeBrowsing_lineItems() throws IOException {
         provideTestData("an active product visible on storefront");
         String randomId = generateRandomID();
 
@@ -182,9 +182,9 @@ public class GuestCheckoutTest extends Preconditions {
         p.clickAddToCartBtn();
         p.closeCart();
         p.clickLogInLnk();
-        p.clickSignUpLnk();
         p.setName("Customer " + randomId);
-        p.setEmail("qatest2278+" + randomId + "@gmail.com");
+        p.setEmail_signUp("qatest2278+" + randomId + "@gmail.com");
+        p.setPassword_signUp("78qa22!#");
         p.clickSignUpBtn();
 
         p.cartQty().shouldHave(text("1"));
@@ -198,7 +198,7 @@ public class GuestCheckoutTest extends Preconditions {
     @Features("Storefront-TPG")
     @Stories("Guest Checkout")
     @Description("Coupon in guest cart is saved if customer signs up while browsing the store")
-    public void guestCartIsSavedOnSignUp_storeBrowsing_coupon() throws IOException {
+    public void guestCartSavedOnSignUp_storeBrowsing_coupon() throws IOException {
         provideTestData("product<active>, coupon<any, single code>");
         String randomId = generateRandomID();
 
@@ -208,9 +208,9 @@ public class GuestCheckoutTest extends Preconditions {
         shouldBeVisible(p.appliedCoupon(), "");
         p.closeCart();
         p.clickLogInLnk();
-        p.clickSignUpLnk();
         p.setName("Customer " + randomId);
-        p.setEmail("qatest2278+" + randomId + "@gmail.com");
+        p.setEmail_signUp("qatest2278+" + randomId + "@gmail.com");
+        p.setPassword_signUp("78qa22!#");
         p.clickSignUpBtn();
 
         p.openCart();
@@ -222,8 +222,8 @@ public class GuestCheckoutTest extends Preconditions {
     @Severity(SeverityLevel.CRITICAL)
     @Features("Storefront-TPG")
     @Stories("Guest Checkout")
-    @Description("Gift card applied to cart as a payment during guest checkout should remain in the cart if guest signs up with the same email")
-    public void guestCartIsSavedOnSignUp_paymentGiftCard() throws IOException {
+    @Description("Gift card applied to cart as a payment during guest checkout remains in the cart if guest signs up with the same email")
+    public void guestCartSavedOnSignUp_paymentGiftCard() throws IOException {
         provideTestData("an active product, a gift card");
         String randomId = generateRandomID();
 
@@ -241,7 +241,6 @@ public class GuestCheckoutTest extends Preconditions {
         scrollPageUp();
         p.clickLogo();
         p.clickLogInLnk();
-        p.clickSignUpLnk();
         p.fillOutSignUpForm("Customer " + randomId, "qatest2278+" + randomId + "@gmail.com", "78qa22!#");
         p.clickSignUpBtn();
         p.openCart();
@@ -273,7 +272,6 @@ public class GuestCheckoutTest extends Preconditions {
         scrollPageUp();
         p.clickLogo();
         p.clickLogInLnk();
-        p.clickSignUpLnk();
         p.fillOutSignUpForm("Customer " + randomId, "qatest2278+" + randomId + "@gmail.com", "78qa22!#");
         p.clickSignUpBtn();
         p.openCart();

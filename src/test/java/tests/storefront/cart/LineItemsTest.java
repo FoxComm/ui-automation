@@ -156,7 +156,7 @@ public class LineItemsTest extends Preconditions {
         p.openCart();
         p.appliedCoupon().shouldBe(visible);
         p.closeCart();
-        p.selectInUserMenu("LOG OUT");
+        p.logOut();
 
         p.cartQty().shouldHave(text("0"));
         p.openCart();

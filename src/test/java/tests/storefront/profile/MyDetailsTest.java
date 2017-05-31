@@ -29,11 +29,11 @@ public class MyDetailsTest extends Preconditions {
 
         p = openPage(storefrontUrl, StorefrontPage.class);
         p.clickLogInLnk();
-        p.setEmail(customerEmail);
-        p.setPassword("78qa22!#");
+        p.setEmail_logIn(customerEmail);
+        p.setPassword_logIn("78qa22!#");
         p.clickLogInBtn();
         shouldMatchText(p.userMenuBtn_sf(), customerName.toUpperCase(), "Failed to edit customer name");
-        p.selectInUserMenu("PROFILE");
+        p.openProfile();
 
         p.changePasswordBtn().shouldBe(visible);
     }
@@ -48,7 +48,7 @@ public class MyDetailsTest extends Preconditions {
         p = openPage(storefrontUrl, StorefrontPage.class);
         p.logIn(customerEmail, "78qa22!#");
 
-        p.selectInUserMenu("PROFILE");
+        p.openProfile();
         p.clickEditLnk("Name");
         p.setNameFld("Edited Name");
         p.clickSaveBtn();
@@ -67,12 +67,12 @@ public class MyDetailsTest extends Preconditions {
         p = openPage(storefrontUrl, StorefrontPage.class);
         p.logIn(customerEmail, "78qa22!#");
 
-        p.selectInUserMenu("PROFILE");
+        p.openProfile();
         p.clickEditLnk("Email");
         p.setEmailFld(newEmail);
         p.clickSaveBtn();
         shouldHaveText(p.userEmail(), newEmail, "Failed to edit customer's \"Email\"");
-        p.selectInUserMenu("LOG OUT");
+        p.logOut();
         p.logIn(newEmail, "78qa22!#");
 
         p.userMenuBtn_sf().should(matchText(customerName.toUpperCase()));
@@ -88,7 +88,7 @@ public class MyDetailsTest extends Preconditions {
 
         p = openPage(storefrontUrl, StorefrontPage.class);
         p.logIn(customerEmail, "78qa22!#");
-        p.selectInUserMenu("PROFILE");
+        p.openProfile();
         p.clickEditLnk("Email");
         p.setEmailFld(takenEmail);
         p.clickSaveBtn();

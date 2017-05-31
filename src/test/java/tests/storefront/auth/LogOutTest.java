@@ -13,6 +13,7 @@ import testdata.Preconditions;
 import java.io.IOException;
 
 import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Configuration.timeout;
 
 public class LogOutTest extends Preconditions {
 
@@ -28,11 +29,11 @@ public class LogOutTest extends Preconditions {
 
         p = openPage(storefrontUrl, StorefrontPage.class);
         p.clickLogInLnk();
-        p.setEmail(customerEmail);
-        p.setPassword("78qa22!#");
+        p.setEmail_logIn(customerEmail);
+        p.setPassword_logIn("78qa22!#");
         p.clickLogInBtn();
         shouldMatchText(p.userMenuBtn_sf(), customerName.toUpperCase(), "Failed to log out");
-        p.selectInUserMenu("LOG OUT");
+        p.logOut();
 
         p.logInLnk().shouldBe(visible);
     }
@@ -47,11 +48,11 @@ public class LogOutTest extends Preconditions {
 
         p = openPage(storefrontUrl, StorefrontPage.class);
         p.logIn(customerEmail, "78qa22!#");
-        p.selectInUserMenu("PROFILE");
-        p.selectInUserMenu("LOG OUT");
+        p.openProfile();
+        p.logOut();
 
         p.logInLnk().shouldBe(visible);
-        assertUrl(getUrl(), storefrontUrl, 3000);
+        assertUrl(getUrl(), storefrontUrl, timeout);
     }
 
     @Test(priority = 3)
@@ -70,8 +71,8 @@ public class LogOutTest extends Preconditions {
         p.clickPlaceOrderBtn();
         shouldBeVisible(p.confirmationOrderNumber(), "Probably order isn't placed");
 
-        p.selectInUserMenu("LOG OUT");
-        assertUrl(getUrl(), storefrontUrl, 3000);
+        p.logOut();
+        assertUrl(getUrl(), storefrontUrl, timeout);
     }
 
     @AfterMethod(alwaysRun = true)

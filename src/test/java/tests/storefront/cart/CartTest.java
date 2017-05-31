@@ -29,8 +29,8 @@ public class CartTest extends Preconditions {
 
         p = openPage(storefrontUrl, StorefrontPage.class);
         p.logIn(customerEmail, "78qa22!#");
-        p.selectInUserMenu("PROFILE");
-        p.selectInUserMenu("LOG OUT");
+        p.openProfile();
+        p.logOut();
 
         p.logInLnk().shouldBe(visible);
         p.cartQty().shouldHave(text("0"));
