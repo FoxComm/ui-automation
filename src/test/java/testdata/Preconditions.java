@@ -1112,6 +1112,7 @@ public class Preconditions extends Helpers {
             case "registered customer, 2 active products on storefront, 1 product in cart":
                 randomId = generateRandomID();
                 signUpCustomer("Customer " + randomId, "qatest2278+" + randomId + "@gmail.com");
+                createCart(customerId);
                 createSKU_active();
                 createProduct_active(skuId, skuCode, storefrontCategory);
                 products.add(productTitle);
@@ -1737,7 +1738,7 @@ public class Preconditions extends Helpers {
     public static void main(String[] args) throws IOException {
         System.getenv("API_URL__TESTS");
         storefrontCategory = "APPETIZERS";
-        loginAsAdmin("admin@admin.com", "password", "tenant");
+//        Preconditions p = new Preconditions();
     }
 
 }

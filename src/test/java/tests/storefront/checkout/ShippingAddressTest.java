@@ -90,7 +90,7 @@ public class ShippingAddressTest extends Preconditions {
     @Severity(SeverityLevel.NORMAL)
     @Features("Storefront-TPG")
     @Stories("Checkout : Ship Address")
-    @Description("A just added shipping address will get auto-selected; not first created shipping address, NO DEFAULT")
+    @Description("A just added shipping address should get auto-selected (not the first created shipping address, no default ship address)")
     public void newShipAddressAutoselected_noDefault() throws IOException {
         provideTestData("a storefront signed up customer, a cart with 1 product, 2 shipping addresses, NO default address");
 
@@ -111,7 +111,7 @@ public class ShippingAddressTest extends Preconditions {
     @Severity(SeverityLevel.CRITICAL)
     @Features("Storefront-TPG")
     @Stories("Checkout : Ship Address")
-    @Description("A just added shipping address will get auto-selected; not first created shipping address, HAS DEFAULT")
+    @Description("A just added shipping address should get auto-selected; not first created shipping address, has default ship address")
     public void newShipAddressAutoselected_hasDefault() throws IOException {
         provideTestData("a storefront signed up customer, a cart with 1 product, 2 shipping addresses, HAS default address");
 

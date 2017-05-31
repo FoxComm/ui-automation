@@ -7,6 +7,7 @@ import ru.yandex.qatools.allure.annotations.Step;
 import static com.codeborne.selenide.Condition.selected;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
+import static com.codeborne.selenide.Selenide.sleep;
 import static org.openqa.selenium.By.xpath;
 
 public class CheckoutPage extends CartPage {
@@ -291,11 +292,15 @@ public class CheckoutPage extends CartPage {
 
     @Step("Set \"Shipping Method\" to last available value on the list")
     public void setShipMethod(String index) {
+        shouldBeVisible($(xpath("//article[contains(@class, 'delivery')]//button[contains(@class, 'checkout-submit') and text()='Continue']")), "");
+        sleep(100);
         jsClick(selectShipMethodRbtn(index));
     }
 
     @Step("Set \"Shipping Method\" to No.<{0}> available option")
     public void setShipMethod(int index) {
+        shouldBeVisible($(xpath("//article[contains(@class, 'delivery')]//button[contains(@class, 'checkout-submit') and text()='Continue']")), "");
+        sleep(100);
         jsClick(selectShipMethodRbtn(index));
     }
 

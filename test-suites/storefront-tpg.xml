@@ -1,5 +1,5 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="SF-TPG" verbose="1">
+<suite name="SF-TPG" verbose="1" configfailurepolicy="continue">
     <test name="Auth > Sign Up">
         <classes>
             <class name="tests.storefront.auth.SignUpTest"/>

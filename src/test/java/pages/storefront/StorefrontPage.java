@@ -79,10 +79,9 @@ public class StorefrontPage extends NavigationPage {
     }
 
     public void cleanUp() {
-        try {
+        if (!getWebDriver().toString().contains("null")) {
             close();
-        } catch (NullPointerException ignored) {
-
+            System.out.println("Webdriver closed");
         }
     }
 

@@ -27,7 +27,7 @@ public class CartTest extends Preconditions {
     public void addProductToCart() throws IOException {
         provideTestData("an active product visible on storefront");
 
-        p = openPage(storefrontUrl + "/products" + productSlug, StorefrontPage.class);
+        p = openPage(storefrontUrl + "/products/" + productSlug, StorefrontPage.class);
         //PDP accessed directly until DB is cleaned
 //        p.navigateToCategory(storefrontCategory);
 //        p.openPDP(productTitle);
@@ -48,12 +48,11 @@ public class CartTest extends Preconditions {
         p.clickAddToCartBtn();
         p.removeLineItem("1");
         p.closeCart();
-        p.logOut();
         p.logIn(customerEmail, "78qa22!#");
 
         p.cartQty().shouldHave(text("1"));
         p.openCart();
-        p.lineItemByName_cart(productTitle).shouldBe(visible);
+        p.lineItemByName_cart(products.get(0)).shouldBe(visible);
     }
 
     @Test(priority = 3)
@@ -80,17 +79,17 @@ public class CartTest extends Preconditions {
     @Severity(SeverityLevel.CRITICAL)
     @Features("Storefront-TPG")
     @Stories("Guest Cart")
-    @Description("Guest customer is terminated after signing in and then out as a registered customer with non-empty cart")
+    @Description("Guest cart is terminated after signing in and then out as a registered customer with non-empty cart")
     public void guestCartTerminatedOnSignInThenOut() throws IOException {
         provideTestData("a storefront registered customer, 2 active products, 1 in cart, coupon<no qualifier, 10% off, single code>");
 
-        p = openPage(storefrontUrl + "/products" + productSlugs.get(1), StorefrontPage.class);
+        p = openPage(storefrontUrl + "/products/" + productSlugs.get(1), StorefrontPage.class);
         p.clickAddToCartBtn();
         p.applyCoupon(singleCouponCode);
         p.closeCart();
         p.logIn(customerEmail, "78qa22!#");
         shouldNotHaveText(p.cartQty(), "0", "");
-        p.openProfile();
+        p.logOut();
 
         p.cartQty().shouldHave(text("0"));
         p.openCart();

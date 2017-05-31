@@ -217,12 +217,11 @@ public class GuestCheckoutTest extends Preconditions {
         p.appliedCoupon().shouldBe(visible);
     }
 
-    // broken due to bug with guest & registered cart sync
     @Test(priority = 10)
     @Severity(SeverityLevel.CRITICAL)
     @Features("Storefront-TPG")
     @Stories("Guest Checkout")
-    @Description("Gift card applied to cart as a payment during guest checkout remains in the cart if guest signs up with the same email")
+    @Description("Gift card applied to cart as a payment during guest checkout, remains in the cart if guest signs up with the same email")
     public void guestCartSavedOnSignUp_paymentGiftCard() throws IOException {
         provideTestData("an active product, a gift card");
         String randomId = generateRandomID();
@@ -251,14 +250,13 @@ public class GuestCheckoutTest extends Preconditions {
         p.appliedGiftCard().shouldBe(visible);
     }
 
-    // broken due to bug with guest & registered cart sync
     @Test(priority = 11)
     @Severity(SeverityLevel.CRITICAL)
     @Features("Storefront-TPG")
     @Stories("Guest Checkout")
     @Description("If customer has added a shipping address at checkout, then left checkout and signed up -- shipping address should be saved")
     public void guestAddressIsSavedAfterSignUp() throws IOException {
-        provideTestData("an active product visible on storefront");
+        provideTestData("active product, has tag, active SKU, has sellable stockitems");
         String randomId = generateRandomID();
 
         p = openPage(storefrontUrl+"/products/"+productSlug, StorefrontPage.class);
@@ -287,7 +285,7 @@ public class GuestCheckoutTest extends Preconditions {
     @Stories("Guest Checkout")
     @Description("A guest customer's email can be changed before placing the order")
     public void canEditGuestEmailBeforePlacingOrder() throws IOException {
-        provideTestData("an active product visible on storefront");
+        provideTestData("active product, has tag, active SKU, has sellable stockitems");
         String randomId = generateRandomID();
 
         p = openPage(storefrontUrl+"/products/"+productSlug, StorefrontPage.class);

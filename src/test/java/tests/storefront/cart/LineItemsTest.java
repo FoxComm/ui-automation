@@ -27,7 +27,7 @@ public class LineItemsTest extends Preconditions {
     public void addProductToCart_lineItemIsVisible() throws IOException {
         provideTestData("registered customer, active product on storefront");
 
-        p = openPage(storefrontUrl + "/products" + productSlug, StorefrontPage.class);
+        p = openPage(storefrontUrl + "/products/" + productSlug, StorefrontPage.class);
         p.logIn(customerEmail, "78qa22!#");
         p.clickAddToCartBtn();
 
@@ -46,7 +46,7 @@ public class LineItemsTest extends Preconditions {
     public void addProductToCart_indicatorUpdated() throws IOException {
         provideTestData("registered customer, 2 active products on storefront");
 
-        p = openPage(storefrontUrl + "/products" + productSlugs.get(0), StorefrontPage.class);
+        p = openPage(storefrontUrl + "/products/" + productSlugs.get(0), StorefrontPage.class);
         p.logIn(customerEmail, "78qa22!#");
         p.setQty_pdp("2");
         p.clickAddToCartBtn();
@@ -125,13 +125,11 @@ public class LineItemsTest extends Preconditions {
     public void checkoutBtnBehavior_registeredCustomer() throws IOException {
         provideTestData("registered customer, active product on storefront");
 
-        p = openPage(storefrontUrl, StorefrontPage.class);
+        p = openPage(storefrontUrl + "/products/" + productSlug, StorefrontPage.class);
         p.logIn(customerEmail, "78qa22!#");
         p.openCart();
         p.checkoutBtn_cart().shouldBe(disabled);
-
-        p = openPage(storefrontUrl + storefrontCategory, StorefrontPage.class);
-        p.openPDP(productTitle);
+        p.closeCart();
         p.clickAddToCartBtn();
         p.checkoutBtn_cart().shouldBe(enabled);
         p.clickCheckoutBtn_cart();

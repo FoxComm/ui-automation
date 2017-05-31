@@ -109,7 +109,7 @@ public class GeneralBehaviorTest extends Preconditions {
         p.zip_appliedShipAddress().shouldHave(text("90210"));
         p.city_appliedShipAddress().shouldHave(text("Beverly Hills" + ","));
         p.state_appliedShipAddress().shouldHave(text("California"));
-        p.phoneNumber_appliedShipAddress().shouldHave(text("1112223333"));
+        p.phoneNumber_appliedShipAddress().shouldHave(text("(111) 222-3333"));
     }
 
     @Test(priority = 5)
@@ -166,7 +166,7 @@ public class GeneralBehaviorTest extends Preconditions {
         p.clickSaveAddressBtn();
         p.selectAddressRbtn("1").shouldBe(selected);
         p.clickContinueBtn();
-        p.setShipMethod(p.shippingMethods().size());
+        p.setShipMethod("1");
         p.clickContinueBtn();
         p.fillOutCardForm("John Doe", "4242424242424242", "123", "08", "2020", false);
         p.clickSaveCardBtn();
@@ -174,7 +174,7 @@ public class GeneralBehaviorTest extends Preconditions {
 
         p.confirmationOrderNumber().shouldBe(visible);
         p.takeMeHomeBtn().shouldBe(visible);
-        assertUrl(getUrl(), storefrontUrl + "checkout/done", timeout);
+        assertUrl(getUrl(), storefrontUrl + "/checkout/done", timeout);
     }
 
     @Test(priority = 8)
