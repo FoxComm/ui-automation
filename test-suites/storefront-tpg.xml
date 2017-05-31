@@ -78,14 +78,14 @@
 
     <test name="Products > General PDP Test">
         <classes>
-            <class name="tests.storefront.products.AbstractPdpTest"/>
+            <class name="tests.storefront.products.PdpTest"/>
         </classes>
     </test>
-    <test name="Products > Catalog Test">
-        <classes>
-            <class name="tests.storefront.products.CatalogTest"/>
-        </classes>
-    </test>
+    <!--<test name="Products > Catalog Test">-->
+        <!--<classes>-->
+            <!--<class name="tests.storefront.products.CatalogTest"/>-->
+        <!--</classes>-->
+    <!--</test>-->
     <test name="Products > TPG Product Attributes">
         <classes>
             <class name="tests.storefront.products.TpgProductAttrsTest"/>
