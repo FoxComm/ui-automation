@@ -44,6 +44,7 @@ public class ConciseAPI implements IHookable {
 
     public void clearCache() {
         clearBrowserCache();
+        System.out.println("Cache cleared!");
     }
 
     //------------------------- ELEMENTS -------------------------//

@@ -1,8 +1,8 @@
 package tests.storefront.auth;
 
+import base.StorefrontTPGBasePage;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import base.StorefrontTPGBasePage;
 import ru.yandex.qatools.allure.annotations.Description;
 import ru.yandex.qatools.allure.annotations.Features;
 import ru.yandex.qatools.allure.annotations.Severity;
@@ -14,6 +14,7 @@ import java.io.IOException;
 
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Configuration.timeout;
+import static com.codeborne.selenide.Selenide.refresh;
 
 public class LogOutTest extends Preconditions {
 

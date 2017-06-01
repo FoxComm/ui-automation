@@ -1,8 +1,8 @@
 package tests.storefront.auth;
 
+import base.StorefrontTPGBasePage;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import base.StorefrontTPGBasePage;
 import ru.yandex.qatools.allure.annotations.Description;
 import ru.yandex.qatools.allure.annotations.Features;
 import ru.yandex.qatools.allure.annotations.Severity;
@@ -31,6 +31,7 @@ public class SignInTest extends Preconditions {
     @Description("Can sign in credentials of a registered customer")
     public void signIn_correctCreds() throws IOException {
         provideTestData("a customer signed up on storefront");
+        clearCache();
 
         p = openPage(storefrontUrl, StorefrontTPGBasePage.class);
         p.clickLogInLnk();

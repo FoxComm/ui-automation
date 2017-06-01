@@ -123,20 +123,20 @@ public class SignUpTest extends Preconditions {
         p.closeAuthFormBtn().shouldNotBe(visible);
     }
 
-    @Test(priority = 7, enabled = false)
-    @Severity(SeverityLevel.CRITICAL)
-    @Features("Storefront-TPG")
-    @Stories("Auth : Sign Up")
-    @Description("Customer is signed in after successful sign up [Disabled -> there's currently no close btn]")
-    public void closeAuthForm_abortSignUp() {
-        p = openPage(storefrontUrl, StorefrontTPGBasePage.class);
-        p.clickLogInLnk();
-        p.setName("Abort Registration");
-        p.setEmail_signUp("wont@register.com");
-        p.setPassword_signUp("78qa22!#");
-        p.closeAuthForm();
-
-        p.closeAuthFormBtn().shouldNotBe(visible);
-    }
+//    @Test(priority = 7, enabled = false)
+//    @Severity(SeverityLevel.CRITICAL)
+//    @Features("Storefront-TPG")
+//    @Stories("Auth : Sign Up")
+//    @Description("Customer is signed in after successful sign up [Disabled -> there's currently no close btn]")
+//    public void closeAuthForm_abortSignUp() {
+//        p = openPage(storefrontUrl, StorefrontTPGBasePage.class);
+//        p.clickLogInLnk();
+//        p.setName("Abort Registration");
+//        p.setEmail_signUp("wont@register.com");
+//        p.setPassword_signUp("78qa22!#");
+//        p.closeAuthForm();
+//
+//        p.closeAuthFormBtn().shouldNotBe(visible);
+//    }
 
 }

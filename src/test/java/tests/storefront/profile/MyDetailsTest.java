@@ -21,7 +21,7 @@ public class MyDetailsTest extends Preconditions {
 
     @BeforeMethod(alwaysRun = true)
     public void cleanUp_before() {
-        p.clearCache();
+        clearCache();
     }
 
     @Test(priority = 1)
