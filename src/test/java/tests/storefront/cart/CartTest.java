@@ -20,8 +20,8 @@ public class CartTest extends Preconditions {
     private StorefrontTPGBasePage p;
 
     @BeforeMethod(alwaysRun = true)
-    public void cleanUp_after() {
-        restartBrowser();
+    public void cleanUp_before() {
+        clearCache();
     }
 
     @Test(priority = 1)

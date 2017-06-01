@@ -83,7 +83,7 @@ public class AuthTest extends Preconditions {
 
     @AfterClass(alwaysRun = true)
     public void backToAshes() {
-        restartBrowser();
+        clearCache();
         lp = openPage(adminUrl + "/login", LoginPage.class);
     }
 

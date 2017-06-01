@@ -13,8 +13,8 @@ public class MyOrderDetailsTest extends Preconditions {
     private StorefrontTPGBasePage p;
 
     @BeforeMethod(alwaysRun = true)
-    public void cleanUp_after() {
-        p.restartBrowser();
+    public void cleanUp_before() {
+        p.clearCache();
     }
 
     @Test(priority = 1)
