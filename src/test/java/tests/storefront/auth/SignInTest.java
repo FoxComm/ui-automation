@@ -21,7 +21,7 @@ public class SignInTest extends Preconditions {
 
     @BeforeMethod(alwaysRun = true)
     public void cleanUp_after() {
-        p.cleanUp();
+        p.restartBrowser();
     }
 
     @Test(priority = 1)

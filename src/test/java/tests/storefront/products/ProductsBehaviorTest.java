@@ -22,7 +22,7 @@ public class ProductsBehaviorTest extends Preconditions {
 
     @BeforeMethod(alwaysRun = true)
     public void cleanUp_after() {
-        p.cleanUp();
+        p.restartBrowser();
     }
 
     @Test(priority = 1, dataProvider = "productCatalogViewDisplayed", enabled = false)

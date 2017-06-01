@@ -79,11 +79,13 @@ public class StorefrontTPGBasePage extends NavigationPage {
         return getWebDriver().getCurrentUrl();
     }
 
-    public void cleanUp() {
-        if (!getWebDriver().toString().contains("null")) {
-            close();
-            System.out.println("Webdriver closed");
-        }
+    public void restartBrowser() {
+        try {
+            if (!getWebDriver().toString().contains("null")) {
+                close();
+                System.out.println("Webdriver closed");
+            }
+        } catch (NullPointerException ignored) {}
     }
 
 }
