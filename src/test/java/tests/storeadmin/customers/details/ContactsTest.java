@@ -18,7 +18,7 @@ import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.open;
 
-public class ContactInformationTest extends Preconditions {
+public class ContactsTest extends Preconditions {
 
     private CustomersPage p;
 
@@ -42,17 +42,16 @@ public class ContactInformationTest extends Preconditions {
     @Stories("Customers : Contacts")
     @Description("Can create new custoemr; User is redirected to customer details page after customer creation")
     public void createCustomer() {
-        String uid = generateRandomID();
-        String email = "qatest2278+" + uid + "@gmail.com";
+        String customerEmail = "qatest2278+" + generateRandomID() + "@gmail.com";
 
         p = openPage(adminUrl + "/customers/", CustomersPage.class);
         p.clickAddCustomerBtn();
         p.setNewCustomerName("John Doe");
-        p.setNewCustomerEmail("qatest2278+" + randomId + "@gmail.com");
+        p.setNewCustomerEmail(customerEmail);
         p.clickSaveBtn_modal();
 
         p.customerName().shouldHave(text("John Doe"));
-        p.newCustomerEmail().shouldHave(text(email));
+        p.emailVal_overview().shouldHave(text(customerEmail));
     }
 
     @Test(priority = 2)
@@ -68,7 +67,7 @@ public class ContactInformationTest extends Preconditions {
         p.emailVal_contacts().shouldHave(text(customerEmail));
     }
 
-    @Test(priority = 4)
+    @Test(priority = 3)
     @Severity(SeverityLevel.NORMAL)
     @Features("Ashes")
     @Stories("Customers : Contacts")
@@ -86,7 +85,7 @@ public class ContactInformationTest extends Preconditions {
         p.nameVal_overview().shouldHave(text(newName));
     }
 
-    @Test(priority = 5)
+    @Test(priority = 4)
     @Severity(SeverityLevel.CRITICAL)
     @Features("Ashes")
     @Stories("Customers : Contacts")
@@ -100,8 +99,8 @@ public class ContactInformationTest extends Preconditions {
         p.clearField(p.nameFld_contacts());
         p.clickSave();
 
-        p.editBtn_contats().shouldBe(visible);
-        p.errorMsg("fill out this field").shouldNotBe(visible);
+        p.errorMsg("fill out this field").shouldBe(visible);
+        p.editBtn_contats().shouldNotBe(visible);
     }
 
     @Test(priority = 5)
@@ -111,6 +110,7 @@ public class ContactInformationTest extends Preconditions {
     @Description("Can't set customer email to an already used one")
     public void editEmail_unique() throws IOException {
         provideTestData("a customer");
+        String newEmail = "qatest2278+" + randomId + "@gmail.com";
 
         p = openPage(adminUrl + "/customers/" + customerId, CustomersPage.class);
         p.clickEditBtn_contacts();
@@ -122,7 +122,7 @@ public class ContactInformationTest extends Preconditions {
         p.emailVal_overview().shouldHave(text(newEmail));
     }
 
-    @Test(priority = 5)
+    @Test(priority = 6)
     @Severity(SeverityLevel.CRITICAL)
     @Features("Ashes")
     @Stories("Customers : Contacts")
@@ -141,7 +141,7 @@ public class ContactInformationTest extends Preconditions {
         p.emailVal_overview().shouldHave(text(customerEmail));
     }
 
-    @Test(priority = 5)
+    @Test(priority = 7)
     @Severity(SeverityLevel.CRITICAL)
     @Features("Ashes")
     @Stories("Customers : Contacts")
@@ -155,11 +155,11 @@ public class ContactInformationTest extends Preconditions {
         p.clearField(p.emailFld_contacts());
         p.clickSave();
 
-        p.editBtn_contats().shouldBe(visible);
-        p.errorMsg("fill out this field").shouldNotBe(visible);
+        p.errorMsg("fill out this field").shouldBe(visible);
+        p.editBtn_contats().shouldNotBe(visible);
     }
 
-    @Test(priority = 5)
+    @Test(priority = 8)
     @Severity(SeverityLevel.CRITICAL)
     @Features("Ashes")
     @Stories("Customers : Contacts")
@@ -171,11 +171,11 @@ public class ContactInformationTest extends Preconditions {
         p.clickEditBtn_contacts();
         p.clickSave();
 
-        p.editBtn_contats().shouldBe(visible);
         p.errorMsg("fill out this field").shouldNotBe(visible);
+        p.editBtn_contats().shouldBe(visible);
     }
 
-    @Test(priority = 3)
+    @Test(priority = 9)
     @Severity(SeverityLevel.NORMAL)
     @Features("Ashes")
     @Stories("Customers : Contacts")
@@ -191,7 +191,7 @@ public class ContactInformationTest extends Preconditions {
         p.phoneNumberVal_contacts().shouldHave(text("7779994242"));
     }
 
-    @Test(priority = 6)
+    @Test(priority = 10)
     @Severity(SeverityLevel.NORMAL)
     @Features("Ashes")
     @Stories("Customers : Contacts")
@@ -200,10 +200,6 @@ public class ContactInformationTest extends Preconditions {
         provideTestData("customer with a credit card");
         p = openPage(adminUrl + "/customers/" + customerId, CustomersPage.class);
         p.phoneNumberVal_contacts().shouldHave(text("9879879876"));
-//      move this assertion to overview-related test
-//      assertEquals( p.phoneNumberVal_overview(),  "9879879876",
-//                "Phone number from billing address isn't displayed in customer overview.");
-
     }
 
 }

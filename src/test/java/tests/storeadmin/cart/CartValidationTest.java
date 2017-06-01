@@ -14,9 +14,7 @@ import testdata.Preconditions;
 import java.io.IOException;
 import java.util.Objects;
 
-import static com.codeborne.selenide.Condition.disabled;
-import static com.codeborne.selenide.Condition.enabled;
-import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.open;
 import static testdata.api.collection.Customers.deleteAddress;
 import static testdata.api.collection.GiftCards.setGiftCardState;

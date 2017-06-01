@@ -180,7 +180,7 @@ public class GuestCheckoutTest extends Preconditions {
     @Stories("Guest Checkout")
     @Description("Line items in guest cart are saved if customer signs up while browsing the store")
     public void guestCartSavedOnSignUp_storeBrowsing_lineItems() throws IOException {
-        provideTestData("an active product visible on storefront");
+        provideTestData("active product, has tag, active SKU, has sellable stockitems");
         String randomId = generateRandomID();
 
         p = openPage(storefrontUrl+"/products/"+productSlug, StorefrontTPGBasePage.class);

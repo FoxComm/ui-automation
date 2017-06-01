@@ -30,7 +30,7 @@ public class CartTest extends Preconditions {
     @Stories("Guest Cart")
     @Description("Can add products to cart")
     public void addProductToCart() throws IOException {
-        provideTestData("an active product visible on storefront");
+        provideTestData("active product, has tag, active SKU, has sellable stockitems");
 
         p = openPage(storefrontUrl + "/products/" + productSlug, StorefrontTPGBasePage.class);
         //PDP accessed directly until DB is cleaned

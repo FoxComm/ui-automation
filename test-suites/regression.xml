@@ -53,9 +53,9 @@
             <class name="tests.storeadmin.customers.details.CreditCardsTest" />
         </classes>
     </test>
-    <test name="Customers > Contact Information" >
+    <test name="Customers > Contacts" >
         <classes>
-            <class name="tests.storeadmin.customers.details.ContactInformationTest" />
+            <class name="tests.storeadmin.customers.details.ContactsTest" />
         </classes>
     </test>
     <test name="Customers > Orders List" >

@@ -187,7 +187,7 @@ public class CartPage extends AdminBasePage {
     }
 
     private SelenideElement deleteBtn_item(String itemIndex) {
-        return $(xpath("//tbody[@id='fct-cart-line-items']/tr[" + itemIndex + "]//button[contains(@class, 'button__delete')]"));
+        return $(xpath("//tbody[@id='fct-cart-line-items']/tr[" + itemIndex + "]//i[contains(@class, 'trash')]"));
     }
 
     private SelenideElement confirmDeletionBtn() {
@@ -728,7 +728,7 @@ public class CartPage extends AdminBasePage {
     }
 
     private SelenideElement removePaymentMethodBtn(String index) {
-        return $(xpath("//*[@id='fct-cart-payment-method-block']//tr[" + index + "]//button[contains(@class, 'button__delete')]"));
+        return $(xpath("//*[@id='fct-cart-payment-method-block']//tr["+index+"]//i[contains(@class, 'trash')]/.."));
     }
 
     // ----------- >> NEW CREDIT CARD FORM

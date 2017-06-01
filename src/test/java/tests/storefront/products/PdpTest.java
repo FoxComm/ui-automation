@@ -30,7 +30,7 @@ public class PdpTest extends Preconditions {
     @Stories("PDP")
     @Description("Product title is displayed")
     public void productTitleDisplayed() throws IOException {
-        provideTestData("an active product visible on storefront");
+        provideTestData("active product, has tag, active SKU, has sellable stockitems");
 
         p = openPage(storefrontUrl + "/products/" + productSlug, StorefrontTPGBasePage.class);
 
@@ -44,7 +44,7 @@ public class PdpTest extends Preconditions {
     @Stories("PDP")
     @Description("Product sale price is displayed correctly")
     public void productPriceDisplayed() throws IOException {
-        provideTestData("an active product visible on storefront");
+        provideTestData("active product, has tag, active SKU, has sellable stockitems");
 
         p = openPage(storefrontUrl + "/products/" + productSlug, StorefrontTPGBasePage.class);
 
@@ -71,7 +71,7 @@ public class PdpTest extends Preconditions {
     @Stories("PDP")
     @Description("Can change product qty on PDP")
     public void changeProductQty() throws IOException {
-        provideTestData("an active product visible on storefront");
+        provideTestData("active product, has tag, active SKU, has sellable stockitems");
 
         p = openPage(storefrontUrl + "/products/" + productSlug, StorefrontTPGBasePage.class);
         p.setQty_pdp("3");
