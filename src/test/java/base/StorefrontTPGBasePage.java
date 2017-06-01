@@ -7,7 +7,6 @@ import ru.yandex.qatools.allure.annotations.Step;
 import java.util.concurrent.TimeUnit;
 
 import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.close;
 import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 import static org.openqa.selenium.By.xpath;
 
@@ -77,15 +76,6 @@ public class StorefrontTPGBasePage extends NavigationPage {
     public String getUrl() {
         getWebDriver().manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
         return getWebDriver().getCurrentUrl();
-    }
-
-    public void restartBrowser() {
-        try {
-            if (!getWebDriver().toString().contains("null")) {
-                close();
-                System.out.println("Webdriver closed");
-            }
-        } catch (NullPointerException ignored) {}
     }
 
 }

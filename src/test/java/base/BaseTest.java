@@ -33,6 +33,7 @@ public class BaseTest extends ConciseAPI {
         System.out.printf(f, "storefrontUrl:", "<" + storefrontUrl + ">");
         System.out.printf(f, "storefrontCategory:", "<" + storefrontCategory + ">");
         System.out.printf(f, "adminPassword:", "<" + adminPassword.charAt(0) + ">");
+        System.out.printf(f, "webdriver:", "<" + getWebDriver().toString() + ">");
         System.out.println("");
     }
 

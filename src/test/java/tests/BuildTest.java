@@ -1,6 +1,7 @@
 package tests;
 
 import org.openqa.selenium.By;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import pages.admin.LoginPage;
 import ru.yandex.qatools.allure.annotations.Description;
@@ -18,6 +19,11 @@ import static com.codeborne.selenide.Selenide.$;
 public class BuildTest extends Preconditions {
 
     private LoginPage p;
+
+    @BeforeMethod
+    public void before() {
+        restartBrowser();
+    }
 
     @Test(priority = 1)
     @Severity(SeverityLevel.CRITICAL)

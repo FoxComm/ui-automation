@@ -41,6 +41,15 @@ import static org.testng.Assert.assertEquals;
 
 public class ConciseAPI implements IHookable {
 
+    public void restartBrowser() {
+        try {
+            if (!getWebDriver().toString().contains("null")) {
+                close();
+                System.out.println("Webdriver closed");
+            }
+        } catch (NullPointerException ignored) {}
+    }
+
     //------------------------- ELEMENTS -------------------------//
 
     protected SelenideElement contentOnList() {

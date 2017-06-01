@@ -17,7 +17,7 @@ public class TpgProductAttrsTest extends Preconditions {
 
     @BeforeMethod(alwaysRun = true)
     public void cleanUp_after() {
-        p.restartBrowser();
+        restartBrowser();
     }
 
     @Test(priority = 1)

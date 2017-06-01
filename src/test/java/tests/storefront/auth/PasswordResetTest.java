@@ -20,7 +20,7 @@ public class PasswordResetTest extends Preconditions {
 
     @BeforeMethod(alwaysRun = true)
     public void cleanUp_after() {
-        p.restartBrowser();
+        restartBrowser();
     }
 
     @Test(priority = 1)
@@ -59,19 +59,19 @@ public class PasswordResetTest extends Preconditions {
         p.signUpBtn().shouldBe(visible);
     }
 
-//    @Test(priority = 3)
-//    @Severity(SeverityLevel.NORMAL)
-//    @Features("Storefront-TPG")
-//    @Stories("Auth : Password Reset")
-//    @Description("Can't submit for password recovery an email that doesn't exist in the system")
-//    public void cantRecoverUnregisteredAccount() {
-//        p = openPage(storefrontUrl, StorefrontPage.class);
-//        p.clickLogInLnk();
-//        p.clickForgotLnk();
-//        p.setEmail_passReset("this.mail@doesnt.exist");
-//        p.clickSubmitBtn();
-//
-//        p.message_passRecovery("Oops! We don’t have a user with that email.").shouldBe(visible);
-//    }
+    @Test(priority = 3)
+    @Severity(SeverityLevel.NORMAL)
+    @Features("Storefront-TPG")
+    @Stories("Auth : Password Reset")
+    @Description("Can't submit for password recovery an email that doesn't exist in the system")
+    public void cantRecoverUnregisteredAccount() {
+        p = openPage(storefrontUrl, StorefrontTPGBasePage.class);
+        p.clickLogInLnk();
+        p.clickForgotLnk();
+        p.setEmail_passReset("this.mail@doesnt.exist");
+        p.clickSubmitBtn();
+
+        p.message_passRecovery("Oops! We don’t have a user with that email.").shouldBe(visible);
+    }
 
 }
