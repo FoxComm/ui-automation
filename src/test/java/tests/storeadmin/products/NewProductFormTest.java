@@ -38,7 +38,7 @@ public class NewProductFormTest extends Preconditions {
     @Test(priority = 1)
     @Severity(SeverityLevel.CRITICAL)
     @Features("Ashes")
-    @Stories("Product Form")
+    @Stories("Products : Form")
     @Description("SKU is requied")
     public void skuIsRequired() {
         p = openPage(adminUrl + "/products/default/new", ProductsPage.class);
@@ -52,7 +52,7 @@ public class NewProductFormTest extends Preconditions {
     @Test(priority = 2)
     @Severity(SeverityLevel.CRITICAL)
     @Features("Ashes")
-    @Stories("Product Form")
+    @Stories("Products : Form")
     @Description("Title is requied")
     public void titleIsRequired() throws IOException {
         provideTestData("active SKU");
@@ -68,7 +68,7 @@ public class NewProductFormTest extends Preconditions {
     @Test(priority = 3)
     @Severity(SeverityLevel.NORMAL)
     @Features("Ashes")
-    @Stories("Product Form")
+    @Stories("Products : Form")
     @Description("Can add option")
     public void canAddOption() {
         p = openPage(adminUrl + "/products/default/new", ProductsPage.class);
@@ -82,7 +82,7 @@ public class NewProductFormTest extends Preconditions {
     @Test(priority = 4)
     @Severity(SeverityLevel.NORMAL)
     @Features("Ashes")
-    @Stories("Product Form")
+    @Stories("Products : Form")
     @Description("Can add variant")
     public void canAddVarian() {
         p = openPage(adminUrl + "/products/default/new", ProductsPage.class);
@@ -97,7 +97,7 @@ public class NewProductFormTest extends Preconditions {
     @Test(priority = 5)
     @Severity(SeverityLevel.NORMAL)
     @Features("Ashes")
-    @Stories("Product Form")
+    @Stories("Products : Form")
     @Description("An empty SKU record is created for each added option value after the second one")
     public void skuIsAddedWithOptionValue() {
         p = openPage(adminUrl + "/products/default/new", ProductsPage.class);
@@ -113,7 +113,7 @@ public class NewProductFormTest extends Preconditions {
     @Test(priority = 6)
     @Severity(SeverityLevel.MINOR)
     @Features("Ashes")
-    @Stories("Product Form")
+    @Stories("Products : Form")
     @Description("Removing option value also removes SKU related to that variant")
     public void delOptionValue_skuIsAutoremoved() {
         p = openPage(adminUrl + "/products/default/new", ProductsPage.class);
@@ -128,7 +128,7 @@ public class NewProductFormTest extends Preconditions {
     @Test(priority = 7)
     @Severity(SeverityLevel.NORMAL)
     @Features("Ashes")
-    @Stories("Product Form")
+    @Stories("Products : Form")
     @Description("Can edit option variant")
     public void canEditVariant() {
         p = openPage(adminUrl + "/products/default/new", ProductsPage.class);
@@ -143,7 +143,7 @@ public class NewProductFormTest extends Preconditions {
     @Test(priority = 8)
     @Severity(SeverityLevel.MINOR)
     @Features("Ashes")
-    @Stories("Product Form")
+    @Stories("Products : Form")
     @Description("Assert that new SKU line is added for each possible option value")
     public void possibleValuesCoverageWithSKUs() {
         p = openPage(adminUrl + "/products/default/new", ProductsPage.class);
@@ -162,7 +162,7 @@ public class NewProductFormTest extends Preconditions {
     @Test(priority = 9)
     @Severity(SeverityLevel.NORMAL)
     @Features("Ashes")
-    @Stories("Product Form")
+    @Stories("Products : Form")
     @Description("Can remove SKU from form")
     public void removeSKU() {
         p = openPage(adminUrl + "/products/default/new", ProductsPage.class);
@@ -179,7 +179,7 @@ public class NewProductFormTest extends Preconditions {
     @Test(priority = 10)
     @Severity(SeverityLevel.NORMAL)
     @Features("Ashes")
-    @Stories("Product Form")
+    @Stories("Products : Form")
     @Description("Removed SKU related to a specific option values combination can be re-added")
     public void reAddVariantSpecificSKU() throws IOException {
         p = openPage(adminUrl + "/products/default/new", ProductsPage.class);
@@ -197,7 +197,7 @@ public class NewProductFormTest extends Preconditions {
     @Test(priority = 11)
     @Severity(SeverityLevel.NORMAL)
     @Features("Ashes")
-    @Stories("Product Form")
+    @Stories("Products : Form")
     @Description("Options are saved correctly")
     public void optionsAreSaved() throws IOException {
         provideTestData("active SKU");
@@ -219,7 +219,7 @@ public class NewProductFormTest extends Preconditions {
     @Test(priority = 12)
     @Severity(SeverityLevel.NORMAL)
     @Features("Ashes")
-    @Stories("Product Form")
+    @Stories("Products : Form")
     @Description("Variant specific SKU is saved correctly")
     public void variantSpecificSkuIsSaved() throws IOException {
         provideTestData("active SKU");

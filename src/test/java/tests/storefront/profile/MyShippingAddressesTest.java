@@ -27,7 +27,7 @@ public class MyShippingAddressesTest extends Preconditions {
     @Test(priority = 1)
     @Severity(SeverityLevel.CRITICAL)
     @Features("Storefront-TPG")
-    @Stories("Customer Shipping Address Book")
+    @Stories("Customer : Address Book")
     @Description("Can add a new shipping address at /profile")
     public void createShipAddress_profile() throws IOException {
         provideTestData("a customer signed up on storefront");
@@ -46,7 +46,7 @@ public class MyShippingAddressesTest extends Preconditions {
     @Test(priority = 2)
     @Severity(SeverityLevel.CRITICAL)
     @Features("Storefront-TPG")
-    @Stories("Customer Shipping Address Book")
+    @Stories("Customer : Address Book")
     @Description("Edit existing shipping address at /profile")
     public void editShipAddress_profile() throws IOException {
         provideTestData("a storefront signed up customer with a shipping address");
@@ -68,7 +68,7 @@ public class MyShippingAddressesTest extends Preconditions {
     @Test(priority = 3)
     @Severity(SeverityLevel.CRITICAL)
     @Features("Storefront-TPG")
-    @Stories("Customer Shipping Address Book")
+    @Stories("Customer : Address Book")
     @Description("Delete a shipping address at /profile")
     public void deleteShipAddress_profile() throws IOException {
         provideTestData("a storefront signed up customer with 2 shipping addresses");
@@ -85,7 +85,7 @@ public class MyShippingAddressesTest extends Preconditions {
     @Test(priority = 5)
     @Severity(SeverityLevel.CRITICAL)
     @Features("Storefront-TPG")
-    @Stories("Customer Shipping Address Book")
+    @Stories("Customer : Address Book")
     @Description("Restore a just deleted shipping address")
     public void restoreShipAddress() throws IOException {
         provideTestData("a storefront signed up customer with a shipping address");
@@ -103,7 +103,7 @@ public class MyShippingAddressesTest extends Preconditions {
     @Test(priority = 4)
     @Severity(SeverityLevel.CRITICAL)
     @Features("Storefront-TPG")
-    @Stories("Customer Shipping Address Book")
+    @Stories("Customer : Address Book")
     @Description("Flag existing shipping address as a default at /profile")
     public void setShipAddressAsDefault_existing_profilePage() throws IOException {
         provideTestData("a storefront signed up customer with 2 shipping addresses");
@@ -121,7 +121,7 @@ public class MyShippingAddressesTest extends Preconditions {
     @Test(priority = 6)
     @Severity(SeverityLevel.CRITICAL)
     @Features("Storefront-TPG")
-    @Stories("Customer Shipping Address Book")
+    @Stories("Customer : Address Book")
     @Description("Can make new shipping address a default; customer doesn't have a default address")
     public void setShipAddressAsDefault_new_noDefault() throws IOException {
         provideTestData("a storefront signed up customer with 2 shipping addresses");
@@ -140,7 +140,7 @@ public class MyShippingAddressesTest extends Preconditions {
     @Test(priority = 7)
     @Severity(SeverityLevel.CRITICAL)
     @Features("Storefront-TPG")
-    @Stories("Customer Shipping Address Book")
+    @Stories("Customer : Address Book")
     @Description("Can make new shipping address a default; customer has a default address")
     public void setShipAddressAsDefault_new_hasDefault() throws IOException {
         provideTestData("a storefront signed up customer with 2 shipping addresses, has default address");

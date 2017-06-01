@@ -27,7 +27,7 @@ public class CartTest extends Preconditions {
     @Test(priority = 1)
     @Severity(SeverityLevel.CRITICAL)
     @Features("Storefront-TPG")
-    @Stories("Cart Behavior")
+    @Stories("Cart : General Behavior")
     @Description("Cart is blanked after log out")
     public void cartBlankedOnLogOut() throws IOException {
         provideTestData("a customer signed up on storefront");

@@ -32,7 +32,7 @@ public class PromosTest extends Preconditions {
     @Test(priority = 1)
     @Severity(SeverityLevel.CRITICAL)
     @Features("Storefront-TPG")
-    @Stories("Cart : Promos")
+    @Stories("Cart SF : Promos")
     @Description("As a registered customer, can add a coupon to cart")
     public void canApplyCoupon_registeredCustomer() throws IOException {
         provideTestData("a customer signed up on storefront, product<active>, coupon<any, single code>");
@@ -50,7 +50,7 @@ public class PromosTest extends Preconditions {
     @Test(priority = 2)
     @Severity(SeverityLevel.CRITICAL)
     @Features("Storefront-TPG")
-    @Stories("Cart : Promos")
+    @Stories("Cart SF : Promos")
     @Description("As a guest, can add a coupon to cart")
     public void canApplyCoupon_guest() throws IOException {
         provideTestData("product<active>, coupon<any, single code>");
@@ -67,7 +67,7 @@ public class PromosTest extends Preconditions {
     @Test(priority = 3)
     @Severity(SeverityLevel.CRITICAL)
     @Features("Storefront-TPG")
-    @Stories("Cart : Promos")
+    @Stories("Cart SF : Promos")
     @Description("Coupon can be removed from cart")
     public void canRemoveCoupon() throws IOException {
         provideTestData("a customer signed up on storefront with product and coupon<any, single code> in cart");
@@ -84,7 +84,7 @@ public class PromosTest extends Preconditions {
     @Test(priority = 4)
     @Severity(SeverityLevel.BLOCKER)
     @Features("Storefront-TPG")
-    @Stories("Cart : Promos")
+    @Stories("Cart SF : Promos")
     @Description("Coupon is cleared from cart once cart passes checkout")
     public void couponIsAutoRemovedAfterCheckout() throws IOException {
         provideTestData("a customer ready to checkout");
@@ -105,7 +105,7 @@ public class PromosTest extends Preconditions {
     @Test(priority = 5, enabled = false)
     @Severity(SeverityLevel.CRITICAL)
     @Features("Storefront-TPG")
-    @Stories("Cart : Promos")
+    @Stories("Cart SF : Promos")
     @Description("Coupon code i auto-removed from cart once promo state changes to 'Inactive'")
     public void couponIsAutoRemoved_promoInactive() throws IOException {
         provideTestData("a storefront signed up customer, active product in cart, coupon<any, single code>");
@@ -125,7 +125,7 @@ public class PromosTest extends Preconditions {
     @Test(priority = 6, enabled = false)
     @Severity(SeverityLevel.CRITICAL)
     @Features("Storefront-TPG")
-    @Stories("Cart : Promos")
+    @Stories("Cart SF : Promos")
     @Description("Coupon code is auto-removed from cart once coupon state changes to 'Inactive'")
     public void couponIsAutoRemoved_couponInactive() throws IOException {
         provideTestData("a storefront signed up customer, active product in cart, coupon<any, single code>");
@@ -145,7 +145,7 @@ public class PromosTest extends Preconditions {
     @Test(priority = 7, enabled = false)
     @Severity(SeverityLevel.CRITICAL)
     @Features("Storefront-TPG")
-    @Stories("Cart : Promos")
+    @Stories("Cart SF : Promos")
     @Description("Coupon code is auto-removed from cart if promo gets archived")
     public void couponIsAutoRemoved_promoArchived() throws IOException {
         provideTestData("a storefront signed up customer, active product in cart, coupon<any, single code>");
@@ -165,7 +165,7 @@ public class PromosTest extends Preconditions {
     @Test(priority = 8, enabled = false)
     @Severity(SeverityLevel.CRITICAL)
     @Features("Storefront-TPG")
-    @Stories("Cart : Promos")
+    @Stories("Cart SF : Promos")
     @Description("Coupon code is auto-removed from cart if coupon gets archived")
     public void couponIsAutoRemoved_couponArchived() throws IOException {
         provideTestData("a storefront signed up customer, active product in cart, coupon<any, single code>");

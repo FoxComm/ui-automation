@@ -35,7 +35,7 @@ public class OrdersListTest extends Preconditions {
     @Test(priority = 1)
     @Severity(SeverityLevel.NORMAL)
     @Features("Ashes")
-    @Stories("Customer orders list")
+    @Stories("Customers : Orders List")
     @Description("Placed order appers on the customer's orders list")
     public void checkOrderOnList() throws IOException {
         provideTestData("customer with 2 orders in remorse hold");
@@ -66,7 +66,7 @@ public class OrdersListTest extends Preconditions {
     @Test(priority = 3)
     @Severity(SeverityLevel.NORMAL)
     @Features("Ashes")
-    @Stories("Customer orders list")
+    @Stories("Customers : Orders List")
     @Description("Order can be search by its refNum")
     public void searchFld_orderRefNum() throws IOException {
         provideTestData("customer with 2 orders in remorse hold and fulfillment started");
@@ -82,7 +82,7 @@ public class OrdersListTest extends Preconditions {
     @Test(priority = 4)
     @Severity(SeverityLevel.NORMAL)
     @Features("Ashes")
-    @Stories("Customer orders list")
+    @Stories("Customers : Orders List")
     @Description("Order can be searched by line item's product title")
     public void searchFld_productName() throws IOException {
         provideTestData("customer with 2 orders in remorse hold and fulfillment started");
@@ -97,7 +97,7 @@ public class OrdersListTest extends Preconditions {
     @Test(priority = 5)
     @Severity(SeverityLevel.NORMAL)
     @Features("Ashes")
-    @Stories("Customer orders list")
+    @Stories("Customers : Orders List")
     @Description("Order can be searched by line item's SKU code")
     public void searchFld_productSKU() throws IOException {
         provideTestData("customer with 2 orders in remorse hold and fulfillment started");

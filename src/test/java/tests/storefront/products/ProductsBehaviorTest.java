@@ -28,7 +28,7 @@ public class ProductsBehaviorTest extends Preconditions {
     @Test(priority = 1, dataProvider = "productCatalogViewDisplayed", enabled = false)
     @Severity(SeverityLevel.CRITICAL)
     @Features({"Storefront-TPG", "Parametrized Tests"})
-    @Stories("Storefront Products Behavior")
+    @Stories("Products : Storefront Behavior")
     @Description("Product should be displayed in the catalog view on storefront [Disabled until DB clean]")
     public void productDisplayedInCatalogView(String testData) throws IOException {
         provideTestData(testData);
@@ -42,7 +42,7 @@ public class ProductsBehaviorTest extends Preconditions {
     @Test(priority = 2, dataProvider = "productCatalogViewNotDisplayed", enabled = false)
     @Severity(SeverityLevel.CRITICAL)
     @Features({"Storefront-TPG", "Parametrized Tests"})
-    @Stories("Storefront Products Behavior")
+    @Stories("Products : Storefront Behavior")
     @Description("Product should not be displayed in the catalog view on storefront [Disabled until DB clean]")
     public void productNotDisplayedInCatalogView(String testData) throws IOException {
         provideTestData(testData);
@@ -55,7 +55,7 @@ public class ProductsBehaviorTest extends Preconditions {
     @Test(priority = 3, dataProvider = "productCanBeSearched")
     @Severity(SeverityLevel.CRITICAL)
     @Features({"Storefront-TPG", "Parametrized Tests"})
-    @Stories("Storefront Products Behavior")
+    @Stories("Products : Storefront Behavior")
     @Description("Product can be found by search on storefront")
     public void productCanBeSearched(String testData) throws IOException {
         provideTestData(testData);
@@ -70,7 +70,7 @@ public class ProductsBehaviorTest extends Preconditions {
     @Test(priority = 4, dataProvider = "productCannotBeSearched")
     @Severity(SeverityLevel.CRITICAL)
     @Features({"Storefront-TPG", "Parametrized Tests"})
-    @Stories("Storefront Products Behavior")
+    @Stories("Products : Storefront Behavior")
     @Description("Product cannot be found in search on storefront")
     public void productCannotBeSearched(String testData) throws IOException {
         provideTestData(testData);
@@ -86,7 +86,7 @@ public class ProductsBehaviorTest extends Preconditions {
     @Test(priority = 5, dataProvider = "canAccessPDP")
     @Severity(SeverityLevel.CRITICAL)
     @Features({"Storefront-TPG", "Parametrized Tests"})
-    @Stories("Storefront Products Behavior")
+    @Stories("Products : Storefront Behavior")
     @Description("PDP can be accessed using direct link")
     public void canAccessPDP(String testData) throws IOException {
         provideTestData(testData);
@@ -100,7 +100,7 @@ public class ProductsBehaviorTest extends Preconditions {
     @Test(priority = 6, dataProvider = "cannotAccessPDP")
     @Severity(SeverityLevel.CRITICAL)
     @Features({"Storefront-TPG", "Parametrized Tests"})
-    @Stories("Storefront Products Behavior")
+    @Stories("Products : Storefront Behavior")
     @Description("PDP can't be accessed using direct link - 'NO PRODUCT FOUND' should be displayed")
     public void cannotAccessPDP(String testData) throws IOException {
         provideTestData(testData);
@@ -115,7 +115,7 @@ public class ProductsBehaviorTest extends Preconditions {
 //    @Test(priority = 7, dataProvider = "productCanPassCheckout")
 //    @Severity(SeverityLevel.CRITICAL)
 //    @Features({"Storefront-TPG", "Parametrized Tests"})
-//    @Stories("Storefront Products Behavior")
+//    @Stories("Storefront Products : Ashes Behavior")
 //    @Description("Cart with this product can pass checkout")
 //    public void productCanPassCheckout(String testData) throws IOException {
 //        provideTestData(testData);
@@ -138,7 +138,7 @@ public class ProductsBehaviorTest extends Preconditions {
 //    @Test(priority = 8, dataProvider = "productCannotPassCheckout")
 //    @Severity(SeverityLevel.CRITICAL)
 //    @Features({"Storefront-TPG", "Parametrized Tests"})
-//    @Stories("Storefront Products Behavior")
+//    @Stories("Storefront Products : Ashes Behavior")
 //    @Description("Cart with this product can't pass checkout")
 //    public void productCannotPassCheckout(String testData) throws IOException {
 //        provideTestData(testData);
@@ -158,7 +158,7 @@ public class ProductsBehaviorTest extends Preconditions {
     @Test(priority = 9, dataProvider = "canAddProductToCart_storefront")
     @Severity(SeverityLevel.CRITICAL)
     @Features({"Storefront-TPG", "Parametrized Tests"})
-    @Stories("Storefront Products Behavior")
+    @Stories("Products : Storefront Behavior")
     @Description("Can add product to cart on storefront")
     public void canAddProductToCart_storefront(String testData) throws IOException {
         provideTestData(testData);

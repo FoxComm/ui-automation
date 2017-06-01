@@ -38,7 +38,7 @@ public class CartCouponsTest extends Preconditions {
     @Test(priority = 1)
     @Severity(SeverityLevel.CRITICAL)
     @Features("Ashes")
-    @Stories("Cart Coupons")
+    @Stories("Cart : Coupons")
     @Description("Can apply single code coupon to cart")
     public void applyCoupon_singleCode() throws IOException {
         provideTestData("cart<1 SKU>, coupon<any, single code>");
@@ -55,7 +55,7 @@ public class CartCouponsTest extends Preconditions {
     @Test(priority = 2)
     @Severity(SeverityLevel.CRITICAL)
     @Features("Ashes")
-    @Stories("Cart Coupons")
+    @Stories("Cart : Coupons")
     @Description("Can remove coupon from cart")
     public void removeCoupon() throws IOException {
         provideTestData("cart<1 SKU, coupon applied>; coupon<any, single code>");
@@ -91,7 +91,7 @@ public class CartCouponsTest extends Preconditions {
     @Test(priority = 4)
     @Severity(SeverityLevel.NORMAL)
     @Features("Ashes")
-    @Stories("Cart Coupons")
+    @Stories("Cart : Coupons")
     @Description("Error msg is displayed if applying coupon code to cart fails")
     public void applyCoupon_fail() throws IOException {
         provideTestData("empty cart");
@@ -107,7 +107,7 @@ public class CartCouponsTest extends Preconditions {
     @Test(priority = 5)
     @Severity(SeverityLevel.CRITICAL)
     @Features("Ashes")
-    @Stories("Cart Coupons")
+    @Stories("Cart : Coupons")
     @Description("Can apply one of bulk generated coupon codes to cart")
     public void applyCoupon_bulkGenerated() throws IOException {
         provideTestData("cart<1 SKU>; coupon<any, bulk generated codes>");

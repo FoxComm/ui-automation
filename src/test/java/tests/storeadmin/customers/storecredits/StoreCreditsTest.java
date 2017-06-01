@@ -34,7 +34,7 @@ public class StoreCreditsTest extends Preconditions {
     @Test(priority = 1)
     @Severity(SeverityLevel.CRITICAL)
     @Features("Ashes")
-    @Stories("Customer Store Credits")
+    @Stories("Customers : Store Credits")
     @Description("Can issue SC with of 'CSR Appeasement' type")
     public void issueSC_csrAppeasement() throws IOException {
         provideTestData("a customer");
@@ -52,7 +52,7 @@ public class StoreCreditsTest extends Preconditions {
     @Test(priority = 2)
     @Severity(SeverityLevel.NORMAL)
     @Features("Ashes")
-    @Stories("Customer Store Credits")
+    @Stories("Customers : Store Credits")
     @Description("Can issue SC with preset values")
     public void issueSC_presetValues() throws IOException {
         provideTestData("a customer");
@@ -70,7 +70,7 @@ public class StoreCreditsTest extends Preconditions {
     @Test(priority = 3)
     @Severity(SeverityLevel.NORMAL)
     @Features("Ashes")
-    @Stories("Customer Store Credits")
+    @Stories("Customers : Store Credits")
     @Description("Can transfer gift card to store credits")
     public void issueSC_gcTransfer() throws IOException {
         provideTestData("a customer && GC");
@@ -89,7 +89,7 @@ public class StoreCreditsTest extends Preconditions {
     @Test(priority = 4)
     @Severity(SeverityLevel.MINOR)
     @Features("Ashes")
-    @Stories("Customer Store Credits")
+    @Stories("Customers : Store Credits")
     @Description("Issues SC is displayed on the list")
     public void issuedSC_displayedOnList() throws IOException {
         provideTestData("a customer");
@@ -108,7 +108,7 @@ public class StoreCreditsTest extends Preconditions {
     @Test(priority = 5, dependsOnMethods = "issuedSC_displayedOnList")
     @Severity(SeverityLevel.MINOR)
     @Features("Ashes")
-    @Stories("Customer Store Credits")
+    @Stories("Customers : Store Credits")
     @Description("Can set SC on hold")
     public void setState_onHold() throws IOException {
         provideTestData("a customer with issued SC");
@@ -124,7 +124,7 @@ public class StoreCreditsTest extends Preconditions {
     @Test(priority = 6, dependsOnMethods = "issuedSC_displayedOnList")
     @Severity(SeverityLevel.MINOR)
     @Features("Ashes")
-    @Stories("Customer Store Credits")
+    @Stories("Customers : Store Credits")
     @Description("Can cancel SC")
     public void setState_canceled() throws IOException {
         provideTestData("a customer with issued SC");
@@ -140,7 +140,7 @@ public class StoreCreditsTest extends Preconditions {
     @Test(priority = 7)
     @Severity(SeverityLevel.MINOR)
     @Features("Ashes")
-    @Stories("Customer Store Credits")
+    @Stories("Customers : Store Credits")
     @Description("[CSR Appeasement type] Transaction appears on the list and has correct 'Amount' value")
     public void checkTransaction_csrAppeasement() throws IOException {
         provideTestData("order in Remorse Hold, payed with SC (CSR Appeasement)");
@@ -159,7 +159,7 @@ public class StoreCreditsTest extends Preconditions {
     @Test(priority = 8)
     @Severity(SeverityLevel.MINOR)
     @Features("Ashes")
-    @Stories("Customer Store Credits")
+    @Stories("Customers : Store Credits")
     @Description("[GC Transfer type] Transaction appears on the list and has correct 'Amount' value")
     public void checkTransaction_gcTransfer() throws IOException {
         provideTestData("order in Remorse Hold, payed with SC (GC Transfer)");

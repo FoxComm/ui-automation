@@ -39,7 +39,7 @@ public class ShippingAddressTest extends Preconditions {
     @Test(priority = 1)
     @Severity(SeverityLevel.CRITICAL)
     @Features("Ashes")
-    @Stories("Cart shipping address")
+    @Stories("Cart :  Shipping Address")
     @Description("Can create a new shipping address in empty address book | New ship address is automatically applied to cart")
     public void addNewAddress_emptyAddressBook() throws IOException {
         provideTestData("cart with empty address book");
@@ -56,7 +56,7 @@ public class ShippingAddressTest extends Preconditions {
     @Test(priority = 2)
     @Severity(SeverityLevel.NORMAL)
     @Features("Ashes")
-    @Stories("Cart shipping address")
+    @Stories("Cart : Shipping Address")
     @Description("Creating a new shipping address in a non-empty address book auto-applies it to the cart if none was applied yet")
     public void addNewAddress_nonEmptyAddressBook() throws IOException {
         provideTestData("cart with non-empty address book");
@@ -74,7 +74,7 @@ public class ShippingAddressTest extends Preconditions {
     @Test(priority = 3)
     @Severity(SeverityLevel.CRITICAL)
     @Features("Ashes")
-    @Stories("Cart shipping address")
+    @Stories("Cart : Shipping Address")
     @Description("Can apply existing ship address from address book")
     public void chooseShippingAddress() throws IOException {
         provideTestData("cart with non-empty address book");
@@ -91,7 +91,7 @@ public class ShippingAddressTest extends Preconditions {
     @Test(priority = 4)
     @Severity(SeverityLevel.CRITICAL)
     @Features("Ashes")
-    @Stories("Cart shipping address")
+    @Stories("Cart : Shipping Address")
     @Description("Can edit applied shipping address")
     public void editChosenShippingAddress() throws IOException {
         provideTestData("cart with chosen shipping address");
@@ -112,7 +112,7 @@ public class ShippingAddressTest extends Preconditions {
     @Test(priority = 5)
     @Severity(SeverityLevel.CRITICAL)
     @Features("Ashes")
-    @Stories("Cart shipping address")
+    @Stories("Cart : Shipping Address")
     @Description("Can remove applied ship address from cart")
     public void deleteChosenShippingAddress() throws IOException {
         provideTestData("cart with chosen shipping address");
@@ -127,7 +127,7 @@ public class ShippingAddressTest extends Preconditions {
     @Test(priority = 6)
     @Severity(SeverityLevel.NORMAL)
     @Features("Ashes")
-    @Stories("Cart shipping address")
+    @Stories("Cart : Shipping Address")
     @Description("Can set existing address from address book as default")
     public void setDefaultShippingAddress() throws IOException {
         provideTestData("filled out cart 2 addresses in address book");
@@ -151,7 +151,7 @@ public class ShippingAddressTest extends Preconditions {
     @Test(priority = 7)
     @Severity(SeverityLevel.CRITICAL)
     @Features("Ashes")
-    @Stories("Cart shipping address")
+    @Stories("Cart : Shipping Address")
     @Description("Can set different ship address as default")
     public void changeDefaultShippingAddress() throws IOException {
         provideTestData("cart with 2 addresses and defined default shipping address");

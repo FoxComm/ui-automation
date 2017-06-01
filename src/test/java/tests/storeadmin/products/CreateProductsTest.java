@@ -43,7 +43,7 @@ public class CreateProductsTest extends Preconditions {
     @Test(priority = 1)
     @Severity(SeverityLevel.CRITICAL)
     @Features("Ashes")
-    @Stories("Create Product")
+    @Stories("Products : Create")
     @Description("Can create product; product is present in search_view")
     public void productIsDisplayed_admin() throws IOException {
         provideTestData("active SKU");
@@ -66,7 +66,7 @@ public class CreateProductsTest extends Preconditions {
     @Test(priority = 2)
     @Severity(SeverityLevel.NORMAL)
     @Features("Ashes")
-    @Stories("Create Product")
+    @Stories("Products : Create")
     @Description("Applied SKU is displayed on PDP")
     public void skuIsApplied() throws IOException {
         provideTestData("active product, has tag, active SKU");
@@ -78,7 +78,7 @@ public class CreateProductsTest extends Preconditions {
     @Test(priority = 3)
     @Severity(SeverityLevel.NORMAL)
     @Features("Ashes")
-    @Stories("Create Product")
+    @Stories("Products : Create")
     @Description("retailPrice and salePrice are atuofilled with price values of the selected SKU")
     public void pricesAutofilled() throws IOException {
         provideTestData("active SKU");
@@ -275,7 +275,7 @@ public class CreateProductsTest extends Preconditions {
     @Test(priority = 14)
     @Severity(SeverityLevel.NORMAL)
     @Features("Ashes")
-    @Stories("Create Product")
+    @Stories("Products : Create")
     @Description("A just created product is displayed in category_view, its PDP can be accessed")
     public void createProduct_SKU_inactive() throws IOException {
         provideTestData("inactive SKU");
@@ -298,7 +298,7 @@ public class CreateProductsTest extends Preconditions {
     @Test(priority = 15)
     @Severity(SeverityLevel.NORMAL)
     @Features("Ashes")
-    @Stories("Create Product")
+    @Stories("Products : Create")
     @Description("A just created product is displayed in category_view, its PDP can be accessed")
     public void createProduct_SKU_noTitle() throws IOException {
         provideTestData("SKU with no title");
@@ -322,7 +322,7 @@ public class CreateProductsTest extends Preconditions {
     @Test(priority = 16)
     @Severity(SeverityLevel.MINOR)
     @Features("Ashes")
-    @Stories("Create Product")
+    @Stories("Products : Create")
     @Description("Description is not required field")
     public void createProduct_SKU_noDescription() throws IOException {
         provideTestData("SKU with no description");

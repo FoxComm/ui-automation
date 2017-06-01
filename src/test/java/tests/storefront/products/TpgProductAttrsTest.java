@@ -23,7 +23,7 @@ public class TpgProductAttrsTest extends Preconditions {
     @Test(priority = 1)
     @Severity(SeverityLevel.CRITICAL)
     @Features("Storefront-TPG")
-    @Stories("TPG-specific Product Attributes")
+    @Stories("Products : TPGs Custom PDP")
     @Description("All attributes are displayed correctly (product name, sale price, description)")
     public void productAttributesDisplayedCorrectly() throws IOException {
         provideTestData("an active product with tpg-specific custom properties");

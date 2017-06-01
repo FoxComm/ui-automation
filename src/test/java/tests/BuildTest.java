@@ -27,7 +27,7 @@ public class BuildTest extends Preconditions {
 
     @Test(priority = 1)
     @Severity(SeverityLevel.CRITICAL)
-    @Features({"Ashes", "Storefront"})
+    @Features({"Parametrized", "Storefront"})
     @Stories("Fox Tests")
     @Description("This test fails and marks build as failing")
     public void criticalTest_fail() throws IOException {
@@ -39,7 +39,7 @@ public class BuildTest extends Preconditions {
 
     @Test(priority = 2)
     @Severity(SeverityLevel.CRITICAL)
-    @Features({"Ashes", "Storefront"})
+    @Features({"Storefront", "Parametrized"})
     @Stories("Fox Tests")
     @Description("This test is passing, but build is marked as failed because critical test has failed")
     public void criticalTest_pass() throws IOException {
@@ -50,7 +50,7 @@ public class BuildTest extends Preconditions {
 
     @Test(priority = 3)
     @Severity(SeverityLevel.MINOR)
-    @Features("Ashes")
+    @Features({"Ashes", "Parametrized"})
     @Stories("Fox Tests")
     @Description("This test is passing, but build is marked as failed because critical test has failed")
     public void minorTest_pass() throws IOException {
@@ -61,7 +61,7 @@ public class BuildTest extends Preconditions {
 
     @Test(priority = 4)
     @Severity(SeverityLevel.CRITICAL)
-    @Features("Ashes")
+    @Features({"Ashes", "Parametrized"})
     @Stories("Fox Tests")
     public void criticalTest_broken() {
         p = openPage(adminUrl + "/login", LoginPage.class);

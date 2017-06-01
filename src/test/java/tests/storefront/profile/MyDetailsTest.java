@@ -27,7 +27,7 @@ public class MyDetailsTest extends Preconditions {
     @Test(priority = 1)
     @Severity(SeverityLevel.BLOCKER)
     @Features("Storefront-TPG")
-    @Stories("Profile Page")
+    @Stories("Customer : Profile Details")
     @Description("Can access profile page from user menu")
     public void profileIsAccessible() throws IOException {
         provideTestData("a customer signed up on storefront");
@@ -46,7 +46,7 @@ public class MyDetailsTest extends Preconditions {
     @Test(priority = 2)
     @Severity(SeverityLevel.CRITICAL)
     @Features("Storefront-TPG")
-    @Stories("Profile Page")
+    @Stories("Customer : Profile Details")
     @Description("Can edit first & last name")
     public void editCustomerName() throws IOException {
         provideTestData("a customer signed up on storefront");
@@ -64,7 +64,7 @@ public class MyDetailsTest extends Preconditions {
     @Test(priority = 3)
     @Severity(SeverityLevel.CRITICAL)
     @Features("Storefront-TPG")
-    @Stories("Profile Page")
+    @Stories("Customer : Profile Details")
     @Description("Can change email to another one that is unique to the system")
     public void editCustomerEmail_unique() throws IOException {
         String newEmail = "qatest2278+" + generateRandomID() + "@gmail.com";
@@ -86,7 +86,7 @@ public class MyDetailsTest extends Preconditions {
     @Test(priority = 4)
     @Severity(SeverityLevel.CRITICAL)
     @Features("Storefront-TPG")
-    @Stories("Profile Page")
+    @Stories("Customer : Profile Details")
     @Description("Can't set email to an already taken one")
     public void editCustomerEmail_taken() throws IOException {
         provideTestData("two customers signed up on storefront");

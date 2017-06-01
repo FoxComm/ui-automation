@@ -38,7 +38,7 @@ public class PaymentMethodTest extends Preconditions {
     @Test(priority = 1)
     @Severity(SeverityLevel.CRITICAL)
     @Features("Ashes")
-    @Stories("Cart Payment Methods")
+    @Stories("Cart : Payment Methods")
     @Description("Can add a credit card to cart")
     public void addPaymentMethod_creditCard() throws IOException {
         provideTestData("cart with 1 item and chosen shipping address");
@@ -58,7 +58,7 @@ public class PaymentMethodTest extends Preconditions {
     @Test(priority = 2)
     @Severity(SeverityLevel.CRITICAL)
     @Features("Ashes")
-    @Stories("Cart Payment Methods")
+    @Stories("Cart : Payment Methods")
     @Description("Can add a gift card as a payment method to cart")
     public void addPaymentMethod_giftCard() throws IOException {
         provideTestData("cart with 1 item && customer with GC");
@@ -80,7 +80,7 @@ public class PaymentMethodTest extends Preconditions {
     @Test(priority = 3)
     @Severity(SeverityLevel.NORMAL)
     @Features("Ashes")
-    @Stories("Cart Payment Methods")
+    @Stories("Cart : Payment Methods")
     @Description("Can add store credits as a payment method to cart")
     public void addPaymentMethod_storeCredit() throws IOException {
         provideTestData("cart with 1 item && customer with SC");
@@ -103,7 +103,7 @@ public class PaymentMethodTest extends Preconditions {
     @Test(priority = 4, enabled = false)
     @Severity(SeverityLevel.CRITICAL)
     @Features("Ashes")
-    @Stories("Cart Payment Methods")
+    @Stories("Cart : Payment Methods")
     @Description("")
     public void addStoreCredit_exceedsTotal() throws IOException {
         provideTestData("cart with 1 item && customer with SC");
@@ -121,7 +121,7 @@ public class PaymentMethodTest extends Preconditions {
     @Test(priority = 5)
     @Severity(SeverityLevel.CRITICAL)
     @Features("Ashes")
-    @Stories("Cart Payment Methods")
+    @Stories("Cart : Payment Methods")
     @Description("")
     public void addGiftCard_exceedsTotal() throws IOException {
         provideTestData("cart with 1 item && customer with GC");

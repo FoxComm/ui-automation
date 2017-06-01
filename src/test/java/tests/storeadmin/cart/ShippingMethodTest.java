@@ -33,7 +33,7 @@ public class ShippingMethodTest extends Preconditions {
     @Test(priority = 1)
     @Severity(SeverityLevel.CRITICAL)
     @Features("Ashes")
-    @Stories("Cart shipping method")
+    @Stories("Cart : Shipping method")
     @Description("Can apply a shipping method to cart")
     public void setShippingMethod() throws IOException {
         provideTestData("cart with chosen shipping address");

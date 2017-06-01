@@ -39,7 +39,7 @@ public class ContactInformationTest extends Preconditions {
     @Test(priority = 1)
     @Severity(SeverityLevel.CRITICAL)
     @Features("Ashes")
-    @Stories("Customer Contact Information")
+    @Stories("Customers : Contacts")
     @Description("Can create new custoemr; User is redirected to customer details page after customer creation")
     public void createCustomer() {
         String uid = generateRandomID();
@@ -58,7 +58,7 @@ public class ContactInformationTest extends Preconditions {
     @Test(priority = 2)
     @Severity(SeverityLevel.NORMAL)
     @Features("Ashes")
-    @Stories("Customer contact information")
+    @Stories("Customers : Contacts")
     @Description("'Name' and 'Email' are populated with what've been specified during customer creation")
     public void assertDefaultValues() throws IOException {
         provideTestData("a customer");
@@ -71,7 +71,7 @@ public class ContactInformationTest extends Preconditions {
     @Test(priority = 4)
     @Severity(SeverityLevel.NORMAL)
     @Features("Ashes")
-    @Stories("Customer contact information")
+    @Stories("Customers : Contacts")
     @Description("Can edit customer name")
     public void editName() throws IOException {
         provideTestData("a customer");
@@ -89,7 +89,7 @@ public class ContactInformationTest extends Preconditions {
     @Test(priority = 5)
     @Severity(SeverityLevel.CRITICAL)
     @Features("Ashes")
-    @Stories("Customer contact information")
+    @Stories("Customers : Contacts")
     @Description("Phone number is not required")
     public void nameIsRequired() throws IOException {
         provideTestData("a customer");
@@ -107,7 +107,7 @@ public class ContactInformationTest extends Preconditions {
     @Test(priority = 5)
     @Severity(SeverityLevel.CRITICAL)
     @Features("Ashes")
-    @Stories("Customer contact information")
+    @Stories("Customers : Contacts")
     @Description("Can't set customer email to an already used one")
     public void editEmail_unique() throws IOException {
         provideTestData("a customer");
@@ -125,7 +125,7 @@ public class ContactInformationTest extends Preconditions {
     @Test(priority = 5)
     @Severity(SeverityLevel.CRITICAL)
     @Features("Ashes")
-    @Stories("Customer contact information")
+    @Stories("Customers : Contacts")
     @Description("Can edit customer email")
     public void editEmail_used() throws IOException {
         provideTestData("two customers signed up on storefront");
@@ -144,7 +144,7 @@ public class ContactInformationTest extends Preconditions {
     @Test(priority = 5)
     @Severity(SeverityLevel.CRITICAL)
     @Features("Ashes")
-    @Stories("Customer contact information")
+    @Stories("Customers : Contacts")
     @Description("Phone number is not required")
     public void emailIsRequired() throws IOException {
         provideTestData("a customer");
@@ -162,7 +162,7 @@ public class ContactInformationTest extends Preconditions {
     @Test(priority = 5)
     @Severity(SeverityLevel.CRITICAL)
     @Features("Ashes")
-    @Stories("Customer contact information")
+    @Stories("Customers : Contacts")
     @Description("Phone number is not required")
     public void phoneNumberNotRequired() throws IOException {
         provideTestData("a customer");
@@ -178,7 +178,7 @@ public class ContactInformationTest extends Preconditions {
     @Test(priority = 3)
     @Severity(SeverityLevel.NORMAL)
     @Features("Ashes")
-    @Stories("Customer contact information")
+    @Stories("Customers : Contacts")
     @Description("Can add phone number to contact information")
     public void addPhoneNumber() throws IOException {
         provideTestData("a customer");
@@ -194,7 +194,7 @@ public class ContactInformationTest extends Preconditions {
     @Test(priority = 6)
     @Severity(SeverityLevel.NORMAL)
     @Features("Ashes")
-    @Stories("Customer contact information")
+    @Stories("Customers : Contacts")
     @Description("Phone number from billing address should be transmitted to \"Contact Info\"")
     public void phoneNumbFromBillAddress() throws IOException {
         provideTestData("customer with a credit card");
