@@ -1,8 +1,8 @@
 package tests.storefront.auth;
 
-import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import pages.storefront.StorefrontPage;
+import base.StorefrontTPGBasePage;
 import ru.yandex.qatools.allure.annotations.Description;
 import ru.yandex.qatools.allure.annotations.Features;
 import ru.yandex.qatools.allure.annotations.Severity;
@@ -17,7 +17,12 @@ import static com.codeborne.selenide.Configuration.timeout;
 
 public class LogOutTest extends Preconditions {
 
-    private StorefrontPage p;
+    private StorefrontTPGBasePage p;
+
+    @BeforeMethod(alwaysRun = true)
+    public void cleanUp_after() {
+        p.cleanUp();
+    }
 
     @Test(priority = 1)
     @Severity(SeverityLevel.CRITICAL)
@@ -27,7 +32,7 @@ public class LogOutTest extends Preconditions {
     public void logOut() throws IOException {
         provideTestData("a customer signed up on storefront");
 
-        p = openPage(storefrontUrl, StorefrontPage.class);
+        p = openPage(storefrontUrl, StorefrontTPGBasePage.class);
         p.clickLogInLnk();
         p.setEmail_logIn(customerEmail);
         p.setPassword_logIn("78qa22!#");
@@ -46,7 +51,7 @@ public class LogOutTest extends Preconditions {
     public void logOutUnderProfile() throws IOException {
         provideTestData("a customer signed up on storefront");
 
-        p = openPage(storefrontUrl, StorefrontPage.class);
+        p = openPage(storefrontUrl, StorefrontTPGBasePage.class);
         p.logIn(customerEmail, "78qa22!#");
         p.openProfile();
         p.logOut();
@@ -63,7 +68,7 @@ public class LogOutTest extends Preconditions {
     public void logOutAtOrderConfirmation() throws IOException {
         provideTestData("a customer ready to checkout");
 
-        p = openPage(storefrontUrl, StorefrontPage.class);
+        p = openPage(storefrontUrl, StorefrontTPGBasePage.class);
         p.logIn(customerEmail, "78qa22!#");
         p.openCart();
         p.clickCheckoutBtn_cart();
@@ -73,11 +78,6 @@ public class LogOutTest extends Preconditions {
 
         p.logOut();
         assertUrl(getUrl(), storefrontUrl, timeout);
-    }
-
-    @AfterMethod(alwaysRun = true)
-    public void cleanUp_after() {
-        p.cleanUp();
     }
 
 }

@@ -1,8 +1,8 @@
 package tests.storefront.auth;
 
-import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import pages.storefront.StorefrontPage;
+import base.StorefrontTPGBasePage;
 import ru.yandex.qatools.allure.annotations.Description;
 import ru.yandex.qatools.allure.annotations.Features;
 import ru.yandex.qatools.allure.annotations.Severity;
@@ -17,7 +17,12 @@ import static com.codeborne.selenide.Condition.visible;
 
 public class SignInTest extends Preconditions {
 
-    private StorefrontPage p;
+    private StorefrontTPGBasePage p;
+
+    @BeforeMethod(alwaysRun = true)
+    public void cleanUp_after() {
+        p.cleanUp();
+    }
 
     @Test(priority = 1)
     @Severity(SeverityLevel.BLOCKER)
@@ -27,7 +32,7 @@ public class SignInTest extends Preconditions {
     public void signIn_correctCreds() throws IOException {
         provideTestData("a customer signed up on storefront");
 
-        p = openPage(storefrontUrl, StorefrontPage.class);
+        p = openPage(storefrontUrl, StorefrontTPGBasePage.class);
         p.clickLogInLnk();
         p.setEmail_logIn(customerEmail);
         p.setPassword_logIn("78qa22!#");
@@ -42,7 +47,7 @@ public class SignInTest extends Preconditions {
     @Stories("Auth : Sign In")
     @Description("Can't sign in using incorrect credentials")
     public void signIn_incorrectCreds() throws IOException {
-        p = openPage(storefrontUrl, StorefrontPage.class);
+        p = openPage(storefrontUrl, StorefrontTPGBasePage.class);
         p.clickLogInLnk();
         p.setEmail_logIn("incorrect@email.com");
         p.setPassword_logIn("incorrectPassword");
@@ -59,7 +64,7 @@ public class SignInTest extends Preconditions {
     public void authFormClosed_signInSuccess() throws IOException {
         provideTestData("a customer signed up on storefront");
 
-        p = openPage(storefrontUrl, StorefrontPage.class);
+        p = openPage(storefrontUrl, StorefrontTPGBasePage.class);
         p.logIn(customerEmail, "78qa22!#");
 
         p.closeAuthFormBtn().shouldNotBe(visible);
@@ -71,7 +76,7 @@ public class SignInTest extends Preconditions {
     @Stories("Auth : Sign In")
     @Description("Sign In form can be closed without signing in")
     public void closeAuthForm_abortSignIn() {
-        p = openPage(storefrontUrl, StorefrontPage.class);
+        p = openPage(storefrontUrl, StorefrontTPGBasePage.class);
         p.clickLogInLnk();
         p.setEmail_logIn("dummy@mail.com");
         p.setPassword_logIn("dummyPassword");
@@ -79,11 +84,6 @@ public class SignInTest extends Preconditions {
 
         p.closeAuthFormBtn().shouldNotBe(visible);
         p.logInLnk().shouldBe(visible);
-    }
-
-    @AfterMethod(alwaysRun = true)
-    public void cleanUp_after() {
-        p.cleanUp();
     }
 
 }

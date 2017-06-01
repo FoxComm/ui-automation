@@ -1,8 +1,8 @@
 package tests.storefront.profile;
 
-import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import pages.storefront.StorefrontPage;
+import base.StorefrontTPGBasePage;
 import ru.yandex.qatools.allure.annotations.Description;
 import ru.yandex.qatools.allure.annotations.Features;
 import ru.yandex.qatools.allure.annotations.Severity;
@@ -17,7 +17,12 @@ import static com.codeborne.selenide.Selenide.refresh;
 
 public class MyShippingAddressesTest extends Preconditions {
 
-    private StorefrontPage p;
+    private StorefrontTPGBasePage p;
+
+    @BeforeMethod(alwaysRun = true)
+    public void cleanUp_after() {
+        p.cleanUp();
+    }
 
     @Test(priority = 1)
     @Severity(SeverityLevel.CRITICAL)
@@ -27,7 +32,7 @@ public class MyShippingAddressesTest extends Preconditions {
     public void createShipAddress_profile() throws IOException {
         provideTestData("a customer signed up on storefront");
 
-        p = openPage(storefrontUrl, StorefrontPage.class);
+        p = openPage(storefrontUrl, StorefrontTPGBasePage.class);
         p.logIn(customerEmail, "78qa22!#");
         p.openProfile();
         p.clickAddAddressBtn();
@@ -46,7 +51,7 @@ public class MyShippingAddressesTest extends Preconditions {
     public void editShipAddress_profile() throws IOException {
         provideTestData("a storefront signed up customer with a shipping address");
 
-        p = openPage(storefrontUrl, StorefrontPage.class);
+        p = openPage(storefrontUrl, StorefrontTPGBasePage.class);
         p.logIn(customerEmail, "78qa22!#");
         p.openProfile();
         p.clickEditBtn_address("1");
@@ -68,7 +73,7 @@ public class MyShippingAddressesTest extends Preconditions {
     public void deleteShipAddress_profile() throws IOException {
         provideTestData("a storefront signed up customer with 2 shipping addresses");
 
-        p = openPage(storefrontUrl, StorefrontPage.class);
+        p = openPage(storefrontUrl, StorefrontTPGBasePage.class);
         p.logIn(customerEmail, "78qa22!#");
         p.openProfile();
         p.clickRemoveBtn_address("1");
@@ -85,7 +90,7 @@ public class MyShippingAddressesTest extends Preconditions {
     public void restoreShipAddress() throws IOException {
         provideTestData("a storefront signed up customer with a shipping address");
 
-        p = openPage(storefrontUrl, StorefrontPage.class);
+        p = openPage(storefrontUrl, StorefrontTPGBasePage.class);
         p.logIn(customerEmail, "78qa22!#");
         p.openProfile();
         p.clickRemoveBtn_address("1");
@@ -103,7 +108,7 @@ public class MyShippingAddressesTest extends Preconditions {
     public void setShipAddressAsDefault_existing_profilePage() throws IOException {
         provideTestData("a storefront signed up customer with 2 shipping addresses");
 
-        p = openPage(storefrontUrl, StorefrontPage.class);
+        p = openPage(storefrontUrl, StorefrontTPGBasePage.class);
         p.logIn(customerEmail, "78qa22!#");
         p.openProfile();
         p.clickEditBtn_address("2");
@@ -121,7 +126,7 @@ public class MyShippingAddressesTest extends Preconditions {
     public void setShipAddressAsDefault_new_noDefault() throws IOException {
         provideTestData("a storefront signed up customer with 2 shipping addresses");
 
-        p = openPage(storefrontUrl, StorefrontPage.class);
+        p = openPage(storefrontUrl, StorefrontTPGBasePage.class);
         p.logIn(customerEmail, "78qa22!#");
         p.openProfile();
         p.clickAddAddressBtn();
@@ -140,7 +145,7 @@ public class MyShippingAddressesTest extends Preconditions {
     public void setShipAddressAsDefault_new_hasDefault() throws IOException {
         provideTestData("a storefront signed up customer with 2 shipping addresses, has default address");
 
-        p = openPage(storefrontUrl, StorefrontPage.class);
+        p = openPage(storefrontUrl, StorefrontTPGBasePage.class);
         p.logIn(customerEmail, "78qa22!#");
         p.openProfile();
         p.clickAddAddressBtn();
@@ -149,13 +154,6 @@ public class MyShippingAddressesTest extends Preconditions {
         p.clickSaveBtn();
 
         p.assertAddressIsSelected("3");
-    }
-
-
-
-    @AfterMethod(alwaysRun = true)
-    public void cleanUp_after() {
-        p.cleanUp();
     }
 
 }

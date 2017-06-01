@@ -1,8 +1,6 @@
 package tests.storefront;
 
-import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
-import pages.storefront.StorefrontPage;
 import ru.yandex.qatools.allure.annotations.Description;
 import testdata.Preconditions;
 
@@ -12,8 +10,6 @@ import static testdata.api.collection.Customers.signUpCustomer;
 
 public class StripeTest extends Preconditions {
 
-    private StorefrontPage p;
-
     @Test(priority = 1, dataProvider = "stripeTest")
     @Description("Checkout the cart and then check Payment Status at Stripe dashboard")
     public void stripeTest(String testData, String expPaymentState) throws IOException {
@@ -21,12 +17,6 @@ public class StripeTest extends Preconditions {
         signUpCustomer("Customer " + randomId, "qatest2278+" + expPaymentState + "." + randomId);
         provideTestData(testData);
         printTestData();
-    }
-
-
-    @AfterMethod(alwaysRun = true)
-    public void cleanUp_after() {
-        p.cleanUp();
     }
 
 }

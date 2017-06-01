@@ -1,8 +1,8 @@
 package tests.storefront.profile;
 
-import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import pages.storefront.StorefrontPage;
+import base.StorefrontTPGBasePage;
 import ru.yandex.qatools.allure.annotations.Description;
 import ru.yandex.qatools.allure.annotations.Features;
 import ru.yandex.qatools.allure.annotations.Severity;
@@ -17,7 +17,12 @@ import static com.codeborne.selenide.Condition.visible;
 
 public class MyDetailsTest extends Preconditions {
 
-    private StorefrontPage p;
+    private StorefrontTPGBasePage p;
+
+    @BeforeMethod(alwaysRun = true)
+    public void cleanUp_after() {
+        p.cleanUp();
+    }
 
     @Test(priority = 1)
     @Severity(SeverityLevel.BLOCKER)
@@ -27,7 +32,7 @@ public class MyDetailsTest extends Preconditions {
     public void profileIsAccessible() throws IOException {
         provideTestData("a customer signed up on storefront");
 
-        p = openPage(storefrontUrl, StorefrontPage.class);
+        p = openPage(storefrontUrl, StorefrontTPGBasePage.class);
         p.clickLogInLnk();
         p.setEmail_logIn(customerEmail);
         p.setPassword_logIn("78qa22!#");
@@ -45,7 +50,7 @@ public class MyDetailsTest extends Preconditions {
     @Description("Can edit first & last name")
     public void editCustomerName() throws IOException {
         provideTestData("a customer signed up on storefront");
-        p = openPage(storefrontUrl, StorefrontPage.class);
+        p = openPage(storefrontUrl, StorefrontTPGBasePage.class);
         p.logIn(customerEmail, "78qa22!#");
 
         p.openProfile();
@@ -64,7 +69,7 @@ public class MyDetailsTest extends Preconditions {
     public void editCustomerEmail_unique() throws IOException {
         String newEmail = "qatest2278+" + generateRandomID() + "@gmail.com";
         provideTestData("a customer signed up on storefront");
-        p = openPage(storefrontUrl, StorefrontPage.class);
+        p = openPage(storefrontUrl, StorefrontTPGBasePage.class);
         p.logIn(customerEmail, "78qa22!#");
 
         p.openProfile();
@@ -86,7 +91,7 @@ public class MyDetailsTest extends Preconditions {
     public void editCustomerEmail_taken() throws IOException {
         provideTestData("two customers signed up on storefront");
 
-        p = openPage(storefrontUrl, StorefrontPage.class);
+        p = openPage(storefrontUrl, StorefrontTPGBasePage.class);
         p.logIn(customerEmail, "78qa22!#");
         p.openProfile();
         p.clickEditLnk("Email");
@@ -94,11 +99,6 @@ public class MyDetailsTest extends Preconditions {
         p.clickSaveBtn();
 
         p.errorMsg("The email address you entered is already in use").shouldBe(visible);
-    }
-
-    @AfterMethod(alwaysRun = true)
-    public void cleanUp_after() {
-        p.cleanUp();
     }
 
 }

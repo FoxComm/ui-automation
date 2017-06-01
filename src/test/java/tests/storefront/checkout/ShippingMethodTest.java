@@ -1,8 +1,8 @@
 package tests.storefront.checkout;
 
-import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import pages.storefront.StorefrontPage;
+import base.StorefrontTPGBasePage;
 import ru.yandex.qatools.allure.annotations.Description;
 import ru.yandex.qatools.allure.annotations.Features;
 import ru.yandex.qatools.allure.annotations.Severity;
@@ -17,7 +17,12 @@ import static com.codeborne.selenide.Condition.visible;
 
 public class ShippingMethodTest extends Preconditions {
 
-    private StorefrontPage p;
+    private StorefrontTPGBasePage p;
+
+    @BeforeMethod(alwaysRun = true)
+    public void cleanUp_after() {
+        p.cleanUp();
+    }
 
     @Test(priority = 1)
     @Severity(SeverityLevel.CRITICAL)
@@ -27,7 +32,7 @@ public class ShippingMethodTest extends Preconditions {
     public void canSelectShipMethod() throws IOException {
         provideTestData("a storefront signed up customer with active product in cart and applied shipping address");
 
-        p = openPage(storefrontUrl, StorefrontPage.class);
+        p = openPage(storefrontUrl, StorefrontTPGBasePage.class);
         p.logIn(customerEmail, "78qa22!#");
         p.openCart();
         p.clickCheckoutBtn_cart();
@@ -47,7 +52,7 @@ public class ShippingMethodTest extends Preconditions {
     public void shipMethodForGC() throws IOException {
         provideTestData("a storefront signed up customer with GC in cart as a line item and applied shipping address");
 
-        p = openPage(storefrontUrl, StorefrontPage.class);
+        p = openPage(storefrontUrl, StorefrontTPGBasePage.class);
         p.logIn(customerEmail, "78qa22!#");
         p.openCart();
         p.clickCheckoutBtn_cart();
@@ -56,11 +61,6 @@ public class ShippingMethodTest extends Preconditions {
 
         p.name_appliedShipMethod().shouldHave(text("Email"));
         p.price_appliedShipMethod().shouldHave(text("$0.00"));
-    }
-
-    @AfterMethod(alwaysRun = true)
-    public void cleanUp_after() {
-        p.cleanUp();
     }
 
 }

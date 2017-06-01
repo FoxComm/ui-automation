@@ -1,6 +1,6 @@
 package pages.admin;
 
-import base.BasePage;
+import base.AdminBasePage;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import ru.yandex.qatools.allure.annotations.Step;
@@ -9,7 +9,7 @@ import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
 import static org.openqa.selenium.By.xpath;
 
-public class CartPage extends BasePage {
+public class CartPage extends AdminBasePage {
 
     //------------------------ G E N E R A L    C O N T R O L S ------------------------//
     //----------------------------------------------------------------------------------//

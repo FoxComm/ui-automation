@@ -1,8 +1,8 @@
 package tests.storefront.auth;
 
-import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import pages.storefront.StorefrontPage;
+import base.StorefrontTPGBasePage;
 import ru.yandex.qatools.allure.annotations.Description;
 import ru.yandex.qatools.allure.annotations.Features;
 import ru.yandex.qatools.allure.annotations.Severity;
@@ -17,7 +17,12 @@ import static com.codeborne.selenide.Condition.visible;
 
 public class SignUpTest extends Preconditions {
 
-    private StorefrontPage p;
+    private StorefrontTPGBasePage p;
+
+    @BeforeMethod(alwaysRun = true)
+    public void cleanUp_after() {
+        p.cleanUp();
+    }
 
     @Test(priority = 1)
     @Severity(SeverityLevel.BLOCKER)
@@ -27,7 +32,7 @@ public class SignUpTest extends Preconditions {
     public void signUp_correctCredentials() {
         String randomId = generateRandomID();
 
-        p = openPage(storefrontUrl, StorefrontPage.class);
+        p = openPage(storefrontUrl, StorefrontTPGBasePage.class);
         p.clickLogInLnk();
         p.setName("Customer " + randomId);
         p.setEmail_signUp("qatest2278+" + randomId + "@gmail.com");
@@ -45,7 +50,7 @@ public class SignUpTest extends Preconditions {
     public void signUp_nameIsNotUnique() throws IOException {
         provideTestData("a customer signed up on storefront");
 
-        p = openPage(storefrontUrl, StorefrontPage.class);
+        p = openPage(storefrontUrl, StorefrontTPGBasePage.class);
         p.clickLogInLnk();
         p.setName(customerName);
         p.setEmail_signUp("qatest2278+" + generateRandomID() + "@gmail.com");
@@ -63,7 +68,7 @@ public class SignUpTest extends Preconditions {
     public void signUp_incorrectCredentials_email() throws IOException {
         provideTestData("a customer signed up on storefront");
 
-        p = openPage(storefrontUrl, StorefrontPage.class);
+        p = openPage(storefrontUrl, StorefrontTPGBasePage.class);
         p.clickLogInLnk();
         p.setName("Customer " + generateRandomID());
         p.setEmail_signUp(customerEmail);
@@ -81,7 +86,7 @@ public class SignUpTest extends Preconditions {
     public void authFormIsClosed_SignUp() {
         String randomId = generateRandomID();
 
-        p = openPage(storefrontUrl, StorefrontPage.class);
+        p = openPage(storefrontUrl, StorefrontTPGBasePage.class);
         p.clickLogInLnk();
         p.setName("Customer " + randomId);
         p.setEmail_signUp("qatest2278+" + randomId + "@gmail.com");
@@ -108,7 +113,7 @@ public class SignUpTest extends Preconditions {
     public void authFormClosed_signUpSuccess() {
         String randomId = generateRandomID();
 
-        p = openPage(storefrontUrl, StorefrontPage.class);
+        p = openPage(storefrontUrl, StorefrontTPGBasePage.class);
         p.clickLogInLnk();
         p.setName("Customer " + randomId);
         p.setEmail_signUp("qatest2278+" + randomId + "@gmail.com");
@@ -124,7 +129,7 @@ public class SignUpTest extends Preconditions {
     @Stories("Auth : Sign Up")
     @Description("Customer is signed in after successful sign up")
     public void closeAuthForm_abortSignUp() {
-        p = openPage(storefrontUrl, StorefrontPage.class);
+        p = openPage(storefrontUrl, StorefrontTPGBasePage.class);
         p.clickLogInLnk();
         p.setName("Abort Registration");
         p.setEmail_signUp("wont@register.com");
@@ -132,11 +137,6 @@ public class SignUpTest extends Preconditions {
         p.closeAuthForm();
 
         p.closeAuthFormBtn().shouldNotBe(visible);
-    }
-
-    @AfterMethod(alwaysRun = true)
-    public void cleanUp_after() {
-        p.cleanUp();
     }
 
 }

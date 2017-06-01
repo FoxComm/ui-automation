@@ -1,6 +1,6 @@
 package pages.admin;
 
-import base.BasePage;
+import base.AdminBasePage;
 import com.codeborne.selenide.SelenideElement;
 import ru.yandex.qatools.allure.annotations.Step;
 
@@ -8,7 +8,7 @@ import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 import static org.openqa.selenium.By.xpath;
 
-public class InventoryPage extends BasePage {
+public class InventoryPage extends AdminBasePage {
 
     //----------------------------------- ELEMENTS -------------------------------------//
 

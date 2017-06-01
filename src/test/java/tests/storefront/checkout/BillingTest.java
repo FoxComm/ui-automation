@@ -1,8 +1,8 @@
 package tests.storefront.checkout;
 
-import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import pages.storefront.StorefrontPage;
+import base.StorefrontTPGBasePage;
 import ru.yandex.qatools.allure.annotations.Description;
 import ru.yandex.qatools.allure.annotations.Features;
 import ru.yandex.qatools.allure.annotations.Severity;
@@ -17,7 +17,12 @@ import static com.codeborne.selenide.Condition.visible;
 
 public class BillingTest extends Preconditions {
 
-    private StorefrontPage p;
+    private StorefrontTPGBasePage p;
+
+    @BeforeMethod(alwaysRun = true)
+    public void cleanUp_after() {
+        p.cleanUp();
+    }
 
     @Test(priority = 1)
     @Severity(SeverityLevel.BLOCKER)
@@ -27,7 +32,7 @@ public class BillingTest extends Preconditions {
     public void createCreditCard_checkout() throws IOException {
         provideTestData("a storefront signed up customer with active product in cart and applied shipping address");
 
-        p = openPage(storefrontUrl, StorefrontPage.class);
+        p = openPage(storefrontUrl, StorefrontTPGBasePage.class);
         p.logIn(customerEmail, "78qa22!#");
         p.openCart();
         p.clickCheckoutBtn_cart();
@@ -48,7 +53,7 @@ public class BillingTest extends Preconditions {
     @Description("Can pick an existing credit card")
     public void pickExistingCreditCard() throws IOException {
         provideTestData("a storefront customer ready for checkout, has 2 credit cards");
-        p = openPage(storefrontUrl, StorefrontPage.class);
+        p = openPage(storefrontUrl, StorefrontTPGBasePage.class);
         p.logIn(customerEmail, "78qa22!#");
         p.openCart();
         p.clickCheckoutBtn_cart();
@@ -67,7 +72,7 @@ public class BillingTest extends Preconditions {
     public void defaultCardMarked() throws IOException {
         provideTestData("a storefront signed up customer with active product in cart and applied shipping address");
 
-        p = openPage(storefrontUrl, StorefrontPage.class);
+        p = openPage(storefrontUrl, StorefrontTPGBasePage.class);
         p.logIn(customerEmail, "78qa22!#");
         p.openCart();
         p.clickCheckoutBtn_cart();
@@ -89,7 +94,7 @@ public class BillingTest extends Preconditions {
     public void defaultCardIsPreselected() throws IOException {
         provideTestData("a storefront signed up customer ready for checkout, has 2 credit cards, has default card");
 
-        p = openPage(storefrontUrl, StorefrontPage.class);
+        p = openPage(storefrontUrl, StorefrontTPGBasePage.class);
         p.logIn(customerEmail, "78qa22!#");
         p.openCart();
         p.clickCheckoutBtn_cart();
@@ -107,7 +112,7 @@ public class BillingTest extends Preconditions {
     public void deleteCreditCard() throws IOException {
         provideTestData("a customer ready to checkout");
 
-        p = openPage(storefrontUrl, StorefrontPage.class);
+        p = openPage(storefrontUrl, StorefrontTPGBasePage.class);
         p.logIn(customerEmail, "78qa22!#");
         p.openCart();
         p.clickCheckoutBtn_cart();
@@ -126,7 +131,7 @@ public class BillingTest extends Preconditions {
     public void canApplyCoupon_checkout() throws IOException {
         provideTestData("a customer ready to checkout, single code coupon code");
 
-        p = openPage(storefrontUrl, StorefrontPage.class);
+        p = openPage(storefrontUrl, StorefrontTPGBasePage.class);
         p.logIn(customerEmail, "78qa22!#");
         p.openCart();
         p.clickCheckoutBtn_cart();
@@ -145,7 +150,7 @@ public class BillingTest extends Preconditions {
     public void removeCoupon() throws IOException {
         provideTestData("a storefront signed up customer, with no qualifier coupon code applied");
 
-        p = openPage(storefrontUrl, StorefrontPage.class);
+        p = openPage(storefrontUrl, StorefrontTPGBasePage.class);
         p.logIn(customerEmail, "78qa22!#");
         p.openCart();
         p.clickCheckoutBtn_cart();
@@ -165,7 +170,7 @@ public class BillingTest extends Preconditions {
     public void canRedeemGiftCard() throws IOException {
         provideTestData("a customer ready to checkout, a gift card issued");
 
-        p = openPage(storefrontUrl, StorefrontPage.class);
+        p = openPage(storefrontUrl, StorefrontTPGBasePage.class);
         p.logIn(customerEmail, "78qa22!#");
         p.openCart();
         p.clickCheckoutBtn_cart();
@@ -184,7 +189,7 @@ public class BillingTest extends Preconditions {
     public void canRemoveGiftCard() throws IOException {
         provideTestData("a customer ready for checkout, gift card is applied to cart as a payment method");
 
-        p = openPage(storefrontUrl, StorefrontPage.class);
+        p = openPage(storefrontUrl, StorefrontTPGBasePage.class);
         p.logIn(customerEmail, "78qa22!#");
         p.openCart();
         p.clickCheckoutBtn_cart();
@@ -193,11 +198,6 @@ public class BillingTest extends Preconditions {
         p.removeGiftCard();
 
         p.appliedGiftCard().shouldNotBe(visible);
-    }
-
-    @AfterMethod(alwaysRun = true)
-    public void cleanUp_after() {
-        p.cleanUp();
     }
 
 }

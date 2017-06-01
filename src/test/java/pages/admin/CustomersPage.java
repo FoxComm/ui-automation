@@ -1,6 +1,6 @@
 package pages.admin;
 
-import base.BasePage;
+import base.AdminBasePage;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.By;
@@ -13,7 +13,7 @@ import static com.codeborne.selenide.Selenide.$$;
 import static com.codeborne.selenide.Selenide.sleep;
 import static org.openqa.selenium.By.xpath;
 
-public class CustomersPage extends BasePage {
+public class CustomersPage extends AdminBasePage {
 
     //---------------------------- CATEGORY LIST ------------------------------//
     //------------------------------ ELEMENTS ---------------------------------//

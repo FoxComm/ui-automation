@@ -1,8 +1,8 @@
 package tests.storefront.products;
 
-import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import pages.storefront.StorefrontPage;
+import base.StorefrontTPGBasePage;
 import ru.yandex.qatools.allure.annotations.Description;
 import ru.yandex.qatools.allure.annotations.Features;
 import ru.yandex.qatools.allure.annotations.Severity;
@@ -17,7 +17,12 @@ import static com.codeborne.selenide.Condition.visible;
 
 public class PdpTest extends Preconditions {
 
-    private StorefrontPage p;
+    private StorefrontTPGBasePage p;
+
+    @BeforeMethod(alwaysRun = true)
+    public void cleanUp_after() {
+        p.cleanUp();
+    }
 
     @Test(priority = 1)
     @Severity(SeverityLevel.CRITICAL)
@@ -27,7 +32,7 @@ public class PdpTest extends Preconditions {
     public void productTitleDisplayed() throws IOException {
         provideTestData("an active product visible on storefront");
 
-        p = openPage(storefrontUrl + "/products/" + productSlug, StorefrontPage.class);
+        p = openPage(storefrontUrl + "/products/" + productSlug, StorefrontTPGBasePage.class);
 
         p.productTitle_pdp().shouldBe(visible);
         p.productTitle_pdp().shouldHave(text(productTitle));
@@ -41,7 +46,7 @@ public class PdpTest extends Preconditions {
     public void productPriceDisplayed() throws IOException {
         provideTestData("an active product visible on storefront");
 
-        p = openPage(storefrontUrl + "/products/" + productSlug, StorefrontPage.class);
+        p = openPage(storefrontUrl + "/products/" + productSlug, StorefrontTPGBasePage.class);
 
         p.salePrice().shouldBe(visible);
         p.salePrice().shouldHave(text("$50.00"));
@@ -55,7 +60,7 @@ public class PdpTest extends Preconditions {
     public void styledDescription(String element, String content) throws IOException {
         provideTestData("an active product with <" + element + "> in description");
 
-        p = openPage(storefrontUrl + "/products/" + productSlug, StorefrontPage.class);
+        p = openPage(storefrontUrl + "/products/" + productSlug, StorefrontTPGBasePage.class);
 
         p.description_textStyles(element, content).shouldBe(visible);
     }
@@ -68,7 +73,7 @@ public class PdpTest extends Preconditions {
     public void changeProductQty() throws IOException {
         provideTestData("an active product visible on storefront");
 
-        p = openPage(storefrontUrl + "/products/" + productSlug, StorefrontPage.class);
+        p = openPage(storefrontUrl + "/products/" + productSlug, StorefrontTPGBasePage.class);
         p.setQty_pdp("3");
         p.clickAddToCartBtn();
         p.closeCart();
@@ -78,11 +83,6 @@ public class PdpTest extends Preconditions {
         p.lineItemsAmount().shouldHaveSize(1);
         p.closeCart();
         p.cartQty().shouldHave(text("4"));
-    }
-
-    @AfterMethod(alwaysRun = true)
-    public void cleanUp_after() {
-        p.cleanUp();
     }
 
 }

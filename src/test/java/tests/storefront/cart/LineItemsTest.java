@@ -1,8 +1,8 @@
 package tests.storefront.cart;
 
-import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import pages.storefront.StorefrontPage;
+import base.StorefrontTPGBasePage;
 import ru.yandex.qatools.allure.annotations.Description;
 import ru.yandex.qatools.allure.annotations.Features;
 import ru.yandex.qatools.allure.annotations.Severity;
@@ -17,7 +17,12 @@ import static com.codeborne.selenide.Configuration.timeout;
 
 public class LineItemsTest extends Preconditions {
 
-    private StorefrontPage p;
+    private StorefrontTPGBasePage p;
+
+    @BeforeMethod(alwaysRun = true)
+    public void cleanUp_after() {
+        p.cleanUp();
+    }
 
     @Test(priority = 1)
     @Severity(SeverityLevel.BLOCKER)
@@ -27,7 +32,7 @@ public class LineItemsTest extends Preconditions {
     public void addProductToCart_lineItemIsVisible() throws IOException {
         provideTestData("registered customer, active product on storefront");
 
-        p = openPage(storefrontUrl + "/products/" + productSlug, StorefrontPage.class);
+        p = openPage(storefrontUrl + "/products/" + productSlug, StorefrontTPGBasePage.class);
         p.logIn(customerEmail, "78qa22!#");
         p.clickAddToCartBtn();
 
@@ -46,12 +51,12 @@ public class LineItemsTest extends Preconditions {
     public void addProductToCart_indicatorUpdated() throws IOException {
         provideTestData("registered customer, 2 active products on storefront");
 
-        p = openPage(storefrontUrl + "/products/" + productSlugs.get(0), StorefrontPage.class);
+        p = openPage(storefrontUrl + "/products/" + productSlugs.get(0), StorefrontTPGBasePage.class);
         p.logIn(customerEmail, "78qa22!#");
         p.setQty_pdp("2");
         p.clickAddToCartBtn();
         p.closeCart();
-        p = openPage(storefrontUrl + "/products" + productSlugs.get(1), StorefrontPage.class);
+        p = openPage(storefrontUrl + "/products" + productSlugs.get(1), StorefrontTPGBasePage.class);
         p.setQty_pdp("3");
         p.clickAddToCartBtn();
         p.closeCart();
@@ -71,7 +76,7 @@ public class LineItemsTest extends Preconditions {
     public void removeProductFromCart() throws IOException {
         provideTestData("registered customer, active product in cart");
 
-        p = openPage(storefrontUrl, StorefrontPage.class);
+        p = openPage(storefrontUrl, StorefrontTPGBasePage.class);
         p.logIn(customerEmail, "78qa22!#");
         p.openCart();
         p.removeLineItem("1");
@@ -88,7 +93,7 @@ public class LineItemsTest extends Preconditions {
     public void addGiftCardToCart() throws IOException {
         provideTestData("a customer signed up on storefront");
 
-        p = openPage(storefrontUrl + "/GIFT-CARDS", StorefrontPage.class);
+        p = openPage(storefrontUrl + "/GIFT-CARDS", StorefrontTPGBasePage.class);
         p.logIn(customerEmail, "78qa22!#");
         p.setPriceSelector("$10.00");
         p.setRecipientName("John Smith");
@@ -109,7 +114,7 @@ public class LineItemsTest extends Preconditions {
     public void removeGCLineItemFromCart() throws IOException {
         provideTestData("a customer with GC in cart as a line item");
 
-        p = openPage(storefrontUrl, StorefrontPage.class);
+        p = openPage(storefrontUrl, StorefrontTPGBasePage.class);
         p.logIn(customerEmail, "78qa22!#");
         p.openCart();
         p.removeLineItem("1");
@@ -125,7 +130,7 @@ public class LineItemsTest extends Preconditions {
     public void checkoutBtnBehavior_registeredCustomer() throws IOException {
         provideTestData("registered customer, active product on storefront");
 
-        p = openPage(storefrontUrl + "/products/" + productSlug, StorefrontPage.class);
+        p = openPage(storefrontUrl + "/products/" + productSlug, StorefrontTPGBasePage.class);
         p.logIn(customerEmail, "78qa22!#");
         p.openCart();
         p.checkoutBtn_cart().shouldBe(disabled);
@@ -146,7 +151,7 @@ public class LineItemsTest extends Preconditions {
     public void cartIsSynchronized() throws IOException {
         provideTestData("a customer signed up on storefront with product and coupon<any, single code> in cart");
 
-        p = openPage(storefrontUrl, StorefrontPage.class);
+        p = openPage(storefrontUrl, StorefrontTPGBasePage.class);
         shouldHaveText(p.cartQty(), "0", "Incorrect line item indicator value");
         shouldNotBeVisible(p.appliedCoupon(), "Cart has a coupon applied");
         p.logIn(customerEmail, "78qa22!#");
@@ -170,7 +175,7 @@ public class LineItemsTest extends Preconditions {
     public void noLineItemsAfterCheckout() throws IOException {
         provideTestData("a customer ready to checkout");
 
-        p = openPage(storefrontUrl, StorefrontPage.class);
+        p = openPage(storefrontUrl, StorefrontTPGBasePage.class);
         p.logIn(customerEmail, "78qa22!#");
         p.openCart();
         p.clickCheckoutBtn_cart();
@@ -181,11 +186,6 @@ public class LineItemsTest extends Preconditions {
         p.cartQty().shouldHave(text("0"));
         p.openCart();
         p.lineItemsAmount().shouldHaveSize(0);
-    }
-
-    @AfterMethod(alwaysRun = true)
-    public void cleanUp_after() {
-        p.cleanUp();
     }
 
 }

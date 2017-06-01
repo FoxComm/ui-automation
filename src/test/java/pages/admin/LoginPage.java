@@ -1,8 +1,8 @@
 package pages.admin;
 
-import base.BasePage;
+import base.AdminBasePage;
 
-public class LoginPage extends BasePage {
+public class LoginPage extends AdminBasePage {
 
     /**
      * All elements are placed in BasePage, because

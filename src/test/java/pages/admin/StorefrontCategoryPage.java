@@ -1,13 +1,13 @@
 package pages.admin;
 
-import base.BasePage;
+import base.AdminBasePage;
 import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.By;
 import ru.yandex.qatools.allure.annotations.Step;
 
 import static com.codeborne.selenide.Selenide.$;
 
-public class StorefrontCategoryPage extends BasePage {
+public class StorefrontCategoryPage extends AdminBasePage {
 
     //------------------------------ ELEMENTS --------------------------------//
 

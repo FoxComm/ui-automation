@@ -1,8 +1,8 @@
 package tests.storefront.cart;
 
-import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import pages.storefront.StorefrontPage;
+import base.StorefrontTPGBasePage;
 import ru.yandex.qatools.allure.annotations.Description;
 import ru.yandex.qatools.allure.annotations.Features;
 import ru.yandex.qatools.allure.annotations.Severity;
@@ -22,7 +22,12 @@ import static testdata.api.collection.Promotions.setPromoState;
 
 public class PromosTest extends Preconditions {
 
-    private StorefrontPage p;
+    private StorefrontTPGBasePage p;
+
+    @BeforeMethod(alwaysRun = true)
+    public void cleanUp_after() {
+        p.cleanUp();
+    }
 
     @Test(priority = 1)
     @Severity(SeverityLevel.CRITICAL)
@@ -32,7 +37,7 @@ public class PromosTest extends Preconditions {
     public void canApplyCoupon_registeredCustomer() throws IOException {
         provideTestData("a customer signed up on storefront, product<active>, coupon<any, single code>");
 
-        p = openPage(storefrontUrl + "/products/" + productSlug, StorefrontPage.class);
+        p = openPage(storefrontUrl + "/products/" + productSlug, StorefrontTPGBasePage.class);
         p.logIn(customerEmail, "78qa22!#");
         p.clickAddToCartBtn();
         p.applyCoupon(singleCouponCode);
@@ -50,7 +55,7 @@ public class PromosTest extends Preconditions {
     public void canApplyCoupon_guest() throws IOException {
         provideTestData("product<active>, coupon<any, single code>");
 
-        p = openPage(storefrontUrl + "/products/" + productSlug, StorefrontPage.class);
+        p = openPage(storefrontUrl + "/products/" + productSlug, StorefrontTPGBasePage.class);
         p.clickAddToCartBtn();
         p.applyCoupon(singleCouponCode);
 
@@ -67,7 +72,7 @@ public class PromosTest extends Preconditions {
     public void canRemoveCoupon() throws IOException {
         provideTestData("a customer signed up on storefront with product and coupon<any, single code> in cart");
 
-        p = openPage(storefrontUrl, StorefrontPage.class);
+        p = openPage(storefrontUrl, StorefrontTPGBasePage.class);
         p.logIn(customerEmail, "78qa22!#");
         p.openCart();
         p.removeCoupon();
@@ -84,7 +89,7 @@ public class PromosTest extends Preconditions {
     public void couponIsAutoRemovedAfterCheckout() throws IOException {
         provideTestData("a customer ready to checkout");
 
-        p = openPage(storefrontUrl, StorefrontPage.class);
+        p = openPage(storefrontUrl, StorefrontTPGBasePage.class);
         p.logIn(customerEmail, "78qa22!#");
         p.openCart();
         p.clickCheckoutBtn_cart();
@@ -105,7 +110,7 @@ public class PromosTest extends Preconditions {
     public void couponIsAutoRemoved_promoInactive() throws IOException {
         provideTestData("a storefront signed up customer, active product in cart, coupon<any, single code>");
 
-        p = openPage(storefrontUrl, StorefrontPage.class);
+        p = openPage(storefrontUrl, StorefrontTPGBasePage.class);
         p.logIn(customerEmail, "78qa22!#");
         p.openCart();
         p.appliedCoupon().shouldBe(visible);
@@ -125,7 +130,7 @@ public class PromosTest extends Preconditions {
     public void couponIsAutoRemoved_couponInactive() throws IOException {
         provideTestData("a storefront signed up customer, active product in cart, coupon<any, single code>");
 
-        p = openPage(storefrontUrl, StorefrontPage.class);
+        p = openPage(storefrontUrl, StorefrontTPGBasePage.class);
         p.logIn(customerEmail, "78qa22!#");
         p.openCart();
         p.appliedCoupon().shouldBe(visible);
@@ -145,7 +150,7 @@ public class PromosTest extends Preconditions {
     public void couponIsAutoRemoved_promoArchived() throws IOException {
         provideTestData("a storefront signed up customer, active product in cart, coupon<any, single code>");
 
-        p = openPage(storefrontUrl, StorefrontPage.class);
+        p = openPage(storefrontUrl, StorefrontTPGBasePage.class);
         p.logIn(customerEmail, "78qa22!#");
         p.openCart();
         p.appliedCoupon().shouldBe(visible);
@@ -165,7 +170,7 @@ public class PromosTest extends Preconditions {
     public void couponIsAutoRemoved_couponArchived() throws IOException {
         provideTestData("a storefront signed up customer, active product in cart, coupon<any, single code>");
 
-        p = openPage(storefrontUrl, StorefrontPage.class);
+        p = openPage(storefrontUrl, StorefrontTPGBasePage.class);
         p.logIn(customerEmail, "78qa22!#");
         p.openCart();
         p.appliedCoupon().shouldBe(visible);
@@ -174,11 +179,6 @@ public class PromosTest extends Preconditions {
         p.openCart();
 
         p.appliedCoupon().shouldNotBe(visible);
-    }
-
-    @AfterMethod(alwaysRun = true)
-    public void cleanUp_after() {
-        p.cleanUp();
     }
 
 }

@@ -1646,91 +1646,78 @@ public class Preconditions extends Helpers {
             case "an active product with tpg-specific custom properties":
                 createSKU_active();
                 createProduct_tpgProps(skuId, skuCode);
-                waitForProductAppearInEs("int", "productId", productId);
                 break;
 
             case "an active product with <p> in description":
                 randomId = generateRandomID();
                 createSKU_active();
                 createActiveProduct_styledDescription(skuId, skuCode, storefrontCategory, "p", "Paragraph");
-                waitForProductAppearInEs("int", "productId", productId);
                 break;
 
             case "an active product with <h1> in description":
                 randomId = generateRandomID();
                 createSKU_active();
                 createActiveProduct_styledDescription(skuId, skuCode, storefrontCategory, "h1", "Heading One");
-                waitForProductAppearInEs("int", "productId", productId);
                 break;
 
             case "an active product with <h2> in description":
                 randomId = generateRandomID();
                 createSKU_active();
                 createActiveProduct_styledDescription(skuId, skuCode, storefrontCategory, "h2", "Heading Two");
-                waitForProductAppearInEs("int", "productId", productId);
                 break;
 
             case "an active product with <h3> in description":
                 randomId = generateRandomID();
                 createSKU_active();
                 createActiveProduct_styledDescription(skuId, skuCode, storefrontCategory, "h3", "Heading Three");
-                waitForProductAppearInEs("int", "productId", productId);
                 break;
 
             case "an active product with <h4> in description":
                 randomId = generateRandomID();
                 createSKU_active();
                 createActiveProduct_styledDescription(skuId, skuCode, storefrontCategory, "h4", "Heading Four");
-                waitForProductAppearInEs("int", "productId", productId);
                 break;
 
             case "an active product with <h5> in description":
                 randomId = generateRandomID();
                 createSKU_active();
                 createActiveProduct_styledDescription(skuId, skuCode, storefrontCategory, "h5", "Heading Five");
-                waitForProductAppearInEs("int", "productId", productId);
                 break;
 
             case "an active product with <h6> in description":
                 randomId = generateRandomID();
                 createSKU_active();
                 createActiveProduct_styledDescription(skuId, skuCode, storefrontCategory, "h6", "Heading Six");
-                waitForProductAppearInEs("int", "productId", productId);
                 break;
 
             case "an active product with <strong> in description":
                 randomId = generateRandomID();
                 createSKU_active();
                 createActiveProduct_styledDescription(skuId, skuCode, storefrontCategory, "strong", "Bold Text");
-                waitForProductAppearInEs("int", "productId", productId);
                 break;
 
             case "an active product with <em> in description":
                 randomId = generateRandomID();
                 createSKU_active();
                 createActiveProduct_styledDescription(skuId, skuCode, storefrontCategory, "em", "Italic Text");
-                waitForProductAppearInEs("int", "productId", productId);
                 break;
 
             case "an active product with <ins> in description":
                 randomId = generateRandomID();
                 createSKU_active();
                 createActiveProduct_styledDescription(skuId, skuCode, storefrontCategory, "ins", "Underlined Text");
-                waitForProductAppearInEs("int", "productId", productId);
                 break;
 
             case "an active product with <ul> in description":
                 randomId = generateRandomID();
                 createSKU_active();
                 createActiveProduct_styledDescription(skuId, skuCode, storefrontCategory, "ul", "UL Bullet Point");
-                waitForProductAppearInEs("int", "productId", productId);
                 break;
 
             case "an active product with <ol> in description":
                 randomId = generateRandomID();
                 createSKU_active();
                 createActiveProduct_styledDescription(skuId, skuCode, storefrontCategory, "ol", "OL Point");
-                waitForProductAppearInEs("int", "productId", productId);
                 break;
         }
     }

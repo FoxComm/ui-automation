@@ -1,8 +1,8 @@
 package tests.storefront.checkout;
 
-import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import pages.storefront.StorefrontPage;
+import base.StorefrontTPGBasePage;
 import ru.yandex.qatools.allure.annotations.Description;
 import ru.yandex.qatools.allure.annotations.Features;
 import ru.yandex.qatools.allure.annotations.Severity;
@@ -18,7 +18,12 @@ import static testdata.api.collection.Cart.getCartTotals;
 
 public class GeneralBehaviorTest extends Preconditions {
 
-    private StorefrontPage p;
+    private StorefrontTPGBasePage p;
+
+    @BeforeMethod(alwaysRun = true)
+    public void cleanUp_after() {
+        p.cleanUp();
+    }
 
     @Test(priority = 1)
     @Severity(SeverityLevel.NORMAL)
@@ -28,7 +33,7 @@ public class GeneralBehaviorTest extends Preconditions {
     public void noLineItems_checkoutBtnDisabled() throws IOException {
         provideTestData("a customer signed up on storefront");
 
-        p = openPage(storefrontUrl, StorefrontPage.class);
+        p = openPage(storefrontUrl, StorefrontTPGBasePage.class);
         p.logIn(customerEmail, "78qa22!#");
         p.openCart();
 
@@ -43,7 +48,7 @@ public class GeneralBehaviorTest extends Preconditions {
     public void forceReSelectDelivery_leaveCheckout() throws IOException {
         provideTestData("a storefront signed up customer, has shipping address and product in cart");
 
-        p = openPage(storefrontUrl, StorefrontPage.class);
+        p = openPage(storefrontUrl, StorefrontTPGBasePage.class);
         p.logIn(customerEmail, "78qa22!#");
         p.openCart();
         p.clickCheckoutBtn_cart();
@@ -67,7 +72,7 @@ public class GeneralBehaviorTest extends Preconditions {
     public void changeShipAddress() throws IOException {
         provideTestData("a storefront signed up customer, a cart with 1 product, 2 shipping addresses, NO default address");
 
-        p = openPage(storefrontUrl, StorefrontPage.class);
+        p = openPage(storefrontUrl, StorefrontTPGBasePage.class);
         p.logIn(customerEmail, "78qa22!#");
         p.openCart();
         p.clickCheckoutBtn_cart();
@@ -89,7 +94,7 @@ public class GeneralBehaviorTest extends Preconditions {
     public void editSubmittedShipAddress() throws IOException {
         provideTestData("a storefront signed up customer, with shipping address submitted and product in cart");
 
-        p = openPage(storefrontUrl, StorefrontPage.class);
+        p = openPage(storefrontUrl, StorefrontTPGBasePage.class);
         p.logIn(customerEmail, "78qa22!#");
         p.openCart();
         p.clickCheckoutBtn_cart();
@@ -120,7 +125,7 @@ public class GeneralBehaviorTest extends Preconditions {
     public void forceReSelectDelivery_editAddress() throws IOException {
         provideTestData("a customer ready to checkout");
 
-        p = openPage(storefrontUrl, StorefrontPage.class);
+        p = openPage(storefrontUrl, StorefrontTPGBasePage.class);
         p.logIn(customerEmail, "78qa22!#");
         p.openCart();
         p.clickCheckoutBtn_cart();
@@ -141,7 +146,7 @@ public class GeneralBehaviorTest extends Preconditions {
     public void customersExpensesPopulatesGrandTotal() throws IOException {
         provideTestData("a customer ready for checkout, gift card is applied to cart as a payment method");
 
-        p = openPage(storefrontUrl, StorefrontPage.class);
+        p = openPage(storefrontUrl, StorefrontTPGBasePage.class);
         p.logIn(customerEmail, "78qa22!#");
         p.openCart();
         p.clickCheckoutBtn_cart();
@@ -158,7 +163,7 @@ public class GeneralBehaviorTest extends Preconditions {
     public void happyPath() throws IOException {
         provideTestData("happy path");
 
-        p = openPage(storefrontUrl + "/products/" + productSlug, StorefrontPage.class);
+        p = openPage(storefrontUrl + "/products/" + productSlug, StorefrontTPGBasePage.class);
         p.logIn(customerEmail, "78qa22!#");
         p.clickAddToCartBtn();
         p.clickCheckoutBtn_cart();
@@ -185,7 +190,7 @@ public class GeneralBehaviorTest extends Preconditions {
     public void blacklistedCustomerCantCheckout() throws IOException {
         provideTestData("a storefront signed up blacklisted customer ready for checkout");
 
-        p = openPage(storefrontUrl, StorefrontPage.class);
+        p = openPage(storefrontUrl, StorefrontTPGBasePage.class);
         p.logIn(customerEmail, "78qa22!#");
         p.openCart();
         p.clickCheckoutBtn_cart();
@@ -195,12 +200,6 @@ public class GeneralBehaviorTest extends Preconditions {
 
         scrollPageUp();
         p.checkoutError("Your account has been blocked from making purchases on this site").shouldBe(visible);
-    }
-
-
-    @AfterMethod(alwaysRun = true)
-    public void cleanUp_after() {
-        p.cleanUp();
     }
 
 }

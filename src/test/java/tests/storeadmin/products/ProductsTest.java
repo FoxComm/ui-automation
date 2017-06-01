@@ -7,6 +7,10 @@ import pages.admin.LoginPage;
 import pages.admin.ProductsPage;
 import pages.admin.SkusPage;
 import ru.yandex.qatools.allure.annotations.Description;
+import ru.yandex.qatools.allure.annotations.Features;
+import ru.yandex.qatools.allure.annotations.Severity;
+import ru.yandex.qatools.allure.annotations.Stories;
+import ru.yandex.qatools.allure.model.SeverityLevel;
 import testdata.Preconditions;
 
 import java.io.IOException;
@@ -70,6 +74,9 @@ public class ProductsTest extends Preconditions {
 //    }
 
     @Test(priority = 3, dataProvider = "canAddSkuToCart_admin")
+    @Severity(SeverityLevel.CRITICAL)
+    @Features({"Ashes", "Parametrized Tests"})
+    @Stories("Products Behavior")
     @Description("SKU is found in line_items_search_view and can be added to cart")
     public void canAddSkuToCart_admin(String testData) throws IOException {
         provideTestData(testData);
@@ -85,6 +92,9 @@ public class ProductsTest extends Preconditions {
     }
 
     @Test(priority = 4, dataProvider = "skuNotDisplayedLineItemsSearchView")
+    @Severity(SeverityLevel.CRITICAL)
+    @Features({"Ashes", "Parametrized Tests"})
+    @Stories("Products Behavior")
     @Description("SKU is not found in line_items_search_view and can be added to cart")
     public void skuNotDisplayedLineItemsSearchView(String testData) throws IOException {
         provideTestData(testData);
@@ -100,6 +110,9 @@ public class ProductsTest extends Preconditions {
 
     //--------------------- SKUS
     @Test(priority = 5, dataProvider = "skuCreatedAlongWithProduct")
+    @Severity(SeverityLevel.CRITICAL)
+    @Features({"Ashes", "Parametrized Tests"})
+    @Stories("Products Behavior")
     @Description("SKU is created along with the product")
     public void skuCreatedAlongWithProduct(String testData) throws IOException {
         provideTestData(testData);
@@ -113,6 +126,9 @@ public class ProductsTest extends Preconditions {
     }
 
     @Test(priority = 6, dataProvider = "newSkuInheritsProductState")
+    @Severity(SeverityLevel.CRITICAL)
+    @Features({"Ashes", "Parametrized Tests"})
+    @Stories("Products Behavior")
     @Description("SKU created along with product inherits product's state")
     public void newSkuInheritsProductState(String testData, String expState) throws IOException {
         provideTestData(testData);
@@ -123,6 +139,9 @@ public class ProductsTest extends Preconditions {
     }
 
     @Test(priority = 7, dataProvider = "skuIsNotArchived")
+    @Severity(SeverityLevel.CRITICAL)
+    @Features({"Ashes", "Parametrized Tests"})
+    @Stories("Products Behavior")
     @Description("SKU is not removed from skus_search_view -- it's displayed on the table, details page can be accessed")
     public void skuArchiving_skuIsNotRemovedFromSearchView(String testData) throws IOException {
         provideTestData(testData);
@@ -137,6 +156,9 @@ public class ProductsTest extends Preconditions {
     }
 
     @Test(priority = 8, dataProvider = "archivedSkuRemovedFromSkusSearchView")
+    @Severity(SeverityLevel.CRITICAL)
+    @Features({"Ashes", "Parametrized Tests"})
+    @Stories("Products Behavior")
     @Description("Archived SKU is not displayed in skus_search_view")
     public void archivedSkuRemovedFromProductsSearchView(String testData) throws IOException {
         provideTestData(testData);
@@ -152,6 +174,9 @@ public class ProductsTest extends Preconditions {
 
     //--------------------- PRODUCTS
     @Test(priority = 9, dataProvider = "productIsNotArchived")
+    @Severity(SeverityLevel.CRITICAL)
+    @Features({"Ashes", "Parametrized Tests"})
+    @Stories("Products Behavior")
     @Description("Product is not removed from products_search_view")
     public void productArchiving_productIsDisplayedInSearchView(String testData) throws IOException {
         provideTestData(testData);
@@ -165,6 +190,9 @@ public class ProductsTest extends Preconditions {
     }
 
     @Test(priority = 10, dataProvider = "archivedProductRemovedFromProductsSearchView")
+    @Severity(SeverityLevel.CRITICAL)
+    @Features({"Ashes", "Parametrized Tests"})
+    @Stories("Products Behavior")
     @Description("Archived product is not displayed in products_search_view")
     public void archivedProductRemovedFromProductsSearchView(String testData) throws IOException {
         provideTestData(testData);

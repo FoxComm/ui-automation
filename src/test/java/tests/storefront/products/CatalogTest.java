@@ -1,7 +1,7 @@
 package tests.storefront.products;
 
 import org.testng.annotations.*;
-import pages.storefront.StorefrontPage;
+import base.StorefrontTPGBasePage;
 import ru.yandex.qatools.allure.annotations.Description;
 import ru.yandex.qatools.allure.annotations.Features;
 import ru.yandex.qatools.allure.annotations.Severity;
@@ -17,7 +17,12 @@ import static testdata.api.collection.Products.editProductSlug;
 
 public class CatalogTest extends Preconditions {
 
-    private StorefrontPage p;
+    private StorefrontTPGBasePage p;
+
+    @BeforeMethod(alwaysRun = true)
+    public void cleanUp_after() {
+        p.cleanUp();
+    }
 
     @Test(priority = 1)
     @Severity(SeverityLevel.BLOCKER)
@@ -27,7 +32,7 @@ public class CatalogTest extends Preconditions {
     public void productDisplayedInCatalogView() throws IOException {
         provideTestData("an active product visible on storefront");
 
-        p = openPage(storefrontUrl, StorefrontPage.class);
+        p = openPage(storefrontUrl, StorefrontTPGBasePage.class);
         p.navigateToCategory(storefrontCategory);
 
         p.productTitle_catalog(productTitle).shouldBe(visible);
@@ -41,7 +46,7 @@ public class CatalogTest extends Preconditions {
     public void addProductFromCatalogViewPage() throws IOException {
         provideTestData("an active product visible on storefront");
 
-        p = openPage(storefrontUrl + "/" + storefrontCategory, StorefrontPage.class);
+        p = openPage(storefrontUrl + "/" + storefrontCategory, StorefrontTPGBasePage.class);
         p.navigateToCategory(storefrontCategory);
         scrollToElement(p.productTitle_catalog(productTitle));
         p.clickAddToCartBtn_catalog(productTitle);
@@ -60,7 +65,7 @@ public class CatalogTest extends Preconditions {
     public void hoverProductImageInCatalog_hasImage() throws IOException {
         provideTestData("an active product visible on storefront");
 
-        p = openPage(storefrontUrl + "/" + storefrontCategory, StorefrontPage.class);
+        p = openPage(storefrontUrl + "/" + storefrontCategory, StorefrontTPGBasePage.class);
         scrollToElement(p.productImage(productTitle));
         p.productImage(productTitle).hover();
 
@@ -76,7 +81,7 @@ public class CatalogTest extends Preconditions {
     public void hoverProductImageInCatalog_noImage() throws IOException {
         provideTestData("an active product visible on storefront");
 
-        p = openPage(storefrontUrl + "/" + storefrontCategory, StorefrontPage.class);
+        p = openPage(storefrontUrl + "/" + storefrontCategory, StorefrontTPGBasePage.class);
         scrollToElement(p.imagePlaceholder(productTitle));
         p.imagePlaceholder(productTitle).hover();
 
@@ -92,7 +97,7 @@ public class CatalogTest extends Preconditions {
     public void entreesSubCategories() throws IOException {
         provideTestData("products with tags with entrees subcategories names");
 
-        p = openPage(storefrontUrl + "/ENTRÉES", StorefrontPage.class);
+        p = openPage(storefrontUrl + "/ENTRÉES", StorefrontTPGBasePage.class);
         p.navigateToSubCategory("All");
 
         p.productTitle_catalog(products.get(0)).shouldBe(visible);
@@ -111,7 +116,7 @@ public class CatalogTest extends Preconditions {
     @Description("Products with \"ENTRÉES\" category sub-category names tags are displayed in corresponding sub-categories")
     public void entreesSubCategories(String subCategory) throws IOException {
         provideTestData("active product with tags <ENTRÉES> and <" + subCategory + ">");
-        p = openPage(storefrontUrl + "/ENTRÉES/" + subCategory, StorefrontPage.class);
+        p = openPage(storefrontUrl + "/ENTRÉES/" + subCategory, StorefrontTPGBasePage.class);
         p.productTitle_catalog(productTitle).shouldBe(visible);
     }
 
@@ -123,7 +128,7 @@ public class CatalogTest extends Preconditions {
     public void canAccessPdp() throws IOException {
         provideTestData("an active product visible on storefront");
 
-        p = openPage(storefrontUrl + "/" + storefrontCategory, StorefrontPage.class);
+        p = openPage(storefrontUrl + "/" + storefrontCategory, StorefrontTPGBasePage.class);
         p.openPDP(productTitle);
 
         p.description_pdp().shouldBe(visible);
@@ -139,7 +144,7 @@ public class CatalogTest extends Preconditions {
         provideTestData("an active product visible on storefront");
 
         editProductSlug(productId, "new-slug-" + randomId);
-        p = openPage(storefrontUrl + "/products/" + productSlug, StorefrontPage.class);
+        p = openPage(storefrontUrl + "/products/" + productSlug, StorefrontTPGBasePage.class);
 
         p.productTitle_pdp().shouldHave(text(productTitle));
     }
@@ -155,14 +160,9 @@ public class CatalogTest extends Preconditions {
 
         String oldSlug = productSlug;
         editProductSlug(productId, "new-slug-" + randomId);
-        p = openPage(storefrontUrl + "/products/" + oldSlug, StorefrontPage.class);
+        p = openPage(storefrontUrl + "/products/" + oldSlug, StorefrontTPGBasePage.class);
 
         p.notFoundMsg("Product not found").shouldBe(visible);
-    }
-
-    @AfterMethod(alwaysRun = true)
-    public void cleanUp_after() {
-        p.cleanUp();
     }
 
 }

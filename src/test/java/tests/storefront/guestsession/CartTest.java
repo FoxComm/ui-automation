@@ -1,8 +1,8 @@
 package tests.storefront.guestsession;
 
-import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import pages.storefront.StorefrontPage;
+import base.StorefrontTPGBasePage;
 import ru.yandex.qatools.allure.annotations.Description;
 import ru.yandex.qatools.allure.annotations.Features;
 import ru.yandex.qatools.allure.annotations.Severity;
@@ -17,7 +17,12 @@ import static com.codeborne.selenide.Condition.visible;
 
 public class CartTest extends Preconditions {
 
-    private StorefrontPage p;
+    private StorefrontTPGBasePage p;
+
+    @BeforeMethod(alwaysRun = true)
+    public void cleanUp_after() {
+        p.cleanUp();
+    }
 
     @Test(priority = 1)
     @Severity(SeverityLevel.BLOCKER)
@@ -27,7 +32,7 @@ public class CartTest extends Preconditions {
     public void addProductToCart() throws IOException {
         provideTestData("an active product visible on storefront");
 
-        p = openPage(storefrontUrl + "/products/" + productSlug, StorefrontPage.class);
+        p = openPage(storefrontUrl + "/products/" + productSlug, StorefrontTPGBasePage.class);
         //PDP accessed directly until DB is cleaned
 //        p.navigateToCategory(storefrontCategory);
 //        p.openPDP(productTitle);
@@ -44,7 +49,7 @@ public class CartTest extends Preconditions {
     public void emptyGuestCartDoesntOverrideRegisteredCart() throws IOException {
         provideTestData("registered customer, 2 active products on storefront, 1 product in cart");
 
-        p = openPage(storefrontUrl + "/products/" + productSlugs.get(1), StorefrontPage.class);
+        p = openPage(storefrontUrl + "/products/" + productSlugs.get(1), StorefrontTPGBasePage.class);
         p.clickAddToCartBtn();
         p.removeLineItem("1");
         p.closeCart();
@@ -63,7 +68,7 @@ public class CartTest extends Preconditions {
     public void guestCartMergedIntoRegistered() throws IOException {
         provideTestData("a storefront registered customer, 2 active products, 1 in cart");
 
-        p = openPage(storefrontUrl + "/products/" + productSlugs.get(1), StorefrontPage.class);
+        p = openPage(storefrontUrl + "/products/" + productSlugs.get(1), StorefrontTPGBasePage.class);
         p.clickAddToCartBtn();
         p.closeCart();
         p.logIn(customerEmail, "78qa22!#");
@@ -83,7 +88,7 @@ public class CartTest extends Preconditions {
     public void guestCartTerminatedOnSignInThenOut() throws IOException {
         provideTestData("a storefront registered customer, 2 active products, 1 in cart, coupon<no qualifier, 10% off, single code>");
 
-        p = openPage(storefrontUrl + "/products/" + productSlugs.get(1), StorefrontPage.class);
+        p = openPage(storefrontUrl + "/products/" + productSlugs.get(1), StorefrontTPGBasePage.class);
         p.clickAddToCartBtn();
         p.applyCoupon(singleCouponCode);
         p.closeCart();
@@ -95,12 +100,6 @@ public class CartTest extends Preconditions {
         p.openCart();
         p.lineItemsAmount().shouldHaveSize(0);
         p.appliedCoupon().shouldNotBe(visible);
-    }
-
-
-    @AfterMethod(alwaysRun = true)
-    public void cleanUp_after() {
-        p.cleanUp();
     }
 
 }

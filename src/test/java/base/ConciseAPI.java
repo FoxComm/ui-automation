@@ -41,9 +41,6 @@ import static org.testng.Assert.assertEquals;
 
 public class ConciseAPI implements IHookable {
 
-    private String actualValue;     // used in shouldHaveText()
-    private int actualSize;         // used in shouldHaveSize()
-
     //------------------------- ELEMENTS -------------------------//
 
     protected SelenideElement contentOnList() {
@@ -201,6 +198,7 @@ public class ConciseAPI implements IHookable {
     }
 
     protected void shouldHaveValue(SelenideElement element, String expValue, String errorMsg) {
+        String actualValue = "";
         try {
             actualValue = element.getValue();
             element.shouldHave(attribute("value", expValue));
@@ -213,6 +211,7 @@ public class ConciseAPI implements IHookable {
     }
 
     protected void shouldHaveText(SelenideElement element, String expValue, String errorMsg) {
+        String actualValue = "";
         try {
             actualValue = element.getText();
             element.shouldHave(text(expValue));
@@ -225,6 +224,7 @@ public class ConciseAPI implements IHookable {
     }
 
     protected void shouldMatchText(SelenideElement element, String expValue, String errorMsg) {
+        String actualValue = "";
         try {
             actualValue = element.getText();
             element.should(matchText(expValue));
@@ -237,6 +237,7 @@ public class ConciseAPI implements IHookable {
     }
 
     protected void shouldNotHaveText(SelenideElement element, String expValue, String errorMsg) {
+        String actualValue = "";
         try {
             actualValue = element.getText();
             element.shouldNotHave(text(expValue));
@@ -250,6 +251,7 @@ public class ConciseAPI implements IHookable {
     }
 
     protected void shouldHaveSize(ElementsCollection elemCollection, int expValue, String errorMsg) {
+        int actualSize = 0;
         try {
             actualSize = elemCollection.size();
             elemCollection.shouldHaveSize(expValue);

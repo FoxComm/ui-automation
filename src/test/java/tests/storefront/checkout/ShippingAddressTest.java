@@ -1,8 +1,8 @@
 package tests.storefront.checkout;
 
-import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import pages.storefront.StorefrontPage;
+import base.StorefrontTPGBasePage;
 import ru.yandex.qatools.allure.annotations.Description;
 import ru.yandex.qatools.allure.annotations.Features;
 import ru.yandex.qatools.allure.annotations.Severity;
@@ -16,7 +16,12 @@ import static com.codeborne.selenide.Condition.*;
 
 public class ShippingAddressTest extends Preconditions {
 
-    private StorefrontPage p;
+    private StorefrontTPGBasePage p;
+
+    @BeforeMethod(alwaysRun = true)
+    public void cleanUp_after() {
+        p.cleanUp();
+    }
 
     @Test(priority = 1)
     @Severity(SeverityLevel.CRITICAL)
@@ -26,7 +31,7 @@ public class ShippingAddressTest extends Preconditions {
     public void createShipAddress_checkout() throws IOException {
         provideTestData("a storefront signed up customer with a product in cart");
 
-        p = openPage(storefrontUrl, StorefrontPage.class);
+        p = openPage(storefrontUrl, StorefrontTPGBasePage.class);
         p.logIn(customerEmail, "78qa22!#");
         p.openCart();
         p.clickCheckoutBtn_cart();
@@ -48,7 +53,7 @@ public class ShippingAddressTest extends Preconditions {
     public void editShipAddress_checkout() throws IOException {
         provideTestData("a storefront signed up customer with a shipping address and a product in cart");
 
-        p = openPage(storefrontUrl, StorefrontPage.class);
+        p = openPage(storefrontUrl, StorefrontTPGBasePage.class);
         p.logIn(customerEmail, "78qa22!#");
         p.openCart();
         p.clickCheckoutBtn_cart();
@@ -77,7 +82,7 @@ public class ShippingAddressTest extends Preconditions {
     public void defaultShipAddressIsAutoselectedOnCheckout() throws IOException {
         provideTestData("a storefront signed up customer, a cart with 1 product, 2 shipping addresses, has default address");
 
-        p = openPage(storefrontUrl, StorefrontPage.class);
+        p = openPage(storefrontUrl, StorefrontTPGBasePage.class);
         p.logIn(customerEmail, "78qa22!#");
         p.openCart();
         p.clickCheckoutBtn_cart();
@@ -94,7 +99,7 @@ public class ShippingAddressTest extends Preconditions {
     public void newShipAddressAutoselected_noDefault() throws IOException {
         provideTestData("a storefront signed up customer, a cart with 1 product, 2 shipping addresses, NO default address");
 
-        p = openPage(storefrontUrl, StorefrontPage.class);
+        p = openPage(storefrontUrl, StorefrontTPGBasePage.class);
         p.logIn(customerEmail, "78qa22!#");
         p.openCart();
         p.clickCheckoutBtn_cart();
@@ -115,7 +120,7 @@ public class ShippingAddressTest extends Preconditions {
     public void newShipAddressAutoselected_hasDefault() throws IOException {
         provideTestData("a storefront signed up customer, a cart with 1 product, 2 shipping addresses, HAS default address");
 
-        p = openPage(storefrontUrl, StorefrontPage.class);
+        p = openPage(storefrontUrl, StorefrontTPGBasePage.class);
         p.logIn(customerEmail, "78qa22!#");
         p.openCart();
         p.clickCheckoutBtn_cart();
@@ -126,11 +131,6 @@ public class ShippingAddressTest extends Preconditions {
         shouldBeVisible(p.shipAddressByName_checkout("New Address"), "New shipping address isn't visible");
 
         p.name_appliedShipAddress().shouldHave(text("New Address"));
-    }
-
-    @AfterMethod(alwaysRun = true)
-    public void cleanUp_after() {
-        p.cleanUp();
     }
 
 }

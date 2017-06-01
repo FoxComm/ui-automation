@@ -15,7 +15,7 @@ import static com.codeborne.selenide.Selenide.*;
 import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 import static org.openqa.selenium.By.xpath;
 
-public class BasePage extends ConciseAPI {
+public class AdminBasePage extends ConciseAPI {
 
     //---------------------------------- GENERAL CONTROLS -----------------------------------//
 

@@ -1,7 +1,7 @@
 package tests.storefront.products;
 
 import org.testng.annotations.*;
-import pages.storefront.StorefrontPage;
+import base.StorefrontTPGBasePage;
 import ru.yandex.qatools.allure.annotations.Description;
 import ru.yandex.qatools.allure.annotations.Features;
 import ru.yandex.qatools.allure.annotations.Severity;
@@ -13,7 +13,12 @@ import java.io.IOException;
 
 public class TpgProductAttrsTest extends Preconditions {
 
-    private StorefrontPage p;
+    private StorefrontTPGBasePage p;
+
+    @BeforeMethod(alwaysRun = true)
+    public void cleanUp_after() {
+        p.cleanUp();
+    }
 
     @Test(priority = 1)
     @Severity(SeverityLevel.CRITICAL)
@@ -22,7 +27,7 @@ public class TpgProductAttrsTest extends Preconditions {
     @Description("All attributes are displayed correctly (product name, sale price, description)")
     public void productAttributesDisplayedCorrectly() throws IOException {
         provideTestData("an active product with tpg-specific custom properties");
-        p = openPage(storefrontUrl + "/products/" + productSlug, StorefrontPage.class);
+        p = openPage(storefrontUrl + "/products/" + productSlug, StorefrontTPGBasePage.class);
 
         //Prep
         assertEquals_soft(p.customAttribute("Conventional Oven").text(), "Conventional Oven Value");
@@ -42,11 +47,6 @@ public class TpgProductAttrsTest extends Preconditions {
         assertEquals_soft(p.customAttribute("Nutritional Information").text(), "Nutritional Information Value");
 
         soft.assertAll();
-    }
-
-    @AfterMethod(alwaysRun = true)
-    public void cleanUp_after() {
-        p.cleanUp();
     }
 
 }

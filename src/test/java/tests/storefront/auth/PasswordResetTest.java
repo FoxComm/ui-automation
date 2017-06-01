@@ -1,8 +1,8 @@
 package tests.storefront.auth;
 
-import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import pages.storefront.StorefrontPage;
+import base.StorefrontTPGBasePage;
 import ru.yandex.qatools.allure.annotations.Description;
 import ru.yandex.qatools.allure.annotations.Features;
 import ru.yandex.qatools.allure.annotations.Severity;
@@ -16,7 +16,12 @@ import static com.codeborne.selenide.Condition.visible;
 
 public class PasswordResetTest extends Preconditions {
 
-    private StorefrontPage p;
+    private StorefrontTPGBasePage p;
+
+    @BeforeMethod(alwaysRun = true)
+    public void cleanUp_after() {
+        p.cleanUp();
+    }
 
     @Test(priority = 1)
     @Severity(SeverityLevel.CRITICAL)
@@ -26,7 +31,7 @@ public class PasswordResetTest extends Preconditions {
     public void signIn_rememberOldPassword() throws IOException {
         provideTestData("a customer signed up on storefront");
 
-        p = openPage(storefrontUrl, StorefrontPage.class);
+        p = openPage(storefrontUrl, StorefrontTPGBasePage.class);
         p.clickLogInLnk();
         p.clickForgotLnk();
         p.setEmail_passReset(customerEmail);
@@ -45,7 +50,7 @@ public class PasswordResetTest extends Preconditions {
     @Stories("Auth : Password Reset")
     @Description("Abort password reset")
     public void abortPasswordReset() {
-        p = openPage(storefrontUrl, StorefrontPage.class);
+        p = openPage(storefrontUrl, StorefrontTPGBasePage.class);
         p.clickLogInLnk();
         p.clickForgotLnk();
         p.clickBackToLogInLnk();
@@ -68,10 +73,5 @@ public class PasswordResetTest extends Preconditions {
 //
 //        p.message_passRecovery("Oops! We don’t have a user with that email.").shouldBe(visible);
 //    }
-
-    @AfterMethod(alwaysRun = true)
-    public void cleanUp_after() {
-        p.cleanUp();
-    }
 
 }

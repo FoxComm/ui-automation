@@ -1,6 +1,6 @@
 package pages.admin;
 
-import base.BasePage;
+import base.AdminBasePage;
 import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -9,7 +9,7 @@ import ru.yandex.qatools.allure.annotations.Step;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.sleep;
 
-public class OrdersPage extends BasePage {
+public class OrdersPage extends AdminBasePage {
 
     //--------------------------------------- ELEMENTS ---------------------------------------//
 

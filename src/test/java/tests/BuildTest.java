@@ -4,7 +4,9 @@ import org.openqa.selenium.By;
 import org.testng.annotations.Test;
 import pages.admin.LoginPage;
 import ru.yandex.qatools.allure.annotations.Description;
+import ru.yandex.qatools.allure.annotations.Features;
 import ru.yandex.qatools.allure.annotations.Severity;
+import ru.yandex.qatools.allure.annotations.Stories;
 import ru.yandex.qatools.allure.model.SeverityLevel;
 import testdata.Preconditions;
 
@@ -19,6 +21,8 @@ public class BuildTest extends Preconditions {
 
     @Test(priority = 1)
     @Severity(SeverityLevel.CRITICAL)
+    @Features({"Ashes", "Storefront"})
+    @Stories("Fox Tests")
     @Description("This test fails and marks build as failing")
     public void criticalTest_fail() throws IOException {
         p = openPage(adminUrl + "/login", LoginPage.class);
@@ -29,6 +33,8 @@ public class BuildTest extends Preconditions {
 
     @Test(priority = 2)
     @Severity(SeverityLevel.CRITICAL)
+    @Features({"Ashes", "Storefront"})
+    @Stories("Fox Tests")
     @Description("This test is passing, but build is marked as failed because critical test has failed")
     public void criticalTest_pass() throws IOException {
         p = openPage(adminUrl + "/login", LoginPage.class);
@@ -38,6 +44,8 @@ public class BuildTest extends Preconditions {
 
     @Test(priority = 3)
     @Severity(SeverityLevel.MINOR)
+    @Features("Ashes")
+    @Stories("Fox Tests")
     @Description("This test is passing, but build is marked as failed because critical test has failed")
     public void minorTest_pass() throws IOException {
         p = openPage(adminUrl + "/login", LoginPage.class);
@@ -47,7 +55,8 @@ public class BuildTest extends Preconditions {
 
     @Test(priority = 4)
     @Severity(SeverityLevel.CRITICAL)
-    @Description("Broken test")
+    @Features("Ashes")
+    @Stories("Fox Tests")
     public void criticalTest_broken() {
         p = openPage(adminUrl + "/login", LoginPage.class);
         p.login(adminOrg, adminEmail, adminPassword);

@@ -13,6 +13,7 @@ public class BaseTest extends ConciseAPI {
         getWebDriver().manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
         return getWebDriver().getCurrentUrl();
     }
+
     protected static String apiUrl = System.getenv("API_URL__TESTS");
     protected static String adminUrl = System.getenv("ASHES_URL");
     public static String storefrontUrl = System.getenv("STOREFRONT_URL");

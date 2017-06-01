@@ -1,6 +1,7 @@
-package pages.storefront;
+package base;
 
 import com.codeborne.selenide.SelenideElement;
+import pages.storefront.NavigationPage;
 import ru.yandex.qatools.allure.annotations.Step;
 
 import java.util.concurrent.TimeUnit;
@@ -10,7 +11,7 @@ import static com.codeborne.selenide.Selenide.close;
 import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 import static org.openqa.selenium.By.xpath;
 
-public class StorefrontPage extends NavigationPage {
+public class StorefrontTPGBasePage extends NavigationPage {
 
     //======================================== GENERAL CONTROLS ========================================
     //-------------------------------------------- ELEMENTS --------------------------------------------

@@ -1,12 +1,9 @@
 package tests.storeadmin.generalcontrols.auth;
 
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 import pages.admin.LoginPage;
 import pages.admin.OrdersPage;
-import pages.storefront.StorefrontPage;
+import base.StorefrontTPGBasePage;
 import ru.yandex.qatools.allure.annotations.Description;
 import ru.yandex.qatools.allure.annotations.Features;
 import ru.yandex.qatools.allure.annotations.Severity;
@@ -24,7 +21,7 @@ import static org.testng.Assert.assertEquals;
 public class AuthTest extends Preconditions {
 
     private LoginPage lp;
-    private StorefrontPage sfp;
+    private StorefrontTPGBasePage sfp;
     private OrdersPage op;
 
     @BeforeClass(alwaysRun = true)
@@ -70,7 +67,7 @@ public class AuthTest extends Preconditions {
     public void customerCantAccessAdmin() throws IOException {
         provideTestData("a customer signed up on storefront");
 
-        sfp = openPage(storefrontUrl, StorefrontPage.class);
+        sfp = openPage(storefrontUrl, StorefrontTPGBasePage.class);
         sfp.logIn(customerEmail, "78qa22!#");
         op = openPage(adminUrl + "/orders", OrdersPage.class);
 
@@ -79,7 +76,7 @@ public class AuthTest extends Preconditions {
         assertEquals(getUrl(), adminUrl + "/login");
     }
 
-    @AfterTest
+    @AfterMethod
     public void cleanUp() {
         refresh();
     }
