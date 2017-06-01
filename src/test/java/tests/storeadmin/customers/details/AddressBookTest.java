@@ -185,7 +185,6 @@ public class AddressBookTest extends Preconditions {
         provideTestData("customer with a shipping address");
 
         p = openPage(adminUrl + "/customers/" + customerId, CustomersPage.class);
-        shouldBeVisible( p.deleteAddressBtn("1"), "Address book seems to be empty" );
         int initAddressBookSize = p.addressBook().size();
         p.deleteAddress("1");
         p.confirmDeletion();

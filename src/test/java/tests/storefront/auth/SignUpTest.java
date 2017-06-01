@@ -100,7 +100,7 @@ public class SignUpTest extends Preconditions {
     @Severity(SeverityLevel.CRITICAL)
     @Features("Storefront-TPG")
     @Stories("Auth : Sign Up")
-    @Description("Can sign up with an email used for guest checkout earlier")
+    @Description("Can sign up with an email used for guest checkout earlier [Disabled ->  //TODO]")
     public void canSignUp_guestCheckoutEmail() {
         //TODO: add method to Preconditions that does guest checkout
     }
@@ -127,7 +127,7 @@ public class SignUpTest extends Preconditions {
     @Severity(SeverityLevel.CRITICAL)
     @Features("Storefront-TPG")
     @Stories("Auth : Sign Up")
-    @Description("Customer is signed in after successful sign up")
+    @Description("Customer is signed in after successful sign up [Disabled -> there's currently no close btn]")
     public void closeAuthForm_abortSignUp() {
         p = openPage(storefrontUrl, StorefrontTPGBasePage.class);
         p.clickLogInLnk();

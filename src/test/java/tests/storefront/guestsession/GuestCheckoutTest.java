@@ -34,7 +34,7 @@ public class GuestCheckoutTest extends Preconditions {
     @Stories("Guest Checkout")
     @Description("Before checkout guest customer can either checkout with guest email or sign in & checkout")
     public void guestCheckoutAuth() throws IOException {
-        provideTestData("an active product visible on storefront");
+        provideTestData("active product, has tag, active SKU, has sellable stockitems");
 
         p = openPage(storefrontUrl+"/products/"+productSlug, StorefrontTPGBasePage.class);
         p.clickAddToCartBtn();
@@ -51,7 +51,7 @@ public class GuestCheckoutTest extends Preconditions {
     @Stories("Guest Checkout")
     @Description("Can proceed to checkout with a non-taken email")
     public void proceedToCheckout_nonTakenEmail() throws IOException {
-        provideTestData("an active product visible on storefront");
+        provideTestData("active product, has tag, active SKU, has sellable stockitems");
 
         p = openPage(storefrontUrl+"/products/"+productSlug, StorefrontTPGBasePage.class);
         p.clickAddToCartBtn();

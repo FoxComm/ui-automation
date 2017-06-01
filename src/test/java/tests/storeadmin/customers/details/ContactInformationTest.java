@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.util.Objects;
 
 import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.open;
 
 public class ContactInformationTest extends Preconditions {
@@ -38,10 +39,11 @@ public class ContactInformationTest extends Preconditions {
     @Test(priority = 1)
     @Severity(SeverityLevel.CRITICAL)
     @Features("Ashes")
-    @Stories({"Customers general behavior", "Customer Contact Information"})
+    @Stories("Customer Contact Information")
     @Description("Can create new custoemr; User is redirected to customer details page after customer creation")
     public void createCustomer() {
-        String email = "qatest2278+" + generateRandomID() + "@gmail.com";
+        String uid = generateRandomID();
+        String email = "qatest2278+" + uid + "@gmail.com";
 
         p = openPage(adminUrl + "/customers/", CustomersPage.class);
         p.clickAddCustomerBtn();
@@ -62,24 +64,8 @@ public class ContactInformationTest extends Preconditions {
         provideTestData("a customer");
 
         p = openPage(adminUrl + "/customers/" + customerId, CustomersPage.class);
-        p.nameVal_contactInfo().shouldHave(text(customerName));
-        p.emailVal_contactInfo().shouldHave(text(customerEmail));
-    }
-
-    @Test(priority = 3)
-    @Severity(SeverityLevel.NORMAL)
-    @Features("Ashes")
-    @Stories("Customer contact information")
-    @Description("Can add phone number to contact information")
-    public void addPhoneNumber() throws IOException {
-        provideTestData("a customer");
-
-        p = openPage(adminUrl + "/customers/" + customerId, CustomersPage.class);
-        p.clickEditBtn_contactInfo();
-        p.setPhoneNumber_contactInfo("7779994242");
-        p.clickSave();
-
-        p.phoneNumberVal_contactInfo().shouldHave(text("7779994242"));
+        p.nameVal_contacts().shouldHave(text(customerName));
+        p.emailVal_contacts().shouldHave(text(customerEmail));
     }
 
     @Test(priority = 4)
@@ -91,12 +77,12 @@ public class ContactInformationTest extends Preconditions {
         provideTestData("a customer");
 
         p = openPage(adminUrl + "/customers/" + customerId, CustomersPage.class);
-        p.clickEditBtn_contactInfo();
-        p.setPhoneNumber_contactInfo("7779994242");
-        p.setName_contactInfo(newName);
+        p.clickEditBtn_contacts();
+        p.setPhoneNumber_contacts("7779994242");
+        p.setName_contacts(newName);
         p.clickSave();
 
-        p.nameVal_contactInfo().shouldHave(text(newName));
+        p.nameVal_contacts().shouldHave(text(newName));
         p.nameVal_overview().shouldHave(text(newName));
     }
 
@@ -104,19 +90,105 @@ public class ContactInformationTest extends Preconditions {
     @Severity(SeverityLevel.CRITICAL)
     @Features("Ashes")
     @Stories("Customer contact information")
-    @Description("Can edit customer email")
-    public void editEmail() throws IOException {
+    @Description("Phone number is not required")
+    public void nameIsRequired() throws IOException {
         provideTestData("a customer");
 
         p = openPage(adminUrl + "/customers/" + customerId, CustomersPage.class);
-        p.clickEditBtn_contactInfo();
-        p.setPhoneNumber_contactInfo("7779994242");
-        p.setEmail_contactInfo(newEmail);
+        p.clickEditBtn_contacts();
+        p.setPhoneNumber_contacts("9879879876");
+        p.clearField(p.nameFld_contacts());
         p.clickSave();
 
-        p.emailVal_contactInfo().shouldHave(text(newEmail));
-        p.emailVal_overview().shouldHave(text(newEmail));
+        p.editBtn_contats().shouldBe(visible);
+        p.errorMsg("fill out this field").shouldNotBe(visible);
+    }
 
+    @Test(priority = 5)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Ashes")
+    @Stories("Customer contact information")
+    @Description("Can't set customer email to an already used one")
+    public void editEmail_unique() throws IOException {
+        provideTestData("a customer");
+
+        p = openPage(adminUrl + "/customers/" + customerId, CustomersPage.class);
+        p.clickEditBtn_contacts();
+        p.setPhoneNumber_contacts("7779994242");
+        p.setEmail_contacts(newEmail);
+        p.clickSave();
+
+        p.emailVal_contacts().shouldHave(text(newEmail));
+        p.emailVal_overview().shouldHave(text(newEmail));
+    }
+
+    @Test(priority = 5)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Ashes")
+    @Stories("Customer contact information")
+    @Description("Can edit customer email")
+    public void editEmail_used() throws IOException {
+        provideTestData("two customers signed up on storefront");
+
+        p = openPage(adminUrl + "/customers/" + customerId, CustomersPage.class);
+        p.clickEditBtn_contacts();
+        p.setPhoneNumber_contacts("7779994242");
+        p.setEmail_contacts(takenEmail);
+        p.clickSave();
+
+        p.errorMsg("already in use");
+        p.emailVal_contacts().shouldHave(text(customerEmail));
+        p.emailVal_overview().shouldHave(text(customerEmail));
+    }
+
+    @Test(priority = 5)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Ashes")
+    @Stories("Customer contact information")
+    @Description("Phone number is not required")
+    public void emailIsRequired() throws IOException {
+        provideTestData("a customer");
+
+        p = openPage(adminUrl + "/customers/" + customerId, CustomersPage.class);
+        p.clickEditBtn_contacts();
+        p.setPhoneNumber_contacts("9879879876");
+        p.clearField(p.emailFld_contacts());
+        p.clickSave();
+
+        p.editBtn_contats().shouldBe(visible);
+        p.errorMsg("fill out this field").shouldNotBe(visible);
+    }
+
+    @Test(priority = 5)
+    @Severity(SeverityLevel.CRITICAL)
+    @Features("Ashes")
+    @Stories("Customer contact information")
+    @Description("Phone number is not required")
+    public void phoneNumberNotRequired() throws IOException {
+        provideTestData("a customer");
+
+        p = openPage(adminUrl + "/customers/" + customerId, CustomersPage.class);
+        p.clickEditBtn_contacts();
+        p.clickSave();
+
+        p.editBtn_contats().shouldBe(visible);
+        p.errorMsg("fill out this field").shouldNotBe(visible);
+    }
+
+    @Test(priority = 3)
+    @Severity(SeverityLevel.NORMAL)
+    @Features("Ashes")
+    @Stories("Customer contact information")
+    @Description("Can add phone number to contact information")
+    public void addPhoneNumber() throws IOException {
+        provideTestData("a customer");
+
+        p = openPage(adminUrl + "/customers/" + customerId, CustomersPage.class);
+        p.clickEditBtn_contacts();
+        p.setPhoneNumber_contacts("7779994242");
+        p.clickSave();
+
+        p.phoneNumberVal_contacts().shouldHave(text("7779994242"));
     }
 
     @Test(priority = 6)
@@ -127,7 +199,7 @@ public class ContactInformationTest extends Preconditions {
     public void phoneNumbFromBillAddress() throws IOException {
         provideTestData("customer with a credit card");
         p = openPage(adminUrl + "/customers/" + customerId, CustomersPage.class);
-        p.phoneNumberVal_contactInfo().shouldHave(text("9879879876"));
+        p.phoneNumberVal_contacts().shouldHave(text("9879879876"));
 //      move this assertion to overview-related test
 //      assertEquals( p.phoneNumberVal_overview(),  "9879879876",
 //                "Phone number from billing address isn't displayed in customer overview.");

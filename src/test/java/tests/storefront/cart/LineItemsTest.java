@@ -56,7 +56,7 @@ public class LineItemsTest extends Preconditions {
         p.setQty_pdp("2");
         p.clickAddToCartBtn();
         p.closeCart();
-        p = openPage(storefrontUrl + "/products" + productSlugs.get(1), StorefrontTPGBasePage.class);
+        p = openPage(storefrontUrl + "/products/" + productSlugs.get(1), StorefrontTPGBasePage.class);
         p.setQty_pdp("3");
         p.clickAddToCartBtn();
         p.closeCart();
@@ -140,7 +140,7 @@ public class LineItemsTest extends Preconditions {
         p.clickCheckoutBtn_cart();
 
         p.grandTotal().shouldBe(visible);
-        assertUrl(getUrl(), storefrontUrl + "checkout", timeout);
+        assertUrl(getUrl(), storefrontUrl + "/checkout", timeout);
     }
 
     @Test(priority = 7)

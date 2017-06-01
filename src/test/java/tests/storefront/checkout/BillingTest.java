@@ -57,7 +57,7 @@ public class BillingTest extends Preconditions {
         p.logIn(customerEmail, "78qa22!#");
         p.openCart();
         p.clickCheckoutBtn_cart();
-        p.setShipMethod(p.shippingMethods().size());
+        p.setShipMethod("1");
         p.clickContinueBtn();
         p.setCreditCard("2");
 

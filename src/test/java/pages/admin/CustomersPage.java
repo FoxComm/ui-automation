@@ -130,7 +130,7 @@ public class CustomersPage extends AdminBasePage {
     }
 
     public SelenideElement deleteAddressBtn(String addressIndex) {
-        return $(By.xpath("//ul[@id='fct-customer-addresses-list']/li[" + addressIndex + "]//button[contains(@class, 'button__delete')]"));
+        return $(By.xpath("//ul[@id='fct-customer-addresses-list']/li["+addressIndex+"]//i[contains(@class, 'icon-trash')]/.."));
     }
 
     private SelenideElement confirmDeletionBtn() {
@@ -472,31 +472,31 @@ public class CustomersPage extends AdminBasePage {
     //--------------------------------- CONTACTS -----------------------------//
     //--------------------------------- ELEMENTS -----------------------------//
 
-    public SelenideElement editBtn_contactInfo() {
+    public SelenideElement editBtn_contats() {
         return $(By.xpath("//div[text()='Contact Information']/following-sibling::*/button"));
     }
 
-    public SelenideElement nameFld_contactInfo() {
+    public SelenideElement nameFld_contacts() {
         return $(By.xpath("//input[@id='nameField']"));
     }
 
-    public SelenideElement nameVal_contactInfo() {
+    public SelenideElement nameVal_contacts() {
         return $(By.xpath("//form[contains(@class, 'customer-contacts')]/dl[1]/dd"));
     }
 
-    public SelenideElement emailFld_contactInfo() {
+    public SelenideElement emailFld_contacts() {
         return $(By.xpath("//input[@id='emailField']"));
     }
 
-    public SelenideElement emailVal_contactInfo() {
+    public SelenideElement emailVal_contacts() {
         return $(By.xpath("//form[contains(@class, 'customer-contacts')]/dl[2]/dd"));
     }
 
-    public SelenideElement phoneNumberFld_contactInfo() {
+    public SelenideElement phoneNumberFld_contacts() {
         return $(By.xpath("//input[@id='phoneField']"));
     }
 
-    public SelenideElement phoneNumberVal_contactInfo() {
+    public SelenideElement phoneNumberVal_contacts() {
         return $(By.xpath("//form[contains(@class, 'customer-contacts')]/dl[3]/dd"));
     }
 
@@ -525,23 +525,23 @@ public class CustomersPage extends AdminBasePage {
     //--------------------------------- HELPERS -----------------------------//
 
     @Step("Click 'Edit' btn next to \"Contact Info\"")
-    public void clickEditBtn_contactInfo() {
-        click(editBtn_contactInfo());
+    public void clickEditBtn_contacts() {
+        click(editBtn_contats());
     }
 
     @Step("Set contact info \"Phone Number\" fld val to <{0}>")
-    public void setPhoneNumber_contactInfo(String phoneNumber) {
-        setFieldVal( phoneNumberFld_contactInfo(), phoneNumber );
+    public void setPhoneNumber_contacts(String phoneNumber) {
+        setFieldVal( phoneNumberFld_contacts(), phoneNumber );
     }
 
     @Step("Set contact info \"Name\" fld val to <{0}>")
-    public void setName_contactInfo(String name) {
-        setFieldVal( nameFld_contactInfo(), name );
+    public void setName_contacts(String name) {
+        setFieldVal( nameFld_contacts(), name );
     }
 
     @Step("Set contact info \"Email\" fld val to <{0}>")
-    public void setEmail_contactInfo(String email) {
-        setFieldVal( emailFld_contactInfo(), email );
+    public void setEmail_contacts(String email) {
+        setFieldVal( emailFld_contacts(), email );
     }
 
 

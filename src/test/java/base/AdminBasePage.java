@@ -292,6 +292,7 @@ public class AdminBasePage extends ConciseAPI {
         click(addCustomPropBtn());
         setFieldVal(fieldLabelFld(), title);
         setDdVal(fieldTypeDd(), type);
+        clickSaveBtn_modal();
     }
 
     @Step("Set value of <{0}> custom text fld to <{1}>")
