@@ -71,20 +71,20 @@ public class SignInTest extends Preconditions {
         p.closeAuthFormBtn().shouldNotBe(visible);
     }
 
-    @Test(priority = 4, enabled = false)
-    @Severity(SeverityLevel.CRITICAL)
-    @Features("Storefront-TPG")
-    @Stories("Auth : Sign In")
-    @Description("Sign In form can be closed without signing in")
-    public void closeAuthForm_abortSignIn() {
-        p = openPage(storefrontUrl, StorefrontTPGBasePage.class);
-        p.clickLogInLnk();
-        p.setEmail_logIn("dummy@mail.com");
-        p.setPassword_logIn("dummyPassword");
-        p.closeAuthForm();
-
-        p.closeAuthFormBtn().shouldNotBe(visible);
-        p.logInLnk().shouldBe(visible);
-    }
+//    @Test(priority = 4, enabled = false)
+//    @Severity(SeverityLevel.CRITICAL)
+//    @Features("Storefront-TPG")
+//    @Stories("Auth : Sign In")
+//    @Description("Sign In form can be closed without signing in")
+//    public void closeAuthForm_abortSignIn() {
+//        p = openPage(storefrontUrl, StorefrontTPGBasePage.class);
+//        p.clickLogInLnk();
+//        p.setEmail_logIn("dummy@mail.com");
+//        p.setPassword_logIn("dummyPassword");
+//        p.closeAuthForm();
+//
+//        p.closeAuthFormBtn().shouldNotBe(visible);
+//        p.logInLnk().shouldBe(visible);
+//    }
 
 }

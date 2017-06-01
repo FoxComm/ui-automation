@@ -106,21 +106,21 @@ public class LineItemsTest extends Preconditions {
     }
 
     //TODO: provideTestData() isn't finished for this test -- blocked by issue https://trello.com/c/J4TI8Dtx
-    @Test(priority = 5, enabled = false)
-    @Severity(SeverityLevel.BLOCKER)
-    @Features("Storefront-TPG")
-    @Stories("Cart SF : Line Items")
-    @Description("Gift card can be removed from cart as a regular line item")
-    public void removeGCLineItemFromCart() throws IOException {
-        provideTestData("a customer with GC in cart as a line item");
-
-        p = openPage(storefrontUrl, StorefrontTPGBasePage.class);
-        p.logIn(customerEmail, "78qa22!#");
-        p.openCart();
-        p.removeLineItem("1");
-
-        p.lineItemsAmount().shouldHaveSize(0);
-    }
+//    @Test(priority = 5, enabled = false)
+//    @Severity(SeverityLevel.BLOCKER)
+//    @Features("Storefront-TPG")
+//    @Stories("Cart SF : Line Items")
+//    @Description("Gift card can be removed from cart as a regular line item")
+//    public void removeGCLineItemFromCart() throws IOException {
+//        provideTestData("a customer with GC in cart as a line item");
+//
+//        p = openPage(storefrontUrl, StorefrontTPGBasePage.class);
+//        p.logIn(customerEmail, "78qa22!#");
+//        p.openCart();
+//        p.removeLineItem("1");
+//
+//        p.lineItemsAmount().shouldHaveSize(0);
+//    }
 
     @Test(priority = 6)
     @Severity(SeverityLevel.NORMAL)

@@ -32,6 +32,8 @@ public class LogOutTest extends Preconditions {
     @Description("Can log out")
     public void logOut() throws IOException {
         provideTestData("a customer signed up on storefront");
+        clearCache();
+        refresh();
 
         p = openPage(storefrontUrl, StorefrontTPGBasePage.class);
         p.clickLogInLnk();

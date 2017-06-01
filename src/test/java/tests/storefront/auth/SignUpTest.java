@@ -96,14 +96,14 @@ public class SignUpTest extends Preconditions {
         p.userMenuBtn_sf().should(matchText(randomId.toUpperCase()));
     }
 
-    @Test(priority = 5, enabled = false)
-    @Severity(SeverityLevel.CRITICAL)
-    @Features("Storefront-TPG")
-    @Stories("Auth : Sign Up")
-    @Description("Can sign up with an email used for guest checkout earlier [Disabled ->  //TODO]")
-    public void canSignUp_guestCheckoutEmail() {
-        //TODO: add method to Preconditions that does guest checkout
-    }
+//    @Test(priority = 5, enabled = false)
+//    @Severity(SeverityLevel.CRITICAL)
+//    @Features("Storefront-TPG")
+//    @Stories("Auth : Sign Up")
+//    @Description("Can sign up with an email used for guest checkout earlier [Disabled ->  //TODO]")
+//    public void canSignUp_guestCheckoutEmail() {
+//        //TODO: add method to Preconditions that does guest checkout
+//    }
 
     @Test(priority = 6)
     @Severity(SeverityLevel.CRITICAL)

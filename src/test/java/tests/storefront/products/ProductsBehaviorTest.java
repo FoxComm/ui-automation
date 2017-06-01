@@ -25,32 +25,32 @@ public class ProductsBehaviorTest extends Preconditions {
         clearCache();
     }
 
-    @Test(priority = 1, dataProvider = "productCatalogViewDisplayed", enabled = false)
-    @Severity(SeverityLevel.CRITICAL)
-    @Features({"Storefront-TPG", "Parametrized Tests"})
-    @Stories("Products : Storefront Behavior")
-    @Description("Product should be displayed in the catalog view on storefront [Disabled until DB clean]")
-    public void productDisplayedInCatalogView(String testData) throws IOException {
-        provideTestData(testData);
-        waitForProductAppearInEs("int", "productId", productId);
-
-        p = openPage(storefrontUrl + "/" + storefrontCategory, StorefrontTPGBasePage.class);
-
-        p.productTitle_catalog(productTitle).shouldBe(visible);
-    }
-
-    @Test(priority = 2, dataProvider = "productCatalogViewNotDisplayed", enabled = false)
-    @Severity(SeverityLevel.CRITICAL)
-    @Features({"Storefront-TPG", "Parametrized Tests"})
-    @Stories("Products : Storefront Behavior")
-    @Description("Product should not be displayed in the catalog view on storefront [Disabled until DB clean]")
-    public void productNotDisplayedInCatalogView(String testData) throws IOException {
-        provideTestData(testData);
-        sleep(3000);
-        p = openPage(storefrontUrl + "/" + storefrontCategory, StorefrontTPGBasePage.class);
-
-        p.productTitle_catalog(productTitle).shouldNotBe(visible);
-    }
+//    @Test(priority = 1, dataProvider = "productCatalogViewDisplayed", enabled = false)
+//    @Severity(SeverityLevel.CRITICAL)
+//    @Features({"Storefront-TPG", "Parametrized Tests"})
+//    @Stories("Products : Storefront Behavior")
+//    @Description("Product should be displayed in the catalog view on storefront [Disabled until DB clean]")
+//    public void productDisplayedInCatalogView(String testData) throws IOException {
+//        provideTestData(testData);
+//        waitForProductAppearInEs("int", "productId", productId);
+//
+//        p = openPage(storefrontUrl + "/" + storefrontCategory, StorefrontTPGBasePage.class);
+//
+//        p.productTitle_catalog(productTitle).shouldBe(visible);
+//    }
+//
+//    @Test(priority = 2, dataProvider = "productCatalogViewNotDisplayed", enabled = false)
+//    @Severity(SeverityLevel.CRITICAL)
+//    @Features({"Storefront-TPG", "Parametrized Tests"})
+//    @Stories("Products : Storefront Behavior")
+//    @Description("Product should not be displayed in the catalog view on storefront [Disabled until DB clean]")
+//    public void productNotDisplayedInCatalogView(String testData) throws IOException {
+//        provideTestData(testData);
+//        sleep(3000);
+//        p = openPage(storefrontUrl + "/" + storefrontCategory, StorefrontTPGBasePage.class);
+//
+//        p.productTitle_catalog(productTitle).shouldNotBe(visible);
+//    }
 
     @Test(priority = 3, dataProvider = "productCanBeSearched")
     @Severity(SeverityLevel.CRITICAL)

@@ -100,23 +100,23 @@ public class PaymentMethodTest extends Preconditions {
     }
 
     //TODO: re-work this test so it'll check if correct amount of funds has been used for paying the order
-    @Test(priority = 4, enabled = false)
-    @Severity(SeverityLevel.CRITICAL)
-    @Features("Ashes")
-    @Stories("Cart : Payment Methods")
-    @Description("")
-    public void addStoreCredit_exceedsTotal() throws IOException {
-        provideTestData("cart with 1 item && customer with SC");
-        p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
-
-        shouldBeVisible(p.cartSummary(), "Failed to open the cart page");
-        double amountToUse = p.grandTotalVal() + 10.00;
-        p.clickEditBtn("Payment Method");
-        p.addPaymentMethod_SC(String.valueOf(amountToUse));
-
-        p.appliedAmount().shouldHave(text(String.valueOf(amountToUse))
-                .because("Amount of funds to be applied as a payment isn't auto-adjusted."));
-    }
+//    @Test(priority = 4, enabled = false)
+//    @Severity(SeverityLevel.CRITICAL)
+//    @Features("Ashes")
+//    @Stories("Cart : Payment Methods")
+//    @Description("")
+//    public void addStoreCredit_exceedsTotal() throws IOException {
+//        provideTestData("cart with 1 item && customer with SC");
+//        p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
+//
+//        shouldBeVisible(p.cartSummary(), "Failed to open the cart page");
+//        double amountToUse = p.grandTotalVal() + 10.00;
+//        p.clickEditBtn("Payment Method");
+//        p.addPaymentMethod_SC(String.valueOf(amountToUse));
+//
+//        p.appliedAmount().shouldHave(text(String.valueOf(amountToUse))
+//                .because("Amount of funds to be applied as a payment isn't auto-adjusted."));
+//    }
 
     @Test(priority = 5)
     @Severity(SeverityLevel.CRITICAL)
