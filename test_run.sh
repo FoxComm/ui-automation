@@ -13,7 +13,6 @@
 #                      products
 #                      test
 #
-# $3 -> your su password to generate allure report
 
 # test suite
 export SUITE="$2"
@@ -27,5 +26,5 @@ fi
 
 # fill out env info, generate report and open it in default browser
 ./allure__fill_env_info.sh
-sudo -S <<< "$3" allure generate target/allure-results
+allure generate target/allure-results
 allure report open
