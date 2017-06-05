@@ -9,11 +9,11 @@ configure-linux:
 	cd ./bin && unzip chromedriver_linux64.zip
 
 build:
-	sbt compile test:compile
+	mvn clean
 
 test:
 	bash define_test_suite.sh
-	sbt "test-only TestRunner"
+	mvn test
 
 report:
 	bash allure__fill_env_info.sh

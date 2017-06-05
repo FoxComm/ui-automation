@@ -1,7 +1,8 @@
 package tests;
 
 import base.StorefrontTPGBasePage;
-import listeners.AnnotationTransformer;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import pages.admin.LoginPage;
 import ru.yandex.qatools.allure.annotations.Description;
@@ -20,7 +21,18 @@ public class BuildTest extends Preconditions {
     private LoginPage p;
     private StorefrontTPGBasePage s;
 
-    @Test(priority = 1, retryAnalyzer = AnnotationTransformer.class)
+    @BeforeMethod(alwaysRun = true)
+    public void cleanUp_before() {
+        clearCache();
+        System.out.println(">>> @BeforeMethod is run successfully");
+    }
+
+    @AfterMethod
+    public void afterMethod() {
+        System.out.println(">>> @AfterMethod is run successfully");
+    }
+
+    @Test(priority = 1)
     @Severity(SeverityLevel.CRITICAL)
     @Features({"Parametrized", "Storefront"})
     @Stories("Fox Tests")
@@ -43,27 +55,39 @@ public class BuildTest extends Preconditions {
         p.passwordFld().shouldBe(visible);
     }
 
-    @Test(priority = 3)
-    @Severity(SeverityLevel.MINOR)
-    @Features({"Ashes", "Parametrized"})
+    @Test(priority = 2, dataProvider = "parametrizedTest")
+    @Severity(SeverityLevel.CRITICAL)
+    @Features({"Storefront", "Parametrized"})
     @Stories("Fox Tests")
     @Description("This test is passing, but build is marked as failed because critical test has failed")
-    public void minorTest_pass() throws IOException {
+    public void parametrizedTest(String org, String email, String password) throws IOException {
         p = openPage(adminUrl + "/login", LoginPage.class);
+        p.login(org, email, password);
 
-        p.passwordFld().shouldBe(visible);
+        p.loginErrorMsg().shouldBe(visible);
     }
 
-    @Test(priority = 4)
-    @Severity(SeverityLevel.CRITICAL)
-    @Features({"Ashes", "Parametrized"})
-    @Stories("Fox Tests")
-    public void criticalTest_broken() {
-        p = openPage(adminUrl + "/login", LoginPage.class);
-        p.login(adminOrg, adminEmail, adminPassword);
-
-        shouldBeVisible(p.loginErrorMsg(), "");
-    }
+//    @Test(priority = 3)
+//    @Severity(SeverityLevel.MINOR)
+//    @Features({"Ashes", "Parametrized"})
+//    @Stories("Fox Tests")
+//    @Description("This test is passing, but build is marked as failed because critical test has failed")
+//    public void minorTest_pass() throws IOException {
+//        p = openPage(adminUrl + "/login", LoginPage.class);
+//
+//        p.passwordFld().shouldBe(visible);
+//    }
+//
+//    @Test(priority = 4)
+//    @Severity(SeverityLevel.CRITICAL)
+//    @Features({"Ashes", "Parametrized"})
+//    @Stories("Fox Tests")
+//    public void criticalTest_broken() {
+//        p = openPage(adminUrl + "/login", LoginPage.class);
+//        p.login(adminOrg, adminEmail, adminPassword);
+//
+//        shouldBeVisible(p.loginErrorMsg(), "");
+//    }
 
 //    @Test(priority = 1)
 //    @Severity(SeverityLevel.BLOCKER)

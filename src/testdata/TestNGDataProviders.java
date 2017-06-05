@@ -294,4 +294,12 @@ public class TestNGDataProviders extends BaseTest {
         };
     }
 
+    @DataProvider
+    public Object[][] parametrizedTest() {
+        return new Object[][] {
+                {"fail", "fail@fail.com", "fail"},
+                {"tenant", "admin@admin.com", "password"}
+        };
+    }
+
 }
