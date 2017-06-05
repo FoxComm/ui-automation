@@ -1,5 +1,9 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="Test" verbose="1" configfailurepolicy="continue">
+    <listeners>
+        <listener class-name="listeners.AnnotationTransformer"/>
+    </listeners>
+
     <test name="Severity Test">
         <classes>
             <class name="tests.BuildTest"/>

@@ -73,9 +73,7 @@ The FoxCommerce E2E UI automation test framework. Used for automating UI test sc
 	make configure
 	```
 
-## Running Tests
-
-#### Locally
+## Running Tests Locally
 
 Environment against which tests should run are configured through env variables:
 With the following values tests will run in Chrome, against FoxComm stage, with TPG storefront.
@@ -119,11 +117,6 @@ To open report again, run this from dir that contains `allure-report` dir:
 ```
 	allure report open
 ```
-
-#### Buildkite CI
-* To configure the environment against which to run tests, change `$API_URL` value to what you need.
-* Builds are scheduled on 7 p.m. PST
-* Scheduled build is run against `stage`
 
 ## Reporting
 

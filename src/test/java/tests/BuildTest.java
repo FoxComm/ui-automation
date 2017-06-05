@@ -1,6 +1,7 @@
 package tests;
 
 import base.StorefrontTPGBasePage;
+import listeners.AnnotationTransformer;
 import org.testng.annotations.Test;
 import pages.admin.LoginPage;
 import ru.yandex.qatools.allure.annotations.Description;
@@ -19,7 +20,7 @@ public class BuildTest extends Preconditions {
     private LoginPage p;
     private StorefrontTPGBasePage s;
 
-    @Test(priority = 1)
+    @Test(priority = 1, retryAnalyzer = AnnotationTransformer.class)
     @Severity(SeverityLevel.CRITICAL)
     @Features({"Parametrized", "Storefront"})
     @Stories("Fox Tests")
