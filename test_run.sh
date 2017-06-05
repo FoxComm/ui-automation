@@ -12,7 +12,6 @@
 #                      storefront-tpg
 #                      products
 #                      test
-#
 
 # test suite
 export SUITE="$2"

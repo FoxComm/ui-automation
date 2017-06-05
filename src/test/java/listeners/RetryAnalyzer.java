@@ -3,21 +3,21 @@ package listeners;
 import org.testng.IRetryAnalyzer;
 import org.testng.ITestResult;
 
-class RetryAnalyzer implements IRetryAnalyzer {
+public class RetryAnalyzer implements IRetryAnalyzer {
 
-    private int attempts = 0;
-    private int maxRetries = 3;
+    private int retries = 0;
+    private int maxRetries = 2;
 
-    /**
-    * Returns true if the test method has to be retried, false otherwise.
-    */
     @Override
     public boolean retry(ITestResult result) {
-        if(attempts < maxRetries) {
-            attempts++;
-            return true;
+        if (result.getStatus() == 2 || result.getStatus() == 3 || result.getStatus() == 4) {
+            if (retries < maxRetries) {
+                System.out.println("-----");
+                retries ++;
+                System.out.println("["+result.getMethod().getMethodName()+"]"+" Test method failed, result is skipped. Retrying ("+retries+"/"+maxRetries +")...");
+                return true;
+            }
         }
         return false;
     }
-
 }

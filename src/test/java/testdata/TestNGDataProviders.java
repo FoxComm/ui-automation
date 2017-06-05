@@ -6,6 +6,14 @@ import org.testng.annotations.DataProvider;
 public class TestNGDataProviders extends BaseTest {
 
     @DataProvider
+    public Object[][] parametrizedTest() {
+        return new Object[][]{
+                {"fail", "fail@fail.com", "fail"},
+                {"tenant", "admin@admin.com", "password"}
+        };
+    }
+
+    @DataProvider
     public Object[][] styledText() {
         return new Object[][] {
                 {"p", "Paragraph"},
