@@ -21,7 +21,8 @@ public class LogExtender implements ITestListener {
 
     @Override
     public void onTestStart(ITestResult result) {
-        System.out.println(testMethodName(result) + " Running test method...");
+//        System.out.println("==== ==== ==== ====");
+//        System.out.println(testMethodName(result) + " Running test method...");
     }
 
     @Override
@@ -50,8 +51,6 @@ public class LogExtender implements ITestListener {
     public void onStart(ITestContext context) {}
 
     @Override
-    public void onFinish(ITestContext context) {
-        System.out.println("==== ==== ==== ====");
-    }
+    public void onFinish(ITestContext context) {}
 
 }
