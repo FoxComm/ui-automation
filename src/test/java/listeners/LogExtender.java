@@ -21,19 +21,18 @@ public class LogExtender implements ITestListener {
 
     @Override
     public void onTestStart(ITestResult result) {
-        System.out.println("=====");
         System.out.println(testMethodName(result) + " Running test method...");
     }
 
     @Override
     public void onTestSuccess(ITestResult result) {
-        System.out.println(testMethodName(result) + " PASSED!");
+//        System.out.println(testMethodName(result) + " PASSED!");
     }
 
     @Override
     public void onTestFailure(ITestResult result) {
-        System.out.println(testMethodName(result) + " FAILED!");
-        if (throwableNotNull(result)) printError(result);
+//        System.out.println(testMethodName(result) + " FAILED!");
+//        if (throwableNotNull(result)) printError(result);
     }
 
     @Override
@@ -43,8 +42,8 @@ public class LogExtender implements ITestListener {
 
     @Override
     public void onTestFailedButWithinSuccessPercentage(ITestResult result) {
-        System.out.println(testMethodName(result) + " FAILED WITH SUCCESS PERCENTAGE!");
-        if (throwableNotNull(result)) printError(result);
+//        System.out.println(testMethodName(result) + " FAILED WITH SUCCESS PERCENTAGE!");
+//        if (throwableNotNull(result)) printError(result);
     }
 
     @Override
@@ -52,7 +51,7 @@ public class LogExtender implements ITestListener {
 
     @Override
     public void onFinish(ITestContext context) {
-        System.out.println("=====");
+        System.out.println("==== ==== ==== ====");
     }
 
 }
