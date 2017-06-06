@@ -22,7 +22,7 @@ public class LogExtender implements ITestListener {
     @Override
     public void onTestStart(ITestResult result) {
 //        System.out.println("==== ==== ==== ====");
-//        System.out.println(testMethodName(result) + " Running test method...");
+        System.out.println(testMethodName(result) + " Running test method...");
     }
 
     @Override

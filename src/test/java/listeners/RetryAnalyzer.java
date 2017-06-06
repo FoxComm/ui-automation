@@ -3,7 +3,7 @@ package listeners;
 import org.testng.IRetryAnalyzer;
 import org.testng.ITestResult;
 
-class RetryAnalyzer implements IRetryAnalyzer {
+public class RetryAnalyzer implements IRetryAnalyzer {
 
     private int retries = 0;
     private int maxRetries = 2;

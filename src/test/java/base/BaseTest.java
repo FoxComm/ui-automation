@@ -1,7 +1,9 @@
 package base;
 
 import com.codeborne.selenide.Configuration;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeSuite;
+
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
@@ -68,6 +70,11 @@ public class BaseTest extends ConciseAPI {
         setAdminPassword();
         setStorefrontCategory();
         printEnvInfo();
+    }
+
+    @AfterMethod
+    public void checkRamUsage() {
+        printRamUsage();
     }
 
 }

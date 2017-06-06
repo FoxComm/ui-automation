@@ -402,6 +402,20 @@ public class ConciseAPI implements IHookable {
         element.sendKeys(Keys.chord(Keys.CONTROL, Keys.RETURN));
     }
 
+    public static void printRamUsage() {
+        Runtime rt = Runtime.getRuntime();
+
+        long total = rt.totalMemory();
+        long free = rt.freeMemory();
+        long used = rt.totalMemory() - rt.freeMemory();
+
+        System.out.println(
+                String.format("[RAM] Total: %s, Used: %s, Free: %s",
+                        total,
+                        used,
+                        free));
+    }
+
     //------------ MATH
     protected String addToString(String string1, String string2) {
         Integer intString1 = Integer.valueOf(string1);
