@@ -492,7 +492,7 @@ public class ConciseAPI implements IHookable {
     }
 
     //------------ TEXT
-    protected static Boolean findInText(String textToLookAt, String textToMatch) {
+    public static Boolean findInText(String textToLookAt, String textToMatch) {
         Pattern pattern = Pattern.compile(textToMatch, Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(textToLookAt);
 
