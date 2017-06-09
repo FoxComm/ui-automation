@@ -2,7 +2,7 @@
 <suite name="Test" verbose="1" configfailurepolicy="continue">
     <listeners>
         <listener class-name="listeners.LogExtender"/>
-        <listener class-name="listeners.AnnotationTransformer"/>
+        <!--<listener class-name="listeners.AnnotationTransformer"/>-->
     </listeners>
 
     <test name="Severity Test">

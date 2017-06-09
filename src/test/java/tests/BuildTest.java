@@ -1,47 +1,45 @@
 package tests;
 
 import base.StorefrontTPGBasePage;
-import listeners.AnnotationTransformer;
 import org.testng.annotations.Test;
 import pages.admin.LoginPage;
-import ru.yandex.qatools.allure.annotations.Description;
-import ru.yandex.qatools.allure.annotations.Features;
-import ru.yandex.qatools.allure.annotations.Severity;
-import ru.yandex.qatools.allure.annotations.Stories;
-import ru.yandex.qatools.allure.model.SeverityLevel;
 import testdata.Preconditions;
 
-import java.io.IOException;
-
-import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Configuration.timeout;
 
 public class BuildTest extends Preconditions {
 
     private LoginPage p;
     private StorefrontTPGBasePage s;
 
-    @Test(priority = 1, retryAnalyzer = AnnotationTransformer.class)
-    @Severity(SeverityLevel.CRITICAL)
-    @Features({"Parametrized", "Storefront"})
-    @Stories("Fox Tests")
-    @Description("This test fails and marks build as failing")
-    public void criticalTest_fail() throws IOException {
-        p = openPage(adminUrl + "/login", LoginPage.class);
-        p.login(adminOrg, adminEmail, adminPassword);
-
-        p.loginErrorMsg().shouldBe(visible);
+    @Test
+    public void testTest() {
+        p = openPage(adminUrl, LoginPage.class);
+        assertUrl(getUrl(), adminUrl + "/login", timeout);
     }
 
-    @Test(priority = 2)
-    @Severity(SeverityLevel.CRITICAL)
-    @Features({"Storefront", "Parametrized"})
-    @Stories("Fox Tests")
-    @Description("This test is passing, but build is marked as failed because critical test has failed")
-    public void criticalTest_pass() throws IOException {
-        p = openPage(adminUrl + "/login", LoginPage.class);
+//    @Test(priority = 1)
+//    @Severity(SeverityLevel.CRITICAL)
+//    @Features({"Parametrized", "Storefront"})
+//    @Stories("Fox Tests")
+//    @Description("This test fails and marks build as failing")
+//    public void criticalTest_fail() throws IOException {
+//        p = openPage(adminUrl + "/login", LoginPage.class);
+//        p.login(adminOrg, adminEmail, adminPassword);
+//
+//        p.loginErrorMsg().shouldBe(visible);
+//    }
 
-        p.passwordFld().shouldBe(visible);
-    }
+//    @Test(priority = 2)
+//    @Severity(SeverityLevel.CRITICAL)
+//    @Features({"Storefront", "Parametrized"})
+//    @Stories("Fox Tests")
+//    @Description("This test is passing, but build is marked as failed because critical test has failed")
+//    public void criticalTest_pass() throws IOException {
+//        p = openPage(adminUrl + "/login", LoginPage.class);
+//
+//        p.passwordFld().shouldBe(visible);
+//    }
 
 //    @Test(priority = 3)
 //    @Severity(SeverityLevel.MINOR)
@@ -65,17 +63,17 @@ public class BuildTest extends Preconditions {
 //        shouldBeVisible(p.loginErrorMsg(), "");
 //    }
 
-    @Test(priority = 2, dataProvider = "parametrizedTest")
-    @Severity(SeverityLevel.CRITICAL)
-    @Features({"Storefront", "Parametrized"})
-    @Stories("Fox Tests")
-    @Description("This test is passing, but build is marked as failed because critical test has failed")
-    public void parametrizedTest(String org, String email, String password) throws IOException {
-        p = openPage(adminUrl + "/login", LoginPage.class);
-        p.login(org, email, password);
-
-        p.loginErrorMsg().shouldBe(visible);
-    }
+//    @Test(priority = 2, dataProvider = "parametrizedTest")
+//    @Severity(SeverityLevel.CRITICAL)
+//    @Features({"Storefront", "Parametrized"})
+//    @Stories("Fox Tests")
+//    @Description("This test is passing, but build is marked as failed because critical test has failed")
+//    public void parametrizedTest(String org, String email, String password) throws IOException {
+//        p = openPage(adminUrl + "/login", LoginPage.class);
+//        p.login(org, email, password);
+//
+//        p.loginErrorMsg().shouldBe(visible);
+//    }
 
 //    @Test(priority = 1)
 //    @Severity(SeverityLevel.BLOCKER)

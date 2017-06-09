@@ -1,28 +1,18 @@
 package base;
 
 import com.codeborne.selenide.ElementsCollection;
-import com.codeborne.selenide.Screenshots;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.ex.ElementNotFound;
 import com.codeborne.selenide.ex.ElementShould;
 import com.codeborne.selenide.ex.ElementShouldNot;
 import com.codeborne.selenide.ex.ListSizeMismatch;
-import com.google.common.io.Files;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
-import org.testng.IHookCallBack;
-import org.testng.IHookable;
-import org.testng.ITestResult;
 import org.testng.asserts.SoftAssert;
-import ru.yandex.qatools.allure.annotations.Attachment;
 import ru.yandex.qatools.allure.annotations.Step;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.net.URLConnection;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -40,11 +30,11 @@ import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 import static org.openqa.selenium.By.xpath;
 import static org.testng.Assert.assertEquals;
 
-public class ConciseAPI implements IHookable {
+public class ConciseAPI extends ScreenShooter {
 
     public void clearCache() {
         clearBrowserCache();
-        System.out.println("Cache cleared!");
+        System.out.println("[info] Cache cleared!");
     }
 
     //------------------------- ELEMENTS -------------------------//
@@ -521,72 +511,7 @@ public class ConciseAPI implements IHookable {
 
     //----------------------------------------- SCREENSHOTS -----------------------------------------//
 
-    @Override
-    public void run(IHookCallBack callBack, ITestResult testResult) {
-        callBack.runTestMethod(testResult);
-        if (testResult.getThrowable() != null) {
-            try {
-                takeScreenShotStep(testResult.getMethod().getMethodName());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
 
-    private void takeScreenShotStep(String methodName) throws IOException {
-        File lastScreenShot = Screenshots.getLastScreenshot();
-        if (lastScreenShot != null) {
-            byte[] bytes = Files.toByteArray(lastScreenShot);
-            if (isByteArrIsText(bytes))
-                takeScreenShot(methodName, bytes);
-            else
-                errorText(new String(bytes, "UTF-8"));
-        } else {
-            log("MyScreenShotListener: takeScreenShotStep: new ScreenShot");
-            File newScreenShot = Screenshots.takeScreenShotAsFile();
-
-            if (newScreenShot != null) {
-                byte[] bytes = Files.toByteArray(newScreenShot);
-                if (isByteArrIsText(bytes))
-                    takeScreenShot(methodName, bytes);
-                else
-                    errorText(new String(bytes, "UTF-8"));
-            } else {
-                log("MyScreenShotListener: takeScreenShotStep: ScreenShot is null, return text attachment");
-                errorText("ScreenShot is null");
-            }
-        }
-    }
-
-    private boolean isByteArrIsText(byte[] value) {
-        String contentType = null;
-        try {
-            contentType = URLConnection.guessContentTypeFromStream(new ByteArrayInputStream(value));
-            if ("image/png".equals(contentType))
-                return true;
-            else {
-                log("contentType is: " + contentType);
-                return false;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    @Attachment(value = "Failure in method <{0}>", type = "text/html")
-    private String errorText(String text) {
-        return text;
-    }
-
-    @Attachment(value = "Failure in method <{0}>", type = "image/png")
-    private byte[] takeScreenShot(String methodName, byte[] image) throws IOException {
-        return image;
-    }
-
-    private void log(String text) {
-        //nothing
-    }
 
 
     //----------------------------------------- DEBUG -----------------------------------------//
