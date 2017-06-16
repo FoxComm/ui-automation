@@ -26,15 +26,23 @@ The FoxCommerce E2E UI automation test framework. Used for automating UI test sc
 	sudo apt-get install scala
 	```
 
-4. Install Chrome:
+4. Install Allure-CLI:
+
+    ```
+    sudo apt-add-repository ppa:yandex-qatools/allure-framework
+    sudo apt-get update
+    sudo apt-get install allure-commandline
+    ```
+
+5. Install Chrome:
 
 	Go download it!
 
-5. Get Chromedriver:
+6. Get Chromedriver:
 
 	Get the latest version at https://sites.google.com/a/chromium.org/chromedriver/downloads
 
-6. Run configuration script:
+7. Run configuration script:
 
 	```
 	make configure-linux
@@ -59,15 +67,22 @@ The FoxCommerce E2E UI automation test framework. Used for automating UI test sc
 	brew install scala
 	```
 
-4. Install Chrome:
+4. Install Allure-CLI:
+
+    ```
+    brew tap qatools/formulas
+    brew install allure-commandline
+    ```
+
+5. Install Chrome:
 
 	You already have it :)
 
-5. Get Chromedriver:
+6. Get Chromedriver:
 
 	Get the latest version at https://sites.google.com/a/chromium.org/chromedriver/downloads
 
-6. Run configuration script:
+7. Run configuration script:
 
 	```
 	make configure
@@ -78,26 +93,26 @@ The FoxCommerce E2E UI automation test framework. Used for automating UI test sc
 Environment against which tests should run are configured through env variables:
 With the following values tests will run in Chrome, against FoxComm stage, with TPG storefront.
 
-```
-export ENV=stage
-export API_URL__TESTS=https://stage.foxcommerce.com/api
-export ASHES_URL=https://stage.foxcommerce.com/admin
-export STOREFRONT_URL=https://stage.foxcommerce.com/perfect-gourmet
-export STOREFRONT=perfect-gourmet
-export SUITE=local
-export BROWSER=chrome
-export ALLURE_CONFIG=/home/userName/.../ui-automation/allure.properties
-```
+    ```
+    export ENV=stage
+    export API_URL__TESTS=https://stage.foxcommerce.com/api
+    export ASHES_URL=https://stage.foxcommerce.com/admin
+    export STOREFRONT_URL=https://stage.foxcommerce.com/perfect-gourmet
+    export STOREFRONT=perfect-gourmet
+    export SUITE=local
+    export BROWSER=chrome
+    export ALLURE_CONFIG=/home/userName/.../ui-automation/allure.properties
+    ```
 Once variables are configured, you can run them launching the following .sh script from project root dir:
 
-```
+    ```
 	./test_run.sh {X server} {test suite}
-```
+    ```
 
 Parameters:
-* X server. You can run them either in normal browser `b`, using Xvfb `x` (virtual graphical server) which.
-	I'd suggest using Xvfb - it grants faster runtime and browser won't bother popping up on each failure.
-* Test suites available for usage:
+* You can run tests either in a browser using your current graphical server - `b`, or using Xvfb (virtual graphical server) - `x`.
+	I'd suggest using Xvfb - it grants faster runtime and browser won't bother you popping up on each test failure.
+* Test suite parameter. Available options are:
 	- `regression` -- full test run
 	- `ashes`
 	- `storefront-tpg`
@@ -105,18 +120,18 @@ Parameters:
 
 Example:
 
-```
+    ```
 	./test_run.sh x regression
-```
+    ```
 
 
 Once test run is complete, report will be generated and opened in default browser.
 
 To open report again, run this from dir that contains `allure-report` dir:
 
-```
+    ```
 	allure report open
-```
+    ```
 
 ## Reporting
 
