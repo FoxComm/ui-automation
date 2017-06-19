@@ -1,0 +1,30 @@
+{
+  "name": "Manual Group [API]",
+  "groupType": "manual",
+  "clientState": {
+    "conditions": [],
+    "mainCondition": "$and"
+  },
+  "elasticRequest": {
+    "query": {
+      "bool": {
+        "filter": [
+          {
+            "bool": {
+              "must": [
+                {
+                  "term": {
+                    "groups": 33
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  },
+  "customersCount": 0,
+  "updatedAt": "2017-06-21T14:44:54.381Z",
+  "createdAt": "2017-06-21T14:44:54.381Z"
+}

@@ -1,0 +1,36 @@
+{
+  "name": "Dynamic Group [API]",
+  "groupType": "dynamic",
+  "clientState": {
+    "conditions": [
+      [
+        "name",
+        "equal",
+        "Not Existing User One"
+      ]
+    ],
+    "mainCondition": "$any"
+  },
+  "elasticRequest": {
+    "query": {
+      "bool": {
+        "should": [
+          {
+            "bool": {
+              "must": [
+                {
+                  "term": {
+                    "name": "Not Existing User One"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  },
+  "customersCount": 0,
+  "updatedAt": "2017-06-21T15:03:24.228Z",
+  "createdAt": "2017-06-21T14:56:09.726Z"
+}
