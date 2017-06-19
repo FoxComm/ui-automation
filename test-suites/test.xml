@@ -7,7 +7,7 @@
 
     <test name="Severity Test">
         <classes>
-            <class name="tests.BuildTest"/>
+            <class name="tests.storeadmin.customers.orders.OrdersListTest"/>
         </classes>
     </test>
 </suite>
