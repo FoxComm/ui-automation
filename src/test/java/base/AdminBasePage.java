@@ -367,7 +367,7 @@ public class AdminBasePage extends ConciseAPI {
     }
 
     public SelenideElement searchMenu() {
-        return $(xpath("//ul[@class='fc-menu-items']"));
+        return $(xpath("//div[@class='fc-live-search']//*[contains(@class,'block')]"));
     }
 
     public SelenideElement objOnCategoryTable(String itemParam) {
@@ -421,15 +421,15 @@ public class AdminBasePage extends ConciseAPI {
     }
 
     private SelenideElement firstCriteria(String criteria) {
-        return $(xpath("//ul[@class='fc-menu-items']/li/span[text()='" + criteria + "']/.."));
+        return $(xpath("//div[@class='fc-live-search']//*[contains(@class,'block')]/div/span[text()='" + criteria + "']/.."));
     }
 
     private SelenideElement secondCriteria(String criteria) {
-        return $(xpath("//ul[@class='fc-menu-items']/li/span[text()='" + criteria + "']/.."));
+        return $(xpath("//div[@class='fc-live-search']//*[contains(@class,'block')]/div/span[text()='" + criteria + "']/.."));
     }
 
     private SelenideElement thirdCriteria(String criteria) {
-        return $(xpath("//ul[@class='fc-menu-items']/li/span[text()='" + criteria + "']/.."));
+        return $(xpath("//div[@class='fc-live-search']//*[contains(@class,'block')]/div/span[text()='" + criteria + "']/.."));
     }
 
     public void hitEnter() {

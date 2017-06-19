@@ -126,11 +126,12 @@ public class CustomersPage extends AdminBasePage {
     }
 
     public SelenideElement editAddressBtn(String addressIndex) {
-        return $(By.xpath("//ul[@id='fct-customer-addresses-list']/li[" + addressIndex + "]//i[@class='icon-edit']/.."));
+        return $(By.xpath("(.//*[@id='fct-customer-addresses-list']//*[contains(@class,'icon-edit')])[" + addressIndex + "]"));
+//        return $(By.xpath("//ul[@id='fct-customer-addresses-list']/li[" + addressIndex + "]//i[@class='icon-edit']/.."));
     }
 
     public SelenideElement deleteAddressBtn(String addressIndex) {
-        return $(By.xpath("//ul[@id='fct-customer-addresses-list']/li["+addressIndex+"]//i[contains(@class, 'icon-trash')]/.."));
+        return $(By.xpath("(.//*[@id='fct-customer-addresses-list']//*[contains(@class,'icon-trash')])[" + addressIndex + "]"));
     }
 
     private SelenideElement confirmDeletionBtn() {

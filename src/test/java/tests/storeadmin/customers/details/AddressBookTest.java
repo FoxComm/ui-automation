@@ -17,6 +17,8 @@ import java.util.Objects;
 import static com.codeborne.selenide.CollectionCondition.sizeLessThan;
 import static com.codeborne.selenide.Condition.matchesText;
 import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 
 public class AddressBookTest extends Preconditions {
@@ -162,7 +164,7 @@ public class AddressBookTest extends Preconditions {
     @Features("Ashes")
     @Stories("Customers : Address Book")
     @Description("Can edit address 'Phone Number'")
-    public void editPhoneNumberFld() throws IOException {
+    public void editPhoneNumberFld() throws IOException, InterruptedException {
         provideTestData("customer with a shipping address");
 
         p = openPage(adminUrl + "/customers/" + customerId, CustomersPage.class);
@@ -185,7 +187,9 @@ public class AddressBookTest extends Preconditions {
         provideTestData("customer with a shipping address");
 
         p = openPage(adminUrl + "/customers/" + customerId, CustomersPage.class);
+        p.addressBook().get(0).waitUntil(visible, 5000);
         int initAddressBookSize = p.addressBook().size();
+        System.out.println("initAddressBookSize=" + p.addressBook().size());
         p.deleteAddress("1");
         p.confirmDeletion();
 
