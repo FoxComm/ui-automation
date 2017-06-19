@@ -11,6 +11,7 @@ import static testdata.api.collection.Auth.*;
 import static testdata.api.collection.Cart.*;
 import static testdata.api.collection.Coupons.*;
 import static testdata.api.collection.Customers.*;
+import static testdata.api.collection.CustomerGroups.*;
 import static testdata.api.collection.GiftCards.*;
 import static testdata.api.collection.Inventory.*;
 import static testdata.api.collection.Orders.*;
@@ -623,6 +624,22 @@ public class Preconditions extends Helpers {
                 checkoutCart(cartId);
                 break;
 
+            //---------------------------------- CUSTOMER MANUAL GROUP ---------------------------------//
+            case "create empty manual group":
+                createManualCustomerGroup("Manual Group");
+                break;
+
+            case "create manual group with few customers":
+
+                break;
+            //---------------------------------- CUSTOMER DYNAMIC GROUP ---------------------------------//
+            case "create empty dynamic group with one criteria":
+                createDynamicCustomerGroupWithOneCriteria("Dynamic Group");
+                break;
+
+            case "create dynamic group with two criterias":
+                createDynamicCustomerGroupWithTwoCriterias("Dynamic Group");
+                break;
             //---------------------------------- PROMOTIONS ---------------------------------//
 
             case "active promotion with auto apply type":
