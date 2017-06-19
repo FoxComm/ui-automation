@@ -333,11 +333,13 @@ public class CustomersPage extends AdminBasePage {
     }
 
     public SelenideElement editCreditCardBtn(String ccIndex) {
-        return $(By.xpath("//div[contains(@class, 'credit-cards')]/div/ul/li[" + ccIndex + "]/div[2]/div/button[2]"));
+//        return $(By.xpath("//div[contains(@class, 'credit-cards')]/div/ul/li[" + ccIndex + "]/div[1]/div/button[2]"));
+        return $(By.xpath("(//div[contains(@class, 'credit-cards')]//*[contains(@class,'icon-edit')]/..)[" + ccIndex + "]"));
     }
 
     public SelenideElement deleteCreditCardBtn(String ccIndex) {
-        return $(By.xpath("//div[contains(@class, 'credit-cards')]/div/ul/li[" + ccIndex + "]/div[2]/div/button[1]"));
+//        return $(By.xpath("//div[contains(@class, 'credit-cards')]/div/ul/li[" + ccIndex + "]/div[1]/div/button[1]"));
+        return $(By.xpath("(//div[contains(@class, 'credit-cards')]//*[contains(@class,'icon-trash')]/..)[" + ccIndex + "]"));
     }
 
     public SelenideElement changeBillAddressBtn() {
@@ -358,7 +360,7 @@ public class CustomersPage extends AdminBasePage {
     }
 
     private SelenideElement monthDd() {
-        return $(xpath("//label[text()='Expiration Date']/following-sibling::*/div[1]/div/div/div[2]/button"));
+        return $(xpath("//label[text()='Expiration Date']/following-sibling::*/div[1]/div/div/div/button"));
     }
 
     private SelenideElement monthVal(String monthNumber) {
@@ -366,7 +368,7 @@ public class CustomersPage extends AdminBasePage {
     }
 
     private SelenideElement yearDd() {
-        return $(xpath("//label[text()='Expiration Date']/following-sibling::*/div[2]/div/div/div[2]/button"));
+        return $(xpath("//label[text()='Expiration Date']/following-sibling::*/div[2]/div/div/div/button"));
     }
 
     private SelenideElement yearVal(String year) {
@@ -379,11 +381,11 @@ public class CustomersPage extends AdminBasePage {
     // -------- -------- -------- --------
 
     public SelenideElement holderNameFldVal(String ccIndex) {
-        return $(By.xpath("//div[contains(@class, 'credit-cards')]/div/ul/li[" + ccIndex + "]/div[3]/div/dl[1]/dd"));
+        return $(By.xpath("(//div[contains(@class, 'credit-cards')]//*[contains(@class,'fct-card-holder-name')])[" + ccIndex + "]"));
     }
 
     public SelenideElement expirationDateVal(String ccIndex) {
-        return $(By.xpath("//div[contains(@class, 'credit-cards')]/div/ul/li[" + ccIndex + "]/div[3]/div/div/div/div/div"));
+        return $(By.xpath("(//div[contains(@class, 'credit-cards')]//*[contains(@class,'payment-summary')]/div)[" + ccIndex + "]"));
     }
 
     public SelenideElement billCityVal(String ccIndex) {
