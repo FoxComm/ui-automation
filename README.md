@@ -93,21 +93,18 @@ The FoxCommerce E2E UI automation test framework. Used for automating UI test sc
 Environment against which tests should run are configured through env variables:
 With the following values tests will run in Chrome, against FoxComm stage, with TPG storefront.
 
-    ```
-    export ENV=stage
-    export API_URL__TESTS=https://stage.foxcommerce.com/api
-    export ASHES_URL=https://stage.foxcommerce.com/admin
-    export STOREFRONT_URL=https://stage.foxcommerce.com/perfect-gourmet
-    export STOREFRONT=perfect-gourmet
-    export SUITE=local
-    export BROWSER=chrome
-    export ALLURE_CONFIG=/home/userName/.../ui-automation/allure.properties
-    ```
+	export ENV=stage
+	export API_URL__TESTS=https://stage.foxcommerce.com/api
+	export ASHES_URL=https://stage.foxcommerce.com/admin
+	export STOREFRONT_URL=https://stage.foxcommerce.com/perfect-gourmet
+	export STOREFRONT=perfect-gourmet
+	export SUITE=local
+	export BROWSER=chrome
+	export ALLURE_CONFIG=/home/userName/.../ui-automation/allure.properties
+
 Once variables are configured, you can run them launching the following .sh script from project root dir:
 
-    ```
 	./test_run.sh {X server} {test suite}
-    ```
 
 Parameters:
 * You can run tests either in a browser using your current graphical server - `b`, or using Xvfb (virtual graphical server) - `x`.
@@ -120,18 +117,13 @@ Parameters:
 
 Example:
 
-    ```
 	./test_run.sh x regression
-    ```
-
 
 Once test run is complete, report will be generated and opened in default browser.
 
 To open report again, run this from dir that contains `allure-report` dir:
 
-    ```
 	allure report open
-    ```
 
 ## Reporting
 
@@ -142,7 +134,8 @@ Each environment can have up to 5 reports latest reports.
 ## Stack
 
 * Main Language: Java
-* Framework: TestNG, Selenide
+* Frameworks: TestNG, Selenide
+* API Interactions: okhttp
 * Build Tool: SBT
 * Reporting: Allure
 
@@ -151,10 +144,10 @@ Each environment can have up to 5 reports latest reports.
 
 ```
 
-                                                                         [TestNG listener]
-                                         ┌──────────────┐ implements      ┌─────────────┐
-      [wrappers, helpers, screenshoter]  │  ConciseAPI  ├────────────────►│  IHookable  │
-                                         └──────┬────┬──┘                 └─────────────┘
+
+                                         ┌──────────────┐ implements      ┌───────────────┐
+      [wrappers, helpers, screenshoter]  │  ConciseAPI  ├────────────────►│ ScreenShooter │
+                                         └──────┬────┬──┘                 └───────────────┘
                                                 │    │
                                                 │    │
                                                 │    └────────────────────────┐
@@ -189,5 +182,12 @@ Each environment can have up to 5 reports latest reports.
                                                                │ is created in testMethod() │
                                                                │ inside of a TestClass      │
                                                                └                            ┘
+
+     └───────────────────┘
+               │      Event Listeners
+       ┌───────────────┐
+       │ RetryAnalyzer │
+       └───────────────┘
+
 
 ```

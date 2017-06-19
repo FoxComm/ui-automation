@@ -79,7 +79,7 @@ public class CartValidationTest extends Preconditions {
         p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
         p.clickEditBtn("Line Items");
         p.removeItem("1");
-        shouldBeVisible(p.itemsWarn(), "Items warning doesn't appear once line items are cleared from cart");
+        shouldBeVisible(p.itemsWarn(), "");
         p.clickDoneBtn("Line Items");
 
         p.itemsWarn().shouldBe(visible);

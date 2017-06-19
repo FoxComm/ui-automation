@@ -57,19 +57,19 @@ public class CartPage extends AdminBasePage {
     }
 
     public SelenideElement itemsWarn() {
-        return $(xpath("//div[@class='fc-order-messages']/*[text()='Cart is empty.']"));
+        return $(xpath("//div[contains(@class, 'messages')]/*[text()='Cart is empty.']"));
     }
 
     public SelenideElement shipAddressWarn() {
-        return $(xpath("//div[@class='fc-order-messages']/*[text()='No shipping address applied.']"));
+        return $(xpath("//div[contains(@class, 'messages')]/*[text()='No shipping address applied.']"));
     }
 
     public SelenideElement shipMethodWarn() {
-        return $(xpath("//div[@class='fc-order-messages']/*[text()='No shipping method applied.']"));
+        return $(xpath("//div[contains(@class, 'messages')]/*[text()='No shipping method applied.']"));
     }
 
     public SelenideElement fundsWarn() {
-        return $(xpath("//div[@class='fc-order-messages']/*[text()='Insufficient funds.']"));
+        return $(xpath("//div[contains(@class, 'messages')]//*[text()='Insufficient funds.']"));
     }
 
     public SelenideElement orderOverviewPanel() {
@@ -170,7 +170,7 @@ public class CartPage extends AdminBasePage {
     }
 
     private SelenideElement increaseItemQtyBtn(String itemIndex) {
-        return $(xpath("//tbody[@id='fct-cart-line-items']/tr[" + itemIndex + "]//button[contains(@class, 'increment')]"));
+        return $(xpath("//tbody[@id='fct-cart-line-items']/tr[" + itemIndex + "]//i[contains(@class, 'chevron-up')]/.."));
     }
 
     private SelenideElement qtyInput_skuIndex(String itemIndex) {
