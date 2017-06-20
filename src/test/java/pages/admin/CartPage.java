@@ -166,7 +166,7 @@ public class CartPage extends AdminBasePage {
     }
 
     private SelenideElement decreaseItemQtyBtn(String itemIndex) {
-        return $(xpath("//tbody[@id='fct-cart-line-items']/tr[" + itemIndex + "]//button[contains(@class, 'decrement')]"));
+        return $(xpath("//tbody[@id='fct-cart-line-items']/tr[" + itemIndex + "]//i[contains(@class, 'chevron-down')]"));
     }
 
     private SelenideElement increaseItemQtyBtn(String itemIndex) {

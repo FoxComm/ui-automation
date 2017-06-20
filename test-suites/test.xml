@@ -5,9 +5,9 @@
         <!--<listener class-name="listeners.AnnotationTransformer"/>-->
     </listeners>
 
-    <test name="Severity Test">
+    <test name="Severity Test ">
         <classes>
-            <class name="tests.storeadmin.customers.orders.OrdersListTest"/>
+            <class name="tests.BuildTest"/>
         </classes>
     </test>
 </suite>

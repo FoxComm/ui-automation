@@ -4,10 +4,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import pages.admin.CustomersPage;
 import pages.admin.LoginPage;
-import ru.yandex.qatools.allure.annotations.Description;
-import ru.yandex.qatools.allure.annotations.Features;
-import ru.yandex.qatools.allure.annotations.Severity;
-import ru.yandex.qatools.allure.annotations.Stories;
+import ru.yandex.qatools.allure.annotations.*;
 import ru.yandex.qatools.allure.model.SeverityLevel;
 import testdata.Preconditions;
 
@@ -84,6 +81,7 @@ public class OrdersListTest extends Preconditions {
     @Features("Ashes")
     @Stories("Customers : Orders List")
     @Description("Order can be searched by line item's product title")
+    @Issue("Bug. With searching line item by product's title")
     public void searchFld_productName() throws IOException {
         provideTestData("customer with 2 orders in remorse hold and fulfillment started");
 

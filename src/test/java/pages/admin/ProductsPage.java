@@ -31,7 +31,7 @@ public class ProductsPage extends AdminBasePage {
 
     //TODO: rich text. you know what needs to be done.
     public SelenideElement descriptionFld() {
-        return $(xpath("//div[@class='public-DraftEditor-content']"));
+        return $(xpath("//div[contains(@class,'public-DraftEditor-content')]"));
     }
 
     public SelenideElement skuFld(int index) {
