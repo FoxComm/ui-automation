@@ -3,10 +3,7 @@ package tests.storefront.products;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import base.StorefrontTPGBasePage;
-import ru.yandex.qatools.allure.annotations.Description;
-import ru.yandex.qatools.allure.annotations.Features;
-import ru.yandex.qatools.allure.annotations.Severity;
-import ru.yandex.qatools.allure.annotations.Stories;
+import ru.yandex.qatools.allure.annotations.*;
 import ru.yandex.qatools.allure.model.SeverityLevel;
 import testdata.Preconditions;
 
@@ -101,6 +98,7 @@ public class ProductsBehaviorTest extends Preconditions {
     @Severity(SeverityLevel.CRITICAL)
     @Features({"Storefront-TPG", "Parametrized Tests"})
     @Stories("Products : Storefront Behavior")
+    @Issue("highlander/#2261")
     @Description("PDP can't be accessed using direct link - 'NO PRODUCT FOUND' should be displayed")
     public void cannotAccessPDP(String testData) throws IOException {
         provideTestData(testData);

@@ -161,6 +161,7 @@ public class ContactsTest extends Preconditions {
     @Features("Ashes")
     @Stories("Customers : Contacts")
     @Description("Phone number is not required")
+    @Issue("Issue. With pressing Save when title is cleared")
     public void phoneNumberNotRequired() throws IOException {
         provideTestData("a customer");
 
@@ -193,7 +194,6 @@ public class ContactsTest extends Preconditions {
     @Features("Ashes")
     @Stories("Customers : Contacts")
     @Description("Phone number from billing address should be transmitted to \"Contact Info\"")
-    @Issue("Phone number isn't populated from billing address")
     public void phoneNumbFromBillAddress() throws IOException {
         provideTestData("customer with a credit card");
         p = openPage(adminUrl + "/customers/" + customerId, CustomersPage.class);

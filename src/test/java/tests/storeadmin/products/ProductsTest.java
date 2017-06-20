@@ -76,7 +76,7 @@ public class ProductsTest extends Preconditions {
     @Test(priority = 3, dataProvider = "canAddSkuToCart_admin")
     @Severity(SeverityLevel.CRITICAL)
     @Features({"Ashes", "Parametrized Tests"})
-    @Stories("Products : Behavior")
+    @Stories("Products : Ashes Behavior")
     @Description("SKU is found in line_items_search_view and can be added to cart")
     public void canAddSkuToCart_admin(String testData) throws IOException {
         provideTestData(testData);
