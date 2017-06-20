@@ -239,20 +239,20 @@ public class CartPage extends AdminBasePage {
         // it makes this test less dependent on initial itemsInCartAmount value when it comes to 1st assertion in this method
         String itemIndex = String.valueOf(itemsInCartAmount() + 1);
 
-        searchForItem(searchQuery);
-        addFoundItem(searchQuery);
+        searchLineItem(searchQuery);
+        addFoundLineItem(searchQuery);
         lineItem_byName(searchQuery).shouldBe(visible
                 .because("Failed to add line, used search query: <" + searchQuery + ">"));
         clickDoneBtn("Line Items");
     }
 
     @Step("Set \"Search\" field val to <{0}>")
-    public void searchForItem(String searchQuery) {
+    public void searchLineItem(String searchQuery) {
         setFieldVal(lineItemSearchFld(), searchQuery);
     }
 
     @Step("Click <{0}> in search view")
-    public void addFoundItem(String searchQuery) {
+    public void addFoundLineItem(String searchQuery) {
         click(lineItemSearchView_byName(searchQuery));
     }
 
