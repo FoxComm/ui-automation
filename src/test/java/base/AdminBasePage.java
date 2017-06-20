@@ -267,7 +267,7 @@ public class AdminBasePage extends ConciseAPI {
     }
 
     private SelenideElement customRichText(String title) {
-        return $(xpath("//div[text()='" + title + "']/following-sibling::*[2]//div[@class='public-DraftEditor-content']"));
+        return $(xpath("//div[text()='" + title + "']/following-sibling::*[2]//div[contains(@class,'public-DraftEditor-content')]"));
     }
 
     public SelenideElement customRichTextVal(String title) {

@@ -126,12 +126,11 @@ public class CustomersPage extends AdminBasePage {
     }
 
     public SelenideElement editAddressBtn(String addressIndex) {
-        return $(By.xpath("(.//*[@id='fct-customer-addresses-list']//*[contains(@class,'icon-edit')])[" + addressIndex + "]"));
-//        return $(By.xpath("//ul[@id='fct-customer-addresses-list']/li[" + addressIndex + "]//i[@class='icon-edit']/.."));
+        return $(By.xpath("(//*[@id='fct-customer-addresses-list']//*[contains(@class,'icon-edit')])[" + addressIndex + "]"));
     }
 
     public SelenideElement deleteAddressBtn(String addressIndex) {
-        return $(By.xpath("(.//*[@id='fct-customer-addresses-list']//*[contains(@class,'icon-trash')])[" + addressIndex + "]"));
+        return $(By.xpath("(//*[@id='fct-customer-addresses-list']//*[contains(@class,'icon-trash')])[" + addressIndex + "]"));
     }
 
     private SelenideElement confirmDeletionBtn() {
@@ -153,6 +152,10 @@ public class CustomersPage extends AdminBasePage {
 
     public ElementsCollection addressBook() {
         return $$(By.xpath("//li[@class='fc-card-container fc-address']"));
+    }
+
+    public SelenideElement shipAddress(String addressindex) {
+        return $(By.xpath("//li[@class='fc-card-container fc-address'][" + addressindex + "]"));
     }
 
     public SelenideElement nameFldVal(String addressIndex) {
@@ -333,12 +336,10 @@ public class CustomersPage extends AdminBasePage {
     }
 
     public SelenideElement editCreditCardBtn(String ccIndex) {
-//        return $(By.xpath("//div[contains(@class, 'credit-cards')]/div/ul/li[" + ccIndex + "]/div[1]/div/button[2]"));
         return $(By.xpath("(//div[contains(@class, 'credit-cards')]//*[contains(@class,'icon-edit')]/..)[" + ccIndex + "]"));
     }
 
     public SelenideElement deleteCreditCardBtn(String ccIndex) {
-//        return $(By.xpath("//div[contains(@class, 'credit-cards')]/div/ul/li[" + ccIndex + "]/div[1]/div/button[1]"));
         return $(By.xpath("(//div[contains(@class, 'credit-cards')]//*[contains(@class,'icon-trash')]/..)[" + ccIndex + "]"));
     }
 
@@ -360,7 +361,7 @@ public class CustomersPage extends AdminBasePage {
     }
 
     private SelenideElement monthDd() {
-        return $(xpath("//label[text()='Expiration Date']/following-sibling::*/div[1]/div/div/div/button"));
+        return $(xpath("//label[text()='Expiration Date']/following-sibling::*//*[@id='expMonth']/div/button"));
     }
 
     private SelenideElement monthVal(String monthNumber) {
@@ -368,7 +369,7 @@ public class CustomersPage extends AdminBasePage {
     }
 
     private SelenideElement yearDd() {
-        return $(xpath("//label[text()='Expiration Date']/following-sibling::*/div[2]/div/div/div/button"));
+        return $(xpath("//label[text()='Expiration Date']/following-sibling::*//*[@id='expYear']/div/button"));
     }
 
     private SelenideElement yearVal(String year) {
@@ -684,7 +685,7 @@ public class CustomersPage extends AdminBasePage {
     }
 
     private SelenideElement scTypeDd() {
-        return $(By.xpath("//li[contains(@class, 'store-credit-form')]/div[2]/div/div[2]/button"));
+        return $(By.xpath("//li[contains(@class, 'store-credit-form')]//*[contains(@class,'fc-dropdown')]/button"));
     }
 
     private SelenideElement scTypeListItem(String typeName) {
@@ -716,7 +717,7 @@ public class CustomersPage extends AdminBasePage {
     }
 
     private SelenideElement scStateDd(String scIndex) {
-        return $(By.xpath("//tbody/tr[" + scIndex + "]/td[9]/div/div[2]/button"));
+        return $(By.xpath("(//*[@class='fc-table-tr']//*[contains(@class,'fc-dropdown__controls')]/button)[" +  scIndex+ "]"));
     }
 
     private SelenideElement cancellationReason(String reason) {

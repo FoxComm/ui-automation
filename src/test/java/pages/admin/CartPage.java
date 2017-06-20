@@ -57,11 +57,11 @@ public class CartPage extends AdminBasePage {
     }
 
     public SelenideElement itemsWarn() {
-        return $(xpath("//div[contains(@class, 'messages')]/*[text()='Cart is empty.']"));
+        return $(xpath("//div[contains(@class, 'messages')]//*[text()='Cart is empty.']"));
     }
 
     public SelenideElement shipAddressWarn() {
-        return $(xpath("//div[contains(@class, 'messages')]/*[text()='No shipping address applied.']"));
+        return $(xpath("//div[contains(@class, 'messages')]//*[text()='No shipping address applied.']"));
     }
 
     public SelenideElement shipMethodWarn() {
@@ -166,7 +166,7 @@ public class CartPage extends AdminBasePage {
     }
 
     private SelenideElement decreaseItemQtyBtn(String itemIndex) {
-        return $(xpath("//tbody[@id='fct-cart-line-items']/tr[" + itemIndex + "]//button[contains(@class, 'decrement')]"));
+        return $(xpath("//tbody[@id='fct-cart-line-items']/tr[" + itemIndex + "]//i[contains(@class, 'chevron-down')]"));
     }
 
     private SelenideElement increaseItemQtyBtn(String itemIndex) {

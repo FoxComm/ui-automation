@@ -24,7 +24,7 @@ public class OrderDetailsPage extends CartPage {
     }
 
     public SelenideElement timer() {
-        return $(xpath("//div[@class='fc-countdown']"));
+        return $(xpath("//*[contains(@class,'countdown')]"));
     }
 
     //------------------------------- HELPERS --------------------------------//
