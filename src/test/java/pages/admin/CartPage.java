@@ -57,15 +57,15 @@ public class CartPage extends AdminBasePage {
     }
 
     public SelenideElement itemsWarn() {
-        return $(xpath("//div[contains(@class, 'messages')]/*[text()='Cart is empty.']"));
+        return $(xpath("//div[contains(@class, 'messages')]//*[text()='Cart is empty.']"));
     }
 
     public SelenideElement shipAddressWarn() {
-        return $(xpath("//div[contains(@class, 'messages')]/*[text()='No shipping address applied.']"));
+        return $(xpath("//div[contains(@class, 'messages')]//*[text()='No shipping address applied.']"));
     }
 
     public SelenideElement shipMethodWarn() {
-        return $(xpath("//div[contains(@class, 'messages')]/*[text()='No shipping method applied.']"));
+        return $(xpath("//div[contains(@class, 'messages')]//*[text()='No shipping method applied.']"));
     }
 
     public SelenideElement fundsWarn() {
