@@ -1,5 +1,5 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="T" verbose="1" configfailurepolicy="continue">
+<suite name="Test" verbose="1" configfailurepolicy="continue">
     <listeners>
         <listener class-name="listeners.LogExtender"/>
         <!--<listener class-name="listeners.AnnotationTransformer"/>-->

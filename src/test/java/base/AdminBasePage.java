@@ -128,11 +128,11 @@ public class AdminBasePage extends ConciseAPI {
     }
 
     public SelenideElement logoutSuccessMsg() {
-        return $(xpath("//div[@class='fc-alert is-alert-success']"));
+        return $(xpath("//div[contains(@class, 'success')]//*[text()='You have successfully logged out.']"));
     }
 
     public SelenideElement loginErrorMsg() {
-        return $(xpath("//div[@class='fc-alert is-alert-error']"));
+        return $(xpath("//div[contains(@class, 'error')]//*[text()='Invalid credentials']"));
     }
 
     @Step("Log in as <{0}> / <{1}>")
