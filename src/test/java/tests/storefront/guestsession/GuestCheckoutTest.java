@@ -3,10 +3,7 @@ package tests.storefront.guestsession;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import base.StorefrontTPGBasePage;
-import ru.yandex.qatools.allure.annotations.Description;
-import ru.yandex.qatools.allure.annotations.Features;
-import ru.yandex.qatools.allure.annotations.Severity;
-import ru.yandex.qatools.allure.annotations.Stories;
+import ru.yandex.qatools.allure.annotations.*;
 import ru.yandex.qatools.allure.model.SeverityLevel;
 import testdata.Preconditions;
 
@@ -144,6 +141,7 @@ public class GuestCheckoutTest extends Preconditions {
 
     @Test(priority = 7)
     @Severity(SeverityLevel.CRITICAL)
+    @Issue("the-perfect-gourmet/#274")
     @Features("Storefront-TPG")
     @Stories("Guest Checkout")
     @Description("Coupon in guest cart is saved if customer signs up right before proceeding to checkout")
@@ -225,6 +223,7 @@ public class GuestCheckoutTest extends Preconditions {
     @Test(priority = 10)
     @Severity(SeverityLevel.CRITICAL)
     @Features("Storefront-TPG")
+    @Issue("the-perfect-gourmet/#274")
     @Stories("Guest Checkout")
     @Description("Gift card applied to cart as a payment during guest checkout, remains in the cart if guest signs up with the same email")
     public void guestCartSavedOnSignUp_paymentGiftCard() throws IOException {
@@ -257,6 +256,7 @@ public class GuestCheckoutTest extends Preconditions {
 
     @Test(priority = 11)
     @Severity(SeverityLevel.CRITICAL)
+    @Issue("the-perfect-gourmet/#274")
     @Features("Storefront-TPG")
     @Stories("Guest Checkout")
     @Description("If customer has added a shipping address at checkout, then left checkout and signed up -- shipping address should be saved")

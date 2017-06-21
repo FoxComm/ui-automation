@@ -114,8 +114,12 @@ public class ProfilePage extends AuthPage {
         return $(xpath("//input[@name='phoneNumber']"));
     }
 
-    public SelenideElement selectAddressRbtn(String index) {
-        return $(xpath("//li[" + index + "]//input[contains(@name, 'address-radio')]"));
+    public SelenideElement selectAddressRbtn(String name) {
+        return $(xpath("//input[@name='address-radio-'" + name + "]"));
+    }
+
+    public SelenideElement shipAddressName(String index) {
+        return $(xpath("//li[" + index + "]//h3"));
     }
 
     //---------------------------------------------- STEPS ---------------------------------------------

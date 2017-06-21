@@ -48,8 +48,8 @@ public class PdpPage extends CatalogPage {
         return $(xpath("//div[contains(@class, '_price_')]/span"));
     }
 
-    public SelenideElement customAttribute(String title) {
-        return $(xpath("//div[contains(@class, 'attribute-title') and text()='" + title + "']/following-sibling::div[1]"));
+    public String customAttributeVal(String propTitle) {
+        return $(xpath("//div[contains(@class, 'attribute-title') and text()='" + propTitle + "']")).text();
     }
 
     //---------------------------------------------- STEPS --------------------------------------------

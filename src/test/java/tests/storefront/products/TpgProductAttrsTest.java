@@ -30,21 +30,22 @@ public class TpgProductAttrsTest extends Preconditions {
         p = openPage(storefrontUrl + "/products/" + productSlug, StorefrontTPGBasePage.class);
 
         //Prep
-        assertEquals_soft(p.customAttribute("Conventional Oven").text(), "Conventional Oven Value");
-        assertEquals_soft(p.customAttribute("Microwave").text(), "Microwave Value");
-        assertEquals_soft(p.customAttribute("Pan Fry").text(), "Pan Fry Value");
-        assertEquals_soft(p.customAttribute("Steam").text(), "Steam Value");
-        assertEquals_soft(p.customAttribute("Grill").text(), "Grill Value");
-        assertEquals_soft(p.customAttribute("Defrost").text(), "Defrost Value");
+        p.switchInfoBlock("Prep");
+        assertEquals_soft(p.customAttributeVal("Conventional Oven"), "Conventional Oven Value");
+        assertEquals_soft(p.customAttributeVal("Microwave"), "Microwave Value");
+        assertEquals_soft(p.customAttributeVal("Pan Fry"), "Pan Fry Value");
+        assertEquals_soft(p.customAttributeVal("Steam"), "Steam Value");
+        assertEquals_soft(p.customAttributeVal("Grill"), "Grill Value");
+        assertEquals_soft(p.customAttributeVal("Defrost"), "Defrost Value");
 
         //Ingredients
         p.switchInfoBlock("Ingredients");
-        assertEquals_soft(p.customAttribute("Ingredients").text(), "Ingredients Value");
-        assertEquals_soft(p.customAttribute("Allergy Alerts").text(), "Allergy Alerts Value");
+        assertEquals_soft(p.customAttributeVal("Ingredients"), "Ingredients Value");
+        assertEquals_soft(p.customAttributeVal("Allergy Alerts"), "Allergy Alerts Value");
 
         //Nutrition
         p.switchInfoBlock("Nutrition");
-        assertEquals_soft(p.customAttribute("Nutritional Information").text(), "Nutritional Information Value");
+        assertEquals_soft(p.customAttributeVal("Nutritional Information"), "Nutritional Information Value");
 
         soft.assertAll();
     }

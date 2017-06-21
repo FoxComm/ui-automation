@@ -195,7 +195,6 @@ public class GeneralBehaviorTest extends Preconditions {
         p.openCart();
         p.clickCheckoutBtn_cart();
         p.clickContinueBtn();
-        p.setShipMethod(p.shippingMethods().size());
         p.clickPlaceOrderBtn();
 
         scrollPageUp();
