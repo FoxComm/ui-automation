@@ -1,8 +1,5 @@
 package tests.storeadmin.cart;
 
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import pages.admin.CartPage;
@@ -20,8 +17,6 @@ import java.util.Objects;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.open;
-import static com.codeborne.selenide.Selenide.sleep;
-import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 import static testdata.api.collection.Cart.checkoutCart;
 
 public class ItemsTest extends Preconditions {
@@ -88,7 +83,6 @@ public class ItemsTest extends Preconditions {
         p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
         p.clickEditBtn("Line Items");
         p.setItemQty(skuCode, "3");
-        shouldHaveText(p.itemTotalPrice("1"), "$150.00", "");
         p.clickDoneBtn("Line Items");
 
         p.itemQty("1").shouldHave(text("3")

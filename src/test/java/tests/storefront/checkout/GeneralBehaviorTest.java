@@ -169,7 +169,7 @@ public class GeneralBehaviorTest extends Preconditions {
         p.clickCheckoutBtn_cart();
         p.fillOutAddressForm("John Doe", "7500 Roosevelt Way NE", "Block 42", "98115", "9879879876");
         p.clickSaveAddressBtn();
-        p.selectAddressRbtn("1").shouldBe(selected);
+        p.selectAddressRbtn_checkout("1").shouldBe(selected);
         p.clickContinueBtn();
         p.setShipMethod("1");
         p.clickContinueBtn();

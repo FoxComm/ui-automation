@@ -182,8 +182,8 @@ public class CartPage extends AdminBasePage {
         return $(xpath("//input[@id='fct-counter-input__" + skuCode + "']"));
     }
 
-    public SelenideElement itemTotalPrice(String index) {
-        return $(xpath("//tbody[@id='fct-cart-line-items']/tr[" + index + "]//*[contains(@class, 'item-total-price')]"));
+    public SelenideElement lineItemTotalPrice(String productTitle) {
+        return $(xpath("//td[@class='line-item-name' and text()='" + productTitle + "']/following-sibling::*/*[contains(@class, 'item-total-price')]"));
     }
 
     private SelenideElement deleteBtn_item(String itemIndex) {
@@ -224,6 +224,8 @@ public class CartPage extends AdminBasePage {
     public SelenideElement lineItemSearchView_byName(String itemName) {
         return $(xpath("//li[contains(@class, 'item')]//*[text()='" + itemName + "']"));
     }
+
+
 
 
     //------------------------------------ HELPERS -------------------------------------//
@@ -349,9 +351,11 @@ public class CartPage extends AdminBasePage {
 
     @Step("Set QTY of <{0}th> line item using input fld; <newQTY:{1}>")
     public void setItemQty(String sku, String qty) {
+        String initialLineItemTotal = lineItemTotalPrice(sku).text();
         clearField(qtyInput_sku(sku));
         setFieldVal(qtyInput_sku(sku), qty);
         shouldHaveValue(qtyInput_sku(sku), qty, "Failed to edit \"Qty\" input field value");
+        shouldHaveValue(lineItemTotalPrice(sku), multiplyStrings(initialLineItemTotal, qty), "");
     }
 
 

@@ -119,7 +119,7 @@ public class ProductsTest extends Preconditions {
 
 
         skusPage = openPage(adminUrl + "/skus", SkusPage.class);
-        skusPage.addFilter("SKU : Title : ", skuCode);
+        skusPage.addFilter("SKU : Code", skuCode);
         skusPage.openSKU(skuCode);
 
         skusPage.breadcrumb(skuCode).shouldBe(visible);
@@ -147,7 +147,7 @@ public class ProductsTest extends Preconditions {
         provideTestData(testData);
 
         skusPage = openPage(adminUrl + "/skus", SkusPage.class);
-        skusPage.addFilter("SKU : Title : ", skuCode);
+        skusPage.addFilter("SKU : Code", skuCode);
         waitForDataToLoad();
 
         skusPage.objOnCategoryTable(skuCode).shouldBe(visible);
@@ -164,7 +164,7 @@ public class ProductsTest extends Preconditions {
         provideTestData(testData);
 
         skusPage = openPage(adminUrl + "/skus", SkusPage.class);
-        skusPage.addFilter("SKU : Title : ", skuCode);
+        skusPage.addFilter("SKU : Code", skuCode);
         skusPage.noSearchResultsMsg().shouldBe(visible);
 
         skusPage.addFilter("SKU : Is Archived", "Yes");
@@ -183,7 +183,7 @@ public class ProductsTest extends Preconditions {
 
         productsPage = openPage(adminUrl + "/products", ProductsPage.class);
 
-        productsPage.addFilter("Product : Name : ", productTitle);
+        productsPage.addFilter("Product : Name", productTitle);
         productsPage.openProduct(productTitle);
 
         productsPage.breadcrumb(productId).shouldBe(visible);
@@ -198,7 +198,7 @@ public class ProductsTest extends Preconditions {
         provideTestData(testData);
 
         productsPage = openPage(adminUrl + "/products", ProductsPage.class);
-        productsPage.addFilter("Product : Name : ", productTitle);
+        productsPage.addFilter("Product : Name", productTitle);
         productsPage.noSearchResultsMsg().shouldBe(visible);
 
         productsPage.addFilter("Product : Is Archived", "Yes");

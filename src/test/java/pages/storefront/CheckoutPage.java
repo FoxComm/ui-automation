@@ -118,6 +118,10 @@ public class CheckoutPage extends CartPage {
         return $(xpath("//h3[text()='" + name + "']"));
     }
 
+    public SelenideElement selectAddressRbtn_checkout(String index) {
+        return $(xpath("//article[contains(@class, 'shipping')]//ul/li[" + index + "]//input[contains(@name, 'address-radio')]"));
+    }
+
     public ElementsCollection shippingMethods() {
         return $$(xpath("//div[contains(@class, 'shipping-method')]"));
     }
@@ -287,7 +291,7 @@ public class CheckoutPage extends CartPage {
 
     @Step("Select <{0}th> shipping address")
     public void setShipAddress(String index) {
-        jsClick(selectAddressRbtn(index));
+        jsClick(selectAddressRbtn_checkout(index));
     }
 
     @Step("Set \"Shipping Method\" to last available value on the list")

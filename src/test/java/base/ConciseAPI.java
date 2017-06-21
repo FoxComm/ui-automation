@@ -408,26 +408,24 @@ public class ConciseAPI extends ScreenShooter {
 
     //------------ MATH
     protected String addToString(String string1, String string2) {
-        Integer intString1 = Integer.valueOf(string1);
-        Integer intString2 = Integer.valueOf(string2);
-        Integer intResult = intString1 + intString2;
-        return String.valueOf(intResult);
+        Integer int1 = Integer.valueOf(string1);
+        Integer int2 = Integer.valueOf(string2);
+        return String.valueOf(int1 + int2);
     }
 
     protected static String addToString(String string, int integer) {
-        Integer intString1 = Integer.valueOf(string);
-        return String.valueOf(intString1 + integer);
+        Integer int1 = Integer.valueOf(string);
+        return String.valueOf(int1 + integer);
     }
 
     protected static String subtractFromString(String string1, String string2) {
-        Integer intString1 = Integer.valueOf(string1);
-        Integer intString2 = Integer.valueOf(string2);
-        Integer intResult = intString1 - intString2;
-        return String.valueOf(intResult);
+        Integer int1 = Integer.valueOf(string1);
+        Integer int2 = Integer.valueOf(string2);
+        return String.valueOf(int1 - int2);
     }
 
-    private static String subtractFromString(String string, int integer) {
-        Integer intString = Integer.valueOf(string);
+    private static String subtractFromString(String str, int integer) {
+        Integer intString = Integer.valueOf(str);
         return String.valueOf(intString - integer);
     }
 
@@ -441,6 +439,12 @@ public class ConciseAPI extends ScreenShooter {
             randomId = randomId.concat(strRandomNum);
         }
         return randomId;
+    }
+
+    protected static String multiplyStrings(String str1, String str2) {
+        Integer int1 = Integer.valueOf(str1);
+        Integer int2 = Integer.valueOf(str2);
+        return String.valueOf(int1 * int2);
     }
 
     //TODO: Use for generating random balance value when issuing multiple GCs
