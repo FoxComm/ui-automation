@@ -17,7 +17,6 @@ import java.util.Objects;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selenide.sleep;
 
 public class DynamicGroupTest extends Preconditions {
     private CustomerGroupPage p;
@@ -37,94 +36,94 @@ public class DynamicGroupTest extends Preconditions {
     @Test(priority = 1)
     @Severity(SeverityLevel.NORMAL)
     @Features("Ashes")
-    @Stories("Customer Groups : Dynamic Groups")
-    @Description("Can create Dynamic group; User is redirected to Group page after group creation")
-    public void dynamicGroupCreateEmpty() throws IOException {
+    @Stories("Customer Groups : Dynamic")
+    @Description("Can create DCG; User is redirected to Group page after creation")
+    public void createEmptyDCG() throws IOException {
         String groupName = "Dynamic Group " + generateRandomID();
 
         p = openPage(adminUrl + "/customers/groups", CustomerGroupPage.class);
-        p.clickAddGroupBtn();
-        p.clickDGroupBtn();
-        p.setCustomerGroupName(groupName);
+        p.clickAddCGroupBtn();
+        p.clickDCGroupBtn();
+        p.setCGroupName(groupName);
         p.clickAddCriteriaBtn();
-        p.selectCriteria("1", "Name", "is", "Not Existing User One");
-        p.clickSaveGroupBtn();
+        p.setCriteria("1", "Name", "is", "Not Existing User One");
+        p.clickSaveCGroupBtn();
 
-        p.groupNameInFormFld().shouldHave(text(groupName));
-        p.groupTypeInFormFld().shouldHave(text("Dynamic"));
-        p.groupCounterInForm().shouldHave(text("0"));
+        p.groupName_form().shouldHave(text(groupName));
+        p.groupType_form().shouldHave(text("Dynamic"));
+        p.groupCounter_form().shouldHave(text("0"));
     }
 
     @Test(priority = 2)
     @Severity(SeverityLevel.NORMAL)
     @Features("Ashes")
-    @Stories("Customer Groups : Dynamic Groups")
-    @Description("Dynamic Group name, type and counter are shown in search view")
-    public void dynamicGroupIsShownInSearchView() throws IOException{
-        provideTestData("create empty dynamic group with one criteria");
+    @Stories("Customer Groups : Dynamic")
+    @Description("Can show DCG name, type and counter in search view")
+    public void createEmptyDCG_searchView() throws IOException{
+        provideTestData("empty dynamic group with one criteria");
 
         p = openPage(adminUrl + "/customers/groups", CustomerGroupPage.class);
 
-        p.groupNameInSearchView(customerGroupName).shouldBe(visible);
-        p.groupTypeInSearchView(customerGroupName).shouldHave(text("Dynamic"));
-        p.groupCounterInSearchView(customerGroupName).shouldHave(text("0"));
+        p.groupName_searchView(customerGroupName).shouldBe(visible);
+        p.groupType_searchView(customerGroupName).shouldHave(text("Dynamic"));
+        p.groupCounter_searchView(customerGroupName).shouldHave(text("0"));
     }
 
     @Test(priority = 3)
     @Severity(SeverityLevel.NORMAL)
     @Features("Ashes")
-    @Stories("Customer Groups : Dynamic Groups")
-    @Description("Dynamic group name can be edited")
-    public void dynamicGroupNameEdit() throws IOException{
-        provideTestData("create empty dynamic group with one criteria");
+    @Stories("Customer Groups : Dynamic")
+    @Description("Can edit DCG name")
+    public void editDCGName() throws IOException{
+        provideTestData("empty dynamic group with one criteria");
 
         p = openPage(adminUrl +"/customers/groups/" + customerGroupId, CustomerGroupPage.class);
 
         String editedCustomerGroupName = customerGroupName + " Edited";
-        p.clickEditGroupBtn();
-        p.setCustomerGroupName(editedCustomerGroupName);
-        p.clickSaveGroupBtn();
+        p.clickEditCGroupBtn();
+        p.setCGroupName(editedCustomerGroupName);
+        p.clickSaveCGroupBtn();
         openPage(adminUrl + "/customers/groups", CustomerGroupPage.class);
 
-        p.groupNameInSearchView(editedCustomerGroupName).shouldBe(visible);
+        p.groupName_searchView(editedCustomerGroupName).shouldBe(visible);
     }
 
     @Test(priority = 4)
     @Severity(SeverityLevel.NORMAL)
     @Features("Ashes")
-    @Stories("Customer Groups : Dynamic Groups")
-    @Description("Dynamic group second criteria can be added")
-    public void dynamicGroupCriteriaAdd() throws IOException {
-        provideTestData("create empty dynamic group with one criteria");
+    @Stories("Customer Groups : Dynamic")
+    @Description("Can add another criteria to existing DCG")
+    public void addCriteriaToDCG() throws IOException {
+        provideTestData("empty dynamic group with one criteria");
 
         p = openPage(adminUrl + "/customers/groups/" + customerGroupId, CustomerGroupPage.class);
-        p.clickEditGroupBtn();
-        p.selectMatchingOption("any");
+        p.clickEditCGroupBtn();
+        p.setCriteriaMatcher("any");
         p.clickAddCriteriaBtn();
-        p.selectCriteria("2", "Name", "is", "Not Existing User Two");
-        p.clickSaveGroupBtn();
+        p.setCriteria("2", "Name", "is", "Not Existing User Two");
+        p.clickSaveCGroupBtn();
         openPage(adminUrl + "/customers/groups/" + customerGroupId, CustomerGroupPage.class);
 
         p.groupCriteriasCollection().shouldHaveSize(2);
-        p.getMatchGroupOption().shouldHave(text("any"));
-        p.getGroupCriteriaValue("2").shouldHave(text("Not Existing User Two"));
+        p.criteriaMatcherVal().shouldHave(text("any"));
+        p.groupCriteriaVal("2").shouldHave(text("Not Existing User Two"));
     }
 
     @Test(priority = 5)
     @Severity(SeverityLevel.NORMAL)
     @Features("Ashes")
-    @Stories("Customer Groups : Dynamic Groups")
-    @Description("Dynamic group criteria can be removed")
-    public void dynamicGroupCriteriaRemove() throws IOException {
-        provideTestData("create dynamic group with two criterias");
+    @Stories("Customer Groups : Dynamic")
+    @Description("Can remove DCG criteria")
+    public void removeCriteriaFromDCG() throws IOException {
+        provideTestData("dynamic group with two criterias");
 
         p = openPage(adminUrl + "/customers/groups/" + customerGroupId, CustomerGroupPage.class);
-        p.clickEditGroupBtn();
+        p.clickEditCGroupBtn();
         p.clickRemoveCriteriaBtn("2");
-        p.clickSaveGroupBtn();
+        p.clickSaveCGroupBtn();
 
         p.groupCriteriasCollection().shouldHaveSize(1);
-        p.getGroupCriteriaValue("1").shouldHave(text("Not Existing User One"));
+        p.groupCriteriaVal("1").shouldHave(text("Not Existing User One"));
     }
 
 //    TODO - Not possible to create Dynamic group without criterias

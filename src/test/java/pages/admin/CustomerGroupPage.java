@@ -4,91 +4,89 @@ import base.AdminBasePage;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import ru.yandex.qatools.allure.annotations.Step;
-import tests.storefront.StripeTest;
 
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
-import static com.codeborne.selenide.Selenide.sleep;
 import static org.openqa.selenium.By.xpath;
 
 public class CustomerGroupPage extends AdminBasePage {
 
 
     //-------------    General       ---------------
-    public SelenideElement addCustomerGroupBtn() {
+    public SelenideElement addCGroupBtn() {
         return $(xpath("//span[text()='Group']/.."));
     }
 
-    public SelenideElement newCustomerGroupName() {
+    public SelenideElement newCGroupName() {
         return $(xpath("//*[@id='nameField'][contains(@class,'fc-customer-group-edit')]"));
     }
 
-    public SelenideElement saveGroupBtn() {
+    public SelenideElement saveCGroupBtn() {
         return $(xpath("//span[text()='Save Group']/.."));
     }
 
-    public SelenideElement groupNameInFormFld(){
+    public SelenideElement editCGroupBtn(){
+        return $(xpath("//*[contains(@class,'group__title')]//span[contains(text(),'Edit Group')]"));
+    }
+
+    public SelenideElement groupName_form(){
         return $(xpath("//*[contains(@class,'fc-title')]"));
     }
 
-    public SelenideElement groupTypeInFormFld(){
+    public SelenideElement groupType_form(){
         return $(xpath("//*[contains(@class,'fc-customer-group')]//*[contains(text(),'Type')]/following-sibling::span"));
     }
 
-    public SelenideElement groupNameInSearchView(String groupName){
+    public SelenideElement groupCounter_form(){
+        return $(xpath("//*[contains(@class,'group__title')]//*[contains(@id,'counter-value')]"));
+    }
+
+    public SelenideElement groupName_searchView(String groupName){
         return $(xpath("//*[contains(@class,'fc-table-td') and contains(text(),'" + groupName+ "')]"));
     }
 
-    public SelenideElement groupTypeInSearchView(String groupName){
+    public SelenideElement groupType_searchView(String groupName){
         return $(xpath("//*[contains(@class,'fc-table-td') and contains(text(),'" + groupName+ "')]" +
                 "/../*[contains(@class,'groupType')]/div/div"));
     }
 
-    public SelenideElement groupCounterInSearchView(String groupName){
+    public SelenideElement groupCounter_searchView(String groupName){
         return $(xpath("//*[contains(@class,'fc-table-td') and contains(text(),'" + groupName+ "')]" +
                 "/../*[contains(@class,'customersCount')]"));
     }
 
-    public SelenideElement editGroupBtn(){
-        return $(xpath("//*[contains(@class,'group__title')]//span[contains(text(),'Edit Group')]"));
-    }
-
-    public SelenideElement groupCounterInForm(){
-        return $(xpath("//*[contains(@class,'group__title')]//*[contains(@id,'counter-value')]"));
-    }
-
     @Step("Click \"Add Group\" btn")
-    public void clickAddGroupBtn() {
-        click(addCustomerGroupBtn());
+    public void clickAddCGroupBtn() {
+        click(addCGroupBtn());
     }
 
     @Step("Set \"Group Name\" to <{0}>")
-    public void setCustomerGroupName(String name){
-        setFieldVal(newCustomerGroupName(), name);
+    public void setCGroupName(String name){
+        setFieldVal(newCGroupName(), name);
     }
 
     @Step("Click \"Save Group\" btn")
-    public void clickSaveGroupBtn() {
-        click(saveGroupBtn());
+    public void clickSaveCGroupBtn() {
+        click(saveCGroupBtn());
     }
 
     @Step("Click \"Edit Group\" btn")
-    public void clickEditGroupBtn() {
-        click(editGroupBtn());
+    public void clickEditCGroupBtn() {
+        click(editCGroupBtn());
     }
 
     //-------------    Manual Groups ---------------
-    public SelenideElement manualGroupBtn() {
+    public SelenideElement mCGBtn() {
         return $(xpath("(//*[contains(@class,'icon-customer')]/..)[2]"));
     }
 
     @Step("Click \"Manual Group\" btn")
-    public void clickMGroupBtn() {
-        click(manualGroupBtn());
+    public void clickMCGroupBtn() {
+        click(mCGBtn());
     }
 
     //-------------    Dynamic Groups ---------------
-    public SelenideElement dynamicGroupBtn() {
+    public SelenideElement dCGroupBtn() {
         return $(xpath("(//*[contains(@class,'icon-customer')]/..)[1]"));
     }
 
@@ -96,29 +94,29 @@ public class CustomerGroupPage extends AdminBasePage {
         return $(xpath("//*[contains(@class,'add-criterion')]/button"));
     }
 
-    public SelenideElement selectGroupCriteriaField(String index) {
+    public SelenideElement setGroupCriteriaDd(String index) {
         return $(xpath("(//*[contains(@class, 'group-builder')]//*[contains(@class, 'field')]//*[contains(@class, 'chevron-down')])["
                 + index + "]"));
     }
 
-    public SelenideElement selectGroupCriteriaOperator(String index) {
+    public SelenideElement setGroupCriteriaOperatorDd(String index) {
         return $(xpath("(//*[contains(@class, 'group-builder')]//*[contains(@class, 'operator')]//*[contains(@class, 'chevron-down')])["
                 + index + "]"));
     }
 
-    public SelenideElement setGroupCriteriaValue(String index) {
+    public SelenideElement setGroupCriteriaValueFld(String index) {
         return $(xpath("(//*[contains(@class, 'group-builder')]//input[contains(@class, 'value')])[" + index + "]"));
     }
 
-    public SelenideElement chooseAllOrAnyForCriterias(){
+    public SelenideElement criteriaMatcherDd(){
         return $(xpath("//*[contains(@class,'match-dropdown')]//*[contains(@class,'icon-chevron-down')]"));
     }
 
-    public SelenideElement getMatchGroupOption(){
+    public SelenideElement criteriaMatcherVal(){
         return $(xpath("//*[contains(@class,'group__main')]/span"));
     }
 
-    public SelenideElement getGroupCriteriaValue(String index) {
+    public SelenideElement groupCriteriaVal(String index) {
         return $(xpath("(//*[contains(@class, 'group__criterion')]//*[contains(@class, 'value')])[" + index + "]"));
     }
 
@@ -131,8 +129,8 @@ public class CustomerGroupPage extends AdminBasePage {
     }
 
     @Step("Click \"Dynamic Group\" btn")
-    public void clickDGroupBtn() {
-        click(dynamicGroupBtn());
+    public void clickDCGroupBtn() {
+        click(dCGroupBtn());
     }
 
     @Step("Click \"Add criteria\" btn")
@@ -146,14 +144,14 @@ public class CustomerGroupPage extends AdminBasePage {
     }
 
     @Step("Select criteriaField as <{0}>, operator as <{1}>, set value as <{2}> ")
-    public void selectCriteria(String index, String criteriaField, String criteriaOperator, String criteriaValue) {
-        setDdVal_li(selectGroupCriteriaField(index), criteriaField);
-        setDdVal_li(selectGroupCriteriaOperator(index), criteriaOperator);
-        setFieldVal(setGroupCriteriaValue(index), criteriaValue);
+    public void setCriteria(String index, String criteriaField, String criteriaOperator, String criteriaValue) {
+        setDdVal_li(setGroupCriteriaDd(index), criteriaField);
+        setDdVal_li(setGroupCriteriaOperatorDd(index), criteriaOperator);
+        setFieldVal(setGroupCriteriaValueFld(index), criteriaValue);
     }
 
     @Step("Select <{0}> group matching option")
-    public void selectMatchingOption(String option) {
-        setDdVal_li(chooseAllOrAnyForCriterias(), option);
+    public void setCriteriaMatcher(String option) {
+        setDdVal_li(criteriaMatcherDd(), option);
     }
 }

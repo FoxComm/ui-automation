@@ -18,7 +18,7 @@ import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.open;
 
-public class ManualGroupTest extends Preconditions{
+public class ManualGroupTest extends Preconditions {
     private CustomerGroupPage p;
 
     @BeforeClass(alwaysRun = true)
@@ -35,55 +35,74 @@ public class ManualGroupTest extends Preconditions{
     @Test(priority = 1)
     @Severity(SeverityLevel.NORMAL)
     @Features("Ashes")
-    @Stories("Customer Groups : Manual Groups")
-    @Description("Can create Manual group; User is redirected to Manual group page after group creation")
-    public void manualGroupCreateEmpty() throws IOException {
+    @Stories("Customer Groups : Manual")
+    @Description("Can create MCG; User is redirected to Group page after creation")
+    public void createEmptyMCG() throws IOException {
         String groupName = "Manual Group " + generateRandomID();
 
         p = openPage(adminUrl + "/customers/groups", CustomerGroupPage.class);
-        p.clickAddGroupBtn();
-        p.clickMGroupBtn();
-        p.setCustomerGroupName(groupName);
-        p.clickSaveGroupBtn();
+        p.clickAddCGroupBtn();
+        p.clickMCGroupBtn();
+        p.setCGroupName(groupName);
+        p.clickSaveCGroupBtn();
 
-        p.groupNameInFormFld().shouldHave(text(groupName));
-        p.groupTypeInFormFld().shouldHave(text("Manual"));
-        p.groupCounterInForm().shouldHave(text("0"));
+        p.groupName_form().shouldHave(text(groupName));
+        p.groupType_form().shouldHave(text("Manual"));
+        p.groupCounter_form().shouldHave(text("0"));
     }
 
     @Test(priority = 2)
     @Severity(SeverityLevel.NORMAL)
     @Features("Ashes")
-    @Stories("Customer Groups : Manual Groups")
-    @Description("Manual Group name, type and counter are shown in search view")
-    public void manualGroupIsShownInSearchView() throws IOException{
-        provideTestData("create empty manual group");
+    @Stories("Customer Groups : Manual")
+    @Description("Can show MCG name, type and counter in search view")
+    public void createEmptyMCG_searchView() throws IOException{
+        provideTestData("empty manual group");
 
         p = openPage(adminUrl + "/customers/groups", CustomerGroupPage.class);
 
-        p.groupNameInSearchView(customerGroupName).shouldBe(visible);
-        p.groupTypeInSearchView(customerGroupName).shouldHave(text("Manual"));
-        p.groupCounterInSearchView(customerGroupName).shouldHave(text("0"));
+        p.groupName_searchView(customerGroupName).shouldBe(visible);
+        p.groupType_searchView(customerGroupName).shouldHave(text("Manual"));
+        p.groupCounter_searchView(customerGroupName).shouldHave(text("0"));
     }
 
     @Test(priority = 3)
     @Severity(SeverityLevel.NORMAL)
     @Features("Ashes")
-    @Stories("Customer Groups : Manual Groups")
-    @Description("Manual Group name can be edited")
-    public void manualGroupNameEdit() throws IOException{
-        provideTestData("create empty manual group");
+    @Stories("Customer Groups : Manual")
+    @Description("Can edit MCG name")
+    public void editMCGName() throws IOException{
+        provideTestData("empty manual group");
 
         p = openPage(adminUrl + "/customers/groups/" + customerGroupId, CustomerGroupPage.class);
 
-        String editedCustomerGroupname = customerGroupName + " Edited";
-        p.clickEditGroupBtn();
-        p.setCustomerGroupName(editedCustomerGroupname);
-        p.clickSaveGroupBtn();
+        String editedMCGName = customerGroupName + " Edited";
+        p.clickEditCGroupBtn();
+        p.setCGroupName(editedMCGName);
+        p.clickSaveCGroupBtn();
         openPage(adminUrl + "/customers/groups", CustomerGroupPage.class);
 
-        p.groupNameInSearchView(editedCustomerGroupname).shouldBe(visible);
+        p.groupName_searchView(editedMCGName).shouldBe(visible);
     }
+
+    @Test(priority = 4)
+    @Severity(SeverityLevel.NORMAL)
+    @Features("Ashes")
+    @Stories("Customer Groups : Manual")
+    @Description("Can add customer to MCG")
+    public void addCustomersMCG() throws IOException{
+
+    }
+
+    @Test(priority = 5)
+    @Severity(SeverityLevel.NORMAL)
+    @Features("Ashes")
+    @Stories("Customer Groups : Manual")
+    @Description("Can update customers counter for MCG in search view")
+    public void customersCounterMCG_searchView() throws IOException{
+
+    }
+
 
 //    4. should be possible to archive group
 //    - archived group disappears from the table
