@@ -64,7 +64,7 @@ public class DynamicGroupTest extends Preconditions {
 
         p = openPage(adminUrl + "/customers/groups", CustomerGroupPage.class);
 
-        p.groupName_searchView(customerGroupName).shouldBe(visible);
+        p.name_searchView(customerGroupName).shouldBe(visible);
         p.groupType_searchView(customerGroupName).shouldHave(text("Dynamic"));
         p.groupCounter_searchView(customerGroupName).shouldHave(text("0"));
     }
@@ -85,7 +85,7 @@ public class DynamicGroupTest extends Preconditions {
         p.clickSaveCGroupBtn();
         openPage(adminUrl + "/customers/groups", CustomerGroupPage.class);
 
-        p.groupName_searchView(editedCustomerGroupName).shouldBe(visible);
+        p.name_searchView(editedCustomerGroupName).shouldBe(visible);
     }
 
     @Test(priority = 4)

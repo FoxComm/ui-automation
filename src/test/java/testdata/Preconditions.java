@@ -629,8 +629,15 @@ public class Preconditions extends Helpers {
                 mCGroup("Manual Group");
                 break;
 
-            case "manual group with few customers":
+            case "manual group and customer for adding/searching":
+                createCustomer();
+                mCGroup("Manual Group");
+                break;
 
+            case "manual group and customer added to it":
+                createCustomer();
+                mCGroup("Manual Group");
+                addCustomerToGroup(customerId, customerGroupId);
                 break;
             //---------------------------------- CUSTOMER DYNAMIC GROUP ---------------------------------//
             case "empty dynamic group with one criteria":
