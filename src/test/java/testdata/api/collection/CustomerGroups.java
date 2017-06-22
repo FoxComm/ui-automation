@@ -35,6 +35,25 @@ public class CustomerGroups extends Helpers {
         }
     }
 
+    @Step("[API] Add customer <{0}> to customer group <{1}>:")
+    public static void addCustomerToGroup(int customerToAddId, int customerGroupForAddId) throws IOException{
+        System.out.println("Adding customer to a manual customer group");
+
+        JSONObject payload = parseObj("bin/payloads/customergroups/addCustomerToMCG.json");
+        int[]arr = {customerToAddId};
+        payload.putOpt("toAdd", arr);
+        Response response = request.post(apiUrl + "/v1/customer-groups/" + customerGroupForAddId + "/customers", payload.toString());
+        String responseBody = response.body().string();
+
+        if (response.code() == 204) {
+            System.out.println(response.code() + " " + response.message());
+            System.out.println("Customer: " + customerToAddId + " is added to group : " + customerGroupForAddId);
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, response.code(), response.message());
+        }
+    }
+
     @Step("[API] Create new dynamic customer group with one criteria : <{0}>")
          public static void dCGroup_oneCriteria(String name) throws IOException{
         System.out.println("Creating a new dynamic customer group with one criteria");
@@ -86,6 +105,5 @@ public class CustomerGroups extends Helpers {
             failTest(responseBody, response.code(), response.message());
         }
     }
-
 
 }

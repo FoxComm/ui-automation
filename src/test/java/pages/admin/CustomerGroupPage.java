@@ -11,8 +11,8 @@ import static org.openqa.selenium.By.xpath;
 
 public class CustomerGroupPage extends AdminBasePage {
 
-
     //-------------    General       ---------------
+
     public SelenideElement addCGroupBtn() {
         return $(xpath("//span[text()='Group']/.."));
     }
@@ -41,7 +41,7 @@ public class CustomerGroupPage extends AdminBasePage {
         return $(xpath("//*[contains(@class,'group__title')]//*[contains(@id,'counter-value')]"));
     }
 
-    public SelenideElement groupName_searchView(String groupName){
+    public SelenideElement name_searchView(String groupName){
         return $(xpath("//*[contains(@class,'fc-table-td') and contains(text(),'" + groupName+ "')]"));
     }
 
@@ -53,6 +53,22 @@ public class CustomerGroupPage extends AdminBasePage {
     public SelenideElement groupCounter_searchView(String groupName){
         return $(xpath("//*[contains(@class,'fc-table-td') and contains(text(),'" + groupName+ "')]" +
                 "/../*[contains(@class,'customersCount')]"));
+    }
+
+    public SelenideElement customerName_customerGroupView(String customerName){
+        return $(xpath(""));
+    }
+
+    public SelenideElement customersNumber_customerGroupView(){
+        return $(xpath(""));
+    }
+
+    public SelenideElement archiveCGBtn(){
+        return $(xpath("//button[contains(@id,'archive-btn')]"));
+    }
+
+    public SelenideElement confirmArchiveCGBtn() {
+        return $(xpath("//*[contains(@class,'fc-save-cancel')]//*[contains(text(),'Archive Group')]"));
     }
 
     @Step("Click \"Add Group\" btn")
@@ -75,9 +91,68 @@ public class CustomerGroupPage extends AdminBasePage {
         click(editCGroupBtn());
     }
 
+    @Step("Click \"Archive Group\" btn")
+    public void clickArchiveGroupBtn(){
+        click(archiveCGBtn());
+    }
+
+    @Step("Click confirmation for \"Archive Group\"")
+    public void clickConfirmArchiveGroupBtn(){
+        click(confirmArchiveCGBtn());
+    }
+
     //-------------    Manual Groups ---------------
+
     public SelenideElement mCGBtn() {
         return $(xpath("(//*[contains(@class,'icon-customer')]/..)[2]"));
+    }
+
+    public SelenideElement addCustomersBtn() {
+        return $(xpath("//span[contains(text(),'Add Customers')]/.."));
+    }
+
+    public SelenideElement customerSearchFld(){
+        return $(xpath("//*[contains(@class,'fc-form-field')]//input"));
+    }
+
+    public SelenideElement customerNameSearchResultFld(String customerName){
+        return $(xpath("//div[contains(@class,'item-name') and contains(text(),'" + customerName + "')]"));
+    }
+
+    public SelenideElement customerEmailSearchResultFld(String customerEmail){
+        return $(xpath("//div[contains(@class,'item-email') and contains(text(),'" + customerEmail + "')]"));
+    }
+
+    public SelenideElement customerSearchNoResultsFld(){
+        return $(xpath("//div[contains(@class,'items') and contains(text(),'No results found')]"));
+    }
+
+    public SelenideElement saveCustomerBtn(){
+        return $(xpath("//*[contains(@class,'fc-save-cancel')]//span[contains(text(),'Save')]"));
+    }
+
+    public ElementsCollection groupCustomersCollection(){
+        return $$(xpath("//*[contains(@class,'fc-table-body')]//*[contains(@class,'fc-table-tr')]"));
+    }
+
+    public SelenideElement searchViewElementChkbx(String index){
+        return $(xpath("(//*[contains(@class,'selectColumn')]//label)[" + index + "]"));
+    }
+
+    public SelenideElement actionsMenu_searchView(){
+        return $(xpath("//*[contains(@class,'fc-table-actions')]//*[contains(@class,'chevron-down')]"));
+    }
+
+    public SelenideElement deleteFromTheGroupBtn(){
+        return $(xpath("//*[contains(@class,'fc-table-actions')]//*[contains(text(),'Delete From Group')]"));
+    }
+
+    public SelenideElement confirmDeleteCustomerBtn(){
+        return $(xpath("//*[contains(@class,'fc-save-cancel')]//*[contains(@id,'modal-confirm-btn')]"));
+    }
+
+    public SelenideElement removingMessageFld(){
+        return $(xpath("//*[contains(@class,'notification__message')]"));
     }
 
     @Step("Click \"Manual Group\" btn")
@@ -85,7 +160,48 @@ public class CustomerGroupPage extends AdminBasePage {
         click(mCGBtn());
     }
 
+    @Step("Click \"Add Customers\" btn")
+    public void clickAddCustomersBtn(){
+        click(addCustomersBtn());
+    }
+
+    @Step("Enter Customer name: <{0}>")
+    public void setCustomerSearchFld(String customerName){
+        setFieldVal(customerSearchFld(), customerName);
+    }
+
+    @Step("Click found customer: <{0}>")
+    public void clickFoundCustomerFld(String customerName){
+        click(customerNameSearchResultFld(customerName));
+    }
+
+    @Step("Click save customer button")
+    public void clickSaveCustomerBtn(){
+        click(saveCustomerBtn());
+    }
+
+    @Step("Select customer with index <{0}>")
+    public void clickSearchViewElementChkbx(String index){
+        click(searchViewElementChkbx(index));
+    }
+
+    @Step("Open \"Actions\" menu")
+    public void openActionsMenu_searchView(){
+        click(actionsMenu_searchView());
+    }
+
+    @Step("Click \"Delete from the group\" btn")
+    public void clickDeleteFromGroupBtn(){
+        click(deleteFromTheGroupBtn());
+    }
+
+    @Step("Click Delete confirmation button")
+    public void clickDeleteConfirmBtn(){
+        click(confirmDeleteCustomerBtn());
+    }
+
     //-------------    Dynamic Groups ---------------
+
     public SelenideElement dCGroupBtn() {
         return $(xpath("(//*[contains(@class,'icon-customer')]/..)[1]"));
     }
