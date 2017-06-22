@@ -132,7 +132,6 @@
             <class name="tests.storeadmin.customergroups.ManualGroupTest"/>
         </classes>
     </test>
-
     <test name="Customer Groups: Dynamic">
         <classes>
             <class name="tests.storeadmin.customergroups.DynamicGroupTest"/>

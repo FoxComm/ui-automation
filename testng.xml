@@ -198,9 +198,9 @@
         </classes>
     </test>
     <!--<test name="SF: Products > Catalog Test">-->
-        <!--<classes>-->
-            <!--<class name="tests.storefront.products.CatalogTest"/>-->
-        <!--</classes>-->
+    <!--<classes>-->
+    <!--<class name="tests.storefront.products.CatalogTest"/>-->
+    <!--</classes>-->
     <!--</test>-->
     <test name="SF: Products > TPG Product Attributes">
         <classes>
@@ -216,6 +216,17 @@
     <test name="Admin: Products Behavior">
         <classes>
             <class name="tests.storeadmin.products.ProductsTest"/>
+        </classes>
+    </test>
+
+    <test name="Customer Groups: Manual">
+        <classes>
+            <class name="tests.storeadmin.customergroups.ManualGroupTest"/>
+        </classes>
+    </test>
+    <test name="Customer Groups: Dynamic">
+        <classes>
+            <class name="tests.storeadmin.customergroups.DynamicGroupTest"/>
         </classes>
     </test>
 </suite>
