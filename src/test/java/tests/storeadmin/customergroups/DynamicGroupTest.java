@@ -17,6 +17,8 @@ import java.util.Objects;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Selenide.refresh;
+import static com.codeborne.selenide.Selenide.sleep;
 
 public class DynamicGroupTest extends Preconditions {
     private CustomerGroupPage p;
@@ -126,11 +128,78 @@ public class DynamicGroupTest extends Preconditions {
         p.groupCriteriaVal("1").shouldHave(text("Not Existing User One"));
     }
 
-//    TODO - Not possible to create Dynamic group without criterias
-//    4. should be possible to archive group
-//    - archived group disappears from the table
-//    5. should be shown correct data when any or all match parameter is chosen
-//    6. should be possible to add different criteria
-//    8. should not be possible to delete customers from the group
-//    9. should be possible to see customer statistics (preconditions with creation set of data)
+    @Test(priority = 6)
+    @Severity(SeverityLevel.NORMAL)
+    @Features("Ashes")
+    @Stories("Customer Groups : Dynamic")
+    @Description("Can archive DCG group")
+    public void archiveDCGGroup() throws IOException {
+        provideTestData("dynamic group with two criterias");
+
+        p = openPage(adminUrl + "/customers/groups/" + customerGroupId, CustomerGroupPage.class);
+        p.clickArchiveGroupBtn();
+        p.clickConfirmArchiveGroupBtn();
+
+        openPage(adminUrl + "/customers/groups", CustomerGroupPage.class);
+        p.name_searchView(customerGroupName).shouldNotBe(visible);
+    }
+
+    @Test(priority = 7)
+    @Severity(SeverityLevel.NORMAL)
+    @Features("Ashes")
+    @Stories("Customer Groups : Dynamic")
+    @Description("Can add correct customers in DCG according to criteria")
+    public void customersAddedByCriterias() throws IOException {
+        provideTestData("dynamic group with few customers for it");
+
+        p = openPage(adminUrl + "/customers/groups/" + customerGroupId, CustomerGroupPage.class);
+        p.groupCounter_form().shouldHave(text("2"));
+        p.groupCustomersCollection().shouldHaveSize(2);
+    }
+
+    @Test(priority = 8)
+    @Severity(SeverityLevel.NORMAL)
+    @Features("Ashes")
+    @Stories("Customer Groups : Dynamic")
+    @Description("Can remove customers when criterias were removed from DCG")
+    public void customersRemovedWithCriterias() throws IOException {
+        customerUniqueKey = "key_" + generateRandomID();
+        provideTestData("customer with certain name key and 2 orders in remorse hold and fulfillment started");
+        provideTestData("dynamic group with defined name criteria");
+
+        p = openPage(adminUrl + "/customers/groups/" + customerGroupId, CustomerGroupPage.class);
+        p.clickEditCGroupBtn();
+        p.clickRemoveCriteriaBtn("1");
+        p.clickAddCriteriaBtn();
+        p.setCriteria("1", "Name", "is", "Not Existing User Two");
+        p.clickSaveCGroupBtn();
+
+        p.groupCounter_form().shouldHave(text("0"));
+        p.groupCustomersCollection().shouldHaveSize(0);
+    }
+
+    @Test(priority = 9)
+    @Severity(SeverityLevel.NORMAL)
+    @Features("Ashes")
+    @Stories("Customer Groups : Dynamic")
+    @Description("Can show correct statistics for number of orders and total sales for DCG")
+    public void correctStatisticsDCG_ordersSales() throws IOException {
+        customerUniqueKey = "key_" + generateRandomID();
+        provideTestData("customer with certain name key and 2 orders in remorse hold and fulfillment started");
+        provideTestData("dynamic group with defined name criteria");
+
+        p = openPage(adminUrl + "/customers/groups/" + customerGroupId, CustomerGroupPage.class);
+        int totalSales = ((customerOrdersTotals.get(0) + customerOrdersTotals.get(1)) / 100);
+        String totalSalesVal = Integer.toString(totalSales);
+        p.totalOrdersVal().shouldBe(text("2"));
+        p.totalsSalesVal().shouldHave(text(totalSalesVal));
+        customerUniqueKey = null;
+    }
+
+//    TODO 5. should be shown correct data when any or all match parameter is chosen
+//    TODO 7. should not be possible to save dynamic group without any criteria
+//    TODO 6. should be possible to add different criteria
+//    TODO 8. should not be possible to delete customers from the group
+//    TODO 9. BUG. should show dynamic group inside customer form
+//    TODO 10. BUG counter for DCG isnt show correctly in search view
 }
