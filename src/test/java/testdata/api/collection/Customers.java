@@ -35,6 +35,34 @@ public class Customers extends Helpers {
         }
     }
 
+    @Step("[API] Create new customer with key in name")
+    public static void createCustomer_nameKey(String key) throws IOException {
+        System.out.println("Creating a new customer with unique key in name...");
+        String randomID = generateRandomID();
+
+        JSONObject payload = parseObj("bin/payloads/customers/createCustomer.json");
+        payload.putOpt("name", "Customer " + randomID + " " + key);
+        payload.putOpt("email", "qatest2278+" + randomID + "_" + key + "@gmail.com");
+
+        Response response = request.post(apiUrl + "/v1/customers", payload.toString());
+        String responseBody = response.body().string();
+
+        if (response.code() == 200) {
+            System.out.println(response.code() + " " + response.message());
+            JSONObject responseJSON = new JSONObject(responseBody);
+            customerId = responseJSON.getInt("id");
+            customerName = responseJSON.getString("name");
+            customerEmail = responseJSON.getString("email");
+            customerUniqueKey = key;
+            System.out.println("Customer ID: " + customerId);
+            System.out.println("Customer Key: " + customerUniqueKey);
+            System.out.println("---- ---- ---- ----");
+        } else {
+            failTest(responseBody, response.code(), response.message());
+        }
+    }
+
+
     @Step("[API] Sign up a new customer -- name:<{0}> email:<{1}>")
     public static void signUpCustomer(String name, String email) throws IOException {
         System.out.println("Registering a new customer on Storefront...");

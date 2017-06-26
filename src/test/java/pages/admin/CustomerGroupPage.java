@@ -30,7 +30,7 @@ public class CustomerGroupPage extends AdminBasePage {
     }
 
     public SelenideElement groupName_form(){
-        return $(xpath("//*[contains(@class,'fc-title')]"));
+        return $(xpath("//*[contains(@class,'group__header')]//*[contains(@class,'fc-title')]"));
     }
 
     public SelenideElement groupType_form(){
@@ -69,6 +69,22 @@ public class CustomerGroupPage extends AdminBasePage {
 
     public SelenideElement confirmArchiveCGBtn() {
         return $(xpath("//*[contains(@class,'fc-save-cancel')]//*[contains(text(),'Archive Group')]"));
+    }
+
+    public SelenideElement groupNameDuplicationLbl() {
+        return $(xpath("//*[contains(@class,'alert')]//*[contains(text(),'already exists in the system')]"));
+    }
+
+    public SelenideElement totalOrdersVal(){
+        return $(xpath("//*[contains(@class,'customer-group')]//*[contains(text(),'Total Orders')]//following-sibling::div/span[1]"));
+    }
+
+    public SelenideElement totalsSalesVal(){
+        return $(xpath("//*[contains(@class,'customer-group')]//*[contains(text(),'Total Sales')]//following-sibling::div/span[1]"));
+    }
+
+    public SelenideElement groupNameFld_customerForm(){
+        return $(xpath("//*[contains(@class,'groups')]//*[contains(@class,'name')]"));
     }
 
     @Step("Click \"Add Group\" btn")
@@ -112,7 +128,7 @@ public class CustomerGroupPage extends AdminBasePage {
     }
 
     public SelenideElement customerSearchFld(){
-        return $(xpath("//*[contains(@class,'fc-form-field')]//input"));
+        return $(xpath("//*[contains(@class,'fc-pilled-input')]//input[contains(@placeholder,'Name or email...')]"));
     }
 
     public SelenideElement customerNameSearchResultFld(String customerName){

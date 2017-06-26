@@ -38,7 +38,6 @@ public class ManualGroupTest extends Preconditions {
         String groupName = "Manual Group " + generateRandomID();
 
         p = openPage(adminUrl + "/customers/groups", CustomerGroupPage.class);
-
         p.clickAddCGroupBtn();
         p.clickMCGroupBtn();
         p.setCGroupName(groupName);
@@ -58,7 +57,6 @@ public class ManualGroupTest extends Preconditions {
         provideTestData("empty manual group");
 
         p = openPage(adminUrl + "/customers/groups", CustomerGroupPage.class);
-
         p.name_searchView(customerGroupName).shouldBe(visible);
         p.groupType_searchView(customerGroupName).shouldHave(text("Manual"));
         p.groupCounter_searchView(customerGroupName).shouldHave(text("0"));
@@ -73,13 +71,12 @@ public class ManualGroupTest extends Preconditions {
         provideTestData("empty manual group");
 
         p = openPage(adminUrl + "/customers/groups/" + customerGroupId, CustomerGroupPage.class);
-
         String editedMCGName = customerGroupName + " Edited";
         p.clickEditCGroupBtn();
         p.setCGroupName(editedMCGName);
         p.clickSaveCGroupBtn();
-        openPage(adminUrl + "/customers/groups", CustomerGroupPage.class);
 
+        openPage(adminUrl + "/customers/groups", CustomerGroupPage.class);
         p.name_searchView(editedMCGName).shouldBe(visible);
     }
 
@@ -92,7 +89,6 @@ public class ManualGroupTest extends Preconditions {
         provideTestData("manual group and customer for adding/searching");
 
         p = openPage(adminUrl + "/customers/groups/" + customerGroupId, CustomerGroupPage.class);
-
         p.clickAddCustomersBtn();
         p.setCustomerSearchFld(customerName);
 
@@ -109,7 +105,6 @@ public class ManualGroupTest extends Preconditions {
         provideTestData("manual group and customer for adding/searching");
 
         p = openPage(adminUrl + "/customers/groups/" + customerGroupId, CustomerGroupPage.class);
-
         p.clickAddCustomersBtn();
         p.setCustomerSearchFld(customerName + "_wrong");
 
@@ -127,20 +122,18 @@ public class ManualGroupTest extends Preconditions {
         provideTestData("manual group and customer for adding/searching");
 
         p = openPage(adminUrl + "/customers/groups/" + customerGroupId, CustomerGroupPage.class);
-
         p.clickAddCustomersBtn();
         p.setCustomerSearchFld(customerName);
         p.clickFoundCustomerFld(customerName);
         p.clickSaveCustomerBtn();
 
         openPage(adminUrl + "/customers/groups/" + customerGroupId, CustomerGroupPage.class);
-
         p.name_searchView(customerName).shouldBe(visible);
         p.groupCounter_form().shouldHave(text("1"));
         p.groupCustomersCollection().shouldHaveSize(1);
     }
 
-    @Test(priority = 10)
+    @Test(priority = 7)
     @Severity(SeverityLevel.NORMAL)
     @Features("Ashes")
     @Stories("Customer Groups : Manual")
@@ -151,19 +144,19 @@ public class ManualGroupTest extends Preconditions {
         p = openPage(adminUrl + "/customers/groups/" + customerGroupId, CustomerGroupPage.class);
 
         provideTestData("a customer");
+
         p.clickAddCustomersBtn();
         p.setCustomerSearchFld(customerName);
         p.clickFoundCustomerFld(customerName);
         p.clickSaveCustomerBtn();
 
         openPage(adminUrl + "/customers/groups/" + customerGroupId, CustomerGroupPage.class);
-
         p.name_searchView(customerName).shouldBe(visible);
         p.groupCustomersCollection().shouldHaveSize(2);
         p.groupCounter_form().shouldHave(text("2"));
     }
 
-    @Test(priority = 11)
+    @Test(priority = 8)
     @Severity(SeverityLevel.NORMAL)
     @Features("Ashes")
     @Stories("Customer Groups : Manual")
@@ -174,17 +167,17 @@ public class ManualGroupTest extends Preconditions {
         p = openPage(adminUrl + "/customers/groups/" + customerGroupId, CustomerGroupPage.class);
 
         provideTestData("a customer");
+
         p.clickAddCustomersBtn();
         p.setCustomerSearchFld(customerName);
         p.clickFoundCustomerFld(customerName);
         p.clickSaveCustomerBtn();
 
         openPage(adminUrl + "/customers/groups", CustomerGroupPage.class);
-
         p.groupCounter_searchView(customerGroupName).shouldHave(text("2"));
     }
 
-    @Test(priority = 12)
+    @Test(priority = 9)
     @Severity(SeverityLevel.NORMAL)
     @Features("Ashes")
     @Stories("Customer Groups : Manual")
@@ -193,7 +186,6 @@ public class ManualGroupTest extends Preconditions {
         provideTestData("manual group and customer added to it");
 
         p = openPage(adminUrl + "/customers/groups/" + customerGroupId, CustomerGroupPage.class);
-
         p.clickSearchViewElementChkbx("1");
         p.openActionsMenu_searchView();
         p.clickDeleteFromGroupBtn();
@@ -202,16 +194,14 @@ public class ManualGroupTest extends Preconditions {
         p.removingMessageFld().shouldHave(text("1 customer successfully deleted from group"));
 
         openPage(adminUrl + "/customers/groups/" + customerGroupId, CustomerGroupPage.class);
-
         p.name_searchView(customerName).shouldNotBe(visible);
         p.groupCustomersCollection().shouldHaveSize(0);
 
         openPage(adminUrl + "/customers/groups", CustomerGroupPage.class);
-
         p.groupCounter_searchView(customerGroupName).shouldHave(text("0"));
     }
 
-    @Test(priority = 13)
+    @Test(priority = 10)
     @Severity(SeverityLevel.NORMAL)
     @Features("Ashes")
     @Stories("Customer Groups : Manual")
@@ -220,34 +210,65 @@ public class ManualGroupTest extends Preconditions {
         provideTestData("manual group and customer added to it");
 
         p = openPage(adminUrl + "/customers/groups/" + customerGroupId, CustomerGroupPage.class);
-
         p.clickArchiveGroupBtn();
         p.clickConfirmArchiveGroupBtn();
 
         openPage(adminUrl + "/customers/groups", CustomerGroupPage.class);
-        
         p.name_searchView(customerGroupName).shouldNotBe(visible);
     }
 
-//    @Test(priority = 14)
-//    @Severity(SeverityLevel.NORMAL)
-//    @Features("Ashes")
-//    @Stories("Customer Groups : Manual")
-//    @Description("Can't create MCG with duplicated name")
-//    @Issue("highlander/#1866")
-//    public void duplicatedNameMCG() throws IOException{
-//        //NOT Fixed
-//        //TODO warning should be thrown
-//    }
-//
-//    @Test(priority = 15)
-//    @Severity(SeverityLevel.NORMAL)
-//    @Features("Ashes")
-//    @Stories("Customer Groups : Manual")
-//    @Description("Can show correct statistics for number of orders and total sales for MCG")
-//    @Issue("highlander/#1866")
-//    public void correctStatisticsMCG_ordersSales() throws IOException{
-//        //create customers with few orders for them
-//        //should show correct number of orders and value of total sales
-//    }
+    @Test(priority = 11)
+    @Severity(SeverityLevel.NORMAL)
+    @Features("Ashes")
+    @Stories("Customer Groups : Manual")
+    @Description("Can't create MCG with duplicated name")
+    @Issue("highlander/#1866")
+    public void duplicatedNameMCG() throws IOException{
+        provideTestData("empty manual group");
+
+        p = openPage(adminUrl + "/customers/groups", CustomerGroupPage.class);
+        p.clickAddCGroupBtn();
+        p.clickMCGroupBtn();
+        p.setCGroupName(customerGroupName);
+        p.clickSaveCGroupBtn();
+
+        //NOT Fixed
+        //TODO warning should be thrown (the same message as for SKU)
+        p.groupNameDuplicationLbl().shouldBe(visible);
+    }
+
+    @Test(priority = 12)
+    @Severity(SeverityLevel.NORMAL)
+    @Features("Ashes")
+    @Stories("Customer Groups : Manual")
+    @Description("Can show correct statistics for number of orders and total sales for MCG")
+    public void correctStatisticsMCG_ordersSales() throws IOException{
+
+        provideTestData("customer with 2 orders in remorse hold and fulfillment started");
+        provideTestData("empty manual group");
+
+        p = openPage(adminUrl + "/customers/groups/" + customerGroupId, CustomerGroupPage.class);
+        p.clickAddCustomersBtn();
+        p.setCustomerSearchFld(customerName);
+        p.clickFoundCustomerFld(customerName);
+        p.clickSaveCustomerBtn();
+
+        openPage(adminUrl + "/customers/groups/" + customerGroupId, CustomerGroupPage.class);
+        int totalSales = ((customerOrdersTotals.get(0) + customerOrdersTotals.get(1)) / 100);
+        String totalSalesVal = Integer.toString(totalSales);
+        p.totalOrdersVal().shouldBe(text("2"));
+        p.totalsSalesVal().shouldHave(text(totalSalesVal));
+    }
+
+    @Test(priority = 13)
+    @Severity(SeverityLevel.NORMAL)
+    @Features("Ashes")
+    @Stories("Customer Groups : Manual")
+    @Description("Can show correct MCG for customer in his profile")
+    public void customerProfileShowsMCG() throws IOException {
+        provideTestData("manual group and customer added to it");
+
+        p = openPage(adminUrl + "/customers/" + customerId, CustomerGroupPage.class);
+        p.groupNameFld_customerForm().shouldHave(text(customerGroupName));
+    }
 }
