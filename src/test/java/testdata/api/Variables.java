@@ -1,6 +1,7 @@
 package testdata.api;
 
 import testdata.TestNGDataProviders;
+import tests.storefront.StripeTest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,4 +65,10 @@ public class Variables extends TestNGDataProviders {
     protected static String customerGroupType;
     protected static List<Integer> customerOrdersTotals = new ArrayList<>();
     protected  static String customerUniqueKey;
+
+    protected static int taxonomyId;
+    protected static String taxonomyName;
+
+    protected static int taxonId;
+    protected static String taxonName;
 }

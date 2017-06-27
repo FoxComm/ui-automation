@@ -55,22 +55,6 @@ public class CustomerGroupPage extends AdminBasePage {
                 "/../*[contains(@class,'customersCount')]"));
     }
 
-    public SelenideElement customerName_customerGroupView(String customerName){
-        return $(xpath(""));
-    }
-
-    public SelenideElement customersNumber_customerGroupView(){
-        return $(xpath(""));
-    }
-
-    public SelenideElement archiveCGBtn(){
-        return $(xpath("//button[contains(@id,'archive-btn')]"));
-    }
-
-    public SelenideElement confirmArchiveCGBtn() {
-        return $(xpath("//*[contains(@class,'fc-save-cancel')]//*[contains(text(),'Archive Group')]"));
-    }
-
     public SelenideElement groupNameDuplicationLbl() {
         return $(xpath("//*[contains(@class,'alert')]//*[contains(text(),'already exists in the system')]"));
     }
@@ -105,16 +89,6 @@ public class CustomerGroupPage extends AdminBasePage {
     @Step("Click \"Edit Group\" btn")
     public void clickEditCGroupBtn() {
         click(editCGroupBtn());
-    }
-
-    @Step("Click \"Archive Group\" btn")
-    public void clickArchiveGroupBtn(){
-        click(archiveCGBtn());
-    }
-
-    @Step("Click confirmation for \"Archive Group\"")
-    public void clickConfirmArchiveGroupBtn(){
-        click(confirmArchiveCGBtn());
     }
 
     //-------------    Manual Groups ---------------

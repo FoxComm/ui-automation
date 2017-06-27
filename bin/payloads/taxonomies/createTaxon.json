@@ -1,0 +1,23 @@
+{
+  "attributes":{
+    "name":{
+      "t":"string",
+      "v":"taxonName"
+    },
+    "description":{
+      "t":"richText",
+      "v":""
+    },
+    "activeFrom":{
+      "v":"2017-06-27T17:31:29.570Z",
+      "t":"datetime"
+    },
+    "activeTo":{
+      "v":null,
+      "t":"datetime"
+    }
+  },
+  "location":{
+    "parent":null
+  }
+}

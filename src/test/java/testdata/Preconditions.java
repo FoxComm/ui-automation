@@ -20,6 +20,7 @@ import static testdata.api.collection.Promotions.*;
 import static testdata.api.collection.SharedSearch.*;
 import static testdata.api.collection.Skus.*;
 import static testdata.api.collection.StoreCredits.*;
+import static testdata.api.collection.Taxonomies.*;
 
 public class Preconditions extends Helpers {
 
@@ -699,6 +700,23 @@ public class Preconditions extends Helpers {
 
             case "dynamic group with defined name criteria":
                 dCGroup_definedNameCriteria(customerUniqueKey);
+                break;
+            //---------------------------------- TAXONOMIES ---------------------------------//
+            case "create empty flat taxonomy":
+                createFlatTaxonomy();
+                break;
+            //------------------------------------ TAXONS -----------------------------------//
+            case "create taxonomy with taxon":
+                createFlatTaxonomy();
+                addTaxonToTaxonomy(taxonomyId);
+                break;
+
+            case "create taxonomy with taxon added to created product":
+                createFlatTaxonomy();
+                addTaxonToTaxonomy(taxonomyId);
+                createSKU_active();
+                createProduct_active(skuId, skuCode, "sunglasses");
+                addTaxonToProduct(productId, taxonId);
                 break;
             //---------------------------------- PROMOTIONS ---------------------------------//
 

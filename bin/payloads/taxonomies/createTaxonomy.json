@@ -1,0 +1,31 @@
+{
+  "attributes":{
+    "name":{
+      "t":"string",
+      "v":"taxonomy name"
+    },
+    "description":{
+      "t":"richText",
+      "v":"<p><br></p>"
+    },
+    "hierarchical":{
+      "t":"bool",
+      "v":false
+    },
+    "activeFrom":{
+      "v":"2017-06-27T15:15:46.660Z",
+      "t":"datetime"
+    },
+    "activeTo":{
+      "v":null,
+      "t":"datetime"
+    }
+  },
+  "context":{
+    "name":"default"
+  },
+  "hierarchical":false,
+  "taxons":[
+
+  ]
+}

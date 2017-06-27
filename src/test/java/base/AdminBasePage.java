@@ -35,9 +35,18 @@ public class AdminBasePage extends ConciseAPI {
         return $(xpath("//a[text()='Settings']"));
     }
 
+    public SelenideElement archiveBtn(){
+        return $(xpath("//*[contains(@id,'archive-btn')]"));
+    }
+
     // xpath might fail tests. old one: //a[@class='fc-modal-close']
     public SelenideElement closeModalWindowBtn() {
         return $(xpath("//a[@class='fc-modal-close']/i"));
+    }
+
+    @Step("Click Archive <{0}> Btn")
+    public void clickArchiveElement(String context){
+        click(archiveBtn());
     }
 
     @Step("Close modal window")
@@ -81,6 +90,11 @@ public class AdminBasePage extends ConciseAPI {
 
     @Step("Click \"Save\" btn")
     public void clickSaveBtn_modal() {
+        click(modalSaveBtn());
+    }
+
+    @Step("Click \"Save\" btn ( <{0}> )")
+    public void clickSaveBtn_modalCxt(String context) {
         click(modalSaveBtn());
     }
 

@@ -210,8 +210,8 @@ public class ManualGroupTest extends Preconditions {
         provideTestData("manual group and customer added to it");
 
         p = openPage(adminUrl + "/customers/groups/" + customerGroupId, CustomerGroupPage.class);
-        p.clickArchiveGroupBtn();
-        p.clickConfirmArchiveGroupBtn();
+        p.clickArchiveElement("MCG");
+        p.clickSaveBtn_modalCxt("Archive Group");
 
         openPage(adminUrl + "/customers/groups", CustomerGroupPage.class);
         p.name_searchView(customerGroupName).shouldNotBe(visible);

@@ -137,8 +137,8 @@ public class DynamicGroupTest extends Preconditions {
         provideTestData("dynamic group with two criterias");
 
         p = openPage(adminUrl + "/customers/groups/" + customerGroupId, CustomerGroupPage.class);
-        p.clickArchiveGroupBtn();
-        p.clickConfirmArchiveGroupBtn();
+        p.clickArchiveElement("DCG");
+        p.clickSaveBtn_modalCxt("Archive Group");
 
         openPage(adminUrl + "/customers/groups", CustomerGroupPage.class);
         p.name_searchView(customerGroupName).shouldNotBe(visible);
