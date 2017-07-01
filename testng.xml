@@ -198,9 +198,9 @@
         </classes>
     </test>
     <!--<test name="SF: Products > Catalog Test">-->
-        <!--<classes>-->
-            <!--<class name="tests.storefront.products.CatalogTest"/>-->
-        <!--</classes>-->
+    <!--<classes>-->
+    <!--<class name="tests.storefront.products.CatalogTest"/>-->
+    <!--</classes>-->
     <!--</test>-->
     <test name="SF: Products > TPG Product Attributes">
         <classes>
