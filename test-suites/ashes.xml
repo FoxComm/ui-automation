@@ -126,4 +126,15 @@
             <class name="tests.storeadmin.products.ProductsTest"/>
         </classes>
     </test>
+
+    <test name="Customer Groups: Manual">
+        <classes>
+            <class name="tests.storeadmin.customergroups.ManualGroupTest"/>
+        </classes>
+    </test>
+    <test name="Customer Groups: Dynamic">
+        <classes>
+            <class name="tests.storeadmin.customergroups.DynamicGroupTest"/>
+        </classes>
+    </test>
 </suite>

@@ -11,6 +11,7 @@ import static testdata.api.collection.Auth.*;
 import static testdata.api.collection.Cart.*;
 import static testdata.api.collection.Coupons.*;
 import static testdata.api.collection.Customers.*;
+import static testdata.api.collection.CustomerGroups.*;
 import static testdata.api.collection.GiftCards.*;
 import static testdata.api.collection.Inventory.*;
 import static testdata.api.collection.Orders.*;
@@ -558,6 +559,8 @@ public class Preconditions extends Helpers {
                 listCustomerAddresses(customerId);
                 createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard", addressId1);
                 setPayment_creditCard(cartId, creditCardId);
+                getCartTotals(cartId);
+                customerOrdersTotals.add(subTotal);
                 checkoutCart(cartId);
 
                 createCart(customerId);
@@ -571,6 +574,44 @@ public class Preconditions extends Helpers {
                 setShipMethod(cartId, shipMethodId);
                 listCustomerAddresses(customerId);
                 setPayment_creditCard(cartId, creditCardId);
+                getCartTotals(cartId);
+                customerOrdersTotals.add(subTotal);
+                checkoutCart(cartId);
+
+                changeOrderState(orderId, "fulfillmentStarted");
+                break;
+
+            case "customer with certain name key and 2 orders in remorse hold and fulfillment started":
+                createCustomer_nameKey(customerUniqueKey);
+                createCart(customerId);
+                createSKU_active();
+                createProduct_active(skuId, skuCode, "test");
+                increaseOnHandQty(skuCode, "Sellable", 1);
+                updLineItems(cartId, skuCode, 1);
+                skuCodes.add(skuCode);
+                setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
+                listShipMethods(cartId);
+                setShipMethod(cartId, shipMethodId);
+                listCustomerAddresses(customerId);
+                createCreditCard(customerId, customerName, "5555555555554444", 3, 2020, 123, "MasterCard", addressId1);
+                setPayment_creditCard(cartId, creditCardId);
+                getCartTotals(cartId);
+                customerOrdersTotals.add(subTotal);
+                checkoutCart(cartId);
+
+                createCart(customerId);
+                createSKU_active();
+                createProduct_active(skuId, skuCode, "test");
+                increaseOnHandQty(skuCode, "Sellable", 2);
+                updLineItems(cartId, skuCode, 2);
+                skuCodes.add(skuCode);
+                setShipAddress(cartId, "John Doe", 4164, 234, "Oregon", "757 Foggy Crow Isle", "200 Suite", "Portland", "97201", "5038234000", false);
+                listShipMethods(cartId);
+                setShipMethod(cartId, shipMethodId);
+                listCustomerAddresses(customerId);
+                setPayment_creditCard(cartId, creditCardId);
+                getCartTotals(cartId);
+                customerOrdersTotals.add(subTotal);
                 checkoutCart(cartId);
 
                 changeOrderState(orderId, "fulfillmentStarted");
@@ -623,6 +664,42 @@ public class Preconditions extends Helpers {
                 checkoutCart(cartId);
                 break;
 
+            //---------------------------------- CUSTOMER MANUAL GROUP ---------------------------------//
+            case "empty manual group":
+                mCGroup("Manual Group");
+                break;
+
+            case "manual group and customer for adding/searching":
+                createCustomer();
+                mCGroup("Manual Group");
+                break;
+
+            case "manual group and customer added to it":
+                createCustomer();
+                mCGroup("Manual Group");
+                addCustomerToGroup(customerId, customerGroupId);
+                sleep(5000);
+                break;
+            //---------------------------------- CUSTOMER DYNAMIC GROUP ---------------------------------//
+            case "empty dynamic group with one criteria":
+                dCGroup_oneCriteria("Dynamic Group");
+                break;
+
+            case "dynamic group with two criterias":
+                dCGroup_twoCriterias("Dynamic Group");
+                break;
+
+            case "dynamic group with few customers for it":
+                customerUniqueKey = "key_" + generateRandomID();
+                createCustomer_nameKey(customerUniqueKey);
+                createCustomer_nameKey(customerUniqueKey);
+                dCGroup_definedNameCriteria(customerUniqueKey);
+                sleep(5000);
+                break;
+
+            case "dynamic group with defined name criteria":
+                dCGroup_definedNameCriteria(customerUniqueKey);
+                break;
             //---------------------------------- PROMOTIONS ---------------------------------//
 
             case "active promotion with auto apply type":

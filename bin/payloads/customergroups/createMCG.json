@@ -1,0 +1,12 @@
+{
+  "name":"Manual Group [API]",
+  "groupType":"manual",
+  "clientState":{
+    "mainCondition":"$and",
+    "conditions":[
+    ]
+  },
+  "customersCount":0,
+  "elasticRequest":{
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "name":"DCG",
+  "groupType":"dynamic",
+  "clientState":{
+    "mainCondition":"$and",
+    "conditions":[
+      [
+        "name",
+        "containsNotAnalyzed",
+        "unique_key"
+      ]
+    ]
+  },
+  "customersCount":0,
+  "elasticRequest":{
+    "query":{
+      "bool":{
+        "must":[
+          {
+            "match":{
+              "name":{
+                "query":"unique_key",
+                "analyzer":"standard"
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}
+
