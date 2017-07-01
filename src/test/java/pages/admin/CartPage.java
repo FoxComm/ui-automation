@@ -57,15 +57,15 @@ public class CartPage extends AdminBasePage {
     }
 
     public SelenideElement itemsWarn() {
-        return $(xpath("//div[contains(@class, 'messages')]/*[text()='Cart is empty.']"));
+        return $(xpath("//div[contains(@class, 'messages')]//*[text()='Cart is empty.']"));
     }
 
     public SelenideElement shipAddressWarn() {
-        return $(xpath("//div[contains(@class, 'messages')]/*[text()='No shipping address applied.']"));
+        return $(xpath("//div[contains(@class, 'messages')]//*[text()='No shipping address applied.']"));
     }
 
     public SelenideElement shipMethodWarn() {
-        return $(xpath("//div[contains(@class, 'messages')]/*[text()='No shipping method applied.']"));
+        return $(xpath("//div[contains(@class, 'messages')]//*[text()='No shipping method applied.']"));
     }
 
     public SelenideElement fundsWarn() {
@@ -166,7 +166,7 @@ public class CartPage extends AdminBasePage {
     }
 
     private SelenideElement decreaseItemQtyBtn(String itemIndex) {
-        return $(xpath("//tbody[@id='fct-cart-line-items']/tr[" + itemIndex + "]//button[contains(@class, 'decrement')]"));
+        return $(xpath("//tbody[@id='fct-cart-line-items']/tr[" + itemIndex + "]//i[contains(@class, 'chevron-down')]"));
     }
 
     private SelenideElement increaseItemQtyBtn(String itemIndex) {
@@ -182,8 +182,8 @@ public class CartPage extends AdminBasePage {
         return $(xpath("//input[@id='fct-counter-input__" + skuCode + "']"));
     }
 
-    public SelenideElement itemTotalPrice(String index) {
-        return $(xpath("//tbody[@id='fct-cart-line-items']/tr[" + index + "]//*[contains(@class, 'item-total-price')]"));
+    public SelenideElement lineItemTotalPrice(String productTitle) {
+        return $(xpath("//td[@class='line-item-name' and text()='" + productTitle + "']/following-sibling::*/*[contains(@class, 'item-total-price')]"));
     }
 
     private SelenideElement deleteBtn_item(String itemIndex) {
@@ -226,6 +226,8 @@ public class CartPage extends AdminBasePage {
     }
 
 
+
+
     //------------------------------------ HELPERS -------------------------------------//
 
     @Step("Add item to cart, searchQuery: {0}")
@@ -239,20 +241,20 @@ public class CartPage extends AdminBasePage {
         // it makes this test less dependent on initial itemsInCartAmount value when it comes to 1st assertion in this method
         String itemIndex = String.valueOf(itemsInCartAmount() + 1);
 
-        searchForItem(searchQuery);
-        addFoundItem(searchQuery);
+        searchLineItem(searchQuery);
+        addFoundLineItem(searchQuery);
         lineItem_byName(searchQuery).shouldBe(visible
                 .because("Failed to add line, used search query: <" + searchQuery + ">"));
         clickDoneBtn("Line Items");
     }
 
     @Step("Set \"Search\" field val to <{0}>")
-    public void searchForItem(String searchQuery) {
+    public void searchLineItem(String searchQuery) {
         setFieldVal(lineItemSearchFld(), searchQuery);
     }
 
     @Step("Click <{0}> in search view")
-    public void addFoundItem(String searchQuery) {
+    public void addFoundLineItem(String searchQuery) {
         click(lineItemSearchView_byName(searchQuery));
     }
 
@@ -349,9 +351,11 @@ public class CartPage extends AdminBasePage {
 
     @Step("Set QTY of <{0}th> line item using input fld; <newQTY:{1}>")
     public void setItemQty(String sku, String qty) {
+        String initialLineItemTotal = lineItemTotalPrice(sku).text();
         clearField(qtyInput_sku(sku));
         setFieldVal(qtyInput_sku(sku), qty);
         shouldHaveValue(qtyInput_sku(sku), qty, "Failed to edit \"Qty\" input field value");
+        shouldHaveValue(lineItemTotalPrice(sku), multiplyStrings(initialLineItemTotal, qty), "");
     }
 
 

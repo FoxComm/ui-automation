@@ -128,11 +128,11 @@ public class AdminBasePage extends ConciseAPI {
     }
 
     public SelenideElement logoutSuccessMsg() {
-        return $(xpath("//div[@class='fc-alert is-alert-success']"));
+        return $(xpath("//div[contains(@class, 'success')]//*[text()='You have successfully logged out.']"));
     }
 
     public SelenideElement loginErrorMsg() {
-        return $(xpath("//div[@class='fc-alert is-alert-error']"));
+        return $(xpath("//div[contains(@class, 'error')]//*[text()='Invalid credentials']"));
     }
 
     @Step("Log in as <{0}> / <{1}>")
@@ -267,7 +267,7 @@ public class AdminBasePage extends ConciseAPI {
     }
 
     private SelenideElement customRichText(String title) {
-        return $(xpath("//div[text()='" + title + "']/following-sibling::*[2]//div[@class='public-DraftEditor-content']"));
+        return $(xpath("//div[text()='" + title + "']/following-sibling::*[2]//div[contains(@class,'public-DraftEditor-content')]"));
     }
 
     public SelenideElement customRichTextVal(String title) {
@@ -367,7 +367,7 @@ public class AdminBasePage extends ConciseAPI {
     }
 
     public SelenideElement searchMenu() {
-        return $(xpath("//ul[@class='fc-menu-items']"));
+        return $(xpath("//div[@class='fc-live-search']//*[contains(@class,'block')]"));
     }
 
     public SelenideElement objOnCategoryTable(String itemParam) {
@@ -421,15 +421,15 @@ public class AdminBasePage extends ConciseAPI {
     }
 
     private SelenideElement firstCriteria(String criteria) {
-        return $(xpath("//ul[@class='fc-menu-items']/li/span[text()='" + criteria + "']/.."));
+        return $(xpath("//div[@class='fc-live-search']//*[contains(@class,'block')]/div/span[text()='" + criteria + "']/.."));
     }
 
     private SelenideElement secondCriteria(String criteria) {
-        return $(xpath("//ul[@class='fc-menu-items']/li/span[text()='" + criteria + "']/.."));
+        return $(xpath("//div[@class='fc-live-search']//*[contains(@class,'block')]/div/span[text()='" + criteria + "']/.."));
     }
 
     private SelenideElement thirdCriteria(String criteria) {
-        return $(xpath("//ul[@class='fc-menu-items']/li/span[text()='" + criteria + "']/.."));
+        return $(xpath("//div[@class='fc-live-search']//*[contains(@class,'block')]/div/span[text()='" + criteria + "']/.."));
     }
 
     public void hitEnter() {

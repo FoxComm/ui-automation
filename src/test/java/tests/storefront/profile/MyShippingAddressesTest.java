@@ -111,11 +111,12 @@ public class MyShippingAddressesTest extends Preconditions {
         p = openPage(storefrontUrl, StorefrontTPGBasePage.class);
         p.logIn(customerEmail, "78qa22!#");
         p.openProfile();
+        String expectedName = p.shipAddressName("2").text();
         p.clickEditBtn_address("2");
         p.clickDefaultChbx();
         p.clickSaveBtn();
 
-        p.assertAddressIsSelected("2");
+        p.assertAddressIsSelected(expectedName);
     }
 
     @Test(priority = 6)
@@ -130,11 +131,11 @@ public class MyShippingAddressesTest extends Preconditions {
         p.logIn(customerEmail, "78qa22!#");
         p.openProfile();
         p.clickAddAddressBtn();
-        p.fillOutAddressForm("John Doe", "7500 Roosevelt Way NE", "Block 42", "98115", "9879879766");
+        p.fillOutAddressForm("John Smith", "7500 Roosevelt Way NE", "Block 42", "98115", "9879879766");
         p.clickDefaultChbx();
         p.clickSaveBtn();
 
-        p.assertAddressIsSelected("3");
+        p.assertAddressIsSelected("John Smith");
     }
     
     @Test(priority = 7)
@@ -149,11 +150,11 @@ public class MyShippingAddressesTest extends Preconditions {
         p.logIn(customerEmail, "78qa22!#");
         p.openProfile();
         p.clickAddAddressBtn();
-        p.fillOutAddressForm("John Doe", "7500 Roosevelt Way NE", "Block 42", "98115", "9879879766");
+        p.fillOutAddressForm("John Smith", "7500 Roosevelt Way NE", "Block 42", "98115", "9879879766");
         p.clickDefaultChbx();
         p.clickSaveBtn();
 
-        p.assertAddressIsSelected("3");
+        p.assertAddressIsSelected("John Smith");
     }
 
 }

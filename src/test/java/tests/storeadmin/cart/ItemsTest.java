@@ -83,7 +83,6 @@ public class ItemsTest extends Preconditions {
         p = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
         p.clickEditBtn("Line Items");
         p.setItemQty(skuCode, "3");
-        shouldHaveText(p.itemTotalPrice("1"), "$150.00", "");
         p.clickDoneBtn("Line Items");
 
         p.itemQty("1").shouldHave(text("3")

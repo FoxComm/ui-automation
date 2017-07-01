@@ -300,7 +300,7 @@ public class SkusTests extends Preconditions {
         provideTestData("active SKU");
 
         p = openPage(adminUrl + "/skus", SkusPage.class);
-        p.search(skuToEdit);
+        p.addFilter("SKU : Code", skuCode);
         shouldBeVisible(contentOnList(), "Search request returned no results.");
         p.openSKU(skuToEdit);
         p.setSKUCode(skuCode);

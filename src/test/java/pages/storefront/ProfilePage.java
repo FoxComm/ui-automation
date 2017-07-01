@@ -114,8 +114,12 @@ public class ProfilePage extends AuthPage {
         return $(xpath("//input[@name='phoneNumber']"));
     }
 
-    public SelenideElement selectAddressRbtn(String index) {
-        return $(xpath("//li[" + index + "]//input[contains(@name, 'address-radio')]"));
+    public SelenideElement selectAddressRbtn(String name) {
+        return $(xpath("//input[@name='address-radio-" + name + "']"));
+    }
+
+    public SelenideElement shipAddressName(String index) {
+        return $(xpath("//li[" + index + "]//h3"));
     }
 
     //---------------------------------------------- STEPS ---------------------------------------------
@@ -208,9 +212,9 @@ public class ProfilePage extends AuthPage {
     }
 
     @Step("Assert that address <{0}> is set as default")
-    public void assertAddressIsSelected(String index) {
+    public void assertAddressIsSelected(String name) {
         scrollToElement($(xpath("//div[text()='My Shipping Addresses']")));
-        selectAddressRbtn(index).shouldBe(selected);
+        selectAddressRbtn(name).shouldBe(selected);
     }
 
 }

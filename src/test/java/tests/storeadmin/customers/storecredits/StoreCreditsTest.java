@@ -4,10 +4,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import pages.admin.CustomersPage;
 import pages.admin.LoginPage;
-import ru.yandex.qatools.allure.annotations.Description;
-import ru.yandex.qatools.allure.annotations.Features;
-import ru.yandex.qatools.allure.annotations.Severity;
-import ru.yandex.qatools.allure.annotations.Stories;
+import ru.yandex.qatools.allure.annotations.*;
 import ru.yandex.qatools.allure.model.SeverityLevel;
 import testdata.Preconditions;
 
@@ -91,6 +88,7 @@ public class StoreCreditsTest extends Preconditions {
     @Features("Ashes")
     @Stories("Customers : Store Credits")
     @Description("Issues SC is displayed on the list")
+    @Issue("Few random fails were detected with loading store credit")
     public void issuedSC_displayedOnList() throws IOException {
         provideTestData("a customer");
 
@@ -101,7 +99,7 @@ public class StoreCreditsTest extends Preconditions {
         p.setValue("50");
         p.clickIssueSCButton();
         waitForDataToLoad();
-
+        
         p.storeCreditsOnList().shouldHaveSize(1);
     }
 
@@ -110,6 +108,7 @@ public class StoreCreditsTest extends Preconditions {
     @Features("Ashes")
     @Stories("Customers : Store Credits")
     @Description("Can set SC on hold")
+    @Issue("#highlander/#2254")
     public void setState_onHold() throws IOException {
         provideTestData("a customer with issued SC");
 
@@ -126,6 +125,7 @@ public class StoreCreditsTest extends Preconditions {
     @Features("Ashes")
     @Stories("Customers : Store Credits")
     @Description("Can cancel SC")
+    @Issue("#highlander/#2254")
     public void setState_canceled() throws IOException {
         provideTestData("a customer with issued SC");
 

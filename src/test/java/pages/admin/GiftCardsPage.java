@@ -28,7 +28,7 @@ public class GiftCardsPage extends AdminBasePage {
     }
 
     public SelenideElement qtyIncrBtn() {
-        return $(xpath("//button[contains(@class, 'increment')]"));
+        return $(xpath("//i[contains(@class, 'icon-chevron-up')]"));
     }
 
     public SelenideElement issueGCBtn() {

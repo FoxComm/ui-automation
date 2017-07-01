@@ -4,10 +4,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import pages.admin.CustomersPage;
 import pages.admin.LoginPage;
-import ru.yandex.qatools.allure.annotations.Description;
-import ru.yandex.qatools.allure.annotations.Features;
-import ru.yandex.qatools.allure.annotations.Severity;
-import ru.yandex.qatools.allure.annotations.Stories;
+import ru.yandex.qatools.allure.annotations.*;
 import ru.yandex.qatools.allure.model.SeverityLevel;
 import testdata.Preconditions;
 
@@ -164,6 +161,7 @@ public class ContactsTest extends Preconditions {
     @Features("Ashes")
     @Stories("Customers : Contacts")
     @Description("Phone number is not required")
+    @Issue("Issue. With pressing Save when title is cleared")
     public void phoneNumberNotRequired() throws IOException {
         provideTestData("a customer");
 

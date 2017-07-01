@@ -32,8 +32,7 @@ public class SkusPage extends AdminBasePage {
 
     //TODO: Add id in Ashes (Details, richtext)
     public SelenideElement descriptionFld() {
-//        return $(By.xpath("//div[@role='textbox']/div/div"));
-        return $(xpath("//div[@class='public-DraftEditor-content']"));
+        return $(xpath("//div[contains(@class,'public-DraftEditor-content')]"));
     }
 
     public SelenideElement retailPriceFld() {

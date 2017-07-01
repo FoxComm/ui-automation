@@ -53,8 +53,8 @@ public class ProductsTest extends Preconditions {
 //
 //        cartPage = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
 //        cartPage.clickEditBtn("Line Items");
-//        cartPage.searchForItem(skuTitle);
-//        cartPage.addFoundItem(skuTitle);
+//        cartPage.searchLineItem(skuTitle);
+//        cartPage.addFoundLineItem(skuTitle);
 //
 //        cartPage.lineItem_editing(productTitle).shouldBe(visible);
 //    }
@@ -68,7 +68,7 @@ public class ProductsTest extends Preconditions {
 //
 //        cartPage = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
 //        cartPage.clickEditBtn("Line Items");
-//        cartPage.searchForItem(skuTitle);
+//        cartPage.searchLineItem(skuTitle);
 //
 //        cartPage.lineItemSearchView_byName(skuTitle).shouldNotBe(visible);
 //    }
@@ -76,7 +76,7 @@ public class ProductsTest extends Preconditions {
     @Test(priority = 3, dataProvider = "canAddSkuToCart_admin")
     @Severity(SeverityLevel.CRITICAL)
     @Features({"Ashes", "Parametrized Tests"})
-    @Stories("Products : Behavior")
+    @Stories("Products : Ashes Behavior")
     @Description("SKU is found in line_items_search_view and can be added to cart")
     public void canAddSkuToCart_admin(String testData) throws IOException {
         provideTestData(testData);
@@ -85,8 +85,8 @@ public class ProductsTest extends Preconditions {
 
         cartPage = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
         cartPage.clickEditBtn("Line Items");
-        cartPage.searchForItem(skuCode);
-        cartPage.addFoundItem(skuCode);
+        cartPage.searchLineItem(skuCode);
+        cartPage.addFoundLineItem(skuCode);
 
         cartPage.lineItem_editing(skuCode).shouldBe(visible);
     }
@@ -103,7 +103,7 @@ public class ProductsTest extends Preconditions {
 
         cartPage = openPage(adminUrl + "/carts/" + cartId, CartPage.class);
         cartPage.clickEditBtn("Line Items");
-        cartPage.searchForItem(skuCode);
+        cartPage.searchLineItem(skuCode);
 
         cartPage.lineItemSearchView_byName(skuCode).shouldNotBe(visible);
     }
@@ -119,7 +119,7 @@ public class ProductsTest extends Preconditions {
 
 
         skusPage = openPage(adminUrl + "/skus", SkusPage.class);
-        skusPage.search(skuCode);
+        skusPage.addFilter("SKU : Code", skuCode);
         skusPage.openSKU(skuCode);
 
         skusPage.breadcrumb(skuCode).shouldBe(visible);
@@ -147,7 +147,7 @@ public class ProductsTest extends Preconditions {
         provideTestData(testData);
 
         skusPage = openPage(adminUrl + "/skus", SkusPage.class);
-        skusPage.search(skuCode);
+        skusPage.addFilter("SKU : Code", skuCode);
         waitForDataToLoad();
 
         skusPage.objOnCategoryTable(skuCode).shouldBe(visible);
@@ -164,7 +164,7 @@ public class ProductsTest extends Preconditions {
         provideTestData(testData);
 
         skusPage = openPage(adminUrl + "/skus", SkusPage.class);
-        skusPage.search(skuCode);
+        skusPage.addFilter("SKU : Code", skuCode);
         skusPage.noSearchResultsMsg().shouldBe(visible);
 
         skusPage.addFilter("SKU : Is Archived", "Yes");
@@ -183,7 +183,7 @@ public class ProductsTest extends Preconditions {
 
         productsPage = openPage(adminUrl + "/products", ProductsPage.class);
 
-        productsPage.search(productTitle);
+        productsPage.addFilter("Product : Name", productTitle);
         productsPage.openProduct(productTitle);
 
         productsPage.breadcrumb(productId).shouldBe(visible);
@@ -198,7 +198,7 @@ public class ProductsTest extends Preconditions {
         provideTestData(testData);
 
         productsPage = openPage(adminUrl + "/products", ProductsPage.class);
-        productsPage.search(productTitle);
+        productsPage.addFilter("Product : Name", productTitle);
         productsPage.noSearchResultsMsg().shouldBe(visible);
 
         productsPage.addFilter("Product : Is Archived", "Yes");

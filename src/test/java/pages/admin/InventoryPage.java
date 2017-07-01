@@ -5,7 +5,6 @@ import com.codeborne.selenide.SelenideElement;
 import ru.yandex.qatools.allure.annotations.Step;
 
 import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.$$;
 import static org.openqa.selenium.By.xpath;
 
 public class InventoryPage extends AdminBasePage {
@@ -44,7 +43,7 @@ public class InventoryPage extends AdminBasePage {
     public SelenideElement arrowBtn(String type, String action) {
         type = type.toLowerCase();
         action = action.toLowerCase();
-        return $(xpath("//*[@id='" + type + "-counter']//button[contains(@class, '" + action + "')]"));
+        return $(xpath("//*[@id='" + type + "-counter']//i[contains(@class, '" + action + "')]/.."));
     }
 
     private SelenideElement transactionsTab() {
@@ -72,7 +71,7 @@ public class InventoryPage extends AdminBasePage {
     public void increaseOnHand_arrowBtn(String type, int amount) {
         click(onHandFld(type));
         for (int i = 0; i < amount; i++) {
-            click(arrowBtn(type, "increment"));
+            click(arrowBtn(type, "up"));
         }
     }
 
@@ -80,7 +79,7 @@ public class InventoryPage extends AdminBasePage {
     public void decreaseOnHand_arrowBtn(String type, int amount) {
         click(onHandFld(type));
         for (int i = 0; i < amount; i++) {
-            click(arrowBtn(type, "decrement"));
+            click(arrowBtn(type, "down"));
         }
     }
 
